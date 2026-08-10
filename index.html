@@ -1,12 +1,303 @@
-<html lang="pt" title="BTG Pactual"><head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="robots" content="noindex">
-    <meta name="googlebot" content="noindex">
-    <title>BTG Pactual - Distribuição RV</title>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Distribuição Renda Variável — BTG Pactual</title>
+  <style>
+    :root {
+      --btg: #0b1f3a;
+      --btg-mid: #163a5f;
+      --btg-blue: #1e4d7b;
+      --link: #1a66b3;
+      --ink: #0b1f3a;
+      --muted: #5c6b7a;
+      --line: #d0d8e2;
+      --bg: #eef2f6;
+      --card: #ffffff;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: Segoe UI, -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif;
+      color: var(--ink);
+      background: var(--bg);
+      min-height: 100vh;
+      line-height: 1.45;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, var(--btg) 0%, var(--btg-mid) 55%, var(--btg-blue) 100%);
+      color: #fff;
+      padding: 36px 24px 40px;
+    }
+
+    .hero-inner {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    .logo-btg {
+      display: inline-block;
+      font-weight: 700;
+      font-size: 12px;
+      letter-spacing: 0.1em;
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      padding: 7px 12px;
+      border-radius: 2px;
+      margin-bottom: 22px;
+    }
+
+    .hero-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 24px;
+    }
+
+    h1 {
+      font-size: clamp(28px, 4.5vw, 40px);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+    }
+
+    .lede {
+      margin-top: 12px;
+      font-size: 15px;
+      color: rgba(255, 255, 255, 0.82);
+      max-width: 36em;
+    }
+
+    .badge {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      padding: 8px 12px;
+      border-radius: 2px;
+      white-space: nowrap;
+    }
+
+    .page {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 28px 24px 56px;
+    }
+
+    h2 {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--btg-blue);
+      margin-bottom: 14px;
+    }
+
+    .ops {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .op-block {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .op {
+      display: block;
+      text-decoration: none;
+      color: inherit;
+      padding: 18px 20px;
+      border-bottom: 1px solid var(--line);
+      transition: background 0.12s ease;
+    }
+
+    .op:hover,
+    .op:focus-visible {
+      background: #f5f8fc;
+      outline: none;
+    }
+
+    .op-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: 6px;
+    }
+
+    .op-title {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--btg);
+    }
+
+    .op-ticker {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--link);
+      letter-spacing: 0.04em;
+    }
+
+    .op-blurb {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .op-meta {
+      margin-top: 10px;
+      font-size: 11px;
+      color: var(--muted);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .pill {
+      background: #eef2f6;
+      border: 1px solid var(--line);
+      border-radius: 2px;
+      padding: 4px 10px;
+      color: var(--btg-mid);
+      font-weight: 600;
+    }
+
+    .op-cta {
+      margin-top: 10px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--link);
+    }
+
+    .op-speech {
+      padding: 16px 20px 18px;
+      background: #f7f9fc;
+    }
+
+    .op-speech h3 {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--btg-blue);
+      margin-bottom: 8px;
+    }
+
+    .op-speech p {
+      font-size: 13px;
+      color: var(--ink);
+      line-height: 1.5;
+    }
+
+    .footer {
+      margin-top: 32px;
+      padding-top: 16px;
+      border-top: 1px solid var(--line);
+      font-size: 11px;
+      color: var(--muted);
+      text-align: center;
+      line-height: 1.55;
+    }
+
+    .footer strong {
+      display: block;
+      margin-top: 10px;
+      color: var(--btg);
+      letter-spacing: 0.02em;
+    }
+
+    @media (max-width: 640px) {
+      .hero { padding: 28px 16px 32px; }
+      .page { padding: 20px 16px 48px; }
+      .hero-row { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
 </head>
 <body>
-BTG Pactual
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="logo-btg">BTG PACTUAL</div>
+      <div class="hero-row">
+        <div>
+          <h1>Distribuição Renda Variável</h1>
+          <p class="lede">
+            Operações estruturadas com payoff interativo.
+            Abra o material para ver o vídeo, a tese e o simulador.
+          </p>
+        </div>
+        <div class="badge">Uso interno</div>
+      </div>
+    </div>
+  </header>
+
+  <main class="page">
+    <h2>Operações disponíveis</h2>
+    <ul class="ops">
+
+      <li class="op-block">
+        <a class="op" href="./ops/nubank-triplo-retorno-ko/index.html">
+          <div class="op-top">
+            <span class="op-title">Nubank Triplo Retorno KO</span>
+            <span class="op-ticker">ROXO34</span>
+          </div>
+          <p class="op-blurb">3× na alta até +50%, proteção com ganho até −20%, teto +15% no KO.</p>
+          <div class="op-meta">
+            <span class="pill">Equity</span>
+            <span class="pill">1 ano</span>
+            <span class="pill">Venc. ago/2027</span>
+            <span class="pill">Custo 0%</span>
+          </div>
+          <div class="op-cta">Abrir material →</div>
+        </a>
+        <div class="op-speech">
+          <h3>Speech comercial</h3>
+          <p>
+            Para quem está construtivo em Nubank e quer assimetria: participa da alta com alavancagem até o KO,
+            tem proteção com ganho na queda moderada e custo inicial zero. Ideal para conversa de alocação tática em equity
+            com payoff claro no vencimento.
+          </p>
+        </div>
+      </li>
+
+      <li class="op-block">
+        <a class="op" href="./ops/pacb11-put-hedge/index.html">
+          <div class="op-top">
+            <span class="op-title">Put ATM PACB11 — Hedge de duration</span>
+            <span class="op-ticker">PACB11</span>
+          </div>
+          <p class="op-blurb">Compra de put ATM para hedge de NTN-Bs / duration parecida; retorno também sobre o prêmio.</p>
+          <div class="op-meta">
+            <span class="pill">Renda fixa / ETF</span>
+            <span class="pill">5 meses</span>
+            <span class="pill">Prêmio 3,2%</span>
+          </div>
+          <div class="op-cta">Abrir material →</div>
+        </a>
+        <div class="op-speech">
+          <h3>Speech comercial</h3>
+          <p>
+            Para quem carrega NTN-Bs longas (ou duration parecida à do PACB11) e quer atravessar volatilidade fiscal
+            sem abandonar a tese: put ATM com custo conhecido de 3,2% e horizonte de 5 meses. Na queda, a opção
+            remunera; se o cenário não materializar, o prejuízo fica limitado ao prêmio.
+          </p>
+        </div>
+      </li>
+
+    </ul>
+
+    <p class="footer">
+      Material ilustrativo para uso interno. Não constitui oferta, recomendação ou garantia de rentabilidade.
+      <strong>MATERIAL DE USO INTERNO, NÃO ENVIAR AOS CLIENTES</strong>
+    </p>
+  </main>
 </body>
 </html>
