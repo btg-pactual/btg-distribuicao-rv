@@ -548,7 +548,7 @@
       </div>
       <div class="hi">
         <h3>No KO (≥110%)</h3>
-        <p>Rebate 5%<span>Paga 3% · leva 5% · líquido +67% s/ preço</span></p>
+        <p>Rebate 5%<span>Líquido +2% (5% − 3%)</span></p>
       </div>
       <div class="hi">
         <h3>Risco</h3>
@@ -639,7 +639,7 @@
 
             <line id="koLine" x1="0" y1="24" x2="0" y2="376" stroke="#c0392b" stroke-width="1.25" stroke-dasharray="4 4" opacity="0.85"/>
             <circle id="koDot" cx="0" cy="0" r="5" fill="#c0392b"/>
-            <text id="koLabel" x="0" y="0" fill="#c0392b" font-size="11" font-weight="600" font-family="Segoe UI, Arial, sans-serif">KO 110% · leva 5% (pago 3%)</text>
+            <text id="koLabel" x="0" y="0" fill="#c0392b" font-size="11" font-weight="600" font-family="Segoe UI, Arial, sans-serif">KO 110% · líquido +2%</text>
 
             <line id="hoverLine" x1="0" y1="24" x2="0" y2="376" stroke="rgba(13,110,110,0.35)" stroke-width="1.25" stroke-dasharray="4 4" visibility="hidden"/>
             <circle id="hoverStruct" r="5.5" fill="#1e4d7b" visibility="hidden"/>
@@ -669,7 +669,7 @@
           </div>
           <div class="zone">
             <strong>≥ +10% (KO)</strong>
-            <p>Paga 3%, leva 5% → líquido +67% s/ preço</p>
+            <p>Líquido +2% (rebate 5% − preço 3%)</p>
           </div>
           <div class="zone">
             <strong>Observação</strong>
@@ -708,7 +708,7 @@
         <div class="regime" id="regimeText">Entre 0% e +10%: call ITM sem KO — participa da alta líquido do preço.</div>
         <p class="legend-note" style="margin-top:10px">
           <strong>Retorno do preço</strong> = resultado líquido no nocional ÷ 3%.
-          No KO: (5% − 3%) ÷ 3% = <strong>+67%</strong> líquido sobre o preço.
+          No KO: líquido +2% ÷ 3% = <strong>+67%</strong>.
         </p>
 
         <div style="margin-top:18px">
@@ -724,8 +724,8 @@
               <tr><td>+5%</td><td>5,4221</td><td><strong>+2,0%</strong></td><td><strong>+67%</strong></td></tr>
               <tr><td>+8%</td><td>5,5770</td><td><strong>+5,0%</strong></td><td><strong>+167%</strong></td></tr>
               <tr><td>+9,5%</td><td>5,6545</td><td><strong>+6,5%</strong></td><td><strong>+217%</strong></td></tr>
-              <tr><td>+10% KO</td><td>5,6803</td><td><strong>+5,0%</strong></td><td><strong>+67%</strong></td></tr>
-              <tr><td>+15% KO</td><td>5,9385</td><td><strong>+5,0%</strong></td><td><strong>+67%</strong></td></tr>
+              <tr><td>+10% KO</td><td>5,6803</td><td><strong>+2,0%</strong></td><td><strong>+67%</strong></td></tr>
+              <tr><td>+15% KO</td><td>5,9385</td><td><strong>+2,0%</strong></td><td><strong>+67%</strong></td></tr>
             </tbody>
           </table>
         </div>
@@ -767,15 +767,12 @@
       var SPOT0 = 5.1639; // PTAX venda 12/08/2026 (ilustrativo)
 
       function structureReturn(x) {
-        // No KO: cliente leva o rebate de 5% (settlement)
-        if (x >= KO) return REBATE;
+        // No KO: líquido = rebate 5% − preço 3% = +2%
+        if (x >= KO) return REBATE - PREM;
         return Math.max(x, 0) - PREM;
       }
 
       function premiumReturn(x) {
-        // Rentabilidade líquida sobre o preço pago
-        // No KO: (5% − 3%) ÷ 3% = +67%
-        if (x >= KO) return ((REBATE - PREM) / PREM) * 100;
         return (structureReturn(x) / PREM) * 100;
       }
 
@@ -789,7 +786,7 @@
 
       function regimeFor(x) {
         if (x >= KO) {
-          return "KO (≥110%): paga 3%, leva 5% → líquido +2% no nocional · rentabilidade líquida " + fmtPct(premiumReturn(x), 0) + " sobre o preço.";
+          return "KO (≥110%): rebate 5% − preço 3% = líquido " + fmtPct(structureReturn(x)) + " no nocional · " + fmtPct(premiumReturn(x), 0) + " sobre o preço.";
         }
         if (x > 0) {
           return "Entre 0% e +10%: call ITM sem KO — " + fmtPct(structureReturn(x)) + " no nocional · " + fmtPct(premiumReturn(x), 0) + " sobre o preço.";
@@ -867,7 +864,7 @@
       document.getElementById("assetPath").setAttribute("points", buildAssetPoints());
 
       var koX = xToSvg(KO);
-      var koY = yToSvg(REBATE);
+      var koY = yToSvg(REBATE - PREM);
       document.getElementById("koLine").setAttribute("x1", koX);
       document.getElementById("koLine").setAttribute("x2", koX);
       document.getElementById("koDot").setAttribute("cx", koX);
@@ -916,9 +913,10 @@
           '<div class="row"><span>Variação</span><strong>' + fmtPct(x) + "</strong></div>" +
           '<div class="row"><span>PTAX (R$)</span><strong>' + fmtBrl(brl) + "</strong></div>" +
           (x >= KO
-            ? '<div class="row"><span>Leva (rebate)</span><strong>+5,0%</strong></div>' +
-              '<div class="row"><span>Paga (preço)</span><strong>3,0%</strong></div>' +
-              '<div class="row"><span>Líquido s/ preço</span><strong>' + fmtPct(rp, 0) + "</strong></div>"
+            ? '<div class="row"><span>Rebate</span><strong>+5,0%</strong></div>' +
+              '<div class="row"><span>Preço</span><strong>−3,0%</strong></div>' +
+              '<div class="row"><span>Resultado líquido</span><strong>' + fmtPct(ys) + "</strong></div>" +
+              '<div class="row"><span>Retorno / preço</span><strong>' + fmtPct(rp, 0) + "</strong></div>"
             : '<div class="row"><span>Resultado (noc.)</span><strong>' + fmtPct(ys) + "</strong></div>" +
               '<div class="row"><span>Retorno / preço</span><strong>' + fmtPct(rp, 0) + "</strong></div>");
         tooltip.classList.add("on");
