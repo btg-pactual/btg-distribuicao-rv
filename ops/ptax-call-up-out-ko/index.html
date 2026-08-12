@@ -512,7 +512,7 @@
         </div>
         <h1>Call Up and Out <span>PTAX</span></h1>
         <p class="subtitle">
-          Call up-and-out PTAX, observação discreta diária. Preço 2%, KO em 110%, rebate 0%.
+          Call up-and-out PTAX, observação discreta diária. Preço 3%, KO em 110%, rebate 5%.
         </p>
       </div>
       <div class="meta-pills">
@@ -522,17 +522,17 @@
         <div class="pill"><strong>Strike</strong> 100%</div>
         <div class="pill"><strong>Barreira KO</strong> 110%</div>
         <div class="pill"><strong>Observação</strong> Diária</div>
-        <div class="pill"><strong>Preço</strong> 2%</div>
-        <div class="pill"><strong>Rebate</strong> 0%</div>
-        <div class="pill"><strong>Prazo</strong> 3 meses</div>
-        <div class="pill"><strong>Venc.</strong> nov/2026</div>
+        <div class="pill"><strong>Preço</strong> 3%</div>
+        <div class="pill"><strong>Rebate</strong> 5%</div>
+        <div class="pill"><strong>Fixing</strong> 05/10/2026</div>
+        <div class="pill"><strong>Venc.</strong> 05/10/2026</div>
       </div>
     </header>
 
     <div class="hero-msg">
-      Participa da alta do dólar até a barreira; se o KO dispara, rebate é zero (perde o preço).
+      Participa da alta do dólar até a barreira; se o KO dispara, o cliente leva rebate de 5%.
       <span>
-        Início 12/08/2026 · vencimento ~12/11/2026 (3 meses).
+        Início 12/08/2026 · fixing / vencimento <strong>05/10/2026</strong>.
         Níveis em R$ e payoff no painel ao lado / simulador.
       </span>
     </div>
@@ -540,19 +540,19 @@
     <section class="highlights">
       <div class="hi">
         <h3>Sem KO</h3>
-        <p>Call ATM<span>Ganho ≈ alta − 2% (até &lt; +10%)</span></p>
+        <p>Call ATM<span>Ganho ≈ alta − 3% (até &lt; +10%)</span></p>
       </div>
       <div class="hi">
         <h3>No KO (≥110%)</h3>
-        <p>Rebate 0%<span>Resultado −2%</span></p>
+        <p>Rebate 5%<span>Cliente leva 5% no nocional</span></p>
       </div>
       <div class="hi">
         <h3>Risco</h3>
-        <p>Perda limitada<span>Ao preço de 2%</span></p>
+        <p>Perda limitada<span>Ao preço de 3%</span></p>
       </div>
       <div class="hi">
-        <h3>Prazo</h3>
-        <p>3 meses<span>Início ago/2026 · venc. nov/2026</span></p>
+        <h3>Fixing</h3>
+        <p>05/10/2026<span>Observação diária até a data</span></p>
       </div>
     </section>
 
@@ -600,8 +600,8 @@
             (≈ <strong>+4,6%</strong> vs. ref. 5,1639 — abaixo do KO).
           </p>
           <ul>
-            <li>Na projeção 5,40: resultado ≈ +4,6% − 2% ≈ <strong>+2,6%</strong> no nocional (≈ +130% sobre o preço)</li>
-            <li>Tese de alta moderada do USD no horizonte da operação (3 meses)</li>
+            <li>Na projeção 5,40: resultado ≈ +4,6% − 3% ≈ <strong>+1,6%</strong> no nocional (≈ +53% sobre o preço)</li>
+            <li>Tese de alta moderada do USD até o fixing em 05/10/2026</li>
           </ul>
         </div>
       </aside>
@@ -635,7 +635,7 @@
 
             <line id="koLine" x1="0" y1="24" x2="0" y2="376" stroke="#c0392b" stroke-width="1.25" stroke-dasharray="4 4" opacity="0.85"/>
             <circle id="koDot" cx="0" cy="0" r="5" fill="#c0392b"/>
-            <text id="koLabel" x="0" y="0" fill="#c0392b" font-size="11" font-weight="600" font-family="Segoe UI, Arial, sans-serif">KO 110% · rebate 0%</text>
+            <text id="koLabel" x="0" y="0" fill="#c0392b" font-size="11" font-weight="600" font-family="Segoe UI, Arial, sans-serif">KO 110% · rebate +5%</text>
 
             <line id="hoverLine" x1="0" y1="24" x2="0" y2="376" stroke="rgba(13,110,110,0.35)" stroke-width="1.25" stroke-dasharray="4 4" visibility="hidden"/>
             <circle id="hoverStruct" r="5.5" fill="#1e4d7b" visibility="hidden"/>
@@ -657,19 +657,19 @@
         <div class="zones">
           <div class="zone">
             <strong>≤ 0%</strong>
-            <p>Call OTM: resultado −2%</p>
+            <p>Call OTM: resultado −3%</p>
           </div>
           <div class="zone">
             <strong>0% → &lt; +10%</strong>
-            <p>Call ITM sem KO: alta − 2%</p>
+            <p>Call ITM sem KO: alta − 3%</p>
           </div>
           <div class="zone">
             <strong>≥ +10% (KO)</strong>
-            <p>Rebate 0% → resultado −2%</p>
+            <p>Rebate 5% — cliente leva 5%</p>
           </div>
           <div class="zone">
             <strong>Observação</strong>
-            <p>Discreta diária (fixing do dia)</p>
+            <p>Discreta diária até 05/10/2026</p>
           </div>
         </div>
       </section>
@@ -693,17 +693,17 @@
           </div>
           <div class="sim-card">
             <div class="lbl">Resultado (nocional)</div>
-            <div class="val" id="structVal">+3,0%</div>
+            <div class="val" id="structVal">+2,0%</div>
           </div>
           <div class="sim-card">
-            <div class="lbl">Retorno / preço (2%)</div>
-            <div class="val" id="premVal">+150%</div>
+            <div class="lbl">Retorno / preço (3%)</div>
+            <div class="val" id="premVal">+67%</div>
           </div>
         </div>
 
         <div class="regime" id="regimeText">Entre 0% e +10%: call ITM sem KO — participa da alta líquido do preço.</div>
         <p class="legend-note" style="margin-top:10px">
-          <strong>Retorno do preço</strong> = resultado no nocional ÷ 2%.
+          <strong>Retorno do preço</strong> = resultado no nocional ÷ 3%.
         </p>
 
         <div style="margin-top:18px">
@@ -713,14 +713,14 @@
               <tr><th>PTAX %</th><th>PTAX R$</th><th>Resultado</th><th>Ret. preço</th></tr>
             </thead>
             <tbody>
-              <tr><td>−10%</td><td>4,6475</td><td><strong>−2,0%</strong></td><td><strong>−100%</strong></td></tr>
-              <tr><td>0%</td><td>5,1639</td><td><strong>−2,0%</strong></td><td><strong>−100%</strong></td></tr>
-              <tr><td>+2%</td><td>5,2672</td><td><strong>0,0%</strong></td><td><strong>0%</strong></td></tr>
-              <tr><td>+5%</td><td>5,4221</td><td><strong>+3,0%</strong></td><td><strong>+150%</strong></td></tr>
-              <tr><td>+8%</td><td>5,5770</td><td><strong>+6,0%</strong></td><td><strong>+300%</strong></td></tr>
-              <tr><td>+9,5%</td><td>5,6545</td><td><strong>+7,5%</strong></td><td><strong>+375%</strong></td></tr>
-              <tr><td>+10% KO</td><td>5,6803</td><td><strong>−2,0%</strong></td><td><strong>−100%</strong></td></tr>
-              <tr><td>+15% KO</td><td>5,9385</td><td><strong>−2,0%</strong></td><td><strong>−100%</strong></td></tr>
+              <tr><td>−10%</td><td>4,6475</td><td><strong>−3,0%</strong></td><td><strong>−100%</strong></td></tr>
+              <tr><td>0%</td><td>5,1639</td><td><strong>−3,0%</strong></td><td><strong>−100%</strong></td></tr>
+              <tr><td>+3%</td><td>5,3188</td><td><strong>0,0%</strong></td><td><strong>0%</strong></td></tr>
+              <tr><td>+5%</td><td>5,4221</td><td><strong>+2,0%</strong></td><td><strong>+67%</strong></td></tr>
+              <tr><td>+8%</td><td>5,5770</td><td><strong>+5,0%</strong></td><td><strong>+167%</strong></td></tr>
+              <tr><td>+9,5%</td><td>5,6545</td><td><strong>+6,5%</strong></td><td><strong>+217%</strong></td></tr>
+              <tr><td>+10% KO</td><td>5,6803</td><td><strong>+5,0%</strong></td><td><strong>+167%</strong></td></tr>
+              <tr><td>+15% KO</td><td>5,9385</td><td><strong>+5,0%</strong></td><td><strong>+167%</strong></td></tr>
             </tbody>
           </table>
         </div>
@@ -728,8 +728,8 @@
     </div>
 
     <p class="footer">
-      Material ilustrativo. Payoff intrínseco no vencimento, líquido do preço de 2%.
-      Barreira up-and-out com observação discreta diária (KO se nível ≥ 110%).
+      Material ilustrativo. Payoff intrínseco no vencimento, líquido do preço de 3%; no KO, settlement = rebate de 5%.
+      Barreira up-and-out com observação discreta diária até o fixing em 05/10/2026 (KO se nível ≥ 110%).
       Não constitui oferta, recomendação ou garantia de rentabilidade. Produto estruturado envolve risco de perda de capital.
       Acessar o DIE com informações.
     </p>
@@ -756,14 +756,14 @@
       var VW = 600, VH = 400;
       var PLOT_W = VW - PAD.l - PAD.r;
       var PLOT_H = VH - PAD.t - PAD.b;
-      var PREM = 2;
+      var PREM = 3;
       var KO = 10;      // +10% = nível 110%
-      var REBATE = 0;
+      var REBATE = 5;
       var SPOT0 = 5.1639; // PTAX venda 12/08/2026 (ilustrativo)
 
       function structureReturn(x) {
-        // No KO: rebate 0% − preço 2% = −2%
-        if (x >= KO) return REBATE - PREM;
+        // No KO: cliente leva o rebate de 5%
+        if (x >= KO) return REBATE;
         return Math.max(x, 0) - PREM;
       }
 
@@ -781,12 +781,12 @@
 
       function regimeFor(x) {
         if (x >= KO) {
-          return "KO (≥110%): rebate 0% → " + fmtPct(structureReturn(x)) + " no nocional · " + fmtPct(premiumReturn(x), 0) + " sobre o preço.";
+          return "KO (≥110%): rebate " + fmtPct(REBATE, 0) + " no nocional · " + fmtPct(premiumReturn(x), 0) + " sobre o preço.";
         }
         if (x > 0) {
           return "Entre 0% e +10%: call ITM sem KO — " + fmtPct(structureReturn(x)) + " no nocional · " + fmtPct(premiumReturn(x), 0) + " sobre o preço.";
         }
-        return "PTAX ≤ 0%: call OTM — −2% no nocional · −100% sobre o preço.";
+        return "PTAX ≤ 0%: call OTM — −3% no nocional · −100% sobre o preço.";
       }
 
       function fmtPct(n, digits) {
@@ -859,7 +859,7 @@
       document.getElementById("assetPath").setAttribute("points", buildAssetPoints());
 
       var koX = xToSvg(KO);
-      var koY = yToSvg(REBATE - PREM);
+      var koY = yToSvg(REBATE);
       document.getElementById("koLine").setAttribute("x1", koX);
       document.getElementById("koLine").setAttribute("x2", koX);
       document.getElementById("koDot").setAttribute("cx", koX);
