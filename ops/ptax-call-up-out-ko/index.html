@@ -548,7 +548,7 @@
       </div>
       <div class="hi">
         <h3>No KO (≥110%)</h3>
-        <p>Rebate 5%<span>Paga 3% · leva 5% (5÷3 = +167%)</span></p>
+        <p>Rebate 5%<span>Paga 3% · leva 5% · líquido +67% s/ preço</span></p>
       </div>
       <div class="hi">
         <h3>Risco</h3>
@@ -669,7 +669,7 @@
           </div>
           <div class="zone">
             <strong>≥ +10% (KO)</strong>
-            <p>Paga 3%, leva 5% → 5÷3 = +167% s/ preço</p>
+            <p>Paga 3%, leva 5% → líquido +67% s/ preço</p>
           </div>
           <div class="zone">
             <strong>Observação</strong>
@@ -707,8 +707,8 @@
 
         <div class="regime" id="regimeText">Entre 0% e +10%: call ITM sem KO — participa da alta líquido do preço.</div>
         <p class="legend-note" style="margin-top:10px">
-          <strong>Retorno do preço</strong> = resultado no nocional ÷ 3%.
-          No KO: leva 5% ÷ preço 3% = <strong>+167%</strong> (recebe 1,67× o que pagou).
+          <strong>Retorno do preço</strong> = resultado líquido no nocional ÷ 3%.
+          No KO: (5% − 3%) ÷ 3% = <strong>+67%</strong> líquido sobre o preço.
         </p>
 
         <div style="margin-top:18px">
@@ -724,8 +724,8 @@
               <tr><td>+5%</td><td>5,4221</td><td><strong>+2,0%</strong></td><td><strong>+67%</strong></td></tr>
               <tr><td>+8%</td><td>5,5770</td><td><strong>+5,0%</strong></td><td><strong>+167%</strong></td></tr>
               <tr><td>+9,5%</td><td>5,6545</td><td><strong>+6,5%</strong></td><td><strong>+217%</strong></td></tr>
-              <tr><td>+10% KO</td><td>5,6803</td><td><strong>+5,0%</strong></td><td><strong>+167%</strong></td></tr>
-              <tr><td>+15% KO</td><td>5,9385</td><td><strong>+5,0%</strong></td><td><strong>+167%</strong></td></tr>
+              <tr><td>+10% KO</td><td>5,6803</td><td><strong>+5,0%</strong></td><td><strong>+67%</strong></td></tr>
+              <tr><td>+15% KO</td><td>5,9385</td><td><strong>+5,0%</strong></td><td><strong>+67%</strong></td></tr>
             </tbody>
           </table>
         </div>
@@ -773,9 +773,9 @@
       }
 
       function premiumReturn(x) {
-        // Rentabilidade sobre o preço pago
-        // No KO: leva 5% / paga 3% = 167% (recebe 1,67× o preço)
-        if (x >= KO) return (REBATE / PREM) * 100;
+        // Rentabilidade líquida sobre o preço pago
+        // No KO: (5% − 3%) ÷ 3% = +67%
+        if (x >= KO) return ((REBATE - PREM) / PREM) * 100;
         return (structureReturn(x) / PREM) * 100;
       }
 
@@ -789,7 +789,7 @@
 
       function regimeFor(x) {
         if (x >= KO) {
-          return "KO (≥110%): paga 3% e leva rebate 5% → rentabilidade 5% ÷ 3% = " + fmtPct(premiumReturn(x), 0) + " sobre o preço.";
+          return "KO (≥110%): paga 3%, leva 5% → líquido +2% no nocional · rentabilidade líquida " + fmtPct(premiumReturn(x), 0) + " sobre o preço.";
         }
         if (x > 0) {
           return "Entre 0% e +10%: call ITM sem KO — " + fmtPct(structureReturn(x)) + " no nocional · " + fmtPct(premiumReturn(x), 0) + " sobre o preço.";
@@ -918,7 +918,7 @@
           (x >= KO
             ? '<div class="row"><span>Leva (rebate)</span><strong>+5,0%</strong></div>' +
               '<div class="row"><span>Paga (preço)</span><strong>3,0%</strong></div>' +
-              '<div class="row"><span>Rentab. 5÷3</span><strong>' + fmtPct(rp, 0) + "</strong></div>"
+              '<div class="row"><span>Líquido s/ preço</span><strong>' + fmtPct(rp, 0) + "</strong></div>"
             : '<div class="row"><span>Resultado (noc.)</span><strong>' + fmtPct(ys) + "</strong></div>" +
               '<div class="row"><span>Retorno / preço</span><strong>' + fmtPct(rp, 0) + "</strong></div>");
         tooltip.classList.add("on");
