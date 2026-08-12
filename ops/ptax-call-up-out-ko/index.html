@@ -544,7 +544,7 @@
       </div>
       <div class="hi">
         <h3>No KO (≥110%)</h3>
-        <p>Rebate 5%<span>Cliente leva 5% no nocional</span></p>
+        <p>Rebate 5%<span>Paga 3% · leva 5% (+67% s/ preço)</span></p>
       </div>
       <div class="hi">
         <h3>Risco</h3>
@@ -635,7 +635,7 @@
 
             <line id="koLine" x1="0" y1="24" x2="0" y2="376" stroke="#c0392b" stroke-width="1.25" stroke-dasharray="4 4" opacity="0.85"/>
             <circle id="koDot" cx="0" cy="0" r="5" fill="#c0392b"/>
-            <text id="koLabel" x="0" y="0" fill="#c0392b" font-size="11" font-weight="600" font-family="Segoe UI, Arial, sans-serif">KO 110% · rebate +5%</text>
+            <text id="koLabel" x="0" y="0" fill="#c0392b" font-size="11" font-weight="600" font-family="Segoe UI, Arial, sans-serif">KO 110% · leva 5% (pago 3%)</text>
 
             <line id="hoverLine" x1="0" y1="24" x2="0" y2="376" stroke="rgba(13,110,110,0.35)" stroke-width="1.25" stroke-dasharray="4 4" visibility="hidden"/>
             <circle id="hoverStruct" r="5.5" fill="#1e4d7b" visibility="hidden"/>
@@ -665,7 +665,7 @@
           </div>
           <div class="zone">
             <strong>≥ +10% (KO)</strong>
-            <p>Rebate 5% — cliente leva 5%</p>
+            <p>Paga 3%, leva rebate 5% (+67% s/ preço)</p>
           </div>
           <div class="zone">
             <strong>Observação</strong>
@@ -703,7 +703,8 @@
 
         <div class="regime" id="regimeText">Entre 0% e +10%: call ITM sem KO — participa da alta líquido do preço.</div>
         <p class="legend-note" style="margin-top:10px">
-          <strong>Retorno do preço</strong> = resultado no nocional ÷ 3%.
+          <strong>Retorno do preço</strong> = resultado líquido no nocional ÷ 3%.
+          No KO: paga 3% e leva 5% → lucro +2% no nocional = <strong>+67%</strong> sobre o preço.
         </p>
 
         <div style="margin-top:18px">
@@ -719,8 +720,8 @@
               <tr><td>+5%</td><td>5,4221</td><td><strong>+2,0%</strong></td><td><strong>+67%</strong></td></tr>
               <tr><td>+8%</td><td>5,5770</td><td><strong>+5,0%</strong></td><td><strong>+167%</strong></td></tr>
               <tr><td>+9,5%</td><td>5,6545</td><td><strong>+6,5%</strong></td><td><strong>+217%</strong></td></tr>
-              <tr><td>+10% KO</td><td>5,6803</td><td><strong>+5,0%</strong></td><td><strong>+167%</strong></td></tr>
-              <tr><td>+15% KO</td><td>5,9385</td><td><strong>+5,0%</strong></td><td><strong>+167%</strong></td></tr>
+              <tr><td>+10% KO</td><td>5,6803</td><td><strong>+5,0%</strong></td><td><strong>+67%</strong></td></tr>
+              <tr><td>+15% KO</td><td>5,9385</td><td><strong>+5,0%</strong></td><td><strong>+67%</strong></td></tr>
             </tbody>
           </table>
         </div>
@@ -728,7 +729,8 @@
     </div>
 
     <p class="footer">
-      Material ilustrativo. Payoff intrínseco no vencimento, líquido do preço de 3%; no KO, settlement = rebate de 5%.
+      Material ilustrativo. Payoff intrínseco no vencimento, líquido do preço de 3%.
+      No KO: paga 3% e leva rebate de 5% (lucro líquido +2% no nocional ≈ +67% sobre o preço).
       Barreira up-and-out com observação discreta diária até o fixing em 05/10/2026 (KO se nível ≥ 110%).
       Não constitui oferta, recomendação ou garantia de rentabilidade. Produto estruturado envolve risco de perda de capital.
       Acessar o DIE com informações.
@@ -762,12 +764,15 @@
       var SPOT0 = 5.1639; // PTAX venda 12/08/2026 (ilustrativo)
 
       function structureReturn(x) {
-        // No KO: cliente leva o rebate de 5%
+        // No KO: cliente leva o rebate de 5% (settlement)
         if (x >= KO) return REBATE;
         return Math.max(x, 0) - PREM;
       }
 
       function premiumReturn(x) {
+        // Rentabilidade sobre o capital da opção (preço 3%)
+        // No KO: pago 3% e leva 5% → lucro 2% / 3% = +66,7%
+        if (x >= KO) return ((REBATE - PREM) / PREM) * 100;
         return (structureReturn(x) / PREM) * 100;
       }
 
@@ -781,7 +786,7 @@
 
       function regimeFor(x) {
         if (x >= KO) {
-          return "KO (≥110%): rebate " + fmtPct(REBATE, 0) + " no nocional · " + fmtPct(premiumReturn(x), 0) + " sobre o preço.";
+          return "KO (≥110%): paga 3% e leva rebate 5% → lucro líquido +2% no nocional · " + fmtPct(premiumReturn(x), 0) + " sobre o preço.";
         }
         if (x > 0) {
           return "Entre 0% e +10%: call ITM sem KO — " + fmtPct(structureReturn(x)) + " no nocional · " + fmtPct(premiumReturn(x), 0) + " sobre o preço.";
