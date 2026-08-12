@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Call Up and Out PTAX — KO diário</title>
+  <style>
+    :root {
+      --ink: #0b1f3a;
+      --muted: #5c6b7a;
+      --line: #d0d8e2;
+      --bg: #eef2f6;
+      --card: #ffffff;
+      --btg: #0b1f3a;
+      --accent: #1e4d7b;
+      --fx: #0d6e6e;
+      --success: #0f7a4a;
+      --danger: #c0392b;
+      --dash: #8b83a0;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: Segoe UI, -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif;
+      color: var(--ink);
+      background: var(--bg);
+      min-height: 100vh;
+      line-height: 1.45;
+    }
+
+    .page {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 28px 24px 48px;
+    }
+
+    .back-link {
+      margin-bottom: 16px;
+      font-size: 13px;
+    }
+    .back-link a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .back-link a:hover { text-decoration: underline; }
+
+    .pitch-video {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      max-height: 420px;
+      margin-bottom: 24px;
+      background: #0b1f3a;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+    }
+    .pitch-video video {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: none;
+      background: #000;
+    }
+    .pitch-video.has-video video { display: block; }
+    .pitch-video-empty {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      color: #c5d0dc;
+      text-align: center;
+      padding: 24px;
+    }
+    .pitch-video.has-video .pitch-video-empty { display: none; }
+    .pitch-video-empty strong { color: #fff; font-size: 16px; }
+    .pitch-video-empty span { font-size: 13px; }
+    .pitch-video-empty code {
+      background: rgba(255,255,255,0.12);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 12px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 24px;
+      margin-bottom: 20px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .brand-block { display: flex; flex-direction: column; gap: 10px; }
+
+    .logos {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .logo-btg {
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 0.04em;
+      color: var(--btg);
+      background: #e8eef5;
+      padding: 6px 10px;
+      border-radius: 4px;
+    }
+
+    .logo-fx {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 700;
+      color: var(--fx);
+      font-size: 15px;
+    }
+    .logo-fx .dot {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--fx);
+      display: grid;
+      place-items: center;
+      color: #fff;
+      font-size: 9px;
+      font-weight: 700;
+    }
+
+    h1 {
+      font-weight: 700;
+      font-size: clamp(24px, 3vw, 34px);
+      letter-spacing: -0.02em;
+      color: var(--accent);
+      line-height: 1.15;
+    }
+    h1 span { color: var(--fx); }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 14px;
+      max-width: 560px;
+    }
+
+    .meta-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: flex-end;
+      max-width: 420px;
+    }
+
+    .pill {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 8px 14px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .pill strong {
+      color: var(--ink);
+      font-weight: 600;
+      margin-right: 4px;
+    }
+
+    .hero-msg {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-left: 4px solid var(--fx);
+      border-radius: 10px;
+      padding: 16px 18px;
+      margin-bottom: 20px;
+      font-size: 15px;
+      color: var(--ink);
+    }
+    .hero-msg span {
+      display: block;
+      margin-top: 6px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .highlights {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .hi {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 16px;
+    }
+    .hi h3 {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 6px;
+    }
+    .hi p {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+    .hi p span {
+      display: block;
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    .main {
+      display: grid;
+      grid-template-columns: 300px 1fr 280px;
+      gap: 16px;
+      align-items: start;
+    }
+
+    .panel {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 18px;
+    }
+    .panel h2 {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: var(--accent);
+    }
+
+    .struct-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    .struct-table th,
+    .struct-table td {
+      text-align: left;
+      padding: 8px 6px;
+      border-bottom: 1px solid var(--line);
+    }
+    .struct-table th {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      color: var(--muted);
+    }
+    .tag {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 4px;
+      margin-right: 4px;
+      color: #fff;
+    }
+    .tag.b { background: var(--fx); }
+    .strike-green { color: var(--success); font-weight: 700; }
+    .barrier-red { color: var(--danger); font-weight: 700; }
+
+    .legend-note {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 12px;
+      line-height: 1.45;
+    }
+
+    .thesis {
+      margin-top: 18px;
+      padding-top: 16px;
+      border-top: 1px solid var(--line);
+    }
+    .thesis ul {
+      margin: 10px 0 0 18px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .thesis li { margin-bottom: 6px; }
+    .thesis .soon {
+      margin-top: 12px;
+      padding: 10px 12px;
+      background: #f3f6f9;
+      border-radius: 8px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .chart-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+    .chart-caption {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+    .chart-legend {
+      display: flex;
+      gap: 12px;
+      font-size: 12px;
+      color: var(--muted);
+      flex-shrink: 0;
+    }
+    .chart-legend .swatch {
+      display: inline-block;
+      width: 14px;
+      height: 3px;
+      background: var(--accent);
+      vertical-align: middle;
+      margin-right: 4px;
+    }
+    .chart-legend .swatch.asset {
+      background: var(--dash);
+      height: 0;
+      border-top: 2px dashed var(--dash);
+      vertical-align: middle;
+    }
+
+    .chart-box {
+      position: relative;
+      width: 100%;
+      touch-action: none;
+    }
+    .chart-box svg {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+    }
+    .chart-overlay {
+      position: absolute;
+      left: 8%;
+      right: 8%;
+      top: 6%;
+      bottom: 6%;
+      cursor: crosshair;
+    }
+    .tooltip {
+      position: absolute;
+      display: none;
+      min-width: 180px;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 10px 12px;
+      box-shadow: 0 8px 24px rgba(11, 31, 58, 0.12);
+      pointer-events: none;
+      z-index: 5;
+      font-size: 12px;
+      transform: translate(-50%, -110%);
+    }
+    .tooltip.on { display: block; }
+    .tooltip .t-title {
+      font-weight: 700;
+      margin-bottom: 6px;
+      color: var(--ink);
+    }
+    .tooltip .row {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      margin-top: 3px;
+      color: var(--muted);
+    }
+    .tooltip .row strong { color: var(--ink); }
+
+    .chart-touch-hint {
+      font-size: 12px;
+      color: var(--muted);
+      margin: 8px 0 12px;
+      text-align: center;
+    }
+
+    .mobile-sim { display: none; margin-bottom: 12px; }
+
+    .zones {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    .zone {
+      background: #f7f9fb;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 10px 12px;
+    }
+    .zone strong {
+      display: block;
+      font-size: 12px;
+      margin-bottom: 4px;
+      color: var(--accent);
+    }
+    .zone p {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    .sim-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      font-size: 13px;
+      margin-bottom: 8px;
+    }
+    .sim-label output {
+      font-weight: 700;
+      color: var(--fx);
+    }
+    input[type="range"] {
+      width: 100%;
+      margin-bottom: 14px;
+      accent-color: var(--fx);
+    }
+
+    .sim-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .sim-card {
+      background: #f7f9fb;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 10px;
+    }
+    .sim-card .lbl {
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+    .sim-card .val {
+      font-size: 18px;
+      font-weight: 700;
+    }
+    .sim-card .val.pos { color: var(--success); }
+    .sim-card .val.neg { color: var(--danger); }
+
+    .regime {
+      font-size: 13px;
+      color: var(--muted);
+      background: #f3f6f9;
+      border-radius: 8px;
+      padding: 10px 12px;
+      line-height: 1.4;
+    }
+
+    .footer {
+      margin-top: 28px;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+    .footer-alert {
+      margin-top: 12px;
+      font-size: 12px;
+      color: var(--danger);
+      line-height: 1.45;
+      text-align: center;
+    }
+
+    .visit-pixel {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    @media (max-width: 1100px) {
+      .main { grid-template-columns: 1fr; }
+      .highlights { grid-template-columns: 1fr 1fr; }
+      .mobile-sim { display: block; }
+      .panel-sim .sim-label:first-of-type,
+      .panel-sim > input[type="range"]:first-of-type { display: none; }
+    }
+    @media (max-width: 640px) {
+      .topbar { flex-direction: column; }
+      .meta-pills { justify-content: flex-start; max-width: none; }
+      .highlights { grid-template-columns: 1fr; }
+      .zones { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="page">
+    <p class="back-link">
+      <a href="../../index.html">← Distribuição Renda Variável</a>
+    </p>
+
+    <header class="topbar">
+      <div class="brand-block">
+        <div class="logos">
+          <span class="logo-btg">BTG PACTUAL</span>
+          <span class="logo-fx"><span class="dot">FX</span> PTAX</span>
+        </div>
+        <h1>Call Up and Out <span>PTAX</span></h1>
+        <p class="subtitle">
+          Call up-and-out PTAX, observação discreta diária. Preço 2%, KO em 110%, rebate 0%.
+        </p>
+      </div>
+      <div class="meta-pills">
+        <div class="pill"><strong>Ativo</strong> PTAX (USD/BRL)</div>
+        <div class="pill"><strong>PTAX ref.</strong> R$ 5,1639</div>
+        <div class="pill"><strong>Operação</strong> Compra Call Up&amp;Out</div>
+        <div class="pill"><strong>Strike</strong> 100%</div>
+        <div class="pill"><strong>Barreira KO</strong> 110%</div>
+        <div class="pill"><strong>Observação</strong> Diária</div>
+        <div class="pill"><strong>Preço</strong> 2%</div>
+        <div class="pill"><strong>Rebate</strong> 0%</div>
+        <div class="pill"><strong>Prazo</strong> 3 meses</div>
+        <div class="pill"><strong>Venc.</strong> nov/2026</div>
+      </div>
+    </header>
+
+    <div class="hero-msg">
+      Participa da alta do dólar até a barreira; se o KO dispara, rebate é zero (perde o preço).
+      <span>
+        Início 12/08/2026 · vencimento ~12/11/2026 (3 meses).
+        Níveis em R$ e payoff no painel ao lado / simulador.
+      </span>
+    </div>
+
+    <section class="highlights">
+      <div class="hi">
+        <h3>Sem KO</h3>
+        <p>Call ATM<span>Ganho ≈ alta − 2% (até &lt; +10%)</span></p>
+      </div>
+      <div class="hi">
+        <h3>No KO (≥110%)</h3>
+        <p>Rebate 0%<span>Resultado −2%</span></p>
+      </div>
+      <div class="hi">
+        <h3>Risco</h3>
+        <p>Perda limitada<span>Ao preço de 2%</span></p>
+      </div>
+      <div class="hi">
+        <h3>Prazo</h3>
+        <p>3 meses<span>Início ago/2026 · venc. nov/2026</span></p>
+      </div>
+    </section>
+
+    <div class="main">
+      <aside class="panel panel-structure">
+        <h2>Estrutura da operação</h2>
+        <table class="struct-table">
+          <thead>
+            <tr><th>Perna</th><th>Strike</th><th>Barreira</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="tag b">B</span> Call Up&amp;Out</td>
+              <td class="strike-green">100%</td>
+              <td class="barrier-red">110% KO</td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="legend-note">
+          Observação da barreira: <strong>discreta diária</strong> (fixing / fechamento do dia).<br />
+          Ativo-objeto: PTAX.
+        </p>
+
+        <div style="margin-top:16px">
+          <h2>Níveis em R$ (exemplo)</h2>
+          <table class="struct-table">
+            <thead>
+              <tr><th>Referência</th><th>%</th><th>PTAX (R$)</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Spot / strike</td><td>100%</td><td><strong>5,1639</strong></td></tr>
+              <tr><td>Barreira KO</td><td>110%</td><td><strong>5,6803</strong></td></tr>
+            </tbody>
+          </table>
+          <p class="legend-note">
+            Ref. = PTAX venda Bacen 12/08/2026. Ilustrativo — fixing oficial no DIE.
+          </p>
+        </div>
+
+        <div class="thesis">
+          <h2>Tese de câmbio</h2>
+          <p>
+            Projeção BTG para a PTAX em <strong>dezembro/2026</strong>:
+            <strong>R$ 5,40</strong>
+            (≈ <strong>+4,6%</strong> vs. ref. 5,1639 — abaixo do KO).
+          </p>
+          <ul>
+            <li>Na projeção 5,40: resultado ≈ +4,6% − 2% ≈ <strong>+2,6%</strong> no nocional (≈ +130% sobre o preço)</li>
+            <li>Tese de alta moderada do USD no horizonte da operação (3 meses)</li>
+          </ul>
+        </div>
+      </aside>
+
+      <section class="panel chart-panel panel-chart">
+        <div class="chart-head">
+          <div>
+            <h2>Payoff da call KO</h2>
+            <p class="chart-caption">Resultado líquido no vencimento vs. variação da PTAX (com KO se ≥ +10%)</p>
+          </div>
+          <div class="chart-legend">
+            <span><i class="swatch"></i> Call KO</span>
+            <span><i class="swatch asset"></i> PTAX</span>
+          </div>
+        </div>
+
+        <div class="chart-box" id="chartBox">
+          <div class="tooltip" id="tooltip"></div>
+          <svg id="payoffSvg" viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Gráfico de payoff Call Up and Out PTAX">
+            <rect x="48" y="24" width="504" height="352" fill="#fafcfd" />
+            <g id="gridLines" stroke="#e4ebf2" stroke-width="1"></g>
+            <line id="axisZeroX" x1="300" y1="24" x2="300" y2="376" stroke="#c5d0dc" stroke-width="1.25"/>
+            <line id="axisZeroY" x1="48" y1="220" x2="552" y2="220" stroke="#c5d0dc" stroke-width="1.25"/>
+            <g id="yLabels" fill="#8b83a0" font-size="11" font-family="Segoe UI, Arial, sans-serif" text-anchor="end"></g>
+            <g id="xLabels" fill="#8b83a0" font-size="11" font-family="Segoe UI, Arial, sans-serif" text-anchor="middle"></g>
+            <text x="300" y="16" fill="#5c6b7a" font-size="11" font-family="Segoe UI, Arial, sans-serif" text-anchor="middle">Variação da PTAX no vencimento (%)</text>
+            <text x="14" y="200" fill="#5c6b7a" font-size="11" font-family="Segoe UI, Arial, sans-serif" text-anchor="middle" transform="rotate(-90 14 200)">Retorno líquido (%)</text>
+
+            <polyline id="assetPath" fill="none" stroke="#8b83a0" stroke-width="1.75" stroke-dasharray="6 5" points="" />
+            <path id="structPath" d="" fill="none" stroke="#1e4d7b" stroke-width="2.75" stroke-linejoin="round" stroke-linecap="round" />
+
+            <line id="koLine" x1="0" y1="24" x2="0" y2="376" stroke="#c0392b" stroke-width="1.25" stroke-dasharray="4 4" opacity="0.85"/>
+            <circle id="koDot" cx="0" cy="0" r="5" fill="#c0392b"/>
+            <text id="koLabel" x="0" y="0" fill="#c0392b" font-size="11" font-weight="600" font-family="Segoe UI, Arial, sans-serif">KO 110% · rebate 0%</text>
+
+            <line id="hoverLine" x1="0" y1="24" x2="0" y2="376" stroke="rgba(13,110,110,0.35)" stroke-width="1.25" stroke-dasharray="4 4" visibility="hidden"/>
+            <circle id="hoverStruct" r="5.5" fill="#1e4d7b" visibility="hidden"/>
+            <circle id="hoverAsset" r="4" fill="#8b83a0" visibility="hidden"/>
+          </svg>
+          <div class="chart-overlay" id="chartOverlay" aria-label="Área interativa do gráfico"></div>
+        </div>
+
+        <p class="chart-touch-hint">Toque e arraste no gráfico · ou use o controle abaixo</p>
+
+        <div class="mobile-sim">
+          <div class="sim-label">
+            <span>Variação da PTAX</span>
+            <output id="spotOutMobile">+5%</output>
+          </div>
+          <input type="range" id="spotSliderMobile" min="-20" max="30" step="0.5" value="5" aria-label="Variação da PTAX no celular" />
+        </div>
+
+        <div class="zones">
+          <div class="zone">
+            <strong>≤ 0%</strong>
+            <p>Call OTM: resultado −2%</p>
+          </div>
+          <div class="zone">
+            <strong>0% → &lt; +10%</strong>
+            <p>Call ITM sem KO: alta − 2%</p>
+          </div>
+          <div class="zone">
+            <strong>≥ +10% (KO)</strong>
+            <p>Rebate 0% → resultado −2%</p>
+          </div>
+          <div class="zone">
+            <strong>Observação</strong>
+            <p>Discreta diária (fixing do dia)</p>
+          </div>
+        </div>
+      </section>
+
+      <aside class="panel panel-sim">
+        <h2>Simulador</h2>
+        <div class="sim-label">
+          <span>Variação da PTAX</span>
+          <output id="spotOut">+5%</output>
+        </div>
+        <input type="range" id="spotSlider" min="-20" max="30" step="0.5" value="5" aria-label="Variação da PTAX" />
+
+        <div class="sim-cards">
+          <div class="sim-card">
+            <div class="lbl">Variação PTAX</div>
+            <div class="val" id="assetVal">+5,0%</div>
+          </div>
+          <div class="sim-card">
+            <div class="lbl">PTAX em R$</div>
+            <div class="val" id="spotBrlVal">5,4221</div>
+          </div>
+          <div class="sim-card">
+            <div class="lbl">Resultado (nocional)</div>
+            <div class="val" id="structVal">+3,0%</div>
+          </div>
+          <div class="sim-card">
+            <div class="lbl">Retorno / preço (2%)</div>
+            <div class="val" id="premVal">+150%</div>
+          </div>
+        </div>
+
+        <div class="regime" id="regimeText">Entre 0% e +10%: call ITM sem KO — participa da alta líquido do preço.</div>
+        <p class="legend-note" style="margin-top:10px">
+          <strong>Retorno do preço</strong> = resultado no nocional ÷ 2%.
+        </p>
+
+        <div style="margin-top:18px">
+          <h2>Pontos-chave</h2>
+          <table class="struct-table">
+            <thead>
+              <tr><th>PTAX %</th><th>PTAX R$</th><th>Resultado</th><th>Ret. preço</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>−10%</td><td>4,6475</td><td><strong>−2,0%</strong></td><td><strong>−100%</strong></td></tr>
+              <tr><td>0%</td><td>5,1639</td><td><strong>−2,0%</strong></td><td><strong>−100%</strong></td></tr>
+              <tr><td>+2%</td><td>5,2672</td><td><strong>0,0%</strong></td><td><strong>0%</strong></td></tr>
+              <tr><td>+5%</td><td>5,4221</td><td><strong>+3,0%</strong></td><td><strong>+150%</strong></td></tr>
+              <tr><td>+8%</td><td>5,5770</td><td><strong>+6,0%</strong></td><td><strong>+300%</strong></td></tr>
+              <tr><td>+9,5%</td><td>5,6545</td><td><strong>+7,5%</strong></td><td><strong>+375%</strong></td></tr>
+              <tr><td>+10% KO</td><td>5,6803</td><td><strong>−2,0%</strong></td><td><strong>−100%</strong></td></tr>
+              <tr><td>+15% KO</td><td>5,9385</td><td><strong>−2,0%</strong></td><td><strong>−100%</strong></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </aside>
+    </div>
+
+    <p class="footer">
+      Material ilustrativo. Payoff intrínseco no vencimento, líquido do preço de 2%.
+      Barreira up-and-out com observação discreta diária (KO se nível ≥ 110%).
+      Não constitui oferta, recomendação ou garantia de rentabilidade. Produto estruturado envolve risco de perda de capital.
+      Acessar o DIE com informações.
+    </p>
+    <p class="footer-alert">
+      <strong>MATERIAL DE USO INTERNO, NÃO ENVIAR AOS CLIENTES</strong><br />
+      <strong>PARA INFORMAÇÕES OFICIAIS, ACESSAR O DIE DA OPERAÇÃO DISPONIBILIZADO NO ADMIN BTG</strong>
+    </p>
+  </div>
+
+  <img
+    class="visit-pixel"
+    src="https://hitscounter.dev/api/hit?url=https%3A%2F%2Fbtg-pactual.github.io%2Fbtg-distribuicao-rv%2Fops%2Fptax-call-up-out-ko%2F&label=visitas&icon=eye&color=%230d6e6e&style=flat&tz=America%2FSao_Paulo"
+    alt=""
+    width="1"
+    height="1"
+    decoding="async"
+  />
+
+  <script>
+    (function () {
+      var X_MIN = -20, X_MAX = 30;
+      var Y_MIN = -10, Y_MAX = 20;
+      var PAD = { l: 48, t: 24, r: 48, b: 24 };
+      var VW = 600, VH = 400;
+      var PLOT_W = VW - PAD.l - PAD.r;
+      var PLOT_H = VH - PAD.t - PAD.b;
+      var PREM = 2;
+      var KO = 10;      // +10% = nível 110%
+      var REBATE = 0;
+      var SPOT0 = 5.1639; // PTAX venda 12/08/2026 (ilustrativo)
+
+      function structureReturn(x) {
+        // No KO: rebate 0% − preço 2% = −2%
+        if (x >= KO) return REBATE - PREM;
+        return Math.max(x, 0) - PREM;
+      }
+
+      function premiumReturn(x) {
+        return (structureReturn(x) / PREM) * 100;
+      }
+
+      function spotBrl(x) {
+        return SPOT0 * (1 + x / 100);
+      }
+
+      function fmtBrl(n) {
+        return n.toFixed(4).replace(".", ",");
+      }
+
+      function regimeFor(x) {
+        if (x >= KO) {
+          return "KO (≥110%): rebate 0% → " + fmtPct(structureReturn(x)) + " no nocional · " + fmtPct(premiumReturn(x), 0) + " sobre o preço.";
+        }
+        if (x > 0) {
+          return "Entre 0% e +10%: call ITM sem KO — " + fmtPct(structureReturn(x)) + " no nocional · " + fmtPct(premiumReturn(x), 0) + " sobre o preço.";
+        }
+        return "PTAX ≤ 0%: call OTM — −2% no nocional · −100% sobre o preço.";
+      }
+
+      function fmtPct(n, digits) {
+        if (digits == null) digits = 1;
+        var sign = n > 0 ? "+" : "";
+        return sign + n.toFixed(digits).replace(".", ",") + "%";
+      }
+
+      function xToSvg(x) {
+        return PAD.l + ((x - X_MIN) / (X_MAX - X_MIN)) * PLOT_W;
+      }
+
+      function yToSvg(y) {
+        var yy = Math.max(Y_MIN, Math.min(Y_MAX, y));
+        return PAD.t + (1 - (yy - Y_MIN) / (Y_MAX - Y_MIN)) * PLOT_H;
+      }
+
+      function svgToX(px) {
+        return X_MIN + ((px - PAD.l) / PLOT_W) * (X_MAX - X_MIN);
+      }
+
+      function buildStructD() {
+        var d = "";
+        var first = true;
+        function add(x, y) {
+          var cmd = first ? "M" : "L";
+          first = false;
+          d += cmd + " " + xToSvg(x).toFixed(3) + " " + yToSvg(y).toFixed(3) + " ";
+        }
+        // Antes do KO: rampa da call; no KO: platô do rebate líquido
+        for (var x = X_MIN; x < KO; x += 0.25) add(x, structureReturn(x));
+        add(KO - 0.001, structureReturn(KO - 0.001));
+        add(KO, structureReturn(KO));
+        for (var x2 = KO; x2 <= X_MAX; x2 += 0.5) add(x2, structureReturn(x2));
+        return d.trim();
+      }
+
+      function buildAssetPoints() {
+        var pts = [];
+        for (var x = X_MIN; x <= X_MAX; x += 1) {
+          pts.push(xToSvg(x).toFixed(3) + "," + yToSvg(x).toFixed(3));
+        }
+        return pts.join(" ");
+      }
+
+      var grid = document.getElementById("gridLines");
+      var yLabels = document.getElementById("yLabels");
+      var xLabels = document.getElementById("xLabels");
+      if (grid && yLabels && xLabels) {
+        grid.innerHTML = "";
+        yLabels.innerHTML = "";
+        xLabels.innerHTML = "";
+        for (var y = -10; y <= 20; y += 5) {
+          var py = yToSvg(y);
+          grid.innerHTML += '<line x1="48" y1="' + py + '" x2="552" y2="' + py + '"/>';
+          yLabels.innerHTML += '<text x="42" y="' + (py + 3) + '">' + y + "%</text>";
+        }
+        for (var x = -20; x <= 30; x += 10) {
+          var px = xToSvg(x);
+          grid.innerHTML += '<line x1="' + px + '" y1="24" x2="' + px + '" y2="376"/>';
+          xLabels.innerHTML += '<text x="' + px + '" y="392">' + x + "%</text>";
+        }
+      }
+
+      document.getElementById("axisZeroX").setAttribute("x1", xToSvg(0));
+      document.getElementById("axisZeroX").setAttribute("x2", xToSvg(0));
+      document.getElementById("axisZeroY").setAttribute("y1", yToSvg(0));
+      document.getElementById("axisZeroY").setAttribute("y2", yToSvg(0));
+      document.getElementById("structPath").setAttribute("d", buildStructD());
+      document.getElementById("assetPath").setAttribute("points", buildAssetPoints());
+
+      var koX = xToSvg(KO);
+      var koY = yToSvg(REBATE - PREM);
+      document.getElementById("koLine").setAttribute("x1", koX);
+      document.getElementById("koLine").setAttribute("x2", koX);
+      document.getElementById("koDot").setAttribute("cx", koX);
+      document.getElementById("koDot").setAttribute("cy", koY);
+      document.getElementById("koLabel").setAttribute("x", koX + 8);
+      document.getElementById("koLabel").setAttribute("y", koY - 10);
+
+      var hoverLine = document.getElementById("hoverLine");
+      var hoverStruct = document.getElementById("hoverStruct");
+      var hoverAsset = document.getElementById("hoverAsset");
+      var overlay = document.getElementById("chartOverlay");
+      var tooltip = document.getElementById("tooltip");
+      var svg = document.getElementById("payoffSvg");
+      var slider = document.getElementById("spotSlider");
+      var sliderMobile = document.getElementById("spotSliderMobile");
+      var spotOut = document.getElementById("spotOut");
+      var spotOutMobile = document.getElementById("spotOutMobile");
+      var assetVal = document.getElementById("assetVal");
+      var spotBrlVal = document.getElementById("spotBrlVal");
+      var structVal = document.getElementById("structVal");
+      var premVal = document.getElementById("premVal");
+      var regimeText = document.getElementById("regimeText");
+      var activePointer = null;
+
+      function showAt(x) {
+        x = Math.max(X_MIN, Math.min(X_MAX, x));
+        var ys = structureReturn(x);
+        var rp = premiumReturn(x);
+        var brl = spotBrl(x);
+        var sx = xToSvg(x);
+        var sy = yToSvg(ys);
+        var ay = yToSvg(x);
+
+        hoverLine.setAttribute("x1", sx);
+        hoverLine.setAttribute("x2", sx);
+        hoverLine.setAttribute("visibility", "visible");
+        hoverStruct.setAttribute("cx", sx);
+        hoverStruct.setAttribute("cy", sy);
+        hoverStruct.setAttribute("visibility", "visible");
+        hoverAsset.setAttribute("cx", sx);
+        hoverAsset.setAttribute("cy", ay);
+        hoverAsset.setAttribute("visibility", "visible");
+
+        tooltip.innerHTML =
+          '<div class="t-title">PTAX ' + fmtPct(x) + " · R$ " + fmtBrl(brl) + (x >= KO ? " · KO" : "") + "</div>" +
+          '<div class="row"><span>Variação</span><strong>' + fmtPct(x) + "</strong></div>" +
+          '<div class="row"><span>PTAX (R$)</span><strong>' + fmtBrl(brl) + "</strong></div>" +
+          '<div class="row"><span>Resultado (noc.)</span><strong>' + fmtPct(ys) + "</strong></div>" +
+          '<div class="row"><span>Retorno / preço</span><strong>' + fmtPct(rp, 0) + "</strong></div>";
+        tooltip.classList.add("on");
+
+        var svgRect = svg.getBoundingClientRect();
+        var left = Math.max(70, Math.min(svgRect.width - 70, sx * svgRect.width / VW));
+        var top = Math.max(40, sy * svgRect.height / VH);
+        tooltip.style.left = left + "px";
+        tooltip.style.top = top + "px";
+
+        if (slider) slider.value = String(x);
+        if (sliderMobile) sliderMobile.value = String(x);
+
+        var label = fmtPct(x, x % 1 === 0 ? 0 : 1);
+        if (spotOut) spotOut.textContent = label;
+        if (spotOutMobile) spotOutMobile.textContent = label;
+        if (assetVal) {
+          assetVal.textContent = fmtPct(x);
+          assetVal.className = "val " + (x > 0 ? "pos" : x < 0 ? "neg" : "");
+        }
+        if (spotBrlVal) {
+          spotBrlVal.textContent = fmtBrl(brl);
+          spotBrlVal.className = "val";
+        }
+        if (structVal) {
+          structVal.textContent = fmtPct(ys);
+          structVal.className = "val " + (ys > 0 ? "pos" : ys < 0 ? "neg" : "");
+        }
+        if (premVal) {
+          premVal.textContent = fmtPct(rp, 0);
+          premVal.className = "val " + (rp > 0 ? "pos" : rp < 0 ? "neg" : "");
+        }
+        if (regimeText) regimeText.textContent = regimeFor(x);
+      }
+
+      function clientToSvgX(clientX) {
+        var rect = svg.getBoundingClientRect();
+        if (!rect.width) return 0;
+        return svgToX(((clientX - rect.left) / rect.width) * VW);
+      }
+
+      function updateFromEvent(e) {
+        showAt(clientToSvgX(e.clientX));
+      }
+
+      overlay.addEventListener("pointerdown", function (e) {
+        activePointer = e.pointerId;
+        overlay.setPointerCapture(e.pointerId);
+        updateFromEvent(e);
+      });
+      overlay.addEventListener("pointermove", function (e) {
+        if (activePointer !== null && e.pointerId !== activePointer) return;
+        if (e.pointerType === "mouse" || activePointer !== null) updateFromEvent(e);
+      });
+      function endPointer(e) {
+        if (activePointer !== null && e.pointerId !== activePointer) return;
+        activePointer = null;
+        try { overlay.releasePointerCapture(e.pointerId); } catch (err) {}
+      }
+      overlay.addEventListener("pointerup", endPointer);
+      overlay.addEventListener("pointercancel", endPointer);
+      overlay.addEventListener("pointerleave", function (e) {
+        if (e.pointerType === "mouse" && activePointer === null) {
+          hoverLine.setAttribute("visibility", "hidden");
+          hoverStruct.setAttribute("visibility", "hidden");
+          hoverAsset.setAttribute("visibility", "hidden");
+          tooltip.classList.remove("on");
+        }
+      });
+
+      function onSpot(e) { showAt(Number(e.target.value)); }
+      if (slider) slider.addEventListener("input", onSpot);
+      if (sliderMobile) {
+        sliderMobile.addEventListener("input", onSpot);
+        sliderMobile.addEventListener("change", onSpot);
+      }
+
+      showAt(5);
+    })();
+  </script>
+</body>
+</html>
