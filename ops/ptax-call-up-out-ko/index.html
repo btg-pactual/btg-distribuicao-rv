@@ -912,8 +912,12 @@
           '<div class="t-title">PTAX ' + fmtPct(x) + " · R$ " + fmtBrl(brl) + (x >= KO ? " · KO" : "") + "</div>" +
           '<div class="row"><span>Variação</span><strong>' + fmtPct(x) + "</strong></div>" +
           '<div class="row"><span>PTAX (R$)</span><strong>' + fmtBrl(brl) + "</strong></div>" +
-          '<div class="row"><span>Resultado (noc.)</span><strong>' + fmtPct(ys) + "</strong></div>" +
-          '<div class="row"><span>Retorno / preço</span><strong>' + fmtPct(rp, 0) + "</strong></div>";
+          (x >= KO
+            ? '<div class="row"><span>Leva (rebate)</span><strong>+5,0%</strong></div>' +
+              '<div class="row"><span>Paga (preço)</span><strong>3,0%</strong></div>' +
+              '<div class="row"><span>Rentab. s/ preço</span><strong>' + fmtPct(rp, 0) + "</strong></div>"
+            : '<div class="row"><span>Resultado (noc.)</span><strong>' + fmtPct(ys) + "</strong></div>" +
+              '<div class="row"><span>Retorno / preço</span><strong>' + fmtPct(rp, 0) + "</strong></div>");
         tooltip.classList.add("on");
 
         var svgRect = svg.getBoundingClientRect();
