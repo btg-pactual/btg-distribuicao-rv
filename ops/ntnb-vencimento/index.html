@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Vencimento NTN-B — Kit de distribuição | BTG Pactual</title>
+  <style>
+    :root {
+      --btg: #0b1f3a;
+      --btg-mid: #163a5f;
+      --btg-blue: #1e4d7b;
+      --link: #1a66b3;
+      --ink: #0b1f3a;
+      --muted: #5c6b7a;
+      --line: #d0d8e2;
+      --bg: #eef2f6;
+      --card: #ffffff;
+      --accent-rf: #0d6e6e;
+      --accent-coe: #8a6d1d;
+      --accent-eq: #c45c26;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: Segoe UI, -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif;
+      color: var(--ink);
+      background: var(--bg);
+      min-height: 100vh;
+      line-height: 1.45;
+    }
+
+    .hero {
+      background:
+        radial-gradient(ellipse 80% 60% at 100% 0%, rgba(30, 77, 123, 0.55), transparent 55%),
+        linear-gradient(135deg, var(--btg) 0%, var(--btg-mid) 55%, var(--btg-blue) 100%);
+      color: #fff;
+      padding: 36px 24px 44px;
+    }
+
+    .hero-inner { max-width: 960px; margin: 0 auto; }
+
+    .logo-btg {
+      display: inline-block;
+      font-weight: 700;
+      font-size: 12px;
+      letter-spacing: 0.1em;
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      padding: 7px 12px;
+      border-radius: 2px;
+      margin-bottom: 22px;
+    }
+
+    .hero-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 24px;
+    }
+
+    .eyebrow {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.7);
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      font-size: clamp(28px, 4.5vw, 40px);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      max-width: 14em;
+    }
+
+    .lede {
+      margin-top: 14px;
+      font-size: 15px;
+      color: rgba(255, 255, 255, 0.85);
+      max-width: 38em;
+    }
+
+    .badge {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      padding: 8px 12px;
+      border-radius: 2px;
+      white-space: nowrap;
+    }
+
+    .page {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 28px 24px 56px;
+    }
+
+    .back {
+      display: inline-block;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--link);
+      text-decoration: none;
+      margin-bottom: 22px;
+    }
+
+    .back:hover { text-decoration: underline; }
+
+    .context {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 20px 22px;
+      margin-bottom: 28px;
+    }
+
+    .context h2 {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--btg-blue);
+      margin-bottom: 10px;
+    }
+
+    .context p {
+      font-size: 14px;
+      color: var(--ink);
+      max-width: 52em;
+    }
+
+    .context p + p { margin-top: 10px; }
+
+    .section-label {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--btg-blue);
+      margin-bottom: 14px;
+    }
+
+    .products {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .product {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .product-head {
+      display: grid;
+      grid-template-columns: 6px 1fr;
+    }
+
+    .product-bar { background: var(--btg-blue); }
+    .product-bar.rf { background: var(--accent-rf); }
+    .product-bar.coe { background: var(--accent-coe); }
+    .product-bar.eq { background: var(--accent-eq); }
+
+    .product-body { padding: 18px 20px 8px; }
+
+    .product-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: 6px;
+    }
+
+    .product-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--btg);
+    }
+
+    .product-ticker {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--link);
+      letter-spacing: 0.04em;
+    }
+
+    .product-blurb {
+      font-size: 13px;
+      color: var(--muted);
+      max-width: 48em;
+    }
+
+    .product-meta {
+      margin-top: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .pill {
+      background: #eef2f6;
+      border: 1px solid var(--line);
+      border-radius: 2px;
+      padding: 4px 10px;
+      color: var(--btg-mid);
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .product-speech {
+      padding: 14px 20px 16px;
+      background: #f7f9fc;
+      border-top: 1px solid var(--line);
+      margin-top: 14px;
+    }
+
+    .product-speech h3 {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--btg-blue);
+      margin-bottom: 8px;
+    }
+
+    .product-speech p {
+      font-size: 13px;
+      color: var(--ink);
+      line-height: 1.5;
+    }
+
+    .product-cta {
+      display: block;
+      padding: 12px 20px 16px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--link);
+      text-decoration: none;
+    }
+
+    .product-cta:hover { text-decoration: underline; }
+
+    .legs {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+      margin-top: 14px;
+    }
+
+    .legs th {
+      text-align: left;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 0 8px 8px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .legs td {
+      padding: 9px 8px 9px 0;
+      border-bottom: 1px solid var(--line);
+      color: var(--ink);
+    }
+
+    .legs tr:last-child td { border-bottom: none; }
+
+    .tag {
+      display: inline-block;
+      font-weight: 700;
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 3px;
+      margin-right: 4px;
+    }
+
+    .tag.b { background: #e8f8ef; color: #0f7a4a; }
+    .tag.s { background: #fde8e8; color: #c0392b; }
+
+    .footer {
+      margin-top: 32px;
+      padding-top: 16px;
+      border-top: 1px solid var(--line);
+      font-size: 11px;
+      color: var(--muted);
+      text-align: center;
+      line-height: 1.55;
+    }
+
+    .footer strong {
+      display: block;
+      margin-top: 10px;
+      color: var(--btg);
+      letter-spacing: 0.02em;
+    }
+
+    @media (max-width: 640px) {
+      .hero { padding: 28px 16px 32px; }
+      .page { padding: 20px 16px 48px; }
+      .hero-row { flex-direction: column; align-items: flex-start; }
+      .product-top { flex-direction: column; align-items: flex-start; }
+      .legs { font-size: 11px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="logo-btg">BTG PACTUAL</div>
+      <div class="hero-row">
+        <div>
+          <p class="eyebrow">Oportunidade tática · 17/08/2026</p>
+          <h1>Vencimento das NTN-Bs</h1>
+          <p class="lede">
+            Volume elevado de liquidez voltando ao mercado hoje.
+            Três caminhos para redistribuir o capital — proteção de duration, cupom soberano pré e hedge inteligente em equity.
+          </p>
+        </div>
+        <div class="badge">Uso interno</div>
+      </div>
+    </div>
+  </header>
+
+  <main class="page">
+    <a class="back" href="../../index.html">← Distribuição Renda Variável</a>
+
+    <section class="context">
+      <h2>Por que agora</h2>
+      <p>
+        O vencimento das NTN-Bs libera um volume relevante de recursos.
+        O cliente que estava em título público longo precisa de conversa objetiva:
+        manter exposição a juros/inflação com proteção, travar taxa pré com cupom trimestral, ou migrar parte do caixa para equity com assimetria.
+      </p>
+    </section>
+
+    <h2 class="section-label">Produtos para distribuição</h2>
+    <ul class="products">
+
+      <li class="product">
+        <div class="product-head">
+          <div class="product-bar rf"></div>
+          <div>
+            <div class="product-body">
+              <div class="product-top">
+                <span class="product-title">ETF PACB11 + Proteção</span>
+                <span class="product-ticker">PACB11</span>
+              </div>
+              <p class="product-blurb">
+                Continuar na curva longa via ETF de NTN-B, com put para atravessar volatilidade fiscal sem abandonar a tese de duration.
+              </p>
+              <div class="product-meta">
+                <span class="pill">Renda fixa / ETF</span>
+                <span class="pill">Hedge de duration</span>
+                <span class="pill">Put ATM</span>
+                <span class="pill">Prêmio 3,2%</span>
+              </div>
+            </div>
+            <div class="product-speech">
+              <h3>Speech comercial</h3>
+              <p>
+                Para quem vai receber o vencimento e ainda acredita na ponta longa, mas não quer carregar NTN-B descoberta no meio da volatilidade:
+                PACB11 dá a duration parecida; a put ATM deixa o custo conhecido e remunera na queda.
+                Bom encaixe para quem quer permanecer no tema NTN-B sem ficar 100% descoberto.
+              </p>
+            </div>
+            <a class="product-cta" href="../pacb11-put-hedge/index.html">Abrir material completo →</a>
+          </div>
+        </div>
+      </li>
+
+      <li class="product">
+        <div class="product-head">
+          <div class="product-bar coe"></div>
+          <div>
+            <div class="product-body">
+              <div class="product-top">
+                <span class="product-title">COE Soberano · Cupom Trimestral</span>
+                <span class="product-ticker">CRN0034</span>
+              </div>
+              <p class="product-blurb">
+                Pré 15,05% a.a., cupom trimestral, referência soberana Brasil. Início 31/08/2026 · venc. 28/06/2032. Material publicitário abre direto.
+              </p>
+              <div class="product-meta">
+                <span class="pill">Soberano / CDS</span>
+                <span class="pill">Tx pré 15,05%</span>
+                <span class="pill">Cupom trimestral</span>
+                <span class="pill">Reservas até 31/08</span>
+              </div>
+            </div>
+            <div class="product-speech">
+              <h3>Speech comercial</h3>
+              <p>
+                Cliente que sai da NTN-B e quer clareza de fluxo: cupom a cada trimestre e taxa pré de 15,05%.
+                Emissor BTG, entidade de referência República Federativa do Brasil. Capital não garantido —
+                remuneração condicionada a não ocorrência de evento de crédito. Abrir o MP na conversa.
+              </p>
+            </div>
+            <a class="product-cta" href="../coe-soberano-pre-trimestral/index.html">Abrir material publicitário →</a>
+          </div>
+        </div>
+      </li>
+
+      <li class="product">
+        <div class="product-head">
+          <div class="product-bar eq"></div>
+          <div>
+            <div class="product-body">
+              <div class="product-top">
+                <span class="product-title">Smart Hedge Itaú</span>
+                <span class="product-ticker">ITUB4</span>
+              </div>
+              <p class="product-blurb">
+                Long ITUB4 com put 90% e call vendida 110% com knock-in em 144,32%. Horizonte de 1 ano; prêmio líquido ~0% (0,5% × 0,5%).
+              </p>
+              <div class="product-meta">
+                <span class="pill">Equity</span>
+                <span class="pill">1 ano</span>
+                <span class="pill">Piso −10%</span>
+                <span class="pill">Custo ~0%</span>
+                <span class="pill">Research 2T26</span>
+              </div>
+
+              <table class="legs">
+                <thead>
+                  <tr>
+                    <th>Operação</th>
+                    <th>Qtd</th>
+                    <th>Tipo</th>
+                    <th>Strike</th>
+                    <th>KI</th>
+                    <th>Prêmio</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="tag b">Compra</span></td>
+                    <td>100</td>
+                    <td>PUT</td>
+                    <td>90%</td>
+                    <td>—</td>
+                    <td>0,5%</td>
+                  </tr>
+                  <tr>
+                    <td><span class="tag s">Venda</span></td>
+                    <td>100</td>
+                    <td>CALL</td>
+                    <td>110%</td>
+                    <td>144,32%</td>
+                    <td>0,5%</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="product-speech">
+              <h3>Speech comercial</h3>
+              <p>
+                Research 2T26: qualidade de ativos em destaque, CET1 12,3%, compra reiterada (PA R$ 52).
+                Para quem redistribui NTN-B em banco de qualidade com colchão: put 90% + call KI 144,32%, custo ~zero.
+                Piso perto de −10%; upside 1:1 até o KI; se disparar, teto ~+10%.
+              </p>
+            </div>
+            <a class="product-cta" href="../smart-hedge-itau/index.html">Abrir material completo →</a>
+          </div>
+        </div>
+      </li>
+
+    </ul>
+
+    <p class="footer">
+      Material ilustrativo para uso interno. Não constitui oferta, recomendação ou garantia de rentabilidade.
+      Condições oficiais no DIE / Admin BTG.
+      <strong>MATERIAL DE USO INTERNO, NÃO ENVIAR AOS CLIENTES</strong>
+    </p>
+  </main>
+</body>
+</html>
