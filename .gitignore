@@ -1,0 +1,5 @@
+# Pasta local — não publicar no GitHub Pages
+links/
+
+# Diagnósticos locais
+_*.txt
