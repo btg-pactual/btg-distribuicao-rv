@@ -1,9 +1,10 @@
+﻿<!-- pages-rebuild-20260817 -->
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Compra de Put PACB11 — Hedge de duration</title>
+  <title>Compra de Put PACB11 â€” Hedge de duration</title>
   <!-- Sem fontes externas -->
   <style>
     :root {
@@ -289,7 +290,7 @@
       height: 0;
     }
 
-    /* SVG chart — sempre visível, sem dependência de rede */
+    /* SVG chart â€” sempre visÃ­vel, sem dependÃªncia de rede */
     .chart-box {
       width: 100%;
       background: #fcfbfe;
@@ -309,7 +310,7 @@
       pointer-events: none; /* toque vai para o overlay HTML */
     }
 
-    /* Camada HTML por cima do SVG — captura toque no celular */
+    /* Camada HTML por cima do SVG â€” captura toque no celular */
     .chart-overlay {
       position: absolute;
       left: 0;
@@ -523,7 +524,7 @@
       letter-spacing: 0.01em;
     }
 
-    /* Contador de visitas: invisível para o leitor; só registra o acesso */
+    /* Contador de visitas: invisÃ­vel para o leitor; sÃ³ registra o acesso */
     .visit-pixel {
       position: absolute;
       width: 1px;
@@ -630,7 +631,7 @@
 
       .hi p span { font-size: 11px; }
 
-      /* No celular: gráfico e simulador primeiro */
+      /* No celular: grÃ¡fico e simulador primeiro */
       .main {
         display: flex;
         flex-direction: column;
@@ -673,7 +674,7 @@
 
       .zone p { font-size: 10px; }
 
-      /* Simulador completo já aparece abaixo; esconde o duplicado do gráfico */
+      /* Simulador completo jÃ¡ aparece abaixo; esconde o duplicado do grÃ¡fico */
       .mobile-sim { display: none; }
       .chart-touch-hint { display: none; }
 
@@ -716,7 +717,7 @@
 <body>
   <div class="page">
     <p class="back-link">
-      <a href="../ntnb-vencimento/index.html">← Kit NTN-B</a>
+      <a href="../ntnb-vencimento/index.html">â† Kit NTN-B</a>
     </p>
 
     <header class="topbar">
@@ -728,24 +729,24 @@
         <h1>Compra de Put <span>PACB11</span></h1>
         <p class="subtitle">
           Put at the money sobre PACB11, prazo de 5 meses, custo de 3,2% do nocional.
-          Instrumento de hedge de duration — o gráfico abaixo mostra só o resultado da put.
+          Instrumento de hedge de duration â€” o grÃ¡fico abaixo mostra sÃ³ o resultado da put.
         </p>
       </div>
       <div class="meta-pills">
         <div class="pill"><strong>Ativo-objeto</strong> PACB11</div>
-        <div class="pill"><strong>Operação</strong> Compra de Put</div>
+        <div class="pill"><strong>OperaÃ§Ã£o</strong> Compra de Put</div>
         <div class="pill"><strong>Strike</strong> 100% ATM</div>
         <div class="pill"><strong>Prazo</strong> 5 meses</div>
         <div class="pill"><strong>Fixing</strong> 10/01/2027</div>
         <div class="pill"><strong>Vencimento</strong> 10/01/2027</div>
         <div class="pill"><strong>Custo</strong> 3,2%</div>
-        <div class="pill"><strong>Mínimo</strong> 1 lote (100)</div>
+        <div class="pill"><strong>MÃ­nimo</strong> 1 lote (100)</div>
       </div>
     </header>
 
     <div class="hero-msg">
-      Pode ser usada como hedge de NTN-Bs (ou carteiras) com duration parecida à do PACB11.
-      <span>Duration modificada ilustrativa do PACB11 ≈ 11,6 anos. Abertura da curva real pressiona o preço; a put ATM captura essa queda, limitada ao prêmio de 3,2% se o ativo não cair.</span>
+      Pode ser usada como hedge de NTN-Bs (ou carteiras) com duration parecida Ã  do PACB11.
+      <span>Duration modificada ilustrativa do PACB11 â‰ˆ 11,6 anos. Abertura da curva real pressiona o preÃ§o; a put ATM captura essa queda, limitada ao prÃªmio de 3,2% se o ativo nÃ£o cair.</span>
     </div>
 
     <section class="highlights">
@@ -755,21 +756,21 @@
       </div>
       <div class="hi">
         <h3>Na queda</h3>
-        <p>Put paga<span>Ganho ≈ |queda| − 3,2%</span></p>
+        <p>Put paga<span>Ganho â‰ˆ |queda| âˆ’ 3,2%</span></p>
       </div>
       <div class="hi">
-        <h3>Na alta / estável</h3>
-        <p>−3,2%<span>Perda limitada ao prêmio</span></p>
+        <h3>Na alta / estÃ¡vel</h3>
+        <p>âˆ’3,2%<span>Perda limitada ao prÃªmio</span></p>
       </div>
       <div class="hi">
         <h3>Prazo</h3>
-        <p>5 meses<span>Início 10/08/2026 · venc. jan/2027</span></p>
+        <p>5 meses<span>InÃ­cio 10/08/2026 Â· venc. jan/2027</span></p>
       </div>
     </section>
 
     <div class="main">
       <aside class="panel panel-structure">
-        <h2>Estrutura da operação</h2>
+        <h2>Estrutura da operaÃ§Ã£o</h2>
         <table class="struct-table">
           <thead>
             <tr><th>Perna</th><th>Strike</th><th>Barreira</th></tr>
@@ -778,24 +779,24 @@
             <tr>
               <td><span class="tag b">B</span> Put ATM</td>
               <td class="strike-green">100,00%</td>
-              <td>—</td>
+              <td>â€”</td>
             </tr>
           </tbody>
         </table>
         <p class="legend-note">
-          <strong>B</strong> = Compra · Prêmio: <strong>3,2%</strong> do nocional<br />
+          <strong>B</strong> = Compra Â· PrÃªmio: <strong>3,2%</strong> do nocional<br />
           Payoff = <strong>somente a put</strong> (sem compra do ETF na estrutura).<br />
-          Ativo-objeto de referência: PACB11.
+          Ativo-objeto de referÃªncia: PACB11.
         </p>
 
         <div class="thesis">
           <h2>Por que a put</h2>
           <p>Hedge de duration sem abandonar a ponta longa em IPCA:</p>
           <ul>
-            <li>Útil para NTN-Bs / carteiras com duration parecida à do PACB11 (~11,6 anos)</li>
-            <li>Se a curva real abrir, o preço do ativo-objeto cai e a put ATM ganha valor</li>
-            <li>Se o ativo não cair, o custo máximo da proteção é o prêmio de 3,2%</li>
-            <li>Proteção por 5 meses; após o vencimento, renovar se quiser manter o hedge</li>
+            <li>Ãštil para NTN-Bs / carteiras com duration parecida Ã  do PACB11 (~11,6 anos)</li>
+            <li>Se a curva real abrir, o preÃ§o do ativo-objeto cai e a put ATM ganha valor</li>
+            <li>Se o ativo nÃ£o cair, o custo mÃ¡ximo da proteÃ§Ã£o Ã© o prÃªmio de 3,2%</li>
+            <li>ProteÃ§Ã£o por 5 meses; apÃ³s o vencimento, renovar se quiser manter o hedge</li>
           </ul>
           <p style="margin-top:14px">
             <a
@@ -803,7 +804,7 @@
               target="_blank"
               rel="noopener noreferrer"
               style="color:#0d6e6e;font-weight:600;text-decoration:none"
-            >Abrir report: Fragilidade fiscal — PACB11 + proteção</a>
+            >Abrir report: Fragilidade fiscal â€” PACB11 + proteÃ§Ã£o</a>
           </p>
           <p style="margin-top:8px">
             <a
@@ -811,29 +812,29 @@
               target="_blank"
               rel="noopener noreferrer"
               style="color:#0d6e6e;font-weight:600;text-decoration:none"
-            >Página do ETF Inflação (BTG Asset) — ativo-objeto</a>
+            >PÃ¡gina do ETF InflaÃ§Ã£o (BTG Asset) â€” ativo-objeto</a>
           </p>
         </div>
 
         <div style="margin-top:18px">
-          <h2>Sensibilidade à curva real</h2>
+          <h2>Sensibilidade Ã  curva real</h2>
           <p class="legend-note" style="margin-top:0;margin-bottom:10px">
-            Aprox. linear: ΔP ≈ −duration × Δtaxa. Clique ou use o controle de bps no simulador.
+            Aprox. linear: Î”P â‰ˆ âˆ’duration Ã— Î”taxa. Clique ou use o controle de bps no simulador.
           </p>
           <table class="struct-table sens-table" id="sensTable">
             <thead>
-              <tr><th>Taxa real</th><th>PACB11*</th><th>Put</th><th>Ret. prêmio</th></tr>
+              <tr><th>Taxa real</th><th>PACB11*</th><th>Put</th><th>Ret. prÃªmio</th></tr>
             </thead>
             <tbody>
-              <tr data-bps="-200"><td>−200 bps</td><td>+23,2%</td><td class="put-cell"></td><td class="prem-cell"></td></tr>
-              <tr data-bps="-100"><td>−100 bps</td><td>+11,6%</td><td class="put-cell"></td><td class="prem-cell"></td></tr>
-              <tr data-bps="-50"><td>−50 bps</td><td>+5,8%</td><td class="put-cell"></td><td class="prem-cell"></td></tr>
-              <tr data-bps="50"><td>+50 bps</td><td>−5,8%</td><td class="put-cell"></td><td class="prem-cell"></td></tr>
-              <tr data-bps="100"><td>+100 bps</td><td>−11,6%</td><td class="put-cell"></td><td class="prem-cell"></td></tr>
-              <tr data-bps="200"><td>+200 bps</td><td>−23,2%</td><td class="put-cell"></td><td class="prem-cell"></td></tr>
+              <tr data-bps="-200"><td>âˆ’200 bps</td><td>+23,2%</td><td class="put-cell"></td><td class="prem-cell"></td></tr>
+              <tr data-bps="-100"><td>âˆ’100 bps</td><td>+11,6%</td><td class="put-cell"></td><td class="prem-cell"></td></tr>
+              <tr data-bps="-50"><td>âˆ’50 bps</td><td>+5,8%</td><td class="put-cell"></td><td class="prem-cell"></td></tr>
+              <tr data-bps="50"><td>+50 bps</td><td>âˆ’5,8%</td><td class="put-cell"></td><td class="prem-cell"></td></tr>
+              <tr data-bps="100"><td>+100 bps</td><td>âˆ’11,6%</td><td class="put-cell"></td><td class="prem-cell"></td></tr>
+              <tr data-bps="200"><td>+200 bps</td><td>âˆ’23,2%</td><td class="put-cell"></td><td class="prem-cell"></td></tr>
             </tbody>
           </table>
-          <p class="legend-note">* MtM linear ilustrativo (Empiricus / lâmina). Sem convexidade, cupom, IPCA ou custos além do prêmio.</p>
+          <p class="legend-note">* MtM linear ilustrativo (Empiricus / lÃ¢mina). Sem convexidade, cupom, IPCA ou custos alÃ©m do prÃªmio.</p>
         </div>
       </aside>
 
@@ -841,7 +842,7 @@
         <div class="chart-head">
           <div>
             <h2>Payoff da put</h2>
-            <p class="chart-caption">Resultado da put no vencimento vs. variação do PACB11</p>
+            <p class="chart-caption">Resultado da put no vencimento vs. variaÃ§Ã£o do PACB11</p>
           </div>
           <div class="chart-legend">
             <span><i class="swatch"></i> Put</span>
@@ -851,14 +852,14 @@
 
         <div class="chart-box" id="chartBox">
           <div class="tooltip" id="tooltip"></div>
-          <svg id="payoffSvg" viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Gráfico de payoff da put PACB11">
+          <svg id="payoffSvg" viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="GrÃ¡fico de payoff da put PACB11">
             <rect x="48" y="24" width="504" height="352" fill="#fcfbfe" />
             <g id="gridLines" stroke="#ebe6f4" stroke-width="1"></g>
             <line id="axisZeroX" x1="300" y1="24" x2="300" y2="376" stroke="#cfc7e0" stroke-width="1.25"/>
             <line id="axisZeroY" x1="48" y1="220" x2="552" y2="220" stroke="#cfc7e0" stroke-width="1.25"/>
             <g id="yLabels" fill="#8b83a0" font-size="11" font-family="Segoe UI, Arial, sans-serif" text-anchor="end"></g>
             <g id="xLabels" fill="#8b83a0" font-size="11" font-family="Segoe UI, Arial, sans-serif" text-anchor="middle"></g>
-            <text x="300" y="16" fill="#5c5470" font-size="11" font-family="Segoe UI, Arial, sans-serif" text-anchor="middle">Variação do PACB11 no vencimento (%)</text>
+            <text x="300" y="16" fill="#5c5470" font-size="11" font-family="Segoe UI, Arial, sans-serif" text-anchor="middle">VariaÃ§Ã£o do PACB11 no vencimento (%)</text>
             <text x="14" y="200" fill="#5c5470" font-size="11" font-family="Segoe UI, Arial, sans-serif" text-anchor="middle" transform="rotate(-90 14 200)">Retorno da put (%)</text>
 
             <polyline id="assetPath" fill="none" stroke="#8b83a0" stroke-width="1.75" stroke-dasharray="6 5" points="" />
@@ -866,7 +867,7 @@
             <path id="structPath" d="" fill="none" stroke="#2f1b6d" stroke-width="2.75" stroke-linejoin="round" stroke-linecap="round" />
 
             <circle id="koDot" cx="0" cy="0" r="5" fill="#c0392b"/>
-            <text id="koLabel" x="0" y="0" fill="#c0392b" font-size="11" font-weight="600" font-family="Segoe UI, Arial, sans-serif">Prêmio −3,2%</text>
+            <text id="koLabel" x="0" y="0" fill="#c0392b" font-size="11" font-weight="600" font-family="Segoe UI, Arial, sans-serif">PrÃªmio âˆ’3,2%</text>
             <circle id="capDot" opacity="0"/>
             <text id="capLabel" opacity="0"></text>
 
@@ -874,35 +875,35 @@
             <circle id="hoverStruct" r="5.5" fill="#2f1b6d" visibility="hidden"/>
             <circle id="hoverAsset" r="4" fill="#8b83a0" visibility="hidden"/>
           </svg>
-          <div class="chart-overlay" id="chartOverlay" aria-label="Área interativa do gráfico"></div>
+          <div class="chart-overlay" id="chartOverlay" aria-label="Ãrea interativa do grÃ¡fico"></div>
         </div>
 
-        <p class="chart-touch-hint">Toque e arraste · ou use os controles (PACB11 % e taxa real em bps)</p>
+        <p class="chart-touch-hint">Toque e arraste Â· ou use os controles (PACB11 % e taxa real em bps)</p>
 
         <div class="mobile-sim">
           <div class="sim-label">
-            <span>Variação do PACB11</span>
-            <output id="spotOutMobile">−10%</output>
+            <span>VariaÃ§Ã£o do PACB11</span>
+            <output id="spotOutMobile">âˆ’10%</output>
           </div>
-          <input type="range" id="spotSliderMobile" min="-40" max="40" step="0.5" value="-10" aria-label="Variação do PACB11 no celular" />
+          <input type="range" id="spotSliderMobile" min="-40" max="40" step="0.5" value="-10" aria-label="VariaÃ§Ã£o do PACB11 no celular" />
         </div>
 
         <div class="zones">
           <div class="zone">
             <strong>&lt; 0%</strong>
-            <p>Put no dinheiro: retorno ≈ |queda do PACB11| − 3,2%</p>
+            <p>Put no dinheiro: retorno â‰ˆ |queda do PACB11| âˆ’ 3,2%</p>
           </div>
           <div class="zone">
             <strong>= 0%</strong>
-            <p>No strike: perda = prêmio de 3,2%</p>
+            <p>No strike: perda = prÃªmio de 3,2%</p>
           </div>
           <div class="zone">
             <strong>&gt; 0%</strong>
-            <p>Put expira sem valor: resultado −3,2%</p>
+            <p>Put expira sem valor: resultado âˆ’3,2%</p>
           </div>
           <div class="zone">
-            <strong>Ganho máx.</strong>
-            <p>Até ~96,8% se o ativo for a zero</p>
+            <strong>Ganho mÃ¡x.</strong>
+            <p>AtÃ© ~96,8% se o ativo for a zero</p>
           </div>
         </div>
       </section>
@@ -910,10 +911,10 @@
       <aside class="panel panel-sim">
         <h2>Simulador da put</h2>
         <div class="sim-label">
-          <span>Variação do PACB11</span>
-          <output id="spotOut">−10%</output>
+          <span>VariaÃ§Ã£o do PACB11</span>
+          <output id="spotOut">âˆ’10%</output>
         </div>
-        <input type="range" id="spotSlider" min="-40" max="40" step="0.5" value="-10" aria-label="Variação do PACB11" />
+        <input type="range" id="spotSlider" min="-40" max="40" step="0.5" value="-10" aria-label="VariaÃ§Ã£o do PACB11" />
 
         <div class="rate-box">
           <div class="sim-label">
@@ -922,49 +923,49 @@
           </div>
           <input type="range" id="bpsSlider" min="-200" max="200" step="1" value="86" aria-label="Movimento da taxa real em bps" />
           <p class="rate-note">
-            Converte bps → preço via duration 11,59: ΔPACB11% ≈ −11,59 × (bps/100).
+            Converte bps â†’ preÃ§o via duration 11,59: Î”PACB11% â‰ˆ âˆ’11,59 Ã— (bps/100).
             Mova um controle e o outro acompanha.
           </p>
         </div>
 
         <div class="sim-cards">
           <div class="sim-card">
-            <div class="lbl">Variação PACB11</div>
-            <div class="val" id="assetVal">−10,0%</div>
+            <div class="lbl">VariaÃ§Ã£o PACB11</div>
+            <div class="val" id="assetVal">âˆ’10,0%</div>
           </div>
           <div class="sim-card">
             <div class="lbl">Put (nocional)</div>
             <div class="val" id="structVal">+7,5%</div>
           </div>
           <div class="sim-card" style="grid-column: 1 / -1">
-            <div class="lbl">Retorno sobre o prêmio (3,2%)</div>
+            <div class="lbl">Retorno sobre o prÃªmio (3,2%)</div>
             <div class="val" id="premVal">+213%</div>
           </div>
         </div>
 
-        <div class="regime" id="regimeText">Abaixo de 0%: put ITM — ganho proporcional à queda, líquido do prêmio.</div>
+        <div class="regime" id="regimeText">Abaixo de 0%: put ITM â€” ganho proporcional Ã  queda, lÃ­quido do prÃªmio.</div>
         <p class="legend-note" style="margin-top:10px">
-          <strong>Retorno do prêmio</strong> = (resultado líquido da put no nocional) ÷ 3,2%.
-          Ex.: queda de 5% → put +1,8% no nocional → <strong>+56%</strong> sobre o capital investido na opção.
+          <strong>Retorno do prÃªmio</strong> = (resultado lÃ­quido da put no nocional) Ã· 3,2%.
+          Ex.: queda de 5% â†’ put +1,8% no nocional â†’ <strong>+56%</strong> sobre o capital investido na opÃ§Ã£o.
         </p>
 
         <div style="margin-top:18px">
-          <h2>Pontos-chave (só put)</h2>
+          <h2>Pontos-chave (sÃ³ put)</h2>
           <table class="struct-table">
             <thead>
-              <tr><th>PACB11</th><th>Put (noc.)</th><th>Retorno do prêmio</th></tr>
+              <tr><th>PACB11</th><th>Put (noc.)</th><th>Retorno do prÃªmio</th></tr>
             </thead>
             <tbody>
-              <tr><td>+20%</td><td><strong>−3,2%</strong></td><td><strong>−100%</strong></td></tr>
-              <tr><td>+10%</td><td><strong>−3,2%</strong></td><td><strong>−100%</strong></td></tr>
-              <tr><td>0%</td><td><strong>−3,2%</strong></td><td><strong>−100%</strong></td></tr>
-              <tr><td>−1,25%</td><td><strong>−1,95%</strong></td><td><strong>−61%</strong></td></tr>
-              <tr><td>−3,2%</td><td><strong>0,0%</strong></td><td><strong>0%</strong></td></tr>
-              <tr><td>−5%</td><td><strong>+1,8%</strong></td><td><strong>+56%</strong></td></tr>
-              <tr><td>−10%</td><td><strong>+6,8%</strong></td><td><strong>+213%</strong></td></tr>
-              <tr><td>−11,6%</td><td><strong>+8,4%</strong></td><td><strong>+263%</strong></td></tr>
-              <tr><td>−20%</td><td><strong>+16,8%</strong></td><td><strong>+525%</strong></td></tr>
-              <tr><td>−23,2%</td><td><strong>+20,0%</strong></td><td><strong>+625%</strong></td></tr>
+              <tr><td>+20%</td><td><strong>âˆ’3,2%</strong></td><td><strong>âˆ’100%</strong></td></tr>
+              <tr><td>+10%</td><td><strong>âˆ’3,2%</strong></td><td><strong>âˆ’100%</strong></td></tr>
+              <tr><td>0%</td><td><strong>âˆ’3,2%</strong></td><td><strong>âˆ’100%</strong></td></tr>
+              <tr><td>âˆ’1,25%</td><td><strong>âˆ’1,95%</strong></td><td><strong>âˆ’61%</strong></td></tr>
+              <tr><td>âˆ’3,2%</td><td><strong>0,0%</strong></td><td><strong>0%</strong></td></tr>
+              <tr><td>âˆ’5%</td><td><strong>+1,8%</strong></td><td><strong>+56%</strong></td></tr>
+              <tr><td>âˆ’10%</td><td><strong>+6,8%</strong></td><td><strong>+213%</strong></td></tr>
+              <tr><td>âˆ’11,6%</td><td><strong>+8,4%</strong></td><td><strong>+263%</strong></td></tr>
+              <tr><td>âˆ’20%</td><td><strong>+16,8%</strong></td><td><strong>+525%</strong></td></tr>
+              <tr><td>âˆ’23,2%</td><td><strong>+20,0%</strong></td><td><strong>+625%</strong></td></tr>
             </tbody>
           </table>
         </div>
@@ -972,16 +973,16 @@
     </div>
 
     <p class="footer">
-      Material ilustrativo. Payoff intrínseco da put no vencimento (sem carrego do ativo-objeto).
-      “Retorno do prêmio” = resultado líquido da put no nocional ÷ prêmio (3,2%); olha só o capital alocado na opção.
-      Sensibilidade à curva real é aproximação linear de MtM; não inclui convexidade, IPCA, cupons nem basis vs. NTN-Bs individuais.
-      Hedge de duration depende de correlação com o book; não é garantia de proteção perfeita.
-      Não constitui oferta, recomendação ou garantia de rentabilidade. Produto estruturado envolve risco de perda de capital.
-      Acessar o DIE com informações.
+      Material ilustrativo. Payoff intrÃ­nseco da put no vencimento (sem carrego do ativo-objeto).
+      â€œRetorno do prÃªmioâ€ = resultado lÃ­quido da put no nocional Ã· prÃªmio (3,2%); olha sÃ³ o capital alocado na opÃ§Ã£o.
+      Sensibilidade Ã  curva real Ã© aproximaÃ§Ã£o linear de MtM; nÃ£o inclui convexidade, IPCA, cupons nem basis vs. NTN-Bs individuais.
+      Hedge de duration depende de correlaÃ§Ã£o com o book; nÃ£o Ã© garantia de proteÃ§Ã£o perfeita.
+      NÃ£o constitui oferta, recomendaÃ§Ã£o ou garantia de rentabilidade. Produto estruturado envolve risco de perda de capital.
+      Acessar o DIE com informaÃ§Ãµes.
     </p>
     <p class="footer-alert">
-      <strong>MATERIAL DE USO INTERNO, NÃO ENVIAR AOS CLIENTES</strong><br />
-      <strong>PARA INFORMAÇÕES OFICIAIS, ACESSAR O DIE DA OPERAÇÃO DISPONIBILIZADO NO ADMIN BTG</strong>
+      <strong>MATERIAL DE USO INTERNO, NÃƒO ENVIAR AOS CLIENTES</strong><br />
+      <strong>PARA INFORMAÃ‡Ã•ES OFICIAIS, ACESSAR O DIE DA OPERAÃ‡ÃƒO DISPONIBILIZADO NO ADMIN BTG</strong>
     </p>
   </div>
 
@@ -1006,17 +1007,17 @@
       var DUR = 11.59; // duration modificada ilustrativa PACB11
       var syncing = false;
 
-      /** Intrínseco da put (% nocional), sem descontar o prêmio */
+      /** IntrÃ­nseco da put (% nocional), sem descontar o prÃªmio */
       function putIntrinsic(x) {
         return Math.max(-x, 0);
       }
 
-      /** Resultado líquido da put no nocional = intrínseco − prêmio */
+      /** Resultado lÃ­quido da put no nocional = intrÃ­nseco âˆ’ prÃªmio */
       function structureReturn(x) {
         return putIntrinsic(x) - PREM;
       }
 
-      /** Retorno sobre o capital da opção: (líquido no nocional) ÷ prêmio */
+      /** Retorno sobre o capital da opÃ§Ã£o: (lÃ­quido no nocional) Ã· prÃªmio */
       function premiumReturn(x) {
         return (structureReturn(x) / PREM) * 100;
       }
@@ -1031,9 +1032,9 @@
 
       function regimeFor(x) {
         var rp = premiumReturn(x);
-        if (x < 0) return "Abaixo de 0%: put ITM — " + fmtPct(structureReturn(x)) + " no nocional · " + fmtPct(rp, 0) + " sobre o prêmio.";
-        if (x === 0) return "Em 0% (ATM): −3,2% no nocional · −100% sobre o prêmio.";
-        return "Acima de 0%: put OTM — −3,2% no nocional · −100% sobre o prêmio.";
+        if (x < 0) return "Abaixo de 0%: put ITM â€” " + fmtPct(structureReturn(x)) + " no nocional Â· " + fmtPct(rp, 0) + " sobre o prÃªmio.";
+        if (x === 0) return "Em 0% (ATM): âˆ’3,2% no nocional Â· âˆ’100% sobre o prÃªmio.";
+        return "Acima de 0%: put OTM â€” âˆ’3,2% no nocional Â· âˆ’100% sobre o prÃªmio.";
       }
 
       function fmtPct(n, digits) {
@@ -1106,7 +1107,7 @@
       document.getElementById("structPath").setAttribute("d", buildStructD());
       document.getElementById("assetPath").setAttribute("points", buildAssetPoints());
 
-      // Marcador do prêmio (região OTM)
+      // Marcador do prÃªmio (regiÃ£o OTM)
       var premX = xToSvg(15);
       var premY = yToSvg(-PREM);
       document.getElementById("koDot").setAttribute("cx", premX);
@@ -1133,7 +1134,7 @@
       var sensTable = document.getElementById("sensTable");
       var activePointer = null;
 
-      // Preenche colunas Put e S/ prêmio da tabela de sensibilidade
+      // Preenche colunas Put e S/ prÃªmio da tabela de sensibilidade
       if (sensTable) {
         var rows = sensTable.querySelectorAll("tbody tr");
         for (var i = 0; i < rows.length; i++) {
@@ -1185,10 +1186,10 @@
         hoverAsset.setAttribute("visibility", "visible");
 
         tooltip.innerHTML =
-          '<div class="t-title">PACB11 ' + fmtPct(x) + " · " + fmtBps(bps) + "</div>" +
+          '<div class="t-title">PACB11 ' + fmtPct(x) + " Â· " + fmtBps(bps) + "</div>" +
           '<div class="row"><span>Ativo-objeto</span><strong>' + fmtPct(x) + "</strong></div>" +
           '<div class="row"><span>Put (nocional)</span><strong>' + fmtPct(ys) + "</strong></div>" +
-          '<div class="row"><span>Retorno do prêmio</span><strong>' + fmtPct(rp, 0) + "</strong></div>";
+          '<div class="row"><span>Retorno do prÃªmio</span><strong>' + fmtPct(rp, 0) + "</strong></div>";
         tooltip.classList.add("on");
 
         var svgRect = svg.getBoundingClientRect();
