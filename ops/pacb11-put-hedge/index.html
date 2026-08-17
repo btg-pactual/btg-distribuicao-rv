@@ -719,14 +719,6 @@
       <a href="../../index.html">← Distribuição Renda Variável</a>
     </p>
 
-    <div class="pitch-video" id="pitchVideo">
-      <video id="pitchPlayer" controls playsinline preload="metadata"></video>
-      <div class="pitch-video-empty">
-        <strong>Vídeo em breve</strong>
-        <span>Salve como <code>video.mp4</code> nesta pasta da operação</span>
-      </div>
-    </div>
-
     <header class="topbar">
       <div class="brand-block">
         <div class="logos">
@@ -1300,24 +1292,6 @@
       if (bpsSlider) bpsSlider.addEventListener("input", onBps);
 
       showAt(-10);
-    })();
-  </script>
-  <script>
-    (function () {
-      var wrap = document.getElementById("pitchVideo");
-      var video = document.getElementById("pitchPlayer");
-      if (!wrap || !video) return;
-      var source = document.createElement("source");
-      source.src = "./video.mp4";
-      source.type = "video/mp4";
-      video.appendChild(source);
-      video.addEventListener("loadeddata", function () {
-        wrap.classList.add("has-video");
-      });
-      video.addEventListener("error", function () {
-        wrap.classList.remove("has-video");
-      }, true);
-      video.load();
     })();
   </script>
 </body>
