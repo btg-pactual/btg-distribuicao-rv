@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Eleições 2026 — Duas teses fiscais | BTG Pactual</title>
+  <style>
+    :root {
+      --btg: #0b1f3a;
+      --btg-mid: #163a5f;
+      --btg-blue: #1e4d7b;
+      --link: #1a66b3;
+      --ink: #0b1f3a;
+      --muted: #5c6b7a;
+      --line: #d0d8e2;
+      --bg: #eef2f6;
+      --card: #ffffff;
+      --sem: #8a2a2a;
+      --com: #0d6e6e;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: Segoe UI, -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif;
+      color: var(--ink); background: var(--bg); min-height: 100vh; line-height: 1.45;
+    }
+    .hero {
+      background: linear-gradient(135deg, var(--btg) 0%, var(--btg-mid) 55%, var(--btg-blue) 100%);
+      color: #fff; padding: 36px 24px 40px;
+    }
+    .hero-inner { max-width: 960px; margin: 0 auto; }
+    .logo-btg {
+      display: inline-block; font-weight: 700; font-size: 12px; letter-spacing: 0.1em;
+      color: #fff; border: 1px solid rgba(255,255,255,0.35); padding: 7px 12px;
+      border-radius: 2px; margin-bottom: 22px;
+    }
+    .hero-row { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; }
+    h1 { font-size: clamp(28px, 4.5vw, 40px); font-weight: 700; letter-spacing: -0.02em; line-height: 1.15; }
+    .lede { margin-top: 12px; font-size: 15px; color: rgba(255,255,255,0.82); max-width: 38em; }
+    .badge {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+      color: #fff; border: 1px solid rgba(255,255,255,0.35); padding: 8px 12px; border-radius: 2px; white-space: nowrap;
+    }
+    .page { max-width: 960px; margin: 0 auto; padding: 28px 24px 56px; }
+    h2 {
+      font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--btg-blue); margin-bottom: 14px;
+    }
+    .snapshot {
+      background: var(--card); border: 1px solid var(--line); border-radius: 4px;
+      padding: 16px 20px; margin-bottom: 22px;
+    }
+    .snapshot p { font-size: 13px; color: var(--muted); max-width: 54em; }
+    .nums { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 8px; }
+    .ops { list-style: none; display: flex; flex-direction: column; gap: 20px; }
+    .op-block { background: var(--card); border: 1px solid var(--line); border-radius: 4px; overflow: hidden; }
+    .op {
+      display: block; text-decoration: none; color: inherit; padding: 22px 22px 18px;
+      transition: background 0.12s ease;
+    }
+    .op:hover, .op:focus-visible { background: #f5f8fc; outline: none; }
+    .op-bar { height: 6px; }
+    .op-bar.sem { background: var(--sem); }
+    .op-bar.com { background: var(--com); }
+    .op-top { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 8px; }
+    .op-title { font-size: 20px; font-weight: 700; color: var(--btg); }
+    .op-ticker { font-size: 12px; font-weight: 700; color: var(--link); letter-spacing: 0.04em; }
+    .op-blurb { font-size: 14px; color: var(--muted); max-width: 48em; }
+    .op-meta { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 8px; }
+    .pill {
+      background: #eef2f6; border: 1px solid var(--line); border-radius: 2px;
+      padding: 4px 10px; color: var(--btg-mid); font-size: 11px; font-weight: 600;
+    }
+    .op-cta { margin-top: 14px; font-size: 12px; font-weight: 700; color: var(--link); }
+    .note {
+      margin-top: 22px; font-size: 13px; color: var(--muted); max-width: 52em;
+    }
+    .footer {
+      margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--line);
+      font-size: 11px; color: var(--muted); text-align: center; line-height: 1.55;
+    }
+    .footer strong { display: block; margin-top: 10px; color: var(--btg); }
+    @media (max-width: 640px) {
+      .hero { padding: 28px 16px 32px; }
+      .page { padding: 20px 16px 48px; }
+      .hero-row { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="logo-btg">BTG PACTUAL</div>
+      <div class="hero-row">
+        <div>
+          <h1>Eleições 2026 — duas teses fiscais</h1>
+          <p class="lede">
+            Reports especiais Empiricus + BTG Research. Escolha o cenário: resumo macro,
+            speech comercial e, na sequência, as operações Triplo Retorno KO.
+          </p>
+        </div>
+        <div class="badge">Uso interno</div>
+      </div>
+    </div>
+  </header>
+
+  <main class="page">
+    <h2>Ponto de partida</h2>
+    <section class="snapshot">
+      <p>
+        Fotografia fiscal em 12 meses até jun/2026 e mercado em 05/08/2026 — a mesma base dos dois reports.
+        As faixas de cada tese são exercícios de sensibilidade, não projeção pontual.
+      </p>
+      <div class="nums">
+        <span class="pill">Primário −1,19% PIB</span>
+        <span class="pill">Juros 8,80%</span>
+        <span class="pill">Nominal −9,99%</span>
+        <span class="pill">Dívida 81,9%</span>
+        <span class="pill">DI jan/27 13,8%</span>
+        <span class="pill">DI jan/31 14,2%</span>
+        <span class="pill">Dólar R$ 5,13</span>
+        <span class="pill">Ibov ~178 mil</span>
+      </div>
+    </section>
+
+    <h2>Escolha o cenário</h2>
+    <ul class="ops">
+      <li class="op-block">
+        <div class="op-bar com"></div>
+        <a class="op" href="./com-ajuste/index.html">
+          <div class="op-top">
+            <span class="op-title">Com ajuste fiscal</span>
+            <span class="op-ticker">2027 organizado</span>
+          </div>
+          <p class="op-blurb">
+            Programa crível reduz prêmio fiscal: curva longa fecha, real fortalece, bolsa doméstica reprecifica.
+            Teses para duration real, equity BR e estruturas com assimetria.
+          </p>
+          <div class="op-meta">
+            <span class="pill">DI 31 → 11,7–12,4%</span>
+            <span class="pill">Dólar R$ 4,65–4,90</span>
+            <span class="pill">Ibov 205–225 mil</span>
+            <span class="pill">Triplo Retorno KO</span>
+          </div>
+          <div class="op-cta">Abrir tese com ajuste →</div>
+        </a>
+      </li>
+      <li class="op-block">
+        <div class="op-bar sem"></div>
+        <a class="op" href="./sem-ajuste/index.html">
+          <div class="op-top">
+            <span class="op-title">Sem ajuste fiscal</span>
+            <span class="op-ticker">2027 desorganizado</span>
+          </div>
+          <p class="op-blurb">
+            Sem superávit recorrente, a dívida segue em alta. Juros longos, câmbio e bolsa sofrem.
+            Teses de proteção, internacionalização e crédito selecionado.
+          </p>
+          <div class="op-meta">
+            <span class="pill">DI 31 → 16,5–17,5%</span>
+            <span class="pill">Dólar R$ 6,15–6,65</span>
+            <span class="pill">Ibov 116–134 mil</span>
+            <span class="pill">Triplo Retorno KO</span>
+          </div>
+          <div class="op-cta">Abrir tese sem ajuste →</div>
+        </a>
+      </li>
+    </ul>
+    <p class="note">
+      Primeira versão: macro e speeches dos reports. As operações Triplo Retorno KO de cada cenário entram neste hub na sequência.
+    </p>
+    <p class="footer">
+      Material ilustrativo para uso interno. Não constitui oferta, recomendação ou garantia de rentabilidade.
+      <strong>MATERIAL DE USO INTERNO, NÃO ENVIAR AOS CLIENTES</strong>
+    </p>
+  </main>
+</body>
+</html>
