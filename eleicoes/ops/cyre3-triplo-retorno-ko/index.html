@@ -1,0 +1,1253 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cyrela Triplo Retorno KO — CYRE3</title>
+  <!-- Sem fontes externas: funciona offline e ao enviar o arquivo -->
+  <style>
+    :root {
+      --ink: #1a1230;
+      --muted: #5c5470;
+      --line: #e4dff0;
+      --bg: #f7f5fb;
+      --card: #ffffff;
+      --nubank: #820ad1;
+      --btg: #0b1f3a;
+      --accent: #2f1b6d;
+      --success: #0f7a4a;
+      --danger: #c0392b;
+      --dash: #8b83a0;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: Segoe UI, -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif;
+      color: var(--ink);
+      background: var(--bg);
+      min-height: 100vh;
+      line-height: 1.45;
+    }
+
+    .page {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 28px 24px 48px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 24px;
+      margin-bottom: 28px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .brand-block { display: flex; flex-direction: column; gap: 10px; }
+
+    .logos {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .logo-btg {
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 0.04em;
+      color: var(--btg);
+      background: #eef2f7;
+      padding: 6px 10px;
+      border-radius: 4px;
+    }
+
+    .logo-nu {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 700;
+      color: var(--nubank);
+      font-size: 15px;
+    }
+
+    .logo-nu .dot {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--nubank);
+      display: grid;
+      place-items: center;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    h1 {
+      font-weight: 700;
+      font-size: clamp(24px, 3vw, 34px);
+      letter-spacing: -0.02em;
+      color: var(--accent);
+      line-height: 1.15;
+    }
+
+    h1 span { color: var(--nubank); }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 14px;
+      max-width: 540px;
+    }
+
+    .meta-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: flex-end;
+    }
+
+    .pill {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 8px 14px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .pill strong {
+      color: var(--ink);
+      font-weight: 600;
+      margin-right: 4px;
+    }
+
+    .highlights {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .hi {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 16px;
+    }
+
+    .hi h3 {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 6px;
+    }
+
+    .hi p {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    .hi p span {
+      display: block;
+      font-weight: 400;
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 3px;
+    }
+
+    .main {
+      display: grid;
+      grid-template-columns: 280px 1fr 300px;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .panel {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 18px;
+    }
+
+    .panel h2 {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 14px;
+    }
+
+    .struct-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+
+    .struct-table th {
+      text-align: left;
+      font-weight: 600;
+      color: var(--muted);
+      padding: 0 6px 10px;
+      border-bottom: 1px solid var(--line);
+      font-size: 11px;
+      text-transform: uppercase;
+    }
+
+    .struct-table td {
+      padding: 10px 6px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .struct-table tr:last-child td { border-bottom: none; }
+
+    .tag {
+      display: inline-block;
+      font-weight: 700;
+      font-size: 11px;
+      padding: 2px 7px;
+      border-radius: 4px;
+      margin-right: 4px;
+    }
+
+    .tag.s { background: #fde8e8; color: var(--danger); }
+    .tag.b { background: #e8f8ef; color: var(--success); }
+
+    .strike-red { color: var(--danger); font-weight: 700; }
+    .strike-green { color: var(--success); font-weight: 700; }
+
+    .legend-note {
+      margin-top: 14px;
+      font-size: 11px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .chart-panel { padding: 16px; }
+
+    .chart-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .chart-caption { font-size: 12px; color: var(--muted); }
+
+    .chart-legend {
+      display: flex;
+      gap: 14px;
+      font-size: 12px;
+      color: var(--muted);
+      flex-wrap: wrap;
+    }
+
+    .chart-legend span {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .swatch {
+      width: 18px;
+      height: 3px;
+      border-radius: 2px;
+      background: var(--accent);
+      display: inline-block;
+    }
+
+    .swatch.asset {
+      background: transparent;
+      border-top: 2px dashed var(--dash);
+      height: 0;
+    }
+
+    /* SVG chart — sempre visível, sem dependência de rede */
+    .chart-box {
+      width: 100%;
+      background: #fcfbfe;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      overflow: hidden;
+      position: relative;
+      -webkit-user-select: none;
+      user-select: none;
+    }
+
+    .chart-box svg {
+      display: block;
+      width: 100%;
+      height: auto;
+      min-height: 360px;
+      pointer-events: none; /* toque vai para o overlay HTML */
+    }
+
+    /* Camada HTML por cima do SVG — captura toque no celular */
+    .chart-overlay {
+      position: absolute;
+      left: 0;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 3;
+      touch-action: none;
+      cursor: crosshair;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .chart-touch-hint {
+      display: block;
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 8px;
+      text-align: center;
+    }
+
+    .mobile-sim {
+      display: block;
+      margin-top: 12px;
+      padding: 12px;
+      background: var(--bg);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+    }
+
+    .mobile-sim .sim-label {
+      margin-bottom: 6px;
+    }
+
+    .mobile-sim input[type="range"] {
+      margin-bottom: 0;
+      width: 100%;
+      height: 44px;
+      accent-color: var(--nubank);
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      .chart-touch-hint { display: none; }
+    }
+
+    .tooltip {
+      position: absolute;
+      pointer-events: none;
+      background: var(--ink);
+      color: #fff;
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      min-width: 160px;
+      opacity: 0;
+      z-index: 5;
+      transform: translate(-50%, -120%);
+      transition: opacity 0.1s ease;
+    }
+
+    .tooltip.on { opacity: 1; }
+
+    .tooltip .t-title {
+      font-weight: 600;
+      margin-bottom: 6px;
+      opacity: 0.85;
+      font-size: 11px;
+    }
+
+    .tooltip .row {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      margin-top: 3px;
+    }
+
+    .zones {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .zone {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 10px;
+      background: var(--bg);
+    }
+
+    .zone strong {
+      display: block;
+      font-size: 11px;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+
+    .zone p {
+      font-size: 11px;
+      color: var(--muted);
+      line-height: 1.35;
+    }
+
+    .sim-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 8px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .sim-label output {
+      font-weight: 700;
+      font-size: 18px;
+      color: var(--nubank);
+    }
+
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--nubank);
+      margin-bottom: 16px;
+      height: 28px;
+    }
+
+    .sim-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .sim-card {
+      background: var(--bg);
+      border-radius: 8px;
+      padding: 12px;
+      border: 1px solid var(--line);
+    }
+
+    .sim-card .lbl {
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+
+    .sim-card .val {
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .sim-card .val.pos { color: var(--success); }
+    .sim-card .val.neg { color: var(--danger); }
+
+    .regime {
+      font-size: 12px;
+      padding: 10px 12px;
+      border-radius: 8px;
+      background: rgba(130, 10, 209, 0.06);
+      color: var(--accent);
+      border: 1px solid rgba(130, 10, 209, 0.15);
+      line-height: 1.4;
+    }
+
+    .thesis { margin-top: 18px; }
+
+    .thesis p {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .thesis ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .thesis li {
+      font-size: 12px;
+      color: var(--ink);
+      padding-left: 14px;
+      position: relative;
+      line-height: 1.4;
+    }
+
+    .thesis li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 6px;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--nubank);
+    }
+
+    .speech-box {
+      margin-top: 20px;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-left: 4px solid var(--nubank);
+      border-radius: 12px;
+      padding: 20px 22px;
+    }
+    .speech-box h2 {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--nubank);
+      margin-bottom: 10px;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+    .speech-box p {
+      font-size: 14px;
+      color: var(--ink);
+      line-height: 1.55;
+      margin-bottom: 10px;
+    }
+    .speech-box p:last-child { margin-bottom: 0; }
+    .speech-box .speech-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+
+    .footer {
+      margin-top: 24px;
+      font-size: 11px;
+      color: var(--muted);
+      text-align: center;
+      line-height: 1.5;
+    }
+
+    .footer-alert {
+      margin-top: 16px;
+      font-size: 12px;
+      color: var(--ink);
+      text-align: center;
+      line-height: 1.55;
+      letter-spacing: 0.01em;
+    }
+
+    /* Contador de visitas: invisível para o leitor; só registra o acesso */
+    .visit-pixel {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      opacity: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .pitch-video {
+      margin-bottom: 20px;
+      background: #0b1f3a;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      overflow: hidden;
+      aspect-ratio: 16 / 9;
+      position: relative;
+    }
+
+    .pitch-video video {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      background: #0b1f3a;
+    }
+
+    .pitch-video-empty {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 13px;
+      text-align: center;
+      padding: 16px;
+      font-family: Segoe UI, Helvetica, Arial, sans-serif;
+    }
+
+    .pitch-video-empty strong {
+      color: #fff;
+      font-size: 14px;
+    }
+
+    .pitch-video.has-video .pitch-video-empty { display: none; }
+
+    .back-link {
+      margin: 0 0 14px;
+      font-size: 12px;
+    }
+
+    .back-link a {
+      color: #5c5470;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    @media (max-width: 1100px) {
+      .main { grid-template-columns: 1fr; }
+      .highlights { grid-template-columns: 1fr 1fr; }
+      .zones { grid-template-columns: 1fr 1fr; }
+      .meta-pills { justify-content: flex-start; }
+      .topbar { flex-direction: column; }
+    }
+
+    @media (max-width: 640px) {
+      .page { padding: 14px 12px 28px; }
+
+      .topbar {
+        gap: 12px;
+        margin-bottom: 14px;
+        padding-bottom: 12px;
+      }
+
+      h1 { font-size: 22px; }
+
+      .subtitle {
+        font-size: 12px;
+        max-width: none;
+      }
+
+      .meta-pills { gap: 6px; }
+
+      .pill {
+        padding: 5px 10px;
+        font-size: 11px;
+      }
+
+      .highlights {
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        margin-bottom: 12px;
+      }
+
+      .hi { padding: 10px; }
+
+      .hi h3 { font-size: 10px; margin-bottom: 4px; }
+
+      .hi p { font-size: 13px; }
+
+      .hi p span { font-size: 11px; }
+
+      /* No celular: gráfico e simulador primeiro */
+      .main {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .panel-chart { order: 1; }
+      .panel-sim { order: 2; }
+      .panel-structure { order: 3; }
+
+      .panel { padding: 12px; border-radius: 12px; }
+
+      .panel h2 {
+        font-size: 11px;
+        margin-bottom: 10px;
+      }
+
+      .chart-panel { padding: 12px; }
+
+      .chart-head {
+        flex-direction: column;
+        gap: 6px;
+        margin-bottom: 6px;
+      }
+
+      .chart-box svg {
+        min-height: 0;
+        max-height: 280px;
+      }
+
+      .zones {
+        grid-template-columns: 1fr 1fr;
+        gap: 6px;
+        margin-top: 8px;
+      }
+
+      .zone { padding: 8px; }
+
+      .zone strong { font-size: 10px; }
+
+      .zone p { font-size: 10px; }
+
+      /* Simulador completo já aparece abaixo; esconde o duplicado do gráfico */
+      .mobile-sim { display: none; }
+      .chart-touch-hint { display: none; }
+
+      .sim-cards { gap: 8px; }
+
+      .sim-card .val { font-size: 18px; }
+
+      .thesis { margin-top: 12px; }
+
+      .footer, .footer-alert { font-size: 10px; }
+
+      .tooltip {
+        font-size: 12px;
+        min-width: 140px;
+        padding: 10px 12px;
+      }
+    }
+    </style>
+</head>
+<body>
+  <div class="page">
+    <p class="back-link">
+      <a href="../../index.html">← Teses 2026</a>
+    </p>
+
+    <header class="topbar">
+      <div class="brand-block">
+        <div class="logos">
+          <span class="logo-btg">BTG PACTUAL</span>
+        </div>
+        <h1>Cyrela <span>Triplo Retorno KO</span></h1>
+        <p class="subtitle">
+          Estrutura sobre CYRE3 com participação de 3× na alta até +48%,
+          proteção com ganho na queda até −20%, e teto de +15% se o ativo atingir a barreira.
+        </p>
+      </div>
+      <div class="meta-pills">
+        <div class="pill"><strong>Ativo</strong> CYRE3</div>
+        <div class="pill"><strong>Prazo</strong> 1 ano</div>
+        <div class="pill"><strong>Vencimento</strong> 13/08/2027</div>
+        <div class="pill"><strong>Moeda</strong> BRL</div>
+        <div class="pill"><strong>Mínimo</strong> 1 lote (100)</div>
+        <div class="pill"><strong>Custo inicial</strong> 0%</div>
+      </div>
+    </header>
+
+    <section class="highlights">
+      <div class="hi">
+        <h3>Retorno potencial</h3>
+        <p>Até 3× a alta<span>Entre 0% e +48% do ativo</span></p>
+      </div>
+      <div class="hi">
+        <h3>Proteção</h3>
+        <p>Até −20%<span>Com ganho na queda moderada</span></p>
+      </div>
+      <div class="hi">
+        <h3>Custo inicial</h3>
+        <p>0%<span>Estrutura 100% financiada</span></p>
+      </div>
+      <div class="hi">
+        <h3>Prazo</h3>
+        <p>1 ano<span>Fixing 13/08/2027</span></p>
+      </div>
+    </section>
+
+    <div class="main">
+      <aside class="panel panel-structure">
+        <h2>Estrutura da operação</h2>
+        <table class="struct-table">
+          <thead>
+            <tr><th>Perna</th><th>Strike</th><th>Barreira</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="tag s">S</span> Call KI 1×</td>
+              <td>115,00%</td>
+              <td>KI 148,00%</td>
+            </tr>
+            <tr>
+              <td><span class="tag b">B</span> Call KO 2×</td>
+              <td class="strike-red">100,00%</td>
+              <td>KO 148,00%</td>
+            </tr>
+            <tr>
+              <td><span class="tag b">B</span> Put KO 2×</td>
+              <td class="strike-green">100,00%</td>
+              <td>KO 80,00%</td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="legend-note">
+          <strong>B</strong> = Compra · <strong>S</strong> = Venda<br />
+          Payoff = ativo long + opções.
+        </p>
+
+        <div class="thesis">
+          <h2>Leitura do research</h2>
+          <p>Leitura do report Empiricus + BTG (tese com ajuste fiscal):</p>
+          <ul>
+            <li>Qualidade de execução, disciplina financeira e atuação em alta renda e habitação popular</li>
+            <li>Resiliência operacional com potencial de crescimento se os juros caírem</li>
+            <li>Múltiplos atrativos dada a qualidade superior da companhia</li>
+            <li>Nome de duration de lucro no tijolo: o ajuste fiscal que fecha a curva reabre o crédito imobiliário</li>
+            <li>Estrutura: 3× na alta até +48% vs. proteção com ganho até −20%, custo zero</li>
+          </ul>
+          <p style="margin-top:14px">
+            <a
+              href="https://content.btgpactual.com/research/files/file/pt-BR/2026-08-14T165305.766_Relat_rio_Especial_Elei__es___Com_Ajuste_Fiscal_vf_7.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              style="color:#820ad1;font-weight:600;text-decoration:none"
+            >Acessar o report — tese com ajuste fiscal</a>
+          </p>
+        </div>
+      </aside>
+
+      <section class="panel chart-panel panel-chart">
+        <div class="chart-head">
+          <div>
+            <h2>Payoff da estrutura</h2>
+            <p class="chart-caption">Retorno no vencimento vs. variação do CYRE3</p>
+          </div>
+          <div class="chart-legend">
+            <span><i class="swatch"></i> Estrutura</span>
+            <span><i class="swatch asset"></i> Ativo</span>
+          </div>
+        </div>
+
+        <div class="chart-box" id="chartBox">
+          <div class="tooltip" id="tooltip"></div>
+          <svg id="payoffSvg" viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Gráfico de payoff CYRE3 Triplo Retorno KO">
+            <rect x="48" y="24" width="504" height="352" fill="#fcfbfe" />
+            <g id="gridLines" stroke="#ebe6f4" stroke-width="1"></g>
+
+            <line id="axisZeroX" x1="154.105" y1="24" x2="154.105" y2="376" stroke="#cfc7e0" stroke-width="1.25"/>
+            <line id="axisZeroY" x1="48" y1="298.732" x2="552" y2="298.732" stroke="#cfc7e0" stroke-width="1.25"/>
+
+            <g id="yLabels" fill="#8b83a0" font-size="11" font-family="Segoe UI, Arial, sans-serif" text-anchor="end"></g>
+            <g id="xLabels" fill="#8b83a0" font-size="11" font-family="Segoe UI, Arial, sans-serif" text-anchor="middle"></g>
+
+            <text x="300" y="16" fill="#5c5470" font-size="11" font-family="Segoe UI, Arial, sans-serif" text-anchor="middle">Variação do CYRE3 no vencimento (%)</text>
+            <text x="14" y="200" fill="#5c5470" font-size="11" font-family="Segoe UI, Arial, sans-serif" text-anchor="middle" transform="rotate(-90 14 200)">Retorno da estrutura (%)</text>
+
+            <polyline
+              id="assetPath"
+              fill="none"
+              stroke="#8b83a0"
+              stroke-width="1.75"
+              stroke-dasharray="6 5"
+              points="48,367 154,299 552,24"
+            />
+
+            <line
+              id="koGap"
+              x1="101" y1="333" x2="101" y2="264"
+              stroke="#c0392b" stroke-width="1.25" stroke-dasharray="3 3" opacity="0.7"
+            />
+
+            <path
+              id="structPath"
+              d="M 48 367 L 101 333"
+              fill="none"
+              stroke="#2f1b6d"
+              stroke-width="2.75"
+              stroke-linejoin="round"
+              stroke-linecap="round"
+            />
+
+            <circle id="koDot" cx="101" cy="264" r="5" fill="#c0392b"/>
+            <text id="koLabel" x="109" y="256" fill="#c0392b" font-size="11" font-weight="600" font-family="Segoe UI, Arial, sans-serif">KO −20%</text>
+
+            <circle id="kiDot" cx="287" cy="41" r="5" fill="#1f9d55"/>
+            <text id="kiLabel" x="170" y="36" fill="#1f9d55" font-size="11" font-weight="600" font-family="Segoe UI, Arial, sans-serif">Barreira +48%</text>
+
+            <circle id="capDot" cx="340" cy="273" r="4" fill="#2f1b6d"/>
+            <text id="capLabel" x="348" y="268" fill="#2f1b6d" font-size="11" font-weight="600" font-family="Segoe UI, Arial, sans-serif">Teto +15%</text>
+
+            <line id="hoverLine" x1="0" y1="24" x2="0" y2="376" stroke="rgba(130,10,209,0.35)" stroke-width="1.25" stroke-dasharray="4 4" visibility="hidden"/>
+            <circle id="hoverStruct" r="5.5" fill="#2f1b6d" visibility="hidden"/>
+            <circle id="hoverAsset" r="4" fill="#8b83a0" visibility="hidden"/>
+          </svg>
+          <div class="chart-overlay" id="chartOverlay" aria-label="Área interativa do gráfico"></div>
+        </div>
+
+        <p class="chart-touch-hint">Toque e arraste no gráfico · ou use o controle abaixo</p>
+
+        <div class="mobile-sim">
+          <div class="sim-label">
+            <span>Variação do CYRE3</span>
+            <output id="spotOutMobile">+20%</output>
+          </div>
+          <input
+            type="range"
+            id="spotSliderMobile"
+            min="-40"
+            max="150"
+            step="0.5"
+            value="20"
+            aria-label="Variação do CYRE3 no celular"
+          />
+        </div>
+
+        <div class="zones">
+          <div class="zone">
+            <strong>&lt; −20%</strong>
+            <p>Perda da proteção: retorno acompanha o ativo 1:1</p>
+          </div>
+          <div class="zone">
+            <strong>−20% → 0%</strong>
+            <p>Proteção do capital com ganho na queda</p>
+          </div>
+          <div class="zone">
+            <strong>0% → +48%</strong>
+            <p>Participação de 3× na alta do ativo</p>
+          </div>
+          <div class="zone">
+            <strong>&gt; +48%</strong>
+            <p>Se o ativo atingir a barreira: retorno limitado a +15%</p>
+          </div>
+        </div>
+      </section>
+
+      <aside class="panel panel-sim">
+        <h2>Simulador no vencimento</h2>
+        <div class="sim-label">
+          <span>Variação do CYRE3</span>
+          <output id="spotOut">+20%</output>
+        </div>
+        <input type="range" id="spotSlider" min="-40" max="150" step="0.5" value="20" aria-label="Variação do CYRE3" />
+
+        <div class="sim-cards">
+          <div class="sim-card">
+            <div class="lbl">Retorno do ativo</div>
+            <div class="val pos" id="assetVal">+20%</div>
+          </div>
+          <div class="sim-card">
+            <div class="lbl">Retorno da estrutura</div>
+            <div class="val pos" id="structVal">+60%</div>
+          </div>
+        </div>
+
+        <div class="regime" id="regimeText">Entre 0% e +48%: participação de 3× na alta.</div>
+
+        <div style="margin-top:18px">
+          <h2>Pontos-chave</h2>
+          <table class="struct-table">
+            <thead>
+              <tr><th>Spot</th><th>Ativo</th><th>Estrutura</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>−40%</td><td>−40%</td><td><strong>−40%</strong></td></tr>
+              <tr><td>−20%</td><td>−20%</td><td><strong>+20%</strong></td></tr>
+              <tr><td>−10%</td><td>−10%</td><td><strong>+10%</strong></td></tr>
+              <tr><td>0%</td><td>0%</td><td><strong>0%</strong></td></tr>
+              <tr><td>+20%</td><td>+20%</td><td><strong>+60%</strong></td></tr>
+              <tr><td>+40%</td><td>+40%</td><td><strong>+120%</strong></td></tr>
+              <tr><td>+47,5%</td><td>+47,5%</td><td><strong>+142,5%</strong></td></tr>
+              <tr><td>+48%</td><td>+48%</td><td><strong>+15%</strong></td></tr>
+              <tr><td>+80%</td><td>+80%</td><td><strong>+15%</strong></td></tr>
+              <tr><td>+120%</td><td>+120%</td><td><strong>+15%</strong></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </aside>
+    </div>
+
+    <section class="speech-box" aria-label="Speech comercial">
+      <h2>Speech comercial</h2>
+      <p class="speech-label">Para quem</p>
+      <p>
+        Cliente construtivo em Cyrela — execução e disciplina no residencial — que quer participar da alta com assimetria e algum piso na queda moderada.
+      </p>
+      <p class="speech-label">Por que agora</p>
+      <p>
+        A Cyrela combina qualidade de execução, disciplina financeira e exposição a alta renda e habitação popular. Na tese com ajuste, juros menores reabrem crédito e lançamento — é quando o residencial de qualidade reprecifica.
+      </p>
+      <p class="speech-label">O que sustenta a conversa</p>
+      <p>
+        Resiliência operacional mais potencial de crescimento num cenário de queda de juros. O report destaca múltiplos atrativos dada a qualidade superior. Não é um nome de alavancagem cega: é execução e balanço, com lucro mais sensível se a curva fechar.
+      </p>
+      <p class="speech-label">Como encaixa a estrutura</p>
+      <p>
+        Custo inicial <strong>zero</strong>.
+        Até +48% no CYRE3, participa com <strong>3 vezes</strong> a alta.
+        Na queda moderada (até −20%), em vez de perder, a estrutura ainda pode <strong>ganhar</strong>.
+        Se o ativo atingir a barreira, o retorno fica limitado a cerca de <strong>+15%</strong>.
+      </p>
+      <p class="speech-label">Fechamento</p>
+      <p>
+        Micro do report Empiricus + BTG + payoff fácil de explicar no vencimento.
+        Bom para alocação tática em ações com assimetria clara.
+        Material de uso interno — para condições oficiais, acessar o DIE no Admin BTG.
+      </p>
+    </section>
+
+    <p class="footer">
+      Material ilustrativo. Payoff intrínseco no vencimento, sem carrego/juros.
+      Não constitui oferta, recomendação ou garantia de rentabilidade. Produto estruturado envolve risco de perda de capital.
+      Acessar o DIE com informações.
+    </p>
+    <p class="footer-alert">
+      <strong>MATERIAL DE USO INTERNO, NÃO ENVIAR AOS CLIENTES</strong><br />
+      <strong>PARA INFORMAÇÕES OFICIAIS, ACESSAR O DIE DA OPERAÇÃO DISPONIBILIZADO NO ADMIN BTG</strong>
+    </p>
+  </div>
+
+  <img
+    class="visit-pixel"
+    src="https://hitscounter.dev/api/hit?url=https%3A%2F%2Fbtg-pactual.github.io%2Fbtg-distribuicao-rv%2Feleicoes%2Fops%2Fcyre3-triplo-retorno-ko%2F&label=visitas&icon=eye&color=%23820ad1&style=flat&tz=America%2FSao_Paulo"
+    alt=""
+    width="1"
+    height="1"
+    decoding="async"
+  />
+
+  <script>
+    (function () {
+      var UPSIDE = 48.0;
+      var PUT_KO = -20;
+      var CAP = 15;
+      var MULT = 3;
+      var X_MIN = -40, X_MAX = 150;
+      var Y_MIN = -45, Y_MAX = 180;
+      var PAD = { l: 48, t: 24, r: 48, b: 24 };
+      var VW = 600, VH = 400;
+      var PLOT_W = VW - PAD.l - PAD.r;
+      var PLOT_H = VH - PAD.t - PAD.b;
+
+      function structureReturn(x) {
+        if (x < PUT_KO) return x;
+        if (x < 0) return -x;
+        if (x < UPSIDE) return MULT * x;
+        return CAP;
+      }
+
+      function regimeFor(x) {
+        if (x < PUT_KO) return "Abaixo de −20%: perda da proteção — acompanha o ativo 1:1.";
+        if (x < 0) return "Entre −20% e 0%: proteção do capital com ganho na queda.";
+        if (x < UPSIDE) return "Entre 0% e +48%: participação de 3× na alta.";
+        return "Se o ativo atingir a barreira (+48%): retorno limitado a +15%.";
+      }
+
+      function fmtPct(n, digits) {
+        if (digits == null) digits = 1;
+        var sign = n > 0 ? "+" : "";
+        return sign + n.toFixed(digits).replace(".", ",") + "%";
+      }
+
+      function xToSvg(x) {
+        return PAD.l + ((x - X_MIN) / (X_MAX - X_MIN)) * PLOT_W;
+      }
+
+      function yToSvg(y) {
+        var yy = Math.max(Y_MIN, Math.min(Y_MAX, y));
+        return PAD.t + (1 - (yy - Y_MIN) / (Y_MAX - Y_MIN)) * PLOT_H;
+      }
+
+      function svgToX(px) {
+        return X_MIN + ((px - PAD.l) / PLOT_W) * (X_MAX - X_MIN);
+      }
+
+      function buildStructD() {
+        var d = "";
+        var first = true;
+        function move(x, y) {
+          first = true;
+          add(x, y);
+        }
+        function add(x, y) {
+          var cmd = first ? "M" : "L";
+          first = false;
+          d += cmd + " " + xToSvg(x).toFixed(3) + " " + yToSvg(y).toFixed(3) + " ";
+        }
+        for (var x = X_MIN; x <= PUT_KO; x += 0.5) add(x, x);
+        move(PUT_KO, -PUT_KO);
+        for (var x2 = PUT_KO + 0.5; x2 < UPSIDE; x2 += 0.5) add(x2, structureReturn(x2));
+        add(UPSIDE - 0.001, structureReturn(UPSIDE - 0.001));
+        move(UPSIDE, CAP);
+        for (var x3 = UPSIDE + 0.5; x3 <= X_MAX; x3 += 0.5) add(x3, CAP);
+        return d.trim();
+      }
+
+      function buildAssetPoints() {
+        var pts = [];
+        for (var x = X_MIN; x <= UPSIDE; x += 1) {
+          pts.push(xToSvg(x).toFixed(3) + "," + yToSvg(x).toFixed(3));
+        }
+        return pts.join(" ");
+      }
+
+      var grid = document.getElementById("gridLines");
+      var yLabels = document.getElementById("yLabels");
+      var xLabels = document.getElementById("xLabels");
+      if (grid && yLabels && xLabels) {
+        grid.innerHTML = "";
+        yLabels.innerHTML = "";
+        xLabels.innerHTML = "";
+        for (var y = -40; y <= Y_MAX; y += 20) {
+          var py = yToSvg(y);
+          grid.innerHTML += '<line x1="48" y1="' + py + '" x2="552" y2="' + py + '"/>';
+          yLabels.innerHTML += '<text x="42" y="' + (py + 3) + '">' + y + "%</text>";
+        }
+        for (var x = -40; x <= X_MAX - 10; x += 20) {
+          var px = xToSvg(x);
+          grid.innerHTML += '<line x1="' + px + '" y1="24" x2="' + px + '" y2="376"/>';
+          xLabels.innerHTML += '<text x="' + px + '" y="392">' + x + "%</text>";
+        }
+      }
+
+      document.getElementById("axisZeroX").setAttribute("x1", xToSvg(0));
+      document.getElementById("axisZeroX").setAttribute("x2", xToSvg(0));
+      document.getElementById("axisZeroY").setAttribute("y1", yToSvg(0));
+      document.getElementById("axisZeroY").setAttribute("y2", yToSvg(0));
+
+      document.getElementById("structPath").setAttribute("d", buildStructD());
+      document.getElementById("assetPath").setAttribute("points", buildAssetPoints());
+
+      var koX = xToSvg(PUT_KO);
+      document.getElementById("koGap").setAttribute("x1", koX);
+      document.getElementById("koGap").setAttribute("x2", koX);
+      document.getElementById("koGap").setAttribute("y1", yToSvg(PUT_KO));
+      document.getElementById("koGap").setAttribute("y2", yToSvg(-PUT_KO));
+      document.getElementById("koDot").setAttribute("cx", koX);
+      document.getElementById("koDot").setAttribute("cy", yToSvg(-PUT_KO));
+      document.getElementById("koLabel").setAttribute("x", koX + 8);
+      document.getElementById("koLabel").setAttribute("y", yToSvg(-PUT_KO) - 8);
+
+      var kiX = xToSvg(UPSIDE - 0.001);
+      var kiY = yToSvg(structureReturn(UPSIDE - 0.001));
+      document.getElementById("kiDot").setAttribute("cx", kiX);
+      document.getElementById("kiDot").setAttribute("cy", kiY);
+      var kiLabel = document.getElementById("kiLabel");
+      kiLabel.textContent = "Barreira +48%";
+      kiLabel.setAttribute("x", Math.max(56, kiX - 118));
+      kiLabel.setAttribute("y", Math.max(36, kiY + 4));
+
+      document.getElementById("capDot").setAttribute("cx", xToSvg(Math.min(X_MAX - 10, UPSIDE + 20)));
+      document.getElementById("capDot").setAttribute("cy", yToSvg(CAP));
+      document.getElementById("capLabel").setAttribute("x", xToSvg(Math.min(X_MAX - 10, UPSIDE + 20)) + 8);
+      document.getElementById("capLabel").setAttribute("y", yToSvg(CAP) - 8);
+
+      var hoverLine = document.getElementById("hoverLine");
+      var hoverStruct = document.getElementById("hoverStruct");
+      var hoverAsset = document.getElementById("hoverAsset");
+      var overlay = document.getElementById("chartOverlay");
+      var tooltip = document.getElementById("tooltip");
+      var svg = document.getElementById("payoffSvg");
+      var slider = document.getElementById("spotSlider");
+      var sliderMobile = document.getElementById("spotSliderMobile");
+      var spotOut = document.getElementById("spotOut");
+      var spotOutMobile = document.getElementById("spotOutMobile");
+      var assetVal = document.getElementById("assetVal");
+      var structVal = document.getElementById("structVal");
+      var regimeText = document.getElementById("regimeText");
+      var activePointer = null;
+
+      function showAt(x) {
+        x = Math.max(X_MIN, Math.min(X_MAX, x));
+        var ys = structureReturn(x);
+        var sx = xToSvg(x);
+        var sy = yToSvg(ys);
+        var ay = yToSvg(x);
+
+        hoverLine.setAttribute("x1", sx);
+        hoverLine.setAttribute("x2", sx);
+        hoverLine.setAttribute("visibility", "visible");
+        hoverStruct.setAttribute("cx", sx);
+        hoverStruct.setAttribute("cy", sy);
+        hoverStruct.setAttribute("visibility", "visible");
+        hoverAsset.setAttribute("cx", sx);
+        hoverAsset.setAttribute("cy", ay);
+        hoverAsset.setAttribute("visibility", "visible");
+
+        tooltip.innerHTML =
+          '<div class="t-title">Spot final ' + fmtPct(x) + "</div>" +
+          '<div class="row"><span>Ativo</span><strong>' + fmtPct(x) + "</strong></div>" +
+          '<div class="row"><span>Estrutura</span><strong>' + fmtPct(ys) + "</strong></div>";
+        tooltip.classList.add("on");
+
+        var svgRect = svg.getBoundingClientRect();
+        var left = Math.max(70, Math.min(svgRect.width - 70, sx * svgRect.width / VW));
+        var top = Math.max(40, sy * svgRect.height / VH);
+        tooltip.style.left = left + "px";
+        tooltip.style.top = top + "px";
+
+        if (slider) slider.value = String(x);
+        if (sliderMobile) sliderMobile.value = String(x);
+        var label = fmtPct(x, x % 1 === 0 ? 0 : 1);
+        if (spotOut) spotOut.textContent = label;
+        if (spotOutMobile) spotOutMobile.textContent = label;
+        if (assetVal) {
+          assetVal.textContent = fmtPct(x);
+          assetVal.className = "val " + (x > 0 ? "pos" : x < 0 ? "neg" : "");
+        }
+        if (structVal) {
+          structVal.textContent = fmtPct(ys);
+          structVal.className = "val " + (ys > 0 ? "pos" : ys < 0 ? "neg" : "");
+        }
+        if (regimeText) regimeText.textContent = regimeFor(x);
+      }
+
+      function clientToSvgX(clientX) {
+        var rect = svg.getBoundingClientRect();
+        if (!rect.width) return 0;
+        return svgToX(((clientX - rect.left) / rect.width) * VW);
+      }
+
+      function updateFromEvent(e) {
+        showAt(clientToSvgX(e.clientX));
+      }
+
+      overlay.addEventListener("pointerdown", function (e) {
+        activePointer = e.pointerId;
+        overlay.setPointerCapture(e.pointerId);
+        updateFromEvent(e);
+      });
+
+      overlay.addEventListener("pointermove", function (e) {
+        if (activePointer !== null && e.pointerId !== activePointer) return;
+        if (e.pointerType === "mouse" || activePointer !== null) {
+          updateFromEvent(e);
+        }
+      });
+
+      function endPointer(e) {
+        if (activePointer !== null && e.pointerId !== activePointer) return;
+        activePointer = null;
+        try { overlay.releasePointerCapture(e.pointerId); } catch (err) {}
+      }
+
+      overlay.addEventListener("pointerup", endPointer);
+      overlay.addEventListener("pointercancel", endPointer);
+      overlay.addEventListener("pointerleave", function (e) {
+        if (e.pointerType === "mouse" && activePointer === null) {
+          hoverLine.setAttribute("visibility", "hidden");
+          hoverStruct.setAttribute("visibility", "hidden");
+          hoverAsset.setAttribute("visibility", "hidden");
+          tooltip.classList.remove("on");
+        }
+      });
+
+      overlay.addEventListener("touchstart", function (e) {
+        if (e.touches && e.touches[0]) {
+          e.preventDefault();
+          showAt(clientToSvgX(e.touches[0].clientX));
+        }
+      }, { passive: false });
+
+      overlay.addEventListener("touchmove", function (e) {
+        if (e.touches && e.touches[0]) {
+          e.preventDefault();
+          showAt(clientToSvgX(e.touches[0].clientX));
+        }
+      }, { passive: false });
+
+      function onSliderInput(e) {
+        showAt(Number(e.target.value));
+      }
+      if (slider) slider.addEventListener("input", onSliderInput);
+      if (sliderMobile) {
+        sliderMobile.addEventListener("input", onSliderInput);
+        sliderMobile.addEventListener("change", onSliderInput);
+      }
+
+      showAt(Number((slider && slider.value) || 20));
+    })();
+  </script>
+</body>
+</html>
