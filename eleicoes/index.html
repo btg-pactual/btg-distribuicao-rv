@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Teses 2026 — Triplo Retorno KO | BTG Pactual</title>
+  <title>Teses 2026 | BTG Pactual</title>
   <style>
     :root {
       --btg: #0b1f3a;
@@ -15,228 +15,75 @@
       --line: #d0d8e2;
       --bg: #eef2f6;
       --card: #ffffff;
+      --sem: #8a2a2a;
+      --com: #0d6e6e;
     }
-
     * { box-sizing: border-box; margin: 0; padding: 0; }
-
     body {
       font-family: Segoe UI, -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif;
-      color: var(--ink);
-      background: var(--bg);
-      min-height: 100vh;
-      line-height: 1.45;
+      color: var(--ink); background: var(--bg); min-height: 100vh; line-height: 1.45;
     }
-
     .hero {
       background: linear-gradient(135deg, var(--btg) 0%, var(--btg-mid) 55%, var(--btg-blue) 100%);
-      color: #fff;
-      padding: 36px 24px 40px;
+      color: #fff; padding: 36px 24px 40px;
     }
-
     .hero-inner { max-width: 960px; margin: 0 auto; }
-
     .logo-btg {
-      display: inline-block;
-      font-weight: 700;
-      font-size: 12px;
-      letter-spacing: 0.1em;
-      color: #fff;
-      border: 1px solid rgba(255, 255, 255, 0.35);
-      padding: 7px 12px;
-      border-radius: 2px;
-      margin-bottom: 22px;
+      display: inline-block; font-weight: 700; font-size: 12px; letter-spacing: 0.1em;
+      color: #fff; border: 1px solid rgba(255,255,255,0.35); padding: 7px 12px;
+      border-radius: 2px; margin-bottom: 22px;
     }
-
-    .hero-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-      gap: 24px;
-    }
-
-    h1 {
-      font-size: clamp(28px, 4.5vw, 40px);
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      line-height: 1.15;
-    }
-
-    .lede {
-      margin-top: 12px;
-      font-size: 15px;
-      color: rgba(255, 255, 255, 0.82);
-      max-width: 38em;
-    }
-
+    .hero-row { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; }
+    h1 { font-size: clamp(28px, 4.5vw, 40px); font-weight: 700; letter-spacing: -0.02em; line-height: 1.15; }
+    .lede { margin-top: 12px; font-size: 15px; color: rgba(255,255,255,0.82); max-width: 40em; }
     .badge {
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: #fff;
-      border: 1px solid rgba(255, 255, 255, 0.35);
-      padding: 8px 12px;
-      border-radius: 2px;
-      white-space: nowrap;
+      font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+      color: #fff; border: 1px solid rgba(255,255,255,0.35); padding: 8px 12px; border-radius: 2px; white-space: nowrap;
     }
-
-    .page {
-      max-width: 960px;
-      margin: 0 auto;
-      padding: 28px 24px 56px;
-    }
-
+    .page { max-width: 960px; margin: 0 auto; padding: 28px 24px 56px; }
     h2 {
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--btg-blue);
-      margin: 28px 0 14px;
+      font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--btg-blue); margin-bottom: 14px;
     }
-
-    h2:first-of-type { margin-top: 0; }
-
-    .sec-note {
-      font-size: 13px;
-      color: var(--muted);
-      margin: -6px 0 14px;
-      max-width: 48em;
+    .snapshot {
+      background: var(--card); border: 1px solid var(--line); border-radius: 4px;
+      padding: 16px 20px; margin-bottom: 22px;
     }
-
-    .ops {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-
-    .op-block {
-      background: var(--card);
-      border: 1px solid var(--line);
-      border-radius: 4px;
-      overflow: hidden;
-    }
-
+    .snapshot p { font-size: 13px; color: var(--muted); max-width: 54em; }
+    .snapshot p + p { margin-top: 10px; }
+    .nums { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 8px; }
+    .ops { list-style: none; display: flex; flex-direction: column; gap: 20px; }
+    .op-block { background: var(--card); border: 1px solid var(--line); border-radius: 4px; overflow: hidden; }
     .op {
-      display: block;
-      text-decoration: none;
-      color: inherit;
-      padding: 18px 20px;
-      border-bottom: 1px solid var(--line);
+      display: block; text-decoration: none; color: inherit; padding: 22px 22px 18px;
       transition: background 0.12s ease;
     }
-
-    .op:hover,
-    .op:focus-visible {
-      background: #f5f8fc;
-      outline: none;
-    }
-
-    .op-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      gap: 12px;
-      margin-bottom: 6px;
-    }
-
-    .op-title {
-      font-size: 17px;
-      font-weight: 700;
-      color: var(--btg);
-    }
-
-    .op-ticker {
-      font-size: 12px;
-      font-weight: 700;
-      color: var(--link);
-      letter-spacing: 0.04em;
-    }
-
-    .op-blurb {
-      font-size: 13px;
-      color: var(--muted);
-    }
-
-    .op-meta {
-      margin-top: 10px;
-      font-size: 11px;
-      color: var(--muted);
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
+    .op:hover, .op:focus-visible { background: #f5f8fc; outline: none; }
+    .op-bar { height: 6px; }
+    .op-bar.sem { background: var(--sem); }
+    .op-bar.com { background: var(--com); }
+    .op-top { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 8px; }
+    .op-title { font-size: 20px; font-weight: 700; color: var(--btg); }
+    .op-ticker { font-size: 12px; font-weight: 700; color: var(--link); letter-spacing: 0.04em; }
+    .op-blurb { font-size: 14px; color: var(--muted); max-width: 48em; }
+    .op-meta { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 8px; }
     .pill {
-      background: #eef2f6;
-      border: 1px solid var(--line);
-      border-radius: 2px;
-      padding: 4px 10px;
-      color: var(--btg-mid);
-      font-weight: 600;
+      background: #eef2f6; border: 1px solid var(--line); border-radius: 2px;
+      padding: 4px 10px; color: var(--btg-mid); font-size: 11px; font-weight: 600;
     }
-
-    .op-cta {
-      margin-top: 10px;
-      font-size: 12px;
-      font-weight: 700;
-      color: var(--link);
-    }
-
-    .op-speech {
-      padding: 16px 20px 18px;
-      background: #f7f9fc;
-    }
-
-    .op-speech h3 {
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--btg-blue);
-      margin-bottom: 8px;
-    }
-
-    .op-speech p {
-      font-size: 13px;
-      color: var(--ink);
-      line-height: 1.5;
-    }
-
+    .op-cta { margin-top: 14px; font-size: 12px; font-weight: 700; color: var(--link); }
     .reports {
-      margin-top: 32px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
+      margin-top: 28px; display: flex; flex-direction: column; gap: 8px;
     }
-
     .reports a {
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--link);
-      text-decoration: none;
+      font-size: 13px; font-weight: 700; color: var(--link); text-decoration: none;
     }
-
     .reports a:hover { text-decoration: underline; }
-
     .footer {
-      margin-top: 32px;
-      padding-top: 16px;
-      border-top: 1px solid var(--line);
-      font-size: 11px;
-      color: var(--muted);
-      text-align: center;
-      line-height: 1.55;
+      margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--line);
+      font-size: 11px; color: var(--muted); text-align: center; line-height: 1.55;
     }
-
-    .footer strong {
-      display: block;
-      margin-top: 10px;
-      color: var(--btg);
-      letter-spacing: 0.02em;
-    }
-
+    .footer strong { display: block; margin-top: 10px; color: var(--btg); }
     @media (max-width: 640px) {
       .hero { padding: 28px 16px 32px; }
       .page { padding: 20px 16px 48px; }
@@ -252,8 +99,8 @@
         <div>
           <h1>Teses 2026</h1>
           <p class="lede">
-            Sete operações Triplo Retorno KO. Internacional na tese sem ajuste fiscal;
-            Brasil na tese com ajuste fiscal. Payoff interativo no vencimento.
+            Duas teses dos reports especiais Empiricus + BTG Research.
+            Escolha o cenário: resumo macro e, na sequência, as operações Triplo Retorno KO.
           </p>
         </div>
         <div class="badge">Uso interno</div>
@@ -262,173 +109,73 @@
   </header>
 
   <main class="page">
-    <h2>Internacional</h2>
-    <p class="sec-note">Tese sem ajuste fiscal — qualidade e crescimento fora do Brasil.</p>
-    <ul class="ops">
-      <li class="op-block">
-        <a class="op" href="./ops/nvdc34-triplo-retorno-ko/index.html">
-          <div class="op-top">
-            <span class="op-title">Nvidia Triplo Retorno KO</span>
-            <span class="op-ticker">NVDC34</span>
-          </div>
-          <p class="op-blurb">3× na alta até +54%, proteção com ganho até −20%, teto +15% se o ativo atingir a barreira. Custo inicial 0%.</p>
-          <div class="op-meta">
-            <span class="pill">Equity</span>
-            <span class="pill">1 ano</span>
-            <span class="pill">Venc. 13/08/2027</span>
-            <span class="pill">Custo 0%</span>
-          </div>
-          <div class="op-cta">Abrir material →</div>
-        </a>
-        <div class="op-speech">
-          <h3>Speech comercial</h3>
-          <p>
-            Receita de US$ 81,6 bi no trimestre (+85%); data center em US$ 75,2 bi, margem bruta perto de 75%. Infraestrutura de inteligência artificial, com teto se o ativo atingir a barreira.
-          </p>
-        </div>
-      </li>
-      <li class="op-block">
-        <a class="op" href="./ops/gogl34-triplo-retorno-ko/index.html">
-          <div class="op-top">
-            <span class="op-title">Alphabet Triplo Retorno KO</span>
-            <span class="op-ticker">GOGL34</span>
-          </div>
-          <p class="op-blurb">3× na alta até +45%, proteção com ganho até −20%, teto +15% se o ativo atingir a barreira. Custo inicial 0%.</p>
-          <div class="op-meta">
-            <span class="pill">Equity</span>
-            <span class="pill">1 ano</span>
-            <span class="pill">Venc. 13/08/2027</span>
-            <span class="pill">Custo 0%</span>
-          </div>
-          <div class="op-cta">Abrir material →</div>
-        </a>
-        <div class="op-speech">
-          <h3>Speech comercial</h3>
-          <p>
-            Nuvem +48% no 4T25 (US$ 17,7 bi), margem operacional 30,1% e carteira de US$ 240 bi. Publicidade, Gemini e caixa — com teto se o ativo atingir a barreira.
-          </p>
-        </div>
-      </li>
-      <li class="op-block">
-        <a class="op" href="./ops/lily34-triplo-retorno-ko/index.html">
-          <div class="op-top">
-            <span class="op-title">Eli Lilly Triplo Retorno KO</span>
-            <span class="op-ticker">LILY34</span>
-          </div>
-          <p class="op-blurb">3× na alta até +50%, proteção com ganho até −20%, teto +15% se o ativo atingir a barreira. Custo inicial 0%.</p>
-          <div class="op-meta">
-            <span class="pill">Equity</span>
-            <span class="pill">1 ano</span>
-            <span class="pill">Venc. 13/08/2027</span>
-            <span class="pill">Custo 0%</span>
-          </div>
-          <div class="op-cta">Abrir material →</div>
-        </a>
-        <div class="op-speech">
-          <h3>Speech comercial</h3>
-          <p>
-            Receita +56% no 1T26; Mounjaro +125% e Zepbound EUA +79%. Projeção do ano em US$ 82–85 bi. Tese de obesidade e diabetes com teto se o ativo atingir a barreira.
-          </p>
-        </div>
-      </li>
-    </ul>
+    <h2>Ponto de partida</h2>
+    <section class="snapshot">
+      <p>
+        Fotografia fiscal em 12 meses até jun/2026 e mercado em 05/08/2026 — a mesma base dos dois reports.
+      </p>
+      <p>
+        As faixas de cada tese são exercício de sensibilidade, não projeção pontual.
+      </p>
+      <div class="nums">
+        <span class="pill">Primário −1,19% PIB</span>
+        <span class="pill">Juros 8,80%</span>
+        <span class="pill">Nominal −9,99%</span>
+        <span class="pill">Dívida 81,9%</span>
+        <span class="pill">DI jan/27 13,8%</span>
+        <span class="pill">DI jan/31 14,2%</span>
+        <span class="pill">Dólar R$ 5,13</span>
+        <span class="pill">Ibov ~178 mil</span>
+      </div>
+    </section>
 
-    <h2>Brasil</h2>
-    <p class="sec-note">Tese com ajuste fiscal — duration de lucro e infraestrutura de mercado.</p>
+    <h2>Escolha o cenário</h2>
     <ul class="ops">
       <li class="op-block">
-        <a class="op" href="./ops/b3sa3-triplo-retorno-ko/index.html">
+        <div class="op-bar com"></div>
+        <a class="op" href="./com-ajuste/">
           <div class="op-top">
-            <span class="op-title">B3 Triplo Retorno KO</span>
-            <span class="op-ticker">B3SA3</span>
+            <span class="op-title">Com ajuste fiscal</span>
+            <span class="op-ticker">Brasil</span>
           </div>
-          <p class="op-blurb">3× na alta até +42%, proteção com ganho até −20%, teto +15% se o ativo atingir a barreira. Custo inicial 0%.</p>
-          <div class="op-meta">
-            <span class="pill">Equity</span>
-            <span class="pill">1 ano</span>
-            <span class="pill">Venc. 13/08/2027</span>
-            <span class="pill">Custo 0%</span>
-          </div>
-          <div class="op-cta">Abrir material →</div>
-        </a>
-        <div class="op-speech">
-          <h3>Speech comercial</h3>
-          <p>
-            Infraestrutura do mercado, receita resiliente e diversificação além da renda variável. Ganha com fluxo e mercado de capitais se o ajuste fiscal reabrir o apetite por Brasil.
+          <p class="op-blurb">
+            Programa crível reduz prêmio fiscal: curva longa fecha, real fortalece, bolsa doméstica reprecifica.
+            Quatro operações Triplo Retorno KO em ações brasileiras.
           </p>
-        </div>
+          <div class="op-meta">
+            <span class="pill">DI 31 11,7–12,4%</span>
+            <span class="pill">Dólar R$ 4,65–4,90</span>
+            <span class="pill">Ibov 205–225 mil</span>
+            <span class="pill">B3SA3 · SMFT3 · CYRE3 · RENT3</span>
+          </div>
+          <div class="op-cta">Abrir tese com ajuste →</div>
+        </a>
       </li>
       <li class="op-block">
-        <a class="op" href="./ops/smft3-triplo-retorno-ko/index.html">
+        <div class="op-bar sem"></div>
+        <a class="op" href="./sem-ajuste/">
           <div class="op-top">
-            <span class="op-title">Smart Fit Triplo Retorno KO</span>
-            <span class="op-ticker">SMFT3</span>
+            <span class="op-title">Sem ajuste fiscal</span>
+            <span class="op-ticker">Internacional</span>
           </div>
-          <p class="op-blurb">3× na alta até +49%, proteção com ganho até −20%, teto +15% se o ativo atingir a barreira. Custo inicial 0%.</p>
-          <div class="op-meta">
-            <span class="pill">Equity</span>
-            <span class="pill">1 ano</span>
-            <span class="pill">Venc. 13/08/2027</span>
-            <span class="pill">Custo 0%</span>
-          </div>
-          <div class="op-cta">Abrir material →</div>
-        </a>
-        <div class="op-speech">
-          <h3>Speech comercial</h3>
-          <p>
-            Líder de academias na América Latina, expansão e mercados pouco penetrados. Duration de lucro: ganha se o custo de capital doméstico cair.
+          <p class="op-blurb">
+            Sem superávit recorrente, a dívida segue em alta. Juros longos, câmbio e bolsa sofrem.
+            Três operações Triplo Retorno KO em qualidade e crescimento fora do Brasil.
           </p>
-        </div>
-      </li>
-      <li class="op-block">
-        <a class="op" href="./ops/cyre3-triplo-retorno-ko/index.html">
-          <div class="op-top">
-            <span class="op-title">Cyrela Triplo Retorno KO</span>
-            <span class="op-ticker">CYRE3</span>
-          </div>
-          <p class="op-blurb">3× na alta até +48%, proteção com ganho até −20%, teto +15% se o ativo atingir a barreira. Custo inicial 0%.</p>
           <div class="op-meta">
-            <span class="pill">Equity</span>
-            <span class="pill">1 ano</span>
-            <span class="pill">Venc. 13/08/2027</span>
-            <span class="pill">Custo 0%</span>
+            <span class="pill">DI 31 16,5–17,5%</span>
+            <span class="pill">Dólar R$ 6,15–6,65</span>
+            <span class="pill">Ibov 116–134 mil</span>
+            <span class="pill">NVDC34 · GOGL34 · LILY34</span>
           </div>
-          <div class="op-cta">Abrir material →</div>
+          <div class="op-cta">Abrir tese sem ajuste →</div>
         </a>
-        <div class="op-speech">
-          <h3>Speech comercial</h3>
-          <p>
-            Execução, disciplina financeira e mix de alta renda com habitação popular. Múltiplos atrativos; ganha se a queda de juros reabrir o crédito imobiliário.
-          </p>
-        </div>
-      </li>
-      <li class="op-block">
-        <a class="op" href="./ops/rent3-triplo-retorno-ko/index.html">
-          <div class="op-top">
-            <span class="op-title">Localiza Triplo Retorno KO</span>
-            <span class="op-ticker">RENT3</span>
-          </div>
-          <p class="op-blurb">3× na alta até +42%, proteção com ganho até −20%, teto +15% se o ativo atingir a barreira. Custo inicial 0%.</p>
-          <div class="op-meta">
-            <span class="pill">Equity</span>
-            <span class="pill">1 ano</span>
-            <span class="pill">Venc. 13/08/2027</span>
-            <span class="pill">Custo 0%</span>
-          </div>
-          <div class="op-cta">Abrir material →</div>
-        </a>
-        <div class="op-speech">
-          <h3>Speech comercial</h3>
-          <p>
-            Líder de locação na América Latina e terceirização de frotas ainda pouco penetrada. Escala, custo de capital e recuperação de rentabilidade se os juros caírem.
-          </p>
-        </div>
       </li>
     </ul>
 
     <div class="reports">
-      <a href="https://content.btgpactual.com/research/files/file/pt-BR/2026-08-14T165224.761_Relat_rio_Especial_Elei__es___Sem_Ajuste_Fiscal_vf_9.pdf" target="_blank" rel="noopener noreferrer">Abrir report — tese sem ajuste fiscal ↗</a>
-      <a href="https://content.btgpactual.com/research/files/file/pt-BR/2026-08-14T165305.766_Relat_rio_Especial_Elei__es___Com_Ajuste_Fiscal_vf_7.pdf" target="_blank" rel="noopener noreferrer">Abrir report — tese com ajuste fiscal ↗</a>
+      <a href="https://content.btgpactual.com/research/files/file/pt-BR/2026-08-14T165305.766_Relat_rio_Especial_Elei__es___Com_Ajuste_Fiscal_vf_7.pdf" target="_blank" rel="noopener noreferrer">Abrir report — Com ajuste fiscal ↗</a>
+      <a href="https://content.btgpactual.com/research/files/file/pt-BR/2026-08-14T165224.761_Relat_rio_Especial_Elei__es___Sem_Ajuste_Fiscal_vf_9.pdf" target="_blank" rel="noopener noreferrer">Abrir report — Sem ajuste fiscal ↗</a>
     </div>
 
     <p class="footer">

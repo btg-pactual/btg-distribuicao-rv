@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Com ajuste fiscal — Teses 2026 | BTG Pactual</title>
+  <style>
+    :root {
+      --btg: #0b1f3a; --btg-mid: #163a5f; --btg-blue: #1e4d7b; --link: #1a66b3;
+      --ink: #0b1f3a; --muted: #5c6b7a; --line: #d0d8e2; --bg: #eef2f6; --card: #ffffff; --accent: #0d6e6e;
+      --b3: #F39200; --smft: #FFD100; --cyre: #C45C26; --rent: #C5D32E;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: Segoe UI, -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif;
+      color: var(--ink); background: var(--bg); min-height: 100vh; line-height: 1.45;
+    }
+    .hero {
+      background: linear-gradient(135deg, #0b3d3d 0%, #0d6e6e 55%, #1e4d7b 100%);
+      color: #fff; padding: 36px 24px 40px;
+    }
+    .hero-inner { max-width: 960px; margin: 0 auto; }
+    .logo-btg {
+      display: inline-block; font-weight: 700; font-size: 12px; letter-spacing: 0.1em;
+      color: #fff; border: 1px solid rgba(255,255,255,0.35); padding: 7px 12px;
+      border-radius: 2px; margin-bottom: 22px;
+    }
+    .hero-row { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; }
+    h1 { font-size: clamp(26px, 4.5vw, 38px); font-weight: 700; letter-spacing: -0.02em; line-height: 1.15; max-width: 16em; }
+    .lede { margin-top: 12px; font-size: 15px; color: rgba(255,255,255,0.85); max-width: 40em; }
+    .badge {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+      color: #fff; border: 1px solid rgba(255,255,255,0.35); padding: 8px 12px; border-radius: 2px; white-space: nowrap;
+    }
+    .page { max-width: 960px; margin: 0 auto; padding: 28px 24px 56px; }
+    .back { display: inline-block; font-size: 13px; font-weight: 600; color: var(--link); text-decoration: none; margin-bottom: 22px; }
+    .back:hover { text-decoration: underline; }
+    h2 {
+      font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 12px;
+    }
+    .context {
+      background: var(--card); border: 1px solid var(--line); border-radius: 4px;
+      padding: 20px 22px; margin-bottom: 22px;
+    }
+    .context p { font-size: 14px; max-width: 54em; }
+    .context p + p { margin-top: 10px; }
+    .nums { margin-top: 14px; display: flex; flex-wrap: wrap; gap: 8px; }
+    .pill {
+      background: #eef2f6; border: 1px solid var(--line); border-radius: 2px;
+      padding: 4px 10px; color: var(--btg-mid); font-size: 11px; font-weight: 600;
+    }
+    .report {
+      display: inline-block; margin: 0 0 28px; font-size: 13px; font-weight: 700;
+      color: var(--link); text-decoration: none;
+    }
+    .report:hover { text-decoration: underline; }
+    .speech {
+      background: var(--card); border: 1px solid var(--line); border-left: 4px solid var(--accent);
+      border-radius: 4px; padding: 18px 20px; margin-bottom: 28px;
+    }
+    .speech h2 { margin-bottom: 10px; }
+    .speech-label {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--btg-blue); margin: 12px 0 4px;
+    }
+    .speech p { font-size: 14px; line-height: 1.5; max-width: 54em; }
+    .ops { list-style: none; display: flex; flex-direction: column; gap: 16px; margin-bottom: 12px; }
+    .op-block { background: var(--card); border: 1px solid var(--line); border-radius: 4px; overflow: hidden; }
+    .op {
+      display: block; text-decoration: none; color: inherit; padding: 18px 20px;
+      transition: background 0.12s ease;
+    }
+    .op:hover, .op:focus-visible { background: #f5f8fc; outline: none; }
+    .op-bar { height: 6px; }
+    .op-top { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 6px; }
+    .op-title { font-size: 17px; font-weight: 700; color: var(--btg); }
+    .op-ticker { font-size: 12px; font-weight: 700; color: var(--link); letter-spacing: 0.04em; }
+    .op-blurb { font-size: 13px; color: var(--muted); max-width: 48em; }
+    .op-meta { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 8px; font-size: 11px; }
+    .op-cta { margin-top: 10px; font-size: 12px; font-weight: 700; color: var(--link); }
+    .footer {
+      margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--line);
+      font-size: 11px; color: var(--muted); text-align: center; line-height: 1.55;
+    }
+    .footer strong { display: block; margin-top: 10px; color: var(--btg); }
+    @media (max-width: 640px) {
+      .hero { padding: 28px 16px 32px; }
+      .page { padding: 20px 16px 48px; }
+      .hero-row { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="logo-btg">BTG PACTUAL</div>
+      <div class="hero-row">
+        <div>
+          <h1>Com ajuste fiscal</h1>
+          <p class="lede">
+            Os investimentos para um Brasil fiscalmente organizado em 2027.
+            Report especial Empiricus + BTG Research · 14/08/2026.
+          </p>
+        </div>
+        <div class="badge">Uso interno</div>
+      </div>
+    </div>
+  </header>
+
+  <main class="page">
+    <a class="back" href="../index.html">← Teses 2026</a>
+
+    <section class="context">
+      <h2>Resumo macro</h2>
+      <p>
+        O Brasil não enfrenta crise imediata de financiamento, mas o mix de déficit primário (1,19% do PIB),
+        juros nominais de 8,80% e dívida bruta em 81,9% do PIB mantém um prêmio fiscal alto nos ativos.
+        Cumprir a meta anual não estabiliza a dívida: o que importa é o resultado efetivo, não o número da regra.
+      </p>
+      <p>
+        Um ajuste <strong>crível</strong> — despesa obrigatória, metas verificáveis, cronograma plurianual —
+        reduziria juros longos <em>antes</em> mesmo da Selic, fortaleceria o real e reprecificaria a bolsa.
+        A composição importa: pacote só de imposto ajuda mais renda fixa e câmbio; desacelerar gasto reprecifica ações de forma mais ampla.
+        O alvo é superávit primário recorrente de 1,5% a 2,0% do PIB (cerca de 2,7 a 3,2 p.p. de melhora).
+      </p>
+      <p>
+        Referência de mercado em 05/08/2026: DI jan/27 13,8%, DI jan/31 14,2%, dólar R$ 5,13, Ibovespa ~178 mil.
+        No cenário de ajuste crível (12–24 meses): DI 31 em <strong>11,7–12,4%</strong>, dólar <strong>R$ 4,65–4,90</strong>,
+        Ibov <strong>205–225 mil</strong>. IPCA+ longo (prazo 10–12) pode ganhar da ordem de 20–35% se a curva fechar 200–300 bps.
+        A assimetria é positiva porque o preço já carrega prêmio fiscal — mas o rali só se sustenta se a execução confirmar o anúncio.
+      </p>
+      <div class="nums">
+        <span class="pill">Primário −1,19% PIB</span>
+        <span class="pill">Juros 8,80%</span>
+        <span class="pill">Nominal −9,99%</span>
+        <span class="pill">Dívida 81,9%</span>
+        <span class="pill">Alvo primário +1,5 a +2,0%</span>
+        <span class="pill">Fechamento da curva longa</span>
+      </div>
+    </section>
+
+    <a class="report" href="https://content.btgpactual.com/research/files/file/pt-BR/2026-08-14T165305.766_Relat_rio_Especial_Elei__es___Com_Ajuste_Fiscal_vf_7.pdf" target="_blank" rel="noopener noreferrer">Abrir report — Com ajuste fiscal ↗</a>
+
+    <section class="speech">
+      <h2>Speech comercial</h2>
+      <p class="speech-label">Para quem</p>
+      <p>
+        Cliente construtivo no Brasil se o fiscal virar: custo de capital cai, múltiplos expandem, crédito e atividade voltam.
+        Quer a tese doméstica com payoff de Triplo Retorno KO — participar da alta com assimetria, colchão na queda e teto se o ativo atingir a barreira.
+      </p>
+      <p class="speech-label">Por que agora</p>
+      <p>
+        No ajuste crível o Ibov vai a 205–225 mil; no ajuste forte, 230–260 mil.
+        B3 captura fluxo e mercado de capitais; Smart Fit, Cyrela e Localiza ganham quando a Selic cai de forma estrutural.
+        O report aponta exatamente esse formato — capital protegido ou alavancado em ações BR — para ajustar risco e retorno sem carregar a volatilidade cheia do índice.
+      </p>
+      <p class="speech-label">O que sustenta</p>
+      <p>
+        Ajuste via despesa (não só tributo) é o que reprecifica a bolsa de verdade.
+        As quatro operações abaixo são a prateleira Triplo Retorno KO desta tese. Custo inicial zero; fixing 13/08/2027.
+      </p>
+    </section>
+
+    <h2>Operações Triplo Retorno KO</h2>
+    <ul class="ops">
+      <li class="op-block">
+        <div class="op-bar" style="background:var(--b3)"></div>
+        <a class="op" href="../ops/b3sa3-triplo-retorno-ko/">
+          <div class="op-top">
+            <span class="op-title">B3 Triplo Retorno KO</span>
+            <span class="op-ticker">B3SA3</span>
+          </div>
+          <p class="op-blurb">Infraestrutura do mercado. Ganha com fluxo e mercado de capitais se o ajuste reabrir o apetite por Brasil. 3× na alta até +42%.</p>
+          <div class="op-meta">
+            <span class="pill">Equity BR</span>
+            <span class="pill">1 ano</span>
+            <span class="pill">Venc. 13/08/2027</span>
+            <span class="pill">Custo 0%</span>
+          </div>
+          <div class="op-cta">Abrir material →</div>
+        </a>
+      </li>
+      <li class="op-block">
+        <div class="op-bar" style="background:var(--smft)"></div>
+        <a class="op" href="../ops/smft3-triplo-retorno-ko/">
+          <div class="op-top">
+            <span class="op-title">Smart Fit Triplo Retorno KO</span>
+            <span class="op-ticker">SMFT3</span>
+          </div>
+          <p class="op-blurb">Líder de academias na América Latina. Ganha se o custo de capital doméstico cair. 3× na alta até +49%.</p>
+          <div class="op-meta">
+            <span class="pill">Equity BR</span>
+            <span class="pill">1 ano</span>
+            <span class="pill">Venc. 13/08/2027</span>
+            <span class="pill">Custo 0%</span>
+          </div>
+          <div class="op-cta">Abrir material →</div>
+        </a>
+      </li>
+      <li class="op-block">
+        <div class="op-bar" style="background:var(--cyre)"></div>
+        <a class="op" href="../ops/cyre3-triplo-retorno-ko/">
+          <div class="op-top">
+            <span class="op-title">Cyrela Triplo Retorno KO</span>
+            <span class="op-ticker">CYRE3</span>
+          </div>
+          <p class="op-blurb">Execução e mix de alta renda com habitação popular. Ganha se a queda de juros reabrir o crédito imobiliário. 3× na alta até +48%.</p>
+          <div class="op-meta">
+            <span class="pill">Equity BR</span>
+            <span class="pill">1 ano</span>
+            <span class="pill">Venc. 13/08/2027</span>
+            <span class="pill">Custo 0%</span>
+          </div>
+          <div class="op-cta">Abrir material →</div>
+        </a>
+      </li>
+      <li class="op-block">
+        <div class="op-bar" style="background:var(--rent)"></div>
+        <a class="op" href="../ops/rent3-triplo-retorno-ko/">
+          <div class="op-top">
+            <span class="op-title">Localiza Triplo Retorno KO</span>
+            <span class="op-ticker">RENT3</span>
+          </div>
+          <p class="op-blurb">Líder de locação na América Latina. Escala e recuperação de rentabilidade se os juros caírem. 3× na alta até +42%.</p>
+          <div class="op-meta">
+            <span class="pill">Equity BR</span>
+            <span class="pill">1 ano</span>
+            <span class="pill">Venc. 13/08/2027</span>
+            <span class="pill">Custo 0%</span>
+          </div>
+          <div class="op-cta">Abrir material →</div>
+        </a>
+      </li>
+    </ul>
+
+    <p class="footer">
+      Material ilustrativo para uso interno. Exercícios de sensibilidade do report, não são projeção pontual.
+      <strong>MATERIAL DE USO INTERNO, NÃO ENVIAR AOS CLIENTES</strong>
+    </p>
+  </main>
+</body>
+</html>
