@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Twin Win PTAX · TWNKO_0016 | BTG Pactual</title>
+  <style>
+    :root {
+      --btg: #0b1f3a;
+      --btg-mid: #163a5f;
+      --link: #1a66b3;
+      --ink: #0b1f3a;
+      --muted: #5c6b7a;
+      --line: #d0d8e2;
+      --bg: #eef2f6;
+      --card: #ffffff;
+      --accent: #3a5a6a;
+      --accent-soft: #9ab4c4;
+      --hero: linear-gradient(135deg, #0f2430 0%, #1a3848 55%, #2a4e60 100%);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: Segoe UI, -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif;
+      color: var(--ink); background: var(--bg); min-height: 100vh; line-height: 1.45;
+    }
+    .page { max-width: 880px; margin: 0 auto; padding: 24px 24px 56px; }
+    .back a {
+      font-size: 13px; font-weight: 700; color: var(--link); text-decoration: none;
+    }
+    .back a:hover { text-decoration: underline; }
+    .back { margin-bottom: 16px; }
+    .hero {
+      background: var(--hero); color: #fff; border-radius: 6px;
+      padding: 28px 28px 24px; margin-bottom: 20px;
+    }
+    .logo-row {
+      display: flex; justify-content: space-between; align-items: center;
+      gap: 12px; flex-wrap: wrap; margin-bottom: 18px;
+    }
+    .logo-btg {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
+      border: 1px solid rgba(255,255,255,0.35); padding: 6px 10px;
+    }
+    .badge {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+      border: 1px solid rgba(255,255,255,0.35); padding: 6px 10px;
+    }
+    .series {
+      font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--accent-soft); margin-bottom: 8px;
+    }
+    h1 {
+      font-size: clamp(24px, 4vw, 34px); font-weight: 700;
+      letter-spacing: -0.02em; line-height: 1.15; margin-bottom: 10px;
+    }
+    .hero-sub { font-size: 15px; color: rgba(255,255,255,0.85); max-width: 40em; }
+    .meta {
+      margin-top: 16px; display: flex; flex-wrap: wrap; gap: 8px;
+    }
+    .pill {
+      background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.28);
+      border-radius: 2px; padding: 5px 10px; font-size: 11px; font-weight: 600;
+      color: rgba(255,255,255,0.92);
+    }
+    h2 {
+      font-size: 13px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--accent); margin: 28px 0 12px;
+    }
+    .grid {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;
+    }
+    .hi, .scen, .speech, .terms-wrap {
+      background: var(--card); border: 1px solid var(--line); border-radius: 4px;
+      padding: 16px 18px;
+    }
+    .hi { border-top: 3px solid var(--accent); }
+    .hi h3, .scen h3, .speech h3 {
+      font-size: 14px; font-weight: 700; color: var(--btg); margin-bottom: 6px;
+    }
+    .hi p, .scen p, .speech p { font-size: 13px; color: var(--muted); }
+    .scens { display: flex; flex-direction: column; gap: 10px; }
+    .scen { border-left: 3px solid var(--accent); }
+    .speech-grid {
+      display: grid; grid-template-columns: 1fr; gap: 12px;
+    }
+    table {
+      width: 100%; border-collapse: collapse; font-size: 13px;
+    }
+    th, td {
+      text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--line);
+      vertical-align: top;
+    }
+    th {
+      width: 38%; color: var(--btg-mid); font-weight: 700; background: #f5f8fc;
+    }
+    td { color: var(--muted); }
+    .die-link {
+      display: inline-block; margin-top: 8px; font-size: 14px; font-weight: 700;
+      color: var(--link); text-decoration: none;
+    }
+    .die-link:hover { text-decoration: underline; }
+    .footer {
+      margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--line);
+      font-size: 11px; color: var(--muted); line-height: 1.55; text-align: center;
+    }
+    .footer strong { display: block; margin-top: 10px; color: var(--btg); }
+    @media (max-width: 640px) {
+      .page { padding: 16px 14px 48px; }
+      .hero { padding: 20px 16px 18px; }
+      .grid { grid-template-columns: 1fr; }
+      th { width: 42%; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <p class="back"><a href="../index.html">← Coes</a></p>
+
+    <header class="hero">
+      <div class="logo-row">
+        <span class="logo-btg">BTG PACTUAL</span>
+        <span class="badge">Uso interno</span>
+      </div>
+      <div class="series">Série TWNKO_0016 · Twin Win câmbio</div>
+      <h1>Twin Win PTAX USD/BRL</h1>
+      <p class="hero-sub">Retorno na alta e na baixa do dólar, com participação de 200%, limitadores (122% / 84%), verificação diária e proteção de 100% do capital no vencimento.</p>
+      <div class="meta">
+        <span class="pill">TWNKO_0016</span>
+        <span class="pill">PTAX USD/BRL</span>
+        <span class="pill">Part. 200%</span>
+        <span class="pill">Lim. 122% / 84%</span>
+        <span class="pill">Verificação diária</span>
+      </div>
+    </header>
+
+    <h2>Destaques</h2>
+    <div class="grid">
+      <article class="hi"><h3>Proteção no vencimento</h3><p>100% do valor nominal protegido apenas na data de vencimento.</p></article>
+      <article class="hi"><h3>Estrutura</h3><p>Twin Win: ganha na alta (até +44%) e na baixa (até +32%), com participação 200% e barreiras diárias.</p></article>
+      <article class="hi"><h3>Horizonte</h3><p>Início 31/08/2026 · vencimento 20/08/2027 · liquidação 23/08/2027.</p></article>
+      <article class="hi"><h3>Aporte</h3><p>Mínimo de R$ 1.000 · CDI estimado 13,85% a.a. · reserva até 28/08/2026 15h.</p></article>
+    </div>
+
+    <h2>Como funciona</h2>
+    <div class="scens">
+      <article class="scen"><h3>Cenário 1 — queda sem tocar o limitador de baixa</h3><p>Cotação final abaixo da inicial e a PTAX diária não fica abaixo de 84%: recebe valor nominal + retorno alavancado na baixa (participação 200%).</p></article>
+      <article class="scen"><h3>Cenário 2 — queda com toque no limitador de baixa</h3><p>Se a PTAX diária ficar abaixo de 84% em algum dia: recebe apenas o valor nominal, sem remuneração extra.</p></article>
+      <article class="scen"><h3>Cenário 3 — variação nula</h3><p>Cotação final igual à inicial (ou condição equivalente no DIE): sem remuneração extra além do valor nominal, conforme regras do documento.</p></article>
+      <article class="scen"><h3>Cenário 4 — alta sem tocar o limitador de alta</h3><p>Cotação final entre a inicial e 122%, sem a PTAX diária ultrapassar 122%: recebe valor nominal + retorno alavancado na alta (participação 200%).</p></article>
+      <article class="scen"><h3>Cenário 5 — alta com toque no limitador de alta</h3><p>Se a PTAX diária ultrapassar 122%: recebe apenas o valor nominal, sem remuneração extra.</p></article>
+    </div>
+
+    <h2>Estrutura e prazos</h2>
+    <div class="terms-wrap">
+      <table>
+        <tbody>
+          <tr><th>Série</th><td>TWNKO_0016</td></tr>
+          <tr><th>Ativo de referência</th><td>USDBRL PTAX 13:30 (BCB)</td></tr>
+          <tr><th>Participação</th><td>200%</td></tr>
+          <tr><th>Limitador de alta</th><td>122% da cotação inicial</td></tr>
+          <tr><th>Limitador de baixa</th><td>84% da cotação inicial</td></tr>
+          <tr><th>Ganho máximo de alta</th><td>44%</td></tr>
+          <tr><th>Ganho máximo de baixa</th><td>32%</td></tr>
+          <tr><th>Verificação</th><td>Diária (PTAX de venda)</td></tr>
+          <tr><th>Proteção</th><td>100% do capital apenas no vencimento</td></tr>
+          <tr><th>Data de início</th><td>31/08/2026</td></tr>
+          <tr><th>Vencimento</th><td>20/08/2027</td></tr>
+          <tr><th>Liquidação</th><td>23/08/2027</td></tr>
+          <tr><th>Período de reserva</th><td>20 a 28/08/2026 até 15h</td></tr>
+          <tr><th>CDI estimado no período</th><td>13,85% a.a.</td></tr>
+          <tr><th>Aporte mínimo</th><td>R$ 1.000</td></tr>
+        </tbody>
+      </table>
+      <a class="die-link" href="./DIE-TWNKO0016.pdf" target="_blank" rel="noopener">Abrir DIE ↗</a>
+    </div>
+
+    <h2>Fala comercial</h2>
+    <div class="speech-grid">
+      <article class="speech">
+        <h3>Para quem</h3>
+        <p>Investidor que espera volatilidade no câmbio (alta ou baixa do dólar) e aceita barreiras diárias em troca de participação elevada.</p>
+      </article>
+      <article class="speech">
+        <h3>Por que agora</h3>
+        <p>Prazo de cerca de um ano com twin win: movimento em qualquer direção pode remunerar, desde que os limitadores não sejam tocados na verificação diária.</p>
+      </article>
+      <article class="speech">
+        <h3>O que sustenta</h3>
+        <p>Limitadores, participação e ganhos máximos explícitos no DIE; referência PTAX oficial.</p>
+      </article>
+    </div>
+
+    <p class="footer">
+      Material ilustrativo com base no Documento de Informações Essenciais (DIE).
+      Não constitui oferta, recomendação ou garantia de rentabilidade.
+      Sujeito a risco de crédito do emissor; sem cobertura do FGC;
+      proteção do capital apenas no vencimento, quando aplicável.
+      <strong>MATERIAL DE USO INTERNO, NÃO ENVIAR AOS CLIENTES</strong>
+    </p>
+  </main>
+</body>
+</html>

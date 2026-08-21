@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Coes | BTG Pactual</title>
+  <style>
+    :root {
+      --btg: #0b1f3a;
+      --btg-mid: #163a5f;
+      --btg-blue: #1e4d7b;
+      --link: #1a66b3;
+      --ink: #0b1f3a;
+      --muted: #5c6b7a;
+      --line: #d0d8e2;
+      --bg: #eef2f6;
+      --card: #ffffff;
+      --sob: #5a6e8a;
+      --mag: #4a5d7a;
+      --look: #5a7088;
+      --ouro: #8a7a4a;
+      --cs: #4a7a6a;
+      --tw: #4a6e7a;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: Segoe UI, -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif;
+      color: var(--ink); background: var(--bg); min-height: 100vh; line-height: 1.45;
+    }
+    .hero {
+      background: linear-gradient(135deg, var(--btg) 0%, var(--btg-mid) 55%, var(--btg-blue) 100%);
+      color: #fff; padding: 36px 24px 40px;
+    }
+    .hero-inner { max-width: 960px; margin: 0 auto; }
+    .logo-btg {
+      display: inline-block; font-weight: 700; font-size: 12px; letter-spacing: 0.1em;
+      color: #fff; border: 1px solid rgba(255,255,255,0.35); padding: 7px 12px;
+      border-radius: 2px; margin-bottom: 22px;
+    }
+    .hero-row { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; }
+    h1 { font-size: clamp(28px, 4.5vw, 40px); font-weight: 700; letter-spacing: -0.02em; line-height: 1.15; }
+    .lede { margin-top: 12px; font-size: 15px; color: rgba(255,255,255,0.82); max-width: 42em; }
+    .badge {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+      color: #fff; border: 1px solid rgba(255,255,255,0.35); padding: 8px 12px; border-radius: 2px; white-space: nowrap;
+    }
+    .page { max-width: 960px; margin: 0 auto; padding: 28px 24px 56px; }
+    h2 {
+      font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--btg-blue); margin: 28px 0 14px;
+    }
+    h2:first-of-type { margin-top: 0; }
+    .snapshot {
+      background: var(--card); border: 1px solid var(--line); border-radius: 4px;
+      padding: 16px 20px; margin-bottom: 8px;
+    }
+    .snapshot p { font-size: 13px; color: var(--muted); max-width: 54em; }
+    .ops { list-style: none; display: flex; flex-direction: column; gap: 16px; }
+    .op-block { background: var(--card); border: 1px solid var(--line); border-radius: 4px; overflow: hidden; }
+    .op {
+      display: block; text-decoration: none; color: inherit; padding: 22px 22px 18px;
+      transition: background 0.12s ease;
+    }
+    .op:hover, .op:focus-visible { background: #f5f8fc; outline: none; }
+    .op-bar { height: 6px; }
+    .op-bar.sob { background: var(--sob); }
+    .op-bar.mag { background: var(--mag); }
+    .op-bar.look { background: var(--look); }
+    .op-bar.ouro { background: var(--ouro); }
+    .op-bar.cs { background: var(--cs); }
+    .op-bar.tw { background: var(--tw); }
+    .op-top { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 8px; }
+    .op-title { font-size: 20px; font-weight: 700; color: var(--btg); }
+    .op-ticker { font-size: 12px; font-weight: 700; color: var(--link); letter-spacing: 0.04em; }
+    .op-blurb { font-size: 14px; color: var(--muted); max-width: 48em; }
+    .op-meta { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 8px; }
+    .pill {
+      background: #eef2f6; border: 1px solid var(--line); border-radius: 2px;
+      padding: 4px 10px; color: var(--btg-mid); font-size: 11px; font-weight: 600;
+    }
+    .op-cta { margin-top: 14px; font-size: 12px; font-weight: 700; color: var(--link); }
+    .footer {
+      margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--line);
+      font-size: 11px; color: var(--muted); text-align: center; line-height: 1.55;
+    }
+    .footer strong { display: block; margin-top: 10px; color: var(--btg); }
+    @media (max-width: 640px) {
+      .hero { padding: 28px 16px 32px; }
+      .page { padding: 20px 16px 48px; }
+      .hero-row { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="logo-btg">BTG PACTUAL</div>
+      <div class="hero-row">
+        <div>
+          <h1>Coes</h1>
+          <p class="lede">
+            Prateleira de COEs BTG — material publicitário ou factsheet a partir do DIE.
+            Uso interno para distribuição de renda variável.
+          </p>
+        </div>
+        <div class="badge">Uso interno</div>
+      </div>
+    </div>
+  </header>
+
+  <main class="page">
+    <h2>Como usar</h2>
+    <section class="snapshot">
+      <p>
+        Produtos com material publicitário abrem no visualizador de PDF.
+        Os demais trazem ficha comercial com link para o DIE.
+      </p>
+    </section>
+
+    <h2>Soberano</h2>
+    <ul class="ops">
+      <li class="op-block">
+        <div class="op-bar sob"></div>
+        <a class="op" href="./soberano-crn0034/">
+          <div class="op-top">
+            <span class="op-title">Soberano Cupom Trimestral Pré</span>
+            <span class="op-ticker">CRN0034</span>
+          </div>
+          <p class="op-blurb">
+            Cupom pré 15,05% a.a. atrelado a risco de crédito soberano Brasil.
+            Material publicitário completo.
+          </p>
+          <div class="op-meta">
+            <span class="pill">15,05% a.a. pré</span>
+            <span class="pill">Cupom trimestral</span>
+            <span class="pill">Venc. 28/06/2032</span>
+            <span class="pill">Material publicitário</span>
+          </div>
+          <div class="op-cta">Abrir material →</div>
+        </a>
+      </li>
+    </ul>
+
+    <h2>Bolsa americana</h2>
+    <ul class="ops">
+      <li class="op-block">
+        <div class="op-bar mag"></div>
+        <a class="op" href="./mag7-kpc1133/">
+          <div class="op-top">
+            <span class="op-title">Sete magníficas · Alta alavancada</span>
+            <span class="op-ticker">KPC1133</span>
+          </div>
+          <p class="op-blurb">
+            Exposição à cesta das sete magníficas (MAGS) com alta alavancada entre 1,15× e 1,25×
+            e proteção de 100% do valor nominal no vencimento.
+          </p>
+          <div class="op-meta">
+            <span class="pill">MAGS</span>
+            <span class="pill">Alta 1,15×–1,25×</span>
+            <span class="pill">100% VNP no venc.</span>
+            <span class="pill">Ficha + DIE</span>
+          </div>
+          <div class="op-cta">Abrir ficha →</div>
+        </a>
+      </li>
+      <li class="op-block">
+        <div class="op-bar look"></div>
+        <a class="op" href="./lookback-kpc1135/">
+          <div class="op-top">
+            <span class="op-title">Bolsa Americana · Máximo Retorno ou Cupom</span>
+            <span class="op-ticker">KPC1135</span>
+          </div>
+          <p class="op-blurb">
+            Máximo retorno no S&amp;P 500: o melhor entre cupom de 45% a.p. ou a maior alta de fechamento no período.
+            100% do capital no vencimento.
+          </p>
+          <div class="op-meta">
+            <span class="pill">S&amp;P 500</span>
+            <span class="pill">Cupom 45% a.p.</span>
+            <span class="pill">Reserva até 28/08 14h</span>
+            <span class="pill">Material publicitário</span>
+          </div>
+          <div class="op-cta">Abrir material →</div>
+        </a>
+      </li>
+      <li class="op-block">
+        <div class="op-bar ouro"></div>
+        <a class="op" href="./ouro-kpc1134/">
+          <div class="op-top">
+            <span class="op-title">Ouro · Bidirecional</span>
+            <span class="op-ticker">KPC1134</span>
+          </div>
+          <p class="op-blurb">
+            Desempenho absoluto na alta e na queda do ouro (SPDR Gold / GLD),
+            com proteção de 100% do valor nominal no vencimento.
+          </p>
+          <div class="op-meta">
+            <span class="pill">GLD</span>
+            <span class="pill">Bidirecional</span>
+            <span class="pill">100% VNP no venc.</span>
+            <span class="pill">Ficha + DIE</span>
+          </div>
+          <div class="op-cta">Abrir ficha →</div>
+        </a>
+      </li>
+    </ul>
+
+    <h2>Câmbio</h2>
+    <ul class="ops">
+      <li class="op-block">
+        <div class="op-bar cs"></div>
+        <a class="op" href="./call-spread-cs0002/">
+          <div class="op-top">
+            <span class="op-title">Call Spread PTAX</span>
+            <span class="op-ticker">CS_0002</span>
+          </div>
+          <p class="op-blurb">
+            Participação de 110% na alta do dólar frente ao real, com limitador em 110% da cotação inicial
+            e proteção de 100% do capital no vencimento.
+          </p>
+          <div class="op-meta">
+            <span class="pill">PTAX USD/BRL</span>
+            <span class="pill">Part. 110%</span>
+            <span class="pill">Lim. alta 110%</span>
+            <span class="pill">Venc. mar/2027</span>
+          </div>
+          <div class="op-cta">Abrir ficha →</div>
+        </a>
+      </li>
+      <li class="op-block">
+        <div class="op-bar tw"></div>
+        <a class="op" href="./twin-win-twnko0016/">
+          <div class="op-top">
+            <span class="op-title">Twin Win PTAX</span>
+            <span class="op-ticker">TWNKO_0016</span>
+          </div>
+          <p class="op-blurb">
+            Retorno na alta e na baixa do dólar, com participação de 200%, limitadores e verificação diária.
+            Proteção de 100% do capital no vencimento.
+          </p>
+          <div class="op-meta">
+            <span class="pill">PTAX USD/BRL</span>
+            <span class="pill">Part. 200%</span>
+            <span class="pill">Lim. 122% / 84%</span>
+            <span class="pill">Venc. ago/2027</span>
+          </div>
+          <div class="op-cta">Abrir ficha →</div>
+        </a>
+      </li>
+    </ul>
+
+    <p class="footer">
+      Material ilustrativo para uso interno. Não constitui oferta, recomendação ou garantia de rentabilidade.
+      COE sujeita a risco de crédito do emissor; sem cobertura do FGC; proteção do capital apenas no vencimento, quando aplicável.
+      <strong>MATERIAL DE USO INTERNO, NÃO ENVIAR AOS CLIENTES</strong>
+    </p>
+  </main>
+</body>
+</html>

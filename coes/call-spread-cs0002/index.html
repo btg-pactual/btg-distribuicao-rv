@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Call Spread PTAX · CS_0002 | BTG Pactual</title>
+  <style>
+    :root {
+      --btg: #0b1f3a;
+      --btg-mid: #163a5f;
+      --link: #1a66b3;
+      --ink: #0b1f3a;
+      --muted: #5c6b7a;
+      --line: #d0d8e2;
+      --bg: #eef2f6;
+      --card: #ffffff;
+      --accent: #3a6a58;
+      --accent-soft: #9fc4b4;
+      --hero: linear-gradient(135deg, #0f2a22 0%, #1a3d32 55%, #2a5544 100%);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: Segoe UI, -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif;
+      color: var(--ink); background: var(--bg); min-height: 100vh; line-height: 1.45;
+    }
+    .page { max-width: 880px; margin: 0 auto; padding: 24px 24px 56px; }
+    .back a {
+      font-size: 13px; font-weight: 700; color: var(--link); text-decoration: none;
+    }
+    .back a:hover { text-decoration: underline; }
+    .back { margin-bottom: 16px; }
+    .hero {
+      background: var(--hero); color: #fff; border-radius: 6px;
+      padding: 28px 28px 24px; margin-bottom: 20px;
+    }
+    .logo-row {
+      display: flex; justify-content: space-between; align-items: center;
+      gap: 12px; flex-wrap: wrap; margin-bottom: 18px;
+    }
+    .logo-btg {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
+      border: 1px solid rgba(255,255,255,0.35); padding: 6px 10px;
+    }
+    .badge {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+      border: 1px solid rgba(255,255,255,0.35); padding: 6px 10px;
+    }
+    .series {
+      font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--accent-soft); margin-bottom: 8px;
+    }
+    h1 {
+      font-size: clamp(24px, 4vw, 34px); font-weight: 700;
+      letter-spacing: -0.02em; line-height: 1.15; margin-bottom: 10px;
+    }
+    .hero-sub { font-size: 15px; color: rgba(255,255,255,0.85); max-width: 40em; }
+    .meta {
+      margin-top: 16px; display: flex; flex-wrap: wrap; gap: 8px;
+    }
+    .pill {
+      background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.28);
+      border-radius: 2px; padding: 5px 10px; font-size: 11px; font-weight: 600;
+      color: rgba(255,255,255,0.92);
+    }
+    h2 {
+      font-size: 13px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--accent); margin: 28px 0 12px;
+    }
+    .grid {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;
+    }
+    .hi, .scen, .speech, .terms-wrap {
+      background: var(--card); border: 1px solid var(--line); border-radius: 4px;
+      padding: 16px 18px;
+    }
+    .hi { border-top: 3px solid var(--accent); }
+    .hi h3, .scen h3, .speech h3 {
+      font-size: 14px; font-weight: 700; color: var(--btg); margin-bottom: 6px;
+    }
+    .hi p, .scen p, .speech p { font-size: 13px; color: var(--muted); }
+    .scens { display: flex; flex-direction: column; gap: 10px; }
+    .scen { border-left: 3px solid var(--accent); }
+    .speech-grid {
+      display: grid; grid-template-columns: 1fr; gap: 12px;
+    }
+    table {
+      width: 100%; border-collapse: collapse; font-size: 13px;
+    }
+    th, td {
+      text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--line);
+      vertical-align: top;
+    }
+    th {
+      width: 38%; color: var(--btg-mid); font-weight: 700; background: #f5f8fc;
+    }
+    td { color: var(--muted); }
+    .die-link {
+      display: inline-block; margin-top: 8px; font-size: 14px; font-weight: 700;
+      color: var(--link); text-decoration: none;
+    }
+    .die-link:hover { text-decoration: underline; }
+    .footer {
+      margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--line);
+      font-size: 11px; color: var(--muted); line-height: 1.55; text-align: center;
+    }
+    .footer strong { display: block; margin-top: 10px; color: var(--btg); }
+    @media (max-width: 640px) {
+      .page { padding: 16px 14px 48px; }
+      .hero { padding: 20px 16px 18px; }
+      .grid { grid-template-columns: 1fr; }
+      th { width: 42%; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <p class="back"><a href="../index.html">← Coes</a></p>
+
+    <header class="hero">
+      <div class="logo-row">
+        <span class="logo-btg">BTG PACTUAL</span>
+        <span class="badge">Uso interno</span>
+      </div>
+      <div class="series">Série CS_0002 · Call Spread câmbio</div>
+      <h1>Call Spread PTAX USD/BRL</h1>
+      <p class="hero-sub">Participação de 110% na valorização do dólar frente ao real, com limitador de alta em 110% da cotação inicial e proteção de 100% do capital no vencimento.</p>
+      <div class="meta">
+        <span class="pill">CS_0002</span>
+        <span class="pill">PTAX USD/BRL</span>
+        <span class="pill">Part. 110%</span>
+        <span class="pill">Lim. alta 110%</span>
+        <span class="pill">100% capital no venc.</span>
+      </div>
+    </header>
+
+    <h2>Destaques</h2>
+    <div class="grid">
+      <article class="hi"><h3>Proteção no vencimento</h3><p>100% do valor nominal protegido apenas na data de vencimento.</p></article>
+      <article class="hi"><h3>Estrutura</h3><p>Call spread cambial: participação 110% até o limitador de alta (110% da cotação inicial).</p></article>
+      <article class="hi"><h3>Horizonte</h3><p>Início 31/08/2026 · observação final 02/03/2027 · liquidação 03/03/2027.</p></article>
+      <article class="hi"><h3>Aporte</h3><p>Mínimo de R$ 1.000 · CDI estimado 13,75% a.a. no período.</p></article>
+    </div>
+
+    <h2>Como funciona</h2>
+    <div class="scens">
+      <article class="scen"><h3>Cenário 1 — dólar estável ou em queda</h3><p>Cotação final abaixo ou igual à inicial: investidor recebe 100% do valor nominal.</p></article>
+      <article class="scen"><h3>Cenário 2 — alta até o limitador</h3><p>Cotação final acima da inicial e até o limitador de alta: recebe valor nominal × (cotação final / inicial) × participação (110%).</p></article>
+      <article class="scen"><h3>Cenário 3 — alta acima do limitador</h3><p>Cotação final acima do limitador: recebe valor nominal × (limitador / inicial) × participação — teto no limitador.</p></article>
+    </div>
+
+    <h2>Estrutura e prazos</h2>
+    <div class="terms-wrap">
+      <table>
+        <tbody>
+          <tr><th>Série</th><td>CS_0002</td></tr>
+          <tr><th>Ativo de referência</th><td>USDBRL PTAX 13:30 (BCB)</td></tr>
+          <tr><th>Participação (alavancagem)</th><td>110%</td></tr>
+          <tr><th>Limitador de alta</th><td>110% da cotação inicial</td></tr>
+          <tr><th>Proteção</th><td>100% do capital apenas no vencimento</td></tr>
+          <tr><th>Data de início</th><td>31/08/2026</td></tr>
+          <tr><th>Observação cotação final</th><td>02/03/2027</td></tr>
+          <tr><th>Liquidação</th><td>03/03/2027</td></tr>
+          <tr><th>Período de reserva</th><td>20 a 28/08/2026</td></tr>
+          <tr><th>CDI estimado no período</th><td>13,75% a.a.</td></tr>
+          <tr><th>Aporte mínimo</th><td>R$ 1.000</td></tr>
+        </tbody>
+      </table>
+      <a class="die-link" href="./DIE-CS0002.pdf" target="_blank" rel="noopener">Abrir DIE ↗</a>
+    </div>
+
+    <h2>Fala comercial</h2>
+    <div class="speech-grid">
+      <article class="speech">
+        <h3>Para quem</h3>
+        <p>Investidor que espera valorização moderada do dólar frente ao real e quer participação acima de 100% com teto definido.</p>
+      </article>
+      <article class="speech">
+        <h3>Por que agora</h3>
+        <p>Prazo curto (~6 meses) e reserva aberta em agosto/2026 — alternativa tática de câmbio com proteção no vencimento.</p>
+      </article>
+      <article class="speech">
+        <h3>O que sustenta</h3>
+        <p>Referência PTAX oficial do Banco Central; limitador e participação transparentes no DIE.</p>
+      </article>
+    </div>
+
+    <p class="footer">
+      Material ilustrativo com base no Documento de Informações Essenciais (DIE).
+      Não constitui oferta, recomendação ou garantia de rentabilidade.
+      Sujeito a risco de crédito do emissor; sem cobertura do FGC;
+      proteção do capital apenas no vencimento, quando aplicável.
+      <strong>MATERIAL DE USO INTERNO, NÃO ENVIAR AOS CLIENTES</strong>
+    </p>
+  </main>
+</body>
+</html>

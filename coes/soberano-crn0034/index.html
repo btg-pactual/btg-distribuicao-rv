@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>COE Soberano Cupom Trimestral — CRN0034 | BTG Pactual</title>
+  <style>
+    :root {
+      --btg: #0b1f3a;
+      --btg-mid: #163a5f;
+      --link: #1a66b3;
+      --line: #d0d8e2;
+      --bg: #eef2f6;
+      --muted: #5c6b7a;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      height: 100%;
+      font-family: Segoe UI, -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--btg);
+    }
+    .bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      padding: 10px 16px;
+      background: linear-gradient(135deg, var(--btg) 0%, var(--btg-mid) 100%);
+      color: #fff;
+      border-bottom: 1px solid rgba(255,255,255,0.12);
+    }
+    .bar-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      min-width: 0;
+    }
+    .logo {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      border: 1px solid rgba(255,255,255,0.35);
+      padding: 5px 9px;
+      white-space: nowrap;
+    }
+    .meta {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 0;
+    }
+    .meta strong {
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+    .meta span {
+      font-size: 11px;
+      color: rgba(255,255,255,0.75);
+    }
+    .bar-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .pill {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      border: 1px solid rgba(255,255,255,0.3);
+      padding: 5px 10px;
+      white-space: nowrap;
+    }
+    .bar a {
+      color: #fff;
+      font-size: 12px;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .bar a:hover { text-decoration: underline; }
+    .viewer {
+      height: calc(100% - 52px);
+      background: #1a2330;
+    }
+    .viewer iframe {
+      display: block;
+      width: 100%;
+      height: 100%;
+      border: 0;
+      background: #525659;
+    }
+    .fallback {
+      display: none;
+      padding: 28px 20px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+    .fallback a {
+      color: var(--link);
+      font-weight: 700;
+    }
+    .badge-interno {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      opacity: 0.85;
+    }
+    @media (max-width: 640px) {
+      .bar { padding: 10px 12px; }
+      .viewer { height: calc(100% - 72px); }
+    }
+  </style>
+</head>
+<body>
+  <header class="bar">
+    <div class="bar-left">
+      <span class="logo">BTG PACTUAL</span>
+      <div class="meta">
+        <strong>Soberano · Cupom Trimestral</strong>
+        <span>CRN0034 · Material publicitário · Pré 15,05% a.a. · Venc. 28/06/2032</span>
+      </div>
+    </div>
+    <div class="bar-right">
+      <span class="pill">15,05% a.a.</span>
+      <span class="pill">Cupom trimestral</span>
+      <span class="badge-interno">Uso interno</span>
+      <a href="./MP-Soberano-CRN0034.pdf" target="_blank" rel="noopener">Abrir PDF ↗</a>
+      <a href="../index.html">← Coes</a>
+    </div>
+  </header>
+
+  <div class="viewer">
+    <iframe
+      title="Material publicitário COE Soberano CRN0034"
+      src="./MP-Soberano-CRN0034.pdf#view=FitH"
+      type="application/pdf"
+    ></iframe>
+    <p class="fallback" id="fallback">
+      Se o PDF não aparecer embutido neste navegador,
+      <a href="./MP-Soberano-CRN0034.pdf" target="_blank" rel="noopener">abra o material aqui</a>.
+    </p>
+  </div>
+</body>
+</html>
