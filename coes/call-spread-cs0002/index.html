@@ -17,13 +17,16 @@
       --accent: #3a6a58;
       --accent-soft: #9fc4b4;
       --hero: linear-gradient(135deg, #0f2a22 0%, #1a3d32 55%, #2a5544 100%);
+      --success: #0f7a4a;
+      --danger: #c0392b;
+      --dash: #8b97a8;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: Segoe UI, -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif;
       color: var(--ink); background: var(--bg); min-height: 100vh; line-height: 1.45;
     }
-    .page { max-width: 880px; margin: 0 auto; padding: 24px 24px 56px; }
+    .page { max-width: 1160px; margin: 0 auto; padding: 24px 24px 56px; }
     .back a {
       font-size: 13px; font-weight: 700; color: var(--link); text-decoration: none;
     }
@@ -69,20 +72,16 @@
     .grid {
       display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;
     }
-    .hi, .scen, .speech, .terms-wrap {
+    .hi, .speech, .terms-wrap, .panel {
       background: var(--card); border: 1px solid var(--line); border-radius: 4px;
       padding: 16px 18px;
     }
     .hi { border-top: 3px solid var(--accent); }
-    .hi h3, .scen h3, .speech h3 {
+    .hi h3, .speech h3 {
       font-size: 14px; font-weight: 700; color: var(--btg); margin-bottom: 6px;
     }
-    .hi p, .scen p, .speech p { font-size: 13px; color: var(--muted); }
-    .scens { display: flex; flex-direction: column; gap: 10px; }
-    .scen { border-left: 3px solid var(--accent); }
-    .speech-grid {
-      display: grid; grid-template-columns: 1fr; gap: 12px;
-    }
+    .hi p, .speech p { font-size: 13px; color: var(--muted); }
+    .speech-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
     table {
       width: 100%; border-collapse: collapse; font-size: 13px;
     }
@@ -104,11 +103,109 @@
       font-size: 11px; color: var(--muted); line-height: 1.55; text-align: center;
     }
     .footer strong { display: block; margin-top: 10px; color: var(--btg); }
+
+    .payoff-main {
+      display: grid; grid-template-columns: 1fr 300px; gap: 14px; align-items: start;
+    }
+    .panel h2 { margin: 0 0 12px; font-size: 12px; }
+    .chart-panel { padding: 16px; }
+    .chart-head {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      gap: 12px; margin-bottom: 10px;
+    }
+    .chart-caption { font-size: 12px; color: var(--muted); margin-top: 4px; }
+    .chart-legend {
+      display: flex; gap: 14px; font-size: 12px; color: var(--muted); flex-wrap: wrap;
+    }
+    .chart-legend span { display: inline-flex; align-items: center; gap: 6px; }
+    .swatch {
+      width: 18px; height: 3px; border-radius: 2px; background: var(--accent); display: inline-block;
+    }
+    .swatch.asset {
+      background: transparent; border-top: 2px dashed var(--dash); height: 0;
+    }
+    .chart-box {
+      width: 100%; background: #f6faf8; border: 1px solid var(--line); border-radius: 8px;
+      overflow: hidden; position: relative; -webkit-user-select: none; user-select: none;
+    }
+    .chart-box svg {
+      display: block; width: 100%; height: auto; min-height: 340px; pointer-events: none;
+    }
+    .chart-overlay {
+      position: absolute; inset: 0; z-index: 3; touch-action: none; cursor: crosshair;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .chart-touch-hint {
+      display: block; font-size: 12px; color: var(--muted); margin-top: 8px; text-align: center;
+    }
+    .mobile-sim {
+      display: block; margin-top: 12px; padding: 12px; background: var(--bg);
+      border: 1px solid var(--line); border-radius: 8px;
+    }
+    .mobile-sim input[type="range"] { width: 100%; height: 44px; accent-color: var(--accent); margin-bottom: 0; }
+    @media (hover: hover) and (pointer: fine) {
+      .chart-touch-hint { display: none; }
+    }
+    .tooltip {
+      position: absolute; pointer-events: none; background: var(--ink); color: #fff;
+      padding: 10px 12px; border-radius: 8px; font-size: 12px; min-width: 160px;
+      opacity: 0; z-index: 5; transform: translate(-50%, -120%); transition: opacity 0.1s ease;
+    }
+    .tooltip.on { opacity: 1; }
+    .tooltip .t-title { font-weight: 600; margin-bottom: 6px; opacity: 0.85; font-size: 11px; }
+    .tooltip .row { display: flex; justify-content: space-between; gap: 16px; margin-top: 3px; }
+    .zones {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 12px;
+    }
+    .zone {
+      border: 1px solid var(--line); border-radius: 6px; padding: 10px; background: var(--bg);
+    }
+    .zone strong { display: block; font-size: 11px; color: var(--accent); margin-bottom: 4px; }
+    .zone p { font-size: 11px; color: var(--muted); line-height: 1.35; }
+    .sim-label {
+      display: flex; justify-content: space-between; align-items: baseline;
+      margin-bottom: 8px; font-size: 12px; color: var(--muted);
+    }
+    .sim-label output { font-weight: 700; font-size: 18px; color: var(--accent); }
+    input[type="range"] {
+      width: 100%; accent-color: var(--accent); margin-bottom: 16px; height: 28px;
+    }
+    .sim-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 16px; }
+    .sim-card {
+      background: var(--bg); border-radius: 6px; padding: 12px; border: 1px solid var(--line);
+    }
+    .sim-card .lbl { font-size: 11px; color: var(--muted); margin-bottom: 4px; }
+    .sim-card .val { font-size: 20px; font-weight: 700; }
+    .sim-card .val.pos { color: var(--success); }
+    .sim-card .val.neg { color: var(--danger); }
+    .regime {
+      font-size: 12px; padding: 10px 12px; border-radius: 6px;
+      background: rgba(58, 106, 88, 0.1); color: var(--accent);
+      border: 1px solid rgba(58, 106, 88, 0.22); line-height: 1.4;
+    }
+    .points-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 8px; }
+    .points-table th {
+      text-align: left; font-weight: 600; color: var(--muted); padding: 0 6px 8px;
+      border-bottom: 1px solid var(--line); font-size: 11px; text-transform: uppercase; width: auto; background: transparent;
+    }
+    .points-table td {
+      padding: 8px 6px; border-bottom: 1px solid var(--line); color: var(--ink);
+    }
+    .points-table tr:last-child td { border-bottom: none; }
+
+    @media (max-width: 960px) {
+      .payoff-main { grid-template-columns: 1fr; }
+      .zones { grid-template-columns: 1fr; }
+    }
     @media (max-width: 640px) {
       .page { padding: 16px 14px 48px; }
       .hero { padding: 20px 16px 18px; }
       .grid { grid-template-columns: 1fr; }
       th { width: 42%; }
+      .chart-box svg { min-height: 0; max-height: 280px; }
+      .mobile-sim { display: none; }
+      .chart-touch-hint { display: none; }
+      .sim-card .val { font-size: 18px; }
     }
   </style>
 </head>
@@ -142,10 +239,105 @@
     </div>
 
     <h2>Como funciona</h2>
-    <div class="scens">
-      <article class="scen"><h3>Cenário 1 — dólar estável ou em queda</h3><p>Cotação final abaixo ou igual à inicial: investidor recebe 100% do valor nominal.</p></article>
-      <article class="scen"><h3>Cenário 2 — alta até o limitador</h3><p>Cotação final acima da inicial e até o limitador de alta: recebe valor nominal × (cotação final / inicial) × participação (110%).</p></article>
-      <article class="scen"><h3>Cenário 3 — alta acima do limitador</h3><p>Cotação final acima do limitador: recebe valor nominal × (limitador / inicial) × participação — teto no limitador.</p></article>
+    <div class="payoff-main">
+      <section class="panel chart-panel">
+        <div class="chart-head">
+          <div>
+            <h2>Payoff no vencimento</h2>
+            <p class="chart-caption">Retorno % do nominal vs. variação da PTAX USD/BRL.<br />Participação 1,10× até +10%; teto +11% acima do limitador.</p>
+          </div>
+          <div class="chart-legend">
+            <span><i class="swatch"></i> Estrutura</span>
+            <span><i class="swatch asset"></i> Ativo</span>
+          </div>
+        </div>
+
+        <div class="chart-box" id="chartBox">
+          <div class="tooltip" id="tooltip"></div>
+          <svg id="payoffSvg" viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Gráfico de payoff CS_0002 PTAX">
+            <rect x="48" y="24" width="504" height="352" fill="#f6faf8" />
+            <g id="gridLines" stroke="#dde8e3" stroke-width="1"></g>
+            <line id="axisZeroX" x1="216" y1="24" x2="216" y2="376" stroke="#b8c9c0" stroke-width="1.25"/>
+            <line id="axisZeroY" x1="48" y1="320" x2="552" y2="320" stroke="#b8c9c0" stroke-width="1.25"/>
+            <line id="capLine" x1="0" y1="24" x2="0" y2="376" stroke="rgba(58,106,88,0.35)" stroke-width="1.25" stroke-dasharray="4 3"/>
+            <g id="yLabels" fill="#8b97a8" font-size="11" font-family="Segoe UI, Arial, sans-serif" text-anchor="end"></g>
+            <g id="xLabels" fill="#8b97a8" font-size="11" font-family="Segoe UI, Arial, sans-serif" text-anchor="middle"></g>
+            <text x="300" y="16" fill="#5c6b7a" font-size="11" font-family="Segoe UI, Arial, sans-serif" text-anchor="middle">Variação da PTAX USD/BRL no vencimento (%)</text>
+            <text x="14" y="200" fill="#5c6b7a" font-size="11" font-family="Segoe UI, Arial, sans-serif" text-anchor="middle" transform="rotate(-90 14 200)">Retorno da estrutura (%)</text>
+            <text id="capLabel" x="0" y="40" fill="#3a6a58" font-size="11" font-weight="600" font-family="Segoe UI, Arial, sans-serif">Lim. +10%</text>
+            <polyline id="assetPath" fill="none" stroke="#8b97a8" stroke-width="1.75" stroke-dasharray="6 5" points="" />
+            <path id="structPath" d="" fill="none" stroke="#3a6a58" stroke-width="2.75" stroke-linejoin="round" stroke-linecap="round" />
+            <line id="hoverLine" x1="0" y1="24" x2="0" y2="376" stroke="rgba(58,106,88,0.4)" stroke-width="1.25" stroke-dasharray="4 4" visibility="hidden"/>
+            <circle id="hoverStruct" r="5.5" fill="#3a6a58" visibility="hidden"/>
+            <circle id="hoverAsset" r="4" fill="#8b97a8" visibility="hidden"/>
+          </svg>
+          <div class="chart-overlay" id="chartOverlay" aria-label="Área interativa do gráfico"></div>
+        </div>
+
+        <p class="chart-touch-hint">Toque e arraste no gráfico · ou use o controle abaixo</p>
+        <div class="mobile-sim">
+          <div class="sim-label">
+            <span>Variação da PTAX</span>
+            <output id="spotOutMobile">+5%</output>
+          </div>
+          <input type="range" id="spotSliderMobile" min="-20" max="40" step="0.5" value="5" aria-label="Variação da PTAX no celular" />
+        </div>
+
+        <div class="zones">
+          <div class="zone">
+            <strong>≤ 0%</strong>
+            <p>Dólar estável ou em queda: só o valor nominal (0% extra).</p>
+          </div>
+          <div class="zone">
+            <strong>0% → +10%</strong>
+            <p>Alta até o limitador: retorno = 1,10 × variação.</p>
+          </div>
+          <div class="zone">
+            <strong>&gt; +10%</strong>
+            <p>Acima do limitador: teto fixo de +11%.</p>
+          </div>
+        </div>
+      </section>
+
+      <aside class="panel panel-sim">
+        <h2>Simulador no vencimento</h2>
+        <div class="sim-label">
+          <span>Variação da PTAX</span>
+          <output id="spotOut">+5%</output>
+        </div>
+        <input type="range" id="spotSlider" min="-20" max="40" step="0.5" value="5" aria-label="Variação da PTAX" />
+
+        <div class="sim-cards">
+          <div class="sim-card">
+            <div class="lbl">Retorno do ativo</div>
+            <div class="val" id="assetVal">+5,0%</div>
+          </div>
+          <div class="sim-card">
+            <div class="lbl">Retorno do COE</div>
+            <div class="val" id="structVal">+5,5%</div>
+          </div>
+        </div>
+
+        <div class="regime" id="regimeText">Alta até o limitador: participação de 110% na variação da PTAX.</div>
+
+        <div style="margin-top:16px">
+          <h2>Pontos-chave</h2>
+          <table class="points-table">
+            <thead>
+              <tr><th>Spot</th><th>Ativo</th><th>COE</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>−20%</td><td>−20%</td><td><strong>0%</strong></td></tr>
+              <tr><td>−10%</td><td>−10%</td><td><strong>0%</strong></td></tr>
+              <tr><td>0%</td><td>0%</td><td><strong>0%</strong></td></tr>
+              <tr><td>+5%</td><td>+5%</td><td><strong>+5,5%</strong></td></tr>
+              <tr><td>+10%</td><td>+10%</td><td><strong>+11%</strong></td></tr>
+              <tr><td>+20%</td><td>+20%</td><td><strong>+11%</strong></td></tr>
+              <tr><td>+40%</td><td>+40%</td><td><strong>+11%</strong></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </aside>
     </div>
 
     <h2>Estrutura e prazos</h2>
@@ -192,5 +384,210 @@
       <strong>MATERIAL DE USO INTERNO, NÃO ENVIAR AOS CLIENTES</strong>
     </p>
   </main>
+
+  <script>
+    (function () {
+      var X_MIN = -20, X_MAX = 40;
+      var Y_MIN = -5, Y_MAX = 20;
+      var PAD = { l: 48, t: 24, r: 48, b: 24 };
+      var VW = 600, VH = 400;
+      var PLOT_W = VW - PAD.l - PAD.r;
+      var PLOT_H = VH - PAD.t - PAD.b;
+      var CAP = 10;
+      var PART = 1.1;
+
+      function structureReturn(x) {
+        if (x <= 0) return 0;
+        if (x <= CAP) return PART * x;
+        return PART * CAP;
+      }
+
+      function regimeFor(x) {
+        if (x <= 0) return "Dólar estável ou em queda: proteção de capital — retorno extra 0% (só o nominal).";
+        if (x <= CAP) return "Alta até o limitador (+10%): participação de 110% na variação da PTAX.";
+        return "Acima do limitador de alta: retorno limitado a +11% (1,10 × 10%).";
+      }
+
+      function fmtPct(n, digits) {
+        if (digits == null) digits = 1;
+        var sign = n > 0 ? "+" : "";
+        return sign + n.toFixed(digits).replace(".", ",") + "%";
+      }
+
+      function xToSvg(x) {
+        return PAD.l + ((x - X_MIN) / (X_MAX - X_MIN)) * PLOT_W;
+      }
+
+      function yToSvg(y) {
+        var yy = Math.max(Y_MIN, Math.min(Y_MAX, y));
+        return PAD.t + (1 - (yy - Y_MIN) / (Y_MAX - Y_MIN)) * PLOT_H;
+      }
+
+      function svgToX(px) {
+        return X_MIN + ((px - PAD.l) / PLOT_W) * (X_MAX - X_MIN);
+      }
+
+      function buildStructD() {
+        var d = "";
+        var first = true;
+        function add(x, y) {
+          var cmd = first ? "M" : "L";
+          first = false;
+          d += cmd + " " + xToSvg(x).toFixed(3) + " " + yToSvg(y).toFixed(3) + " ";
+        }
+        for (var x = X_MIN; x <= 0; x += 0.25) add(x, 0);
+        for (var x2 = 0.25; x2 <= CAP; x2 += 0.25) add(x2, structureReturn(x2));
+        for (var x3 = CAP; x3 <= X_MAX; x3 += 0.25) add(x3, PART * CAP);
+        return d.trim();
+      }
+
+      function buildAssetPoints() {
+        var pts = [];
+        for (var x = X_MIN; x <= X_MAX; x += 0.5) {
+          pts.push(xToSvg(x).toFixed(3) + "," + yToSvg(x).toFixed(3));
+        }
+        return pts.join(" ");
+      }
+
+      var grid = document.getElementById("gridLines");
+      var yLabels = document.getElementById("yLabels");
+      var xLabels = document.getElementById("xLabels");
+      if (grid && yLabels && xLabels) {
+        grid.innerHTML = "";
+        yLabels.innerHTML = "";
+        xLabels.innerHTML = "";
+        for (var y = 0; y <= 20; y += 5) {
+          var py = yToSvg(y);
+          grid.innerHTML += '<line x1="48" y1="' + py + '" x2="552" y2="' + py + '"/>';
+          yLabels.innerHTML += '<text x="42" y="' + (py + 3) + '">' + y + "%</text>";
+        }
+        for (var x = -20; x <= 40; x += 10) {
+          var px = xToSvg(x);
+          grid.innerHTML += '<line x1="' + px + '" y1="24" x2="' + px + '" y2="376"/>';
+          xLabels.innerHTML += '<text x="' + px + '" y="392">' + x + "%</text>";
+        }
+      }
+
+      document.getElementById("axisZeroX").setAttribute("x1", xToSvg(0));
+      document.getElementById("axisZeroX").setAttribute("x2", xToSvg(0));
+      document.getElementById("axisZeroY").setAttribute("y1", yToSvg(0));
+      document.getElementById("axisZeroY").setAttribute("y2", yToSvg(0));
+
+      var capX = xToSvg(CAP);
+      document.getElementById("capLine").setAttribute("x1", capX);
+      document.getElementById("capLine").setAttribute("x2", capX);
+      document.getElementById("capLabel").setAttribute("x", capX + 6);
+
+      document.getElementById("structPath").setAttribute("d", buildStructD());
+      document.getElementById("assetPath").setAttribute("points", buildAssetPoints());
+
+      var hoverLine = document.getElementById("hoverLine");
+      var hoverStruct = document.getElementById("hoverStruct");
+      var hoverAsset = document.getElementById("hoverAsset");
+      var overlay = document.getElementById("chartOverlay");
+      var tooltip = document.getElementById("tooltip");
+      var svg = document.getElementById("payoffSvg");
+      var slider = document.getElementById("spotSlider");
+      var sliderMobile = document.getElementById("spotSliderMobile");
+      var spotOut = document.getElementById("spotOut");
+      var spotOutMobile = document.getElementById("spotOutMobile");
+      var assetVal = document.getElementById("assetVal");
+      var structVal = document.getElementById("structVal");
+      var regimeText = document.getElementById("regimeText");
+      var activePointer = null;
+
+      function showAt(x) {
+        x = Math.max(X_MIN, Math.min(X_MAX, x));
+        var ys = structureReturn(x);
+        var sx = xToSvg(x);
+        var sy = yToSvg(ys);
+        var ay = yToSvg(x);
+
+        hoverLine.setAttribute("x1", sx);
+        hoverLine.setAttribute("x2", sx);
+        hoverLine.setAttribute("visibility", "visible");
+        hoverStruct.setAttribute("cx", sx);
+        hoverStruct.setAttribute("cy", sy);
+        hoverStruct.setAttribute("visibility", "visible");
+        hoverAsset.setAttribute("cx", sx);
+        hoverAsset.setAttribute("cy", ay);
+        hoverAsset.setAttribute("visibility", "visible");
+
+        tooltip.innerHTML =
+          '<div class="t-title">Spot final ' + fmtPct(x) + "</div>" +
+          '<div class="row"><span>PTAX</span><strong>' + fmtPct(x) + "</strong></div>" +
+          '<div class="row"><span>COE</span><strong>' + fmtPct(ys) + "</strong></div>";
+        tooltip.classList.add("on");
+
+        var svgRect = svg.getBoundingClientRect();
+        var left = Math.max(70, Math.min(svgRect.width - 70, sx * svgRect.width / VW));
+        var top = Math.max(40, sy * svgRect.height / VH);
+        tooltip.style.left = left + "px";
+        tooltip.style.top = top + "px";
+
+        if (slider) slider.value = String(x);
+        if (sliderMobile) sliderMobile.value = String(x);
+        var label = fmtPct(x, x % 1 === 0 ? 0 : 1);
+        if (spotOut) spotOut.textContent = label;
+        if (spotOutMobile) spotOutMobile.textContent = label;
+        if (assetVal) {
+          assetVal.textContent = fmtPct(x);
+          assetVal.className = "val " + (x > 0 ? "pos" : x < 0 ? "neg" : "");
+        }
+        if (structVal) {
+          structVal.textContent = fmtPct(ys);
+          structVal.className = "val " + (ys > 0 ? "pos" : ys < 0 ? "neg" : "");
+        }
+        if (regimeText) regimeText.textContent = regimeFor(x);
+      }
+
+      function clientToSvgX(clientX) {
+        var rect = svg.getBoundingClientRect();
+        if (!rect.width) return 0;
+        return svgToX(((clientX - rect.left) / rect.width) * VW);
+      }
+
+      function updateFromEvent(e) { showAt(clientToSvgX(e.clientX)); }
+
+      overlay.addEventListener("pointerdown", function (e) {
+        activePointer = e.pointerId;
+        overlay.setPointerCapture(e.pointerId);
+        updateFromEvent(e);
+      });
+      overlay.addEventListener("pointermove", function (e) {
+        if (activePointer !== null && e.pointerId !== activePointer) return;
+        if (e.pointerType === "mouse" || activePointer !== null) updateFromEvent(e);
+      });
+      function endPointer(e) {
+        if (activePointer !== null && e.pointerId !== activePointer) return;
+        activePointer = null;
+        try { overlay.releasePointerCapture(e.pointerId); } catch (err) {}
+      }
+      overlay.addEventListener("pointerup", endPointer);
+      overlay.addEventListener("pointercancel", endPointer);
+      overlay.addEventListener("pointerleave", function (e) {
+        if (e.pointerType === "mouse" && activePointer === null) {
+          hoverLine.setAttribute("visibility", "hidden");
+          hoverStruct.setAttribute("visibility", "hidden");
+          hoverAsset.setAttribute("visibility", "hidden");
+          tooltip.classList.remove("on");
+        }
+      });
+      overlay.addEventListener("touchstart", function (e) {
+        if (e.touches && e.touches[0]) { e.preventDefault(); showAt(clientToSvgX(e.touches[0].clientX)); }
+      }, { passive: false });
+      overlay.addEventListener("touchmove", function (e) {
+        if (e.touches && e.touches[0]) { e.preventDefault(); showAt(clientToSvgX(e.touches[0].clientX)); }
+      }, { passive: false });
+
+      function onSliderInput(e) { showAt(Number(e.target.value)); }
+      if (slider) slider.addEventListener("input", onSliderInput);
+      if (sliderMobile) {
+        sliderMobile.addEventListener("input", onSliderInput);
+        sliderMobile.addEventListener("change", onSliderInput);
+      }
+      showAt(Number((slider && slider.value) || 5));
+    })();
+  </script>
 </body>
 </html>
