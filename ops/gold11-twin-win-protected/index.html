@@ -189,9 +189,8 @@
         </div>
         <h1>Operação estruturada · Twin Win <span>Protected</span></h1>
         <p class="subtitle">
-          Operação estruturada sobre GOLD11 (não COE) com retorno pelo desempenho absoluto entre as barreiras
-          (put KO 80% e call KI 140%), proteção de capital enquanto a put permanecer ativa
-          e teto de +40% se a call knock-in for acionada.
+          Operação estruturada sobre GOLD11 com retorno bidirecional entre as barreiras
+          (put KO 80% e call KI 140%) e proteção do capital aplicado.
         </p>
       </div>
       <div class="meta-pills">
@@ -205,11 +204,11 @@
     <section class="highlights">
       <div class="hi">
         <h3>Twin Win</h3>
-        <p>Desempenho absoluto<span>Entre KO −20% e KI +40%</span></p>
+        <p>Retorno bidirecional<span>Entre KO −20% e KI +40%</span></p>
       </div>
       <div class="hi">
         <h3>Proteção</h3>
-        <p>Put ATM 100%<span>KO se GOLD11 &lt; 80%</span></p>
+        <p>100% do capital<span>Put ATM + Put KO</span></p>
       </div>
       <div class="hi">
         <h3>Teto na alta</h3>
@@ -217,7 +216,7 @@
       </div>
       <div class="hi">
         <h3>Prazo</h3>
-        <p>1 ano<span>Horizonte ~12 meses</span></p>
+        <p>1 ano</p>
       </div>
     </section>
 
@@ -229,6 +228,11 @@
             <tr><th>Perna</th><th>Strike</th><th>Barreira</th></tr>
           </thead>
           <tbody>
+            <tr>
+              <td><span class="tag b">B</span> Put ATM</td>
+              <td class="strike-green">100,00%</td>
+              <td>—</td>
+            </tr>
             <tr>
               <td><span class="tag b">B</span> Put KO</td>
               <td class="strike-green">100,00%</td>
@@ -311,11 +315,11 @@
         <div class="zones">
           <div class="zone">
             <strong>&lt; −20% (put KO)</strong>
-            <p>Perda da proteção: acompanha o GOLD11 1:1.</p>
+            <p>Proteção total do capital aplicado — retorno 0%.</p>
           </div>
           <div class="zone">
             <strong>−20% → +40%</strong>
-            <p>Twin Win: retorno = desempenho absoluto — ganha na alta e na queda moderada.</p>
+            <p>Twin Win: retorno bidirecional — ganha na alta e na queda moderada.</p>
           </div>
           <div class="zone">
             <strong>&gt; +40% (call KI)</strong>
@@ -343,7 +347,7 @@
           </div>
         </div>
 
-        <div class="regime" id="regimeText">Entre as barreiras: retorno igual ao desempenho absoluto.</div>
+        <div class="regime" id="regimeText">Entre as barreiras: retorno bidirecional.</div>
 
         <div style="margin-top:18px">
           <h2>Pontos-chave</h2>
@@ -352,7 +356,7 @@
               <tr><th>Spot</th><th>Ativo</th><th>Estrutura</th></tr>
             </thead>
             <tbody>
-              <tr><td>−40%</td><td>−40%</td><td><strong>−40%</strong></td></tr>
+              <tr><td>−40%</td><td>−40%</td><td><strong>0%</strong></td></tr>
               <tr><td>−20%</td><td>−20%</td><td><strong>+20%</strong></td></tr>
               <tr><td>−10%</td><td>−10%</td><td><strong>+10%</strong></td></tr>
               <tr><td>0%</td><td>0%</td><td><strong>0%</strong></td></tr>
@@ -370,8 +374,8 @@
       <p class="speech-label">Para quem</p>
       <p>
         Cliente construtivo em ouro no horizonte de 1 ano, que quer se beneficiar de movimentos
-        relevantes do metal (alta ou queda moderada) com proteção de capital enquanto a put
-        permanecer ativa — via GOLD11, veículo líquido em BRL.
+        relevantes do metal (alta ou queda moderada) com <strong>100% de proteção do capital aplicado</strong>
+        — via GOLD11, veículo líquido em BRL.
       </p>
       <p class="speech-label">Por que agora</p>
       <p>
@@ -390,9 +394,9 @@
       <p class="speech-label">Como encaixa a estrutura</p>
       <p>
         <strong>Twin Win Protected</strong> sobre GOLD11, prazo <strong>1 ano</strong>.
-        Entre put KO 80% (−20%) e call KI 140% (+40%), o retorno acompanha o
-        <strong>desempenho absoluto</strong> — ganha tanto na alta quanto na queda moderada.
-        Abaixo de −20%, perde a proteção da put e acompanha o ativo 1:1.
+        Entre put KO 80% (−20%) e call KI 140% (+40%), o retorno é
+        <strong>bidirecional</strong> — ganha tanto na alta quanto na queda moderada.
+        Put ATM + Put KO garantem <strong>100% de proteção do capital aplicado</strong>, mesmo abaixo de −20%.
         Acima de +40%, com call KI acionada, o retorno fica limitado a <strong>+40%</strong>.
       </p>
       <p class="speech-label">Fechamento</p>
@@ -416,7 +420,7 @@
   <script>
     (function () {
       var X_MIN = -50, X_MAX = 80;
-      var Y_MIN = -55, Y_MAX = 55;
+      var Y_MIN = -5, Y_MAX = 50;
       var PAD = { l: 48, t: 24, r: 48, b: 24 };
       var VW = 600, VH = 400;
       var PLOT_W = VW - PAD.l - PAD.r;
@@ -424,17 +428,18 @@
       var PUT_KO = -20;
       var CALL_KI = 40;
 
+      /** Put ATM + Put KO → 100% proteção abaixo de −20%; bidirecional entre barreiras. */
       function structureReturn(x) {
-        if (x < PUT_KO) return x;
+        if (x < PUT_KO) return 0;
         if (x > CALL_KI) return CALL_KI;
         return Math.abs(x);
       }
 
       function regimeFor(x) {
-        if (x < PUT_KO) return "Abaixo de −20% (put KO 80%): perda da proteção — acompanha o GOLD11 1:1.";
+        if (x < PUT_KO) return "Abaixo de −20% (put KO 80%): proteção total — retorno 0% (capital preservado).";
         if (x > CALL_KI) return "Acima de +40% (call KI 140%): retorno limitado a +40%.";
-        if (x < 0) return "Queda moderada: Twin Win — retorno igual ao desempenho absoluto.";
-        if (x > 0) return "Alta moderada: Twin Win — retorno igual ao desempenho absoluto.";
+        if (x < 0) return "Queda moderada: Twin Win — retorno bidirecional.";
+        if (x > 0) return "Alta moderada: Twin Win — retorno bidirecional.";
         return "Variação nula: retorno 0%.";
       }
 
@@ -466,7 +471,7 @@
           first = false;
           d += cmd + " " + xToSvg(x).toFixed(3) + " " + yToSvg(y).toFixed(3) + " ";
         }
-        for (var x = X_MIN; x <= PUT_KO; x += 0.5) add(x, x);
+        for (var x = X_MIN; x < PUT_KO; x += 0.5) add(x, 0);
         move(PUT_KO, structureReturn(PUT_KO));
         for (var x2 = PUT_KO + 0.5; x2 <= CALL_KI; x2 += 0.5) add(x2, structureReturn(x2));
         move(CALL_KI + 0.001, CALL_KI);
@@ -489,7 +494,7 @@
         grid.innerHTML = "";
         yLabels.innerHTML = "";
         xLabels.innerHTML = "";
-        for (var y = -50; y <= 50; y += 10) {
+        for (var y = 0; y <= 50; y += 10) {
           var py = yToSvg(y);
           grid.innerHTML += '<line x1="48" y1="' + py + '" x2="552" y2="' + py + '"/>';
           yLabels.innerHTML += '<text x="42" y="' + (py + 3) + '">' + y + "%</text>";
@@ -510,7 +515,7 @@
       var kiX = xToSvg(CALL_KI);
       document.getElementById("koGap").setAttribute("x1", koX);
       document.getElementById("koGap").setAttribute("x2", koX);
-      document.getElementById("koGap").setAttribute("y1", yToSvg(PUT_KO));
+      document.getElementById("koGap").setAttribute("y1", yToSvg(0));
       document.getElementById("koGap").setAttribute("y2", yToSvg(structureReturn(PUT_KO)));
       document.getElementById("koDot").setAttribute("cx", koX);
       document.getElementById("koDot").setAttribute("cy", yToSvg(structureReturn(PUT_KO)));
