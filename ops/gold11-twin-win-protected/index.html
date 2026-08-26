@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>GOLD11 Twin Win Protected | BTG Pactual</title>
+  <style>
+    :root {
+      --ink: #0b1f3a;
+      --muted: #5c6b7a;
+      --line: #d0d8e2;
+      --bg: #eef2f6;
+      --card: #ffffff;
+      --gold: #7a6a3a;
+      --gold-soft: #d4c89a;
+      --btg: #0b1f3a;
+      --accent: #7a6a3a;
+      --success: #0f7a4a;
+      --danger: #c0392b;
+      --dash: #8b97a8;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: Segoe UI, -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif;
+      color: var(--ink); background: var(--bg); min-height: 100vh; line-height: 1.45;
+    }
+    .page { max-width: 1280px; margin: 0 auto; padding: 28px 24px 48px; }
+    .back-link { margin-bottom: 16px; font-size: 13px; }
+    .back-link a { color: #1a66b3; text-decoration: none; font-weight: 600; }
+    .back-link a:hover { text-decoration: underline; }
+    .topbar {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      gap: 24px; margin-bottom: 28px; padding-bottom: 20px; border-bottom: 1px solid var(--line);
+    }
+    .brand-block { display: flex; flex-direction: column; gap: 10px; }
+    .logos { display: flex; align-items: center; gap: 14px; }
+    .logo-btg {
+      font-weight: 700; font-size: 13px; letter-spacing: 0.04em; color: var(--btg);
+      background: #eef2f7; padding: 6px 10px; border-radius: 4px;
+    }
+    .logo-gold {
+      display: inline-flex; align-items: center; gap: 8px; font-weight: 700;
+      color: var(--gold); font-size: 15px;
+    }
+    .logo-gold .dot {
+      width: 22px; height: 22px; border-radius: 50%;
+      background: linear-gradient(135deg, #5a4a28, #9a8a50);
+      display: grid; place-items: center; color: #fff; font-size: 9px; font-weight: 700;
+    }
+    h1 {
+      font-weight: 700; font-size: clamp(24px, 3vw, 34px); letter-spacing: -0.02em;
+      color: var(--ink); line-height: 1.15;
+    }
+    h1 span { color: var(--gold); }
+    .subtitle { color: var(--muted); font-size: 14px; max-width: 560px; }
+    .meta-pills { display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; }
+    .pill {
+      background: var(--card); border: 1px solid var(--line); border-radius: 999px;
+      padding: 8px 14px; font-size: 12px; color: var(--muted);
+    }
+    .pill strong { color: var(--ink); font-weight: 600; margin-right: 4px; }
+    .highlights { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 24px; }
+    .hi {
+      background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+      padding: 16px; border-top: 3px solid var(--gold);
+    }
+    .hi h3 {
+      font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase;
+      letter-spacing: 0.04em; margin-bottom: 6px;
+    }
+    .hi p { font-size: 15px; font-weight: 700; color: var(--ink); }
+    .hi p span { display: block; font-weight: 400; color: var(--muted); font-size: 12px; margin-top: 3px; }
+    .main { display: grid; grid-template-columns: 280px 1fr 300px; gap: 18px; align-items: start; }
+    .panel { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 18px; }
+    .panel h2 {
+      font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 14px;
+    }
+    .struct-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    .struct-table th {
+      text-align: left; font-weight: 600; color: var(--muted); padding: 0 6px 10px;
+      border-bottom: 1px solid var(--line); font-size: 11px; text-transform: uppercase;
+    }
+    .struct-table td { padding: 10px 6px; border-bottom: 1px solid var(--line); }
+    .struct-table tr:last-child td { border-bottom: none; }
+    .tag { display: inline-block; font-weight: 700; font-size: 11px; padding: 2px 7px; border-radius: 4px; margin-right: 4px; }
+    .tag.s { background: #fde8e8; color: var(--danger); }
+    .tag.b { background: #e8f8ef; color: var(--success); }
+    .strike-green { color: var(--success); font-weight: 700; }
+    .legend-note { margin-top: 14px; font-size: 11px; color: var(--muted); line-height: 1.5; }
+    .thesis { margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--line); }
+    .thesis p { font-size: 13px; color: var(--ink); margin-bottom: 10px; }
+    .thesis ul { padding-left: 18px; font-size: 13px; color: var(--ink); }
+    .thesis li { margin-bottom: 6px; }
+    .thesis a { color: #1a66b3; font-weight: 600; text-decoration: none; }
+    .thesis a:hover { text-decoration: underline; }
+    .chart-panel { padding: 16px; }
+    .chart-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 10px; }
+    .chart-caption { font-size: 12px; color: var(--muted); }
+    .chart-legend { display: flex; gap: 14px; font-size: 12px; color: var(--muted); flex-wrap: wrap; }
+    .chart-legend span { display: inline-flex; align-items: center; gap: 6px; }
+    .swatch { width: 18px; height: 3px; border-radius: 2px; background: var(--gold); display: inline-block; }
+    .swatch.asset { background: transparent; border-top: 2px dashed var(--dash); height: 0; }
+    .chart-box {
+      width: 100%; background: #faf8f4; border: 1px solid var(--line); border-radius: 10px;
+      overflow: hidden; position: relative; -webkit-user-select: none; user-select: none;
+    }
+    .chart-box svg { display: block; width: 100%; height: auto; min-height: 360px; pointer-events: none; }
+    .chart-overlay {
+      position: absolute; inset: 0; z-index: 3; touch-action: none; cursor: crosshair;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .chart-touch-hint { display: block; font-size: 12px; color: var(--muted); margin-top: 8px; text-align: center; }
+    @media (hover: hover) and (pointer: fine) { .chart-touch-hint { display: none; } }
+    .mobile-sim {
+      display: block; margin-top: 12px; padding: 12px; background: var(--bg);
+      border: 1px solid var(--line); border-radius: 10px;
+    }
+    .mobile-sim input[type="range"] { width: 100%; height: 44px; accent-color: var(--gold); margin-bottom: 0; }
+    .tooltip {
+      position: absolute; pointer-events: none; background: var(--ink); color: #fff;
+      padding: 10px 12px; border-radius: 8px; font-size: 12px; min-width: 170px;
+      opacity: 0; z-index: 5; transform: translate(-50%, -120%); transition: opacity 0.1s ease;
+    }
+    .tooltip.on { opacity: 1; }
+    .tooltip .t-title { font-weight: 600; margin-bottom: 6px; opacity: 0.85; font-size: 11px; }
+    .tooltip .row { display: flex; justify-content: space-between; gap: 16px; margin-top: 3px; }
+    .zones { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 12px; }
+    .zone { border: 1px solid var(--line); border-radius: 8px; padding: 10px; background: var(--bg); }
+    .zone strong { display: block; font-size: 12px; color: var(--gold); margin-bottom: 4px; }
+    .zone p { font-size: 11px; color: var(--muted); line-height: 1.4; }
+    .sim-label {
+      display: flex; justify-content: space-between; align-items: baseline;
+      font-size: 12px; color: var(--muted); margin-bottom: 8px;
+    }
+    .sim-label output { font-weight: 700; color: var(--ink); font-size: 14px; }
+    input[type="range"] { width: 100%; accent-color: var(--gold); margin-bottom: 14px; }
+    .sim-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+    .sim-card { background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 12px; }
+    .sim-card .lbl { font-size: 11px; color: var(--muted); margin-bottom: 4px; }
+    .sim-card .val { font-size: 18px; font-weight: 700; color: var(--ink); }
+    .sim-card .val.pos { color: var(--success); }
+    .sim-card .val.neg { color: var(--danger); }
+    .regime {
+      font-size: 12px; color: var(--ink); background: rgba(122, 106, 58, 0.08);
+      border: 1px solid rgba(122, 106, 58, 0.22); border-radius: 8px; padding: 10px 12px; line-height: 1.45;
+    }
+    .speech-box {
+      margin-top: 22px; background: var(--card); border: 1px solid var(--line);
+      border-radius: 14px; padding: 22px 24px; border-top: 3px solid var(--gold);
+    }
+    .speech-box h2 {
+      font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 14px;
+    }
+    .speech-label {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--gold); margin: 14px 0 6px;
+    }
+    .speech-box p { font-size: 14px; color: var(--ink); max-width: 70em; }
+    .footer { margin-top: 28px; font-size: 11px; color: var(--muted); text-align: center; line-height: 1.55; }
+    .footer-alert {
+      margin-top: 10px; text-align: center; font-size: 11px; color: var(--btg); font-weight: 700; line-height: 1.5;
+    }
+    @media (max-width: 1100px) {
+      .main { grid-template-columns: 1fr; }
+      .highlights { grid-template-columns: 1fr 1fr; }
+      .zones { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 640px) {
+      .page { padding: 16px 14px 40px; }
+      .topbar { flex-direction: column; }
+      .meta-pills { justify-content: flex-start; }
+      .highlights { grid-template-columns: 1fr; }
+      .mobile-sim { display: none; }
+      .chart-touch-hint { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <p class="back-link"><a href="../../index.html">← Distribuição Renda Variável</a></p>
+
+    <header class="topbar">
+      <div class="brand-block">
+        <div class="logos">
+          <span class="logo-btg">BTG PACTUAL</span>
+          <span class="logo-gold"><span class="dot">Au</span> Ouro · GOLD11</span>
+        </div>
+        <h1>Operação estruturada · Twin Win <span>Protected</span></h1>
+        <p class="subtitle">
+          Operação estruturada sobre GOLD11 (não COE) com retorno pelo desempenho absoluto entre as barreiras
+          (put KO 80% e call KI 140%), proteção de capital enquanto a put permanecer ativa
+          e teto de +40% se a call knock-in for acionada.
+        </p>
+      </div>
+      <div class="meta-pills">
+        <div class="pill"><strong>Tipo</strong> Operação estruturada</div>
+        <div class="pill"><strong>Ativo</strong> GOLD11</div>
+        <div class="pill"><strong>Prazo</strong> 1 ano</div>
+        <div class="pill"><strong>Moeda</strong> BRL</div>
+      </div>
+    </header>
+
+    <section class="highlights">
+      <div class="hi">
+        <h3>Twin Win</h3>
+        <p>Desempenho absoluto<span>Entre KO −20% e KI +40%</span></p>
+      </div>
+      <div class="hi">
+        <h3>Proteção</h3>
+        <p>Put ATM 100%<span>KO se GOLD11 &lt; 80%</span></p>
+      </div>
+      <div class="hi">
+        <h3>Teto na alta</h3>
+        <p>+40%<span>Call KI se GOLD11 ≥ 140%</span></p>
+      </div>
+      <div class="hi">
+        <h3>Prazo</h3>
+        <p>1 ano<span>Horizonte ~12 meses</span></p>
+      </div>
+    </section>
+
+    <div class="main">
+      <aside class="panel panel-structure">
+        <h2>Estrutura da operação</h2>
+        <table class="struct-table">
+          <thead>
+            <tr><th>Perna</th><th>Strike</th><th>Barreira</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="tag b">B</span> Put KO</td>
+              <td class="strike-green">100,00%</td>
+              <td>KO 80%</td>
+            </tr>
+            <tr>
+              <td><span class="tag s">S</span> Call KI</td>
+              <td>100,00%</td>
+              <td>KI 140%</td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="legend-note">
+          <strong>B</strong> = Compra · <strong>S</strong> = Venda<br />
+          Payoff ilustrativo no vencimento; barreiras observadas ao longo da vida.
+        </p>
+
+        <div class="thesis">
+          <h2>Leitura do research</h2>
+          <p><em>Gold Update (Mine &amp; Grind) · Central Banks to the Rescue!</em> · 25/08/2026:</p>
+          <ul>
+            <li>Conselho Mundial do Ouro: compras líquidas de ~290t no 2T26 vs. 57t no 1T26 — demanda de bancos centrais acelerou após a correção</li>
+            <li>China: ~15t em jun/26, maior compra mensal desde out/23; Polônia somou 82t no 1S26 (51t só no 2T), maior comprador reportado do ano</li>
+            <li>Tendência estrutural pós-congelamento de ~US$ 300 bi de reservas russas pelo G7 em 2022 — diversificação fora de ativos em dólar</li>
+            <li>Demanda de BC chegou a ~37% da demanda total de ouro em alguns períodos; quando fluxo de ETFs esfria e o preço corrige, os BCs tendem a comprar mais</li>
+            <li>Correção recente de ~US$ 5.500/oz para ~US$ 4.000/oz; BTG mantém visão construtiva de longo prazo (debasement / desdolarização + demanda estrutural de BCs)</li>
+          </ul>
+          <p style="margin-top:14px">
+            <a href="./Gold-Update-Central-Banks-2026-08-25.pdf" target="_blank" rel="noopener noreferrer">Abrir report de research (PDF) ↗</a>
+          </p>
+        </div>
+      </aside>
+
+      <section class="panel chart-panel panel-chart">
+        <div class="chart-head">
+          <div>
+            <h2>Payoff da estrutura</h2>
+            <p class="chart-caption">Retorno no vencimento vs. variação do GOLD11</p>
+          </div>
+          <div class="chart-legend">
+            <span><i class="swatch"></i> Estrutura</span>
+            <span><i class="swatch asset"></i> Ativo</span>
+          </div>
+        </div>
+
+        <div class="chart-box" id="chartBox">
+          <div class="tooltip" id="tooltip"></div>
+          <svg id="payoffSvg" viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Gráfico de payoff GOLD11 Twin Win Protected">
+            <rect x="48" y="24" width="504" height="352" fill="#faf8f4" />
+            <g id="gridLines" stroke="#ebe6dc" stroke-width="1"></g>
+            <line id="axisZeroX" x1="154" y1="24" x2="154" y2="376" stroke="#c8c0b0" stroke-width="1.25"/>
+            <line id="axisZeroY" x1="48" y1="300" x2="552" y2="300" stroke="#c8c0b0" stroke-width="1.25"/>
+            <g id="yLabels" fill="#8b97a8" font-size="11" font-family="Segoe UI, Arial, sans-serif" text-anchor="end"></g>
+            <g id="xLabels" fill="#8b97a8" font-size="11" font-family="Segoe UI, Arial, sans-serif" text-anchor="middle"></g>
+            <text x="300" y="16" fill="#5c6b7a" font-size="11" font-family="Segoe UI, Arial, sans-serif" text-anchor="middle">Variação do GOLD11 no vencimento (%)</text>
+            <text x="14" y="200" fill="#5c6b7a" font-size="11" font-family="Segoe UI, Arial, sans-serif" text-anchor="middle" transform="rotate(-90 14 200)">Retorno da estrutura (%)</text>
+            <polyline id="assetPath" fill="none" stroke="#8b97a8" stroke-width="1.75" stroke-dasharray="6 5" points="" />
+            <line id="koGap" x1="0" y1="0" x2="0" y2="0" stroke="#c0392b" stroke-width="1.25" stroke-dasharray="3 3" opacity="0.75"/>
+            <path id="structPath" d="" fill="none" stroke="#7a6a3a" stroke-width="2.75" stroke-linejoin="round" stroke-linecap="round"/>
+            <circle id="koDot" cx="0" cy="0" r="5" fill="#c0392b"/>
+            <text id="koLabel" x="0" y="0" fill="#c0392b" font-size="11" font-weight="600" font-family="Segoe UI, Arial, sans-serif">Put KO 80%</text>
+            <circle id="kiDot" cx="0" cy="0" r="5" fill="#0f7a4a"/>
+            <text id="kiLabel" x="0" y="0" fill="#0f7a4a" font-size="11" font-weight="600" font-family="Segoe UI, Arial, sans-serif">Call KI 140%</text>
+            <line id="hoverLine" x1="0" y1="24" x2="0" y2="376" stroke="rgba(122,106,58,0.4)" stroke-width="1.25" stroke-dasharray="4 4" visibility="hidden"/>
+            <circle id="hoverStruct" r="5.5" fill="#7a6a3a" visibility="hidden"/>
+            <circle id="hoverAsset" r="4" fill="#8b97a8" visibility="hidden"/>
+          </svg>
+          <div class="chart-overlay" id="chartOverlay" aria-label="Área interativa do gráfico"></div>
+        </div>
+
+        <p class="chart-touch-hint">Toque e arraste no gráfico · ou use o controle abaixo</p>
+        <div class="mobile-sim">
+          <div class="sim-label">
+            <span>Variação do GOLD11</span>
+            <output id="spotOutMobile">+20%</output>
+          </div>
+          <input type="range" id="spotSliderMobile" min="-50" max="80" step="0.5" value="20" aria-label="Variação do GOLD11 no celular" />
+        </div>
+
+        <div class="zones">
+          <div class="zone">
+            <strong>&lt; −20% (put KO)</strong>
+            <p>Perda da proteção: acompanha o GOLD11 1:1.</p>
+          </div>
+          <div class="zone">
+            <strong>−20% → +40%</strong>
+            <p>Twin Win: retorno = desempenho absoluto — ganha na alta e na queda moderada.</p>
+          </div>
+          <div class="zone">
+            <strong>&gt; +40% (call KI)</strong>
+            <p>Retorno limitado a +40% se a barreira de alta for acionada.</p>
+          </div>
+        </div>
+      </section>
+
+      <aside class="panel panel-sim">
+        <h2>Simulador no vencimento</h2>
+        <div class="sim-label">
+          <span>Variação do GOLD11</span>
+          <output id="spotOut">+20%</output>
+        </div>
+        <input type="range" id="spotSlider" min="-50" max="80" step="0.5" value="20" aria-label="Variação do GOLD11" />
+
+        <div class="sim-cards">
+          <div class="sim-card">
+            <div class="lbl">Retorno do ativo</div>
+            <div class="val" id="assetVal">+20,0%</div>
+          </div>
+          <div class="sim-card">
+            <div class="lbl">Retorno da estrutura</div>
+            <div class="val" id="structVal">+20,0%</div>
+          </div>
+        </div>
+
+        <div class="regime" id="regimeText">Entre as barreiras: retorno igual ao desempenho absoluto.</div>
+
+        <div style="margin-top:18px">
+          <h2>Pontos-chave</h2>
+          <table class="struct-table">
+            <thead>
+              <tr><th>Spot</th><th>Ativo</th><th>Estrutura</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>−40%</td><td>−40%</td><td><strong>−40%</strong></td></tr>
+              <tr><td>−20%</td><td>−20%</td><td><strong>+20%</strong></td></tr>
+              <tr><td>−10%</td><td>−10%</td><td><strong>+10%</strong></td></tr>
+              <tr><td>0%</td><td>0%</td><td><strong>0%</strong></td></tr>
+              <tr><td>+20%</td><td>+20%</td><td><strong>+20%</strong></td></tr>
+              <tr><td>+40%</td><td>+40%</td><td><strong>+40%</strong></td></tr>
+              <tr><td>+60%</td><td>+60%</td><td><strong>+40%</strong></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </aside>
+    </div>
+
+    <section class="speech-box" aria-label="Speech comercial">
+      <h2>Speech comercial</h2>
+      <p class="speech-label">Para quem</p>
+      <p>
+        Cliente construtivo em ouro no horizonte de 1 ano, que quer se beneficiar de movimentos
+        relevantes do metal (alta ou queda moderada) com proteção de capital enquanto a put
+        permanecer ativa — via GOLD11, veículo líquido em BRL.
+      </p>
+      <p class="speech-label">Por que agora</p>
+      <p>
+        O research de ouro (<em>Central Banks to the Rescue!</em>, 25/08/2026) mostra demanda de bancos centrais
+        acelerando após a correção de ~US$ 5.500/oz para ~US$ 4.000/oz: ~290t no 2T26 vs. 57t no 1T26.
+        China voltou a comprar forte (~15t em jun/26) e a Polônia somou 82t no 1S26.
+        Quando o fluxo de ETFs esfria, os BCs tendem a entrar mais agressivamente — piso estrutural
+        que reforça a tese de longo prazo (desdolarização + diversificação de reservas).
+      </p>
+      <p class="speech-label">O que sustenta a conversa</p>
+      <p>
+        Tendência estrutural de compras de BCs desde 2022, com participação chegando a ~37% da demanda total
+        em alguns períodos. Ouro continua como hedge de debasement e diversificação frente a ativos
+        dolarizados. GOLD11 espelha a exposição ao metal de forma acessível na B3.
+      </p>
+      <p class="speech-label">Como encaixa a estrutura</p>
+      <p>
+        <strong>Twin Win Protected</strong> sobre GOLD11, prazo <strong>1 ano</strong>.
+        Entre put KO 80% (−20%) e call KI 140% (+40%), o retorno acompanha o
+        <strong>desempenho absoluto</strong> — ganha tanto na alta quanto na queda moderada.
+        Abaixo de −20%, perde a proteção da put e acompanha o ativo 1:1.
+        Acima de +40%, com call KI acionada, o retorno fica limitado a <strong>+40%</strong>.
+      </p>
+      <p class="speech-label">Fechamento</p>
+      <p>
+        Tese de ouro respaldada por research recente + payoff bidirecional fácil de explicar.
+        Material de uso interno — para condições oficiais, acessar o DIE no Admin BTG.
+      </p>
+    </section>
+
+    <p class="footer">
+      Material ilustrativo. Payoff intrínseco no vencimento, sem carrego/juros.
+      Não constitui oferta, recomendação ou garantia de rentabilidade. Produto estruturado envolve risco de perda de capital.
+      Barreiras observadas ao longo da vida podem alterar o resultado final.
+    </p>
+    <p class="footer-alert">
+      <strong>MATERIAL DE USO INTERNO, NÃO ENVIAR AOS CLIENTES</strong><br />
+      <strong>PARA INFORMAÇÕES OFICIAIS, ACESSAR O DIE DA OPERAÇÃO DISPONIBILIZADO NO ADMIN BTG</strong>
+    </p>
+  </div>
+
+  <script>
+    (function () {
+      var X_MIN = -50, X_MAX = 80;
+      var Y_MIN = -55, Y_MAX = 55;
+      var PAD = { l: 48, t: 24, r: 48, b: 24 };
+      var VW = 600, VH = 400;
+      var PLOT_W = VW - PAD.l - PAD.r;
+      var PLOT_H = VH - PAD.t - PAD.b;
+      var PUT_KO = -20;
+      var CALL_KI = 40;
+
+      function structureReturn(x) {
+        if (x < PUT_KO) return x;
+        if (x > CALL_KI) return CALL_KI;
+        return Math.abs(x);
+      }
+
+      function regimeFor(x) {
+        if (x < PUT_KO) return "Abaixo de −20% (put KO 80%): perda da proteção — acompanha o GOLD11 1:1.";
+        if (x > CALL_KI) return "Acima de +40% (call KI 140%): retorno limitado a +40%.";
+        if (x < 0) return "Queda moderada: Twin Win — retorno igual ao desempenho absoluto.";
+        if (x > 0) return "Alta moderada: Twin Win — retorno igual ao desempenho absoluto.";
+        return "Variação nula: retorno 0%.";
+      }
+
+      function fmtPct(n, digits) {
+        if (digits == null) digits = 1;
+        var sign = n > 0 ? "+" : "";
+        return sign + n.toFixed(digits).replace(".", ",") + "%";
+      }
+
+      function xToSvg(x) {
+        return PAD.l + ((x - X_MIN) / (X_MAX - X_MIN)) * PLOT_W;
+      }
+
+      function yToSvg(y) {
+        var yy = Math.max(Y_MIN, Math.min(Y_MAX, y));
+        return PAD.t + (1 - (yy - Y_MIN) / (Y_MAX - Y_MIN)) * PLOT_H;
+      }
+
+      function svgToX(px) {
+        return X_MIN + ((px - PAD.l) / PLOT_W) * (X_MAX - X_MIN);
+      }
+
+      function buildStructD() {
+        var d = "";
+        var first = true;
+        function move(x, y) { first = true; add(x, y); }
+        function add(x, y) {
+          var cmd = first ? "M" : "L";
+          first = false;
+          d += cmd + " " + xToSvg(x).toFixed(3) + " " + yToSvg(y).toFixed(3) + " ";
+        }
+        for (var x = X_MIN; x <= PUT_KO; x += 0.5) add(x, x);
+        move(PUT_KO, structureReturn(PUT_KO));
+        for (var x2 = PUT_KO + 0.5; x2 <= CALL_KI; x2 += 0.5) add(x2, structureReturn(x2));
+        move(CALL_KI + 0.001, CALL_KI);
+        for (var x3 = CALL_KI + 0.5; x3 <= X_MAX; x3 += 0.5) add(x3, CALL_KI);
+        return d.trim();
+      }
+
+      function buildAssetPoints() {
+        var pts = [];
+        for (var x = X_MIN; x <= CALL_KI + 20; x += 1) {
+          pts.push(xToSvg(x).toFixed(3) + "," + yToSvg(x).toFixed(3));
+        }
+        return pts.join(" ");
+      }
+
+      var grid = document.getElementById("gridLines");
+      var yLabels = document.getElementById("yLabels");
+      var xLabels = document.getElementById("xLabels");
+      if (grid && yLabels && xLabels) {
+        grid.innerHTML = "";
+        yLabels.innerHTML = "";
+        xLabels.innerHTML = "";
+        for (var y = -50; y <= 50; y += 10) {
+          var py = yToSvg(y);
+          grid.innerHTML += '<line x1="48" y1="' + py + '" x2="552" y2="' + py + '"/>';
+          yLabels.innerHTML += '<text x="42" y="' + (py + 3) + '">' + y + "%</text>";
+        }
+        for (var x = -50; x <= 80; x += 10) {
+          var px = xToSvg(x);
+          grid.innerHTML += '<line x1="' + px + '" y1="24" x2="' + px + '" y2="376"/>';
+          xLabels.innerHTML += '<text x="' + px + '" y="392">' + x + "%</text>";
+        }
+      }
+
+      document.getElementById("axisZeroX").setAttribute("x1", xToSvg(0));
+      document.getElementById("axisZeroX").setAttribute("x2", xToSvg(0));
+      document.getElementById("axisZeroY").setAttribute("y1", yToSvg(0));
+      document.getElementById("axisZeroY").setAttribute("y2", yToSvg(0));
+
+      var koX = xToSvg(PUT_KO);
+      var kiX = xToSvg(CALL_KI);
+      document.getElementById("koGap").setAttribute("x1", koX);
+      document.getElementById("koGap").setAttribute("x2", koX);
+      document.getElementById("koGap").setAttribute("y1", yToSvg(PUT_KO));
+      document.getElementById("koGap").setAttribute("y2", yToSvg(structureReturn(PUT_KO)));
+      document.getElementById("koDot").setAttribute("cx", koX);
+      document.getElementById("koDot").setAttribute("cy", yToSvg(structureReturn(PUT_KO)));
+      document.getElementById("koLabel").setAttribute("x", koX + 8);
+      document.getElementById("koLabel").setAttribute("y", yToSvg(structureReturn(PUT_KO)) - 6);
+      document.getElementById("kiDot").setAttribute("cx", kiX);
+      document.getElementById("kiDot").setAttribute("cy", yToSvg(CALL_KI));
+      document.getElementById("kiLabel").setAttribute("x", kiX - 90);
+      document.getElementById("kiLabel").setAttribute("y", yToSvg(CALL_KI) - 8);
+
+      document.getElementById("structPath").setAttribute("d", buildStructD());
+      document.getElementById("assetPath").setAttribute("points", buildAssetPoints());
+
+      var hoverLine = document.getElementById("hoverLine");
+      var hoverStruct = document.getElementById("hoverStruct");
+      var hoverAsset = document.getElementById("hoverAsset");
+      var overlay = document.getElementById("chartOverlay");
+      var tooltip = document.getElementById("tooltip");
+      var svg = document.getElementById("payoffSvg");
+      var slider = document.getElementById("spotSlider");
+      var sliderMobile = document.getElementById("spotSliderMobile");
+      var spotOut = document.getElementById("spotOut");
+      var spotOutMobile = document.getElementById("spotOutMobile");
+      var assetVal = document.getElementById("assetVal");
+      var structVal = document.getElementById("structVal");
+      var regimeText = document.getElementById("regimeText");
+      var activePointer = null;
+
+      function showAt(x) {
+        x = Math.max(X_MIN, Math.min(X_MAX, x));
+        var ys = structureReturn(x);
+        var sx = xToSvg(x);
+        var sy = yToSvg(ys);
+        var ay = yToSvg(x);
+        hoverLine.setAttribute("x1", sx);
+        hoverLine.setAttribute("x2", sx);
+        hoverLine.setAttribute("visibility", "visible");
+        hoverStruct.setAttribute("cx", sx);
+        hoverStruct.setAttribute("cy", sy);
+        hoverStruct.setAttribute("visibility", "visible");
+        hoverAsset.setAttribute("cx", sx);
+        hoverAsset.setAttribute("cy", ay);
+        hoverAsset.setAttribute("visibility", "visible");
+        tooltip.innerHTML =
+          '<div class="t-title">Spot final ' + fmtPct(x) + "</div>" +
+          '<div class="row"><span>GOLD11</span><strong>' + fmtPct(x) + "</strong></div>" +
+          '<div class="row"><span>Estrutura</span><strong>' + fmtPct(ys) + "</strong></div>";
+        tooltip.classList.add("on");
+        var svgRect = svg.getBoundingClientRect();
+        tooltip.style.left = Math.max(70, Math.min(svgRect.width - 70, sx * svgRect.width / VW)) + "px";
+        tooltip.style.top = Math.max(40, sy * svgRect.height / VH) + "px";
+        if (slider) slider.value = String(x);
+        if (sliderMobile) sliderMobile.value = String(x);
+        var label = fmtPct(x, x % 1 === 0 ? 0 : 1);
+        if (spotOut) spotOut.textContent = label;
+        if (spotOutMobile) spotOutMobile.textContent = label;
+        if (assetVal) {
+          assetVal.textContent = fmtPct(x);
+          assetVal.className = "val " + (x > 0 ? "pos" : x < 0 ? "neg" : "");
+        }
+        if (structVal) {
+          structVal.textContent = fmtPct(ys);
+          structVal.className = "val " + (ys > 0 ? "pos" : ys < 0 ? "neg" : "");
+        }
+        if (regimeText) regimeText.textContent = regimeFor(x);
+      }
+
+      function clientToSvgX(clientX) {
+        var rect = svg.getBoundingClientRect();
+        if (!rect.width) return 0;
+        return svgToX(((clientX - rect.left) / rect.width) * VW);
+      }
+
+      function updateFromEvent(e) { showAt(clientToSvgX(e.clientX)); }
+
+      overlay.addEventListener("pointerdown", function (e) {
+        activePointer = e.pointerId;
+        overlay.setPointerCapture(e.pointerId);
+        updateFromEvent(e);
+      });
+      overlay.addEventListener("pointermove", function (e) {
+        if (activePointer !== null && e.pointerId !== activePointer) return;
+        if (e.pointerType === "mouse" || activePointer !== null) updateFromEvent(e);
+      });
+      function endPointer(e) {
+        if (activePointer !== null && e.pointerId !== activePointer) return;
+        activePointer = null;
+        try { overlay.releasePointerCapture(e.pointerId); } catch (err) {}
+      }
+      overlay.addEventListener("pointerup", endPointer);
+      overlay.addEventListener("pointercancel", endPointer);
+      overlay.addEventListener("pointerleave", function (e) {
+        if (e.pointerType === "mouse" && activePointer === null) {
+          hoverLine.setAttribute("visibility", "hidden");
+          hoverStruct.setAttribute("visibility", "hidden");
+          hoverAsset.setAttribute("visibility", "hidden");
+          tooltip.classList.remove("on");
+        }
+      });
+
+      function onSliderInput(e) { showAt(Number(e.target.value)); }
+      if (slider) slider.addEventListener("input", onSliderInput);
+      if (sliderMobile) {
+        sliderMobile.addEventListener("input", onSliderInput);
+        sliderMobile.addEventListener("change", onSliderInput);
+      }
+      showAt(Number((slider && slider.value) || 20));
+    })();
+  </script>
+</body>
+</html>
