@@ -201,8 +201,107 @@
     }
     .points-table tr:last-child td { border-bottom: none; }
 
+    .mags-section { margin-top: 8px; }
+    .mags-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 14px; align-items: start;
+    }
+    .mags-panel h3 {
+      font-size: 14px; font-weight: 700; color: var(--btg); margin-bottom: 4px;
+    }
+    .mags-panel .sub {
+      font-size: 12px; color: var(--muted); margin-bottom: 14px; line-height: 1.4;
+    }
+    .basket-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .basket-item {
+      display: grid; grid-template-columns: 72px 1fr 52px; align-items: center; gap: 10px;
+      padding: 8px 10px; border-radius: 6px; border: 1px solid transparent;
+      cursor: pointer; transition: background 0.12s ease, border-color 0.12s ease, transform 0.12s ease;
+    }
+    .basket-item:hover, .basket-item.active {
+      background: rgba(61, 79, 106, 0.07); border-color: rgba(61, 79, 106, 0.18);
+    }
+    .basket-item.active { transform: translateX(2px); }
+    .basket-ticker { font-size: 13px; font-weight: 700; color: var(--btg); letter-spacing: 0.03em; }
+    .basket-bar-wrap {
+      height: 22px; background: #eef2f6; border-radius: 4px; overflow: hidden; position: relative;
+    }
+    .basket-bar {
+      height: 100%; border-radius: 4px; transition: width 0.25s ease, opacity 0.12s ease;
+      min-width: 4px;
+    }
+    .basket-item:not(.active):not(:hover) .basket-bar { opacity: 0.72; }
+    .basket-pct { font-size: 13px; font-weight: 700; color: var(--accent); text-align: right; }
+    .basket-caption {
+      margin-top: 14px; font-size: 11px; color: var(--muted); line-height: 1.45;
+      padding-top: 12px; border-top: 1px solid var(--line);
+    }
+    .donut-wrap {
+      display: flex; align-items: center; justify-content: center; gap: 18px; flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+    .donut-svg { width: 140px; height: 140px; flex-shrink: 0; }
+    .donut-seg { cursor: pointer; transition: opacity 0.12s ease, transform 0.12s ease; transform-origin: center; }
+    .donut-seg.dim { opacity: 0.35; }
+    .donut-seg.active { opacity: 1; filter: brightness(1.08); }
+    .donut-center {
+      font-size: 18px; font-weight: 700; fill: var(--btg);
+    }
+    .donut-center-sub { font-size: 10px; fill: var(--muted); }
+    .hist-block { margin-bottom: 18px; }
+    .hist-block:last-of-type { margin-bottom: 0; }
+    .hist-label {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 10px;
+    }
+    .hist-label.illus { color: var(--muted); font-weight: 600; }
+    .hist-bars {
+      display: flex; align-items: flex-end; gap: 8px; height: 160px; padding: 0 4px;
+      border-bottom: 2px solid var(--line); position: relative;
+    }
+    .hist-bar-col {
+      flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
+      height: 100%; cursor: pointer; min-width: 0;
+    }
+    .hist-bar {
+      width: 100%; max-width: 48px; border-radius: 4px 4px 0 0;
+      transition: opacity 0.12s ease, transform 0.12s ease; transform-origin: bottom;
+      min-height: 4px;
+    }
+    .hist-bar-col:hover .hist-bar, .hist-bar-col.active .hist-bar { transform: scaleX(1.06); opacity: 1; }
+    .hist-bar-col:not(:hover):not(.active) .hist-bar { opacity: 0.78; }
+    .hist-bar.neg { background: linear-gradient(180deg, #d46a5e 0%, var(--danger) 100%); }
+    .hist-bar.pos { background: linear-gradient(180deg, #5a9a78 0%, var(--success) 100%); }
+    .hist-bar.mags { background: linear-gradient(180deg, #6a82a0 0%, var(--accent) 100%); }
+    .hist-bar.illus-bar { background: linear-gradient(180deg, #a8b6c8 0%, #7a8fa8 100%); }
+    .hist-year { font-size: 11px; color: var(--muted); margin-top: 6px; font-weight: 600; }
+    .hist-val {
+      font-size: 11px; font-weight: 700; color: var(--ink); margin-bottom: 4px; opacity: 0;
+      transition: opacity 0.12s ease;
+    }
+    .hist-bar-col:hover .hist-val, .hist-bar-col.active .hist-val { opacity: 1; }
+    .cagr-card {
+      margin-top: 14px; padding: 14px 16px; border-radius: 6px;
+      background: rgba(61, 79, 106, 0.08); border: 1px solid rgba(61, 79, 106, 0.2);
+      display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap;
+    }
+    .cagr-card .lbl { font-size: 12px; color: var(--muted); max-width: 16em; line-height: 1.35; }
+    .cagr-card .val { font-size: 26px; font-weight: 700; color: var(--accent); white-space: nowrap; }
+    .mags-disclaimer {
+      margin-top: 14px; font-size: 12px; color: var(--muted); line-height: 1.5;
+      padding: 12px 14px; background: #f5f8fc; border: 1px solid var(--line); border-radius: 4px;
+    }
+    .mags-disclaimer strong { color: var(--btg); }
+    .hist-tooltip {
+      position: absolute; pointer-events: none; background: var(--ink); color: #fff;
+      padding: 6px 10px; border-radius: 6px; font-size: 11px; font-weight: 600;
+      opacity: 0; transition: opacity 0.1s ease; z-index: 4; white-space: nowrap;
+      transform: translate(-50%, -100%);
+    }
+    .hist-tooltip.on { opacity: 1; }
+
     @media (max-width: 960px) {
       .payoff-main { grid-template-columns: 1fr; }
+      .mags-grid { grid-template-columns: 1fr; }
     }
     @media (max-width: 640px) {
       .page { padding: 16px 14px 48px; }
@@ -340,6 +439,46 @@
         </div>
       </aside>
     </div>
+
+    <section class="mags-section">
+      <h2>Cesta MAGS</h2>
+      <div class="mags-grid">
+        <article class="panel mags-panel" id="basketPanel">
+          <h3>Composição da cesta</h3>
+          <p class="sub">Roundhill MAGS — peso-alvo igualitário (~14,3% cada)</p>
+          <div class="donut-wrap">
+            <svg class="donut-svg" id="donutSvg" viewBox="0 0 140 140" aria-hidden="true"></svg>
+            <ul class="basket-list" id="basketList"></ul>
+          </div>
+          <p class="basket-caption">Peso-alvo igualitário (~14,3% cada), rebalanceamento trimestral. Ilustrativo — pesos efetivos do ETF variam.</p>
+        </article>
+
+        <article class="panel mags-panel" id="historyPanel">
+          <h3>Retorno histórico</h3>
+          <p class="sub">Referência de mercado do ETF MAGS (Roundhill)</p>
+
+          <div class="hist-block">
+            <div class="hist-label">MAGS — retorno calendário</div>
+            <div class="hist-bars" id="magsBars" aria-label="Retorno calendário MAGS"></div>
+            <div class="cagr-card">
+              <span class="lbl">Desde o início (abr/2023) — CAGR aproximado</span>
+              <span class="val">~38%</span>
+            </div>
+          </div>
+
+          <div class="hist-block">
+            <div class="hist-label illus">Cesta equal weight ilustrativa — não é o payoff do COE</div>
+            <div class="hist-bars" id="illusBars" aria-label="Retorno calendário cesta equal weight ilustrativa"></div>
+          </div>
+        </article>
+      </div>
+
+      <p class="mags-disclaimer">
+        <strong>Referência de mercado do ativo MAGS / cesta.</strong>
+        Não representa rentabilidade passada ou futura do COE KPC1133.
+        Proteção de capital do COE vale apenas no vencimento.
+      </p>
+    </section>
 
     <h2>Estrutura e prazos</h2>
     <div class="terms-wrap">
@@ -579,6 +718,145 @@
         sliderMobile.addEventListener("change", onSliderInput);
       }
       showAt(Number((slider && slider.value) || 20));
+    })();
+
+    (function () {
+      var HOLDINGS = [
+        { ticker: "AAPL", name: "Apple", color: "#5b7a9a" },
+        { ticker: "MSFT", name: "Microsoft", color: "#6a8fad" },
+        { ticker: "NVDA", name: "Nvidia", color: "#7a9fbd" },
+        { ticker: "AMZN", name: "Amazon", color: "#4a6e8a" },
+        { ticker: "GOOGL", name: "Alphabet", color: "#8aabc8" },
+        { ticker: "META", name: "Meta", color: "#3d5a75" },
+        { ticker: "TSLA", name: "Tesla", color: "#9ab4cc" }
+      ];
+      var WEIGHT = 100 / 7;
+      var activeIdx = null;
+
+      function fmtPct(n) {
+        var sign = n > 0 ? "+" : "";
+        return sign + n.toFixed(1).replace(".", ",") + "%";
+      }
+
+      function setActive(idx) {
+        activeIdx = idx;
+        var items = document.querySelectorAll(".basket-item");
+        var segs = document.querySelectorAll(".donut-seg");
+        for (var i = 0; i < items.length; i++) {
+          items[i].classList.toggle("active", i === idx);
+        }
+        for (var j = 0; j < segs.length; j++) {
+          segs[j].classList.toggle("active", j === idx);
+          segs[j].classList.toggle("dim", idx !== null && j !== idx);
+        }
+      }
+
+      function buildDonut() {
+        var svg = document.getElementById("donutSvg");
+        if (!svg) return;
+        var cx = 70, cy = 70, r = 52, ir = 32;
+        var start = -Math.PI / 2;
+        var html = "";
+        for (var i = 0; i < HOLDINGS.length; i++) {
+          var slice = (2 * Math.PI) / HOLDINGS.length;
+          var a0 = start + i * slice;
+          var a1 = a0 + slice;
+          var x0 = cx + r * Math.cos(a0), y0 = cy + r * Math.sin(a0);
+          var x1 = cx + r * Math.cos(a1), y1 = cy + r * Math.sin(a1);
+          var xi0 = cx + ir * Math.cos(a1), yi0 = cy + ir * Math.sin(a1);
+          var xi1 = cx + ir * Math.cos(a0), yi1 = cy + ir * Math.sin(a0);
+          var large = slice > Math.PI ? 1 : 0;
+          var d = "M " + x0 + " " + y0 +
+            " A " + r + " " + r + " 0 " + large + " 1 " + x1 + " " + y1 +
+            " L " + xi0 + " " + yi0 +
+            " A " + ir + " " + ir + " 0 " + large + " 0 " + xi1 + " " + yi1 + " Z";
+          html += '<path class="donut-seg" data-idx="' + i + '" d="' + d + '" fill="' + HOLDINGS[i].color + '" stroke="#fff" stroke-width="1.5"/>';
+        }
+        html += '<text class="donut-center" x="70" y="68" text-anchor="middle">7</text>';
+        html += '<text class="donut-center-sub" x="70" y="82" text-anchor="middle">ativos</text>';
+        svg.innerHTML = html;
+        var segs = svg.querySelectorAll(".donut-seg");
+        for (var s = 0; s < segs.length; s++) {
+          (function (idx) {
+            segs[idx].addEventListener("mouseenter", function () { setActive(idx); });
+            segs[idx].addEventListener("mouseleave", function () { setActive(null); });
+            segs[idx].addEventListener("click", function () { setActive(activeIdx === idx ? null : idx); });
+          })(s);
+        }
+      }
+
+      function buildBasketList() {
+        var list = document.getElementById("basketList");
+        if (!list) return;
+        list.innerHTML = "";
+        for (var i = 0; i < HOLDINGS.length; i++) {
+          var h = HOLDINGS[i];
+          var li = document.createElement("li");
+          li.className = "basket-item";
+          li.setAttribute("data-idx", String(i));
+          li.innerHTML =
+            '<span class="basket-ticker">' + h.ticker + '</span>' +
+            '<div class="basket-bar-wrap"><div class="basket-bar" style="width:' + WEIGHT.toFixed(1) + '%;background:' + h.color + '"></div></div>' +
+            '<span class="basket-pct">' + WEIGHT.toFixed(1).replace(".", ",") + '%</span>';
+          li.addEventListener("mouseenter", function () { setActive(Number(this.getAttribute("data-idx"))); });
+          li.addEventListener("mouseleave", function () { setActive(null); });
+          li.addEventListener("click", function () {
+            var idx = Number(this.getAttribute("data-idx"));
+            setActive(activeIdx === idx ? null : idx);
+          });
+          list.appendChild(li);
+        }
+      }
+
+      function buildHistBars(containerId, data, barClass) {
+        var container = document.getElementById(containerId);
+        if (!container) return;
+        var maxAbs = 0;
+        for (var i = 0; i < data.length; i++) {
+          maxAbs = Math.max(maxAbs, Math.abs(data[i].value));
+        }
+        container.innerHTML = "";
+        for (var j = 0; j < data.length; j++) {
+          var d = data[j];
+          var col = document.createElement("div");
+          col.className = "hist-bar-col";
+          var hPct = Math.max(6, (Math.abs(d.value) / maxAbs) * 100);
+          var sign = d.value >= 0 ? "pos" : "neg";
+          col.innerHTML =
+            '<span class="hist-val">' + fmtPct(d.value) + '</span>' +
+            '<div class="hist-bar ' + barClass + " " + sign + '" style="height:' + hPct + '%"></div>' +
+            '<span class="hist-year">' + d.year + '</span>';
+          col.addEventListener("mouseenter", function () {
+            this.classList.add("active");
+            var val = this.querySelector(".hist-val");
+            if (val) val.style.opacity = "1";
+          });
+          col.addEventListener("mouseleave", function () {
+            this.classList.remove("active");
+          });
+          col.addEventListener("click", function () {
+            var siblings = container.querySelectorAll(".hist-bar-col");
+            for (var k = 0; k < siblings.length; k++) siblings[k].classList.remove("active");
+            this.classList.add("active");
+          });
+          container.appendChild(col);
+        }
+      }
+
+      buildDonut();
+      buildBasketList();
+      buildHistBars("magsBars", [
+        { year: "2024", value: 64.6 },
+        { year: "2025", value: 23.0 }
+      ], "mags");
+      buildHistBars("illusBars", [
+        { year: "2020", value: 70.0 },
+        { year: "2021", value: 50.0 },
+        { year: "2022", value: -40.0 },
+        { year: "2023", value: 100.0 },
+        { year: "2024", value: 65.0 },
+        { year: "2025", value: 23.0 }
+      ], "illus-bar");
     })();
   </script>
 </body>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Coes | BTG Pactual</title>
+  <title>COES — Distribuição Renda Variável | BTG Pactual</title>
   <style>
     :root {
       --btg: #0b1f3a;
@@ -15,6 +15,7 @@
       --line: #d0d8e2;
       --bg: #eef2f6;
       --card: #ffffff;
+      --alert: #b42318;
       --sob: #5a6e8a;
       --mag: #4a5d7a;
       --look: #5a7088;
@@ -25,40 +26,41 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: Segoe UI, -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif;
-      color: var(--ink); background: var(--bg); min-height: 100vh; line-height: 1.45;
+      color: var(--ink); background: var(--bg); min-height: 100vh; line-height: 1.5;
+      font-size: 16px;
     }
     .hero {
       background: linear-gradient(135deg, var(--btg) 0%, var(--btg-mid) 55%, var(--btg-blue) 100%);
-      color: #fff; padding: 36px 24px 40px;
+      color: #fff; padding: 40px 24px 44px;
     }
     .hero-inner { max-width: 960px; margin: 0 auto; }
     .logo-btg {
-      display: inline-block; font-weight: 700; font-size: 12px; letter-spacing: 0.1em;
+      display: inline-block; font-weight: 700; font-size: 13px; letter-spacing: 0.1em;
       color: #fff; border: 1px solid rgba(255,255,255,0.35); padding: 7px 12px;
       border-radius: 2px; margin-bottom: 22px;
     }
     .hero-row { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; }
-    h1 { font-size: clamp(28px, 4.5vw, 40px); font-weight: 700; letter-spacing: -0.02em; line-height: 1.15; }
-    .lede { margin-top: 12px; font-size: 15px; color: rgba(255,255,255,0.82); max-width: 42em; }
+    h1 { font-size: clamp(30px, 5vw, 44px); font-weight: 700; letter-spacing: -0.02em; line-height: 1.15; }
+    .lede { margin-top: 14px; font-size: 18px; color: rgba(255,255,255,0.88); max-width: 36em; }
     .badge {
-      font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+      font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
       color: #fff; border: 1px solid rgba(255,255,255,0.35); padding: 8px 12px; border-radius: 2px; white-space: nowrap;
     }
-    .page { max-width: 960px; margin: 0 auto; padding: 28px 24px 56px; }
+    .page { max-width: 960px; margin: 0 auto; padding: 32px 24px 56px; }
     h2 {
-      font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
-      color: var(--btg-blue); margin: 28px 0 14px;
+      font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--btg-blue); margin: 32px 0 14px;
     }
     h2:first-of-type { margin-top: 0; }
     .snapshot {
       background: var(--card); border: 1px solid var(--line); border-radius: 4px;
-      padding: 16px 20px; margin-bottom: 8px;
+      padding: 18px 22px; margin-bottom: 8px;
     }
-    .snapshot p { font-size: 13px; color: var(--muted); max-width: 54em; }
+    .snapshot p { font-size: 16px; color: var(--muted); max-width: 54em; }
     .ops { list-style: none; display: flex; flex-direction: column; gap: 16px; }
     .op-block { background: var(--card); border: 1px solid var(--line); border-radius: 4px; overflow: hidden; }
     .op {
-      display: block; text-decoration: none; color: inherit; padding: 22px 22px 18px;
+      display: block; text-decoration: none; color: inherit; padding: 24px 22px 20px;
       transition: background 0.12s ease;
     }
     .op:hover, .op:focus-visible { background: #f5f8fc; outline: none; }
@@ -70,20 +72,23 @@
     .op-bar.cs { background: var(--cs); }
     .op-bar.tw { background: var(--tw); }
     .op-top { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 8px; }
-    .op-title { font-size: 20px; font-weight: 700; color: var(--btg); }
-    .op-ticker { font-size: 12px; font-weight: 700; color: var(--link); letter-spacing: 0.04em; }
-    .op-blurb { font-size: 14px; color: var(--muted); max-width: 48em; }
+    .op-title { font-size: 22px; font-weight: 700; color: var(--btg); }
+    .op-ticker { font-size: 13px; font-weight: 700; color: var(--link); letter-spacing: 0.04em; }
+    .op-blurb { font-size: 16px; color: var(--muted); max-width: 48em; }
     .op-meta { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 8px; }
     .pill {
       background: #eef2f6; border: 1px solid var(--line); border-radius: 2px;
-      padding: 4px 10px; color: var(--btg-mid); font-size: 11px; font-weight: 600;
+      padding: 5px 11px; color: var(--btg-mid); font-size: 12px; font-weight: 600;
     }
-    .op-cta { margin-top: 14px; font-size: 12px; font-weight: 700; color: var(--link); }
+    .op-cta { margin-top: 14px; font-size: 14px; font-weight: 700; color: var(--link); }
     .footer {
-      margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--line);
-      font-size: 11px; color: var(--muted); text-align: center; line-height: 1.55;
+      margin-top: 36px; padding-top: 18px; border-top: 1px solid var(--line);
+      font-size: 13px; color: var(--muted); text-align: center; line-height: 1.55;
     }
-    .footer strong { display: block; margin-top: 10px; color: var(--btg); }
+    .footer strong {
+      display: block; margin-top: 14px; color: var(--alert);
+      font-size: 16px; letter-spacing: 0.02em;
+    }
     @media (max-width: 640px) {
       .hero { padding: 28px 16px 32px; }
       .page { padding: 20px 16px 48px; }
@@ -97,11 +102,8 @@
       <div class="logo-btg">BTG PACTUAL</div>
       <div class="hero-row">
         <div>
-          <h1>Coes</h1>
-          <p class="lede">
-            Prateleira de COEs BTG — material publicitário ou factsheet a partir do DIE.
-            Uso interno para distribuição de renda variável.
-          </p>
+          <h1>COES — Distribuição Renda Variável</h1>
+          <p class="lede">Prateleira de COES BTG Pactual</p>
         </div>
         <div class="badge">Uso interno</div>
       </div>
