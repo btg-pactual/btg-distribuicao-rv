@@ -210,8 +210,8 @@
         <p>100% do capital<span>Put ATM + Put KO</span></p>
       </div>
       <div class="hi">
-        <h3>Teto na alta</h3>
-        <p>+40%<span>Call KI se GOLD11 ≥ 140%</span></p>
+        <h3>Barreira alta</h3>
+        <p>KI 140%<span>Call vendida strike 100% se acionada</span></p>
       </div>
       <div class="hi">
         <h3>Prazo</h3>
@@ -239,13 +239,14 @@
             </tr>
             <tr>
               <td><span class="tag s">S</span> Call KI</td>
-              <td>100,00%</td>
+              <td>100,00% (se KI)</td>
               <td>KI 140%</td>
             </tr>
           </tbody>
         </table>
         <p class="legend-note">
           <strong>B</strong> = Compra · <strong>S</strong> = Venda<br />
+          Call vendida com strike 100% apenas se a barreira KI 140% for acionada.<br />
           Payoff ilustrativo no vencimento; barreiras observadas ao longo da vida.
         </p>
 
@@ -290,11 +291,12 @@
             <text x="14" y="200" fill="#5c6b7a" font-size="11" font-family="Segoe UI, Arial, sans-serif" text-anchor="middle" transform="rotate(-90 14 200)">Retorno da estrutura (%)</text>
             <polyline id="assetPath" fill="none" stroke="#8b97a8" stroke-width="1.75" stroke-dasharray="6 5" points="" />
             <line id="koGap" x1="0" y1="0" x2="0" y2="0" stroke="#c0392b" stroke-width="1.25" stroke-dasharray="3 3" opacity="0.75"/>
+            <line id="kiGap" x1="0" y1="0" x2="0" y2="0" stroke="#0f7a4a" stroke-width="1.25" stroke-dasharray="3 3" opacity="0.75"/>
             <path id="structPath" d="" fill="none" stroke="#7a6a3a" stroke-width="2.75" stroke-linejoin="round" stroke-linecap="round"/>
             <circle id="koDot" cx="0" cy="0" r="5" fill="#c0392b"/>
             <text id="koLabel" x="0" y="0" fill="#c0392b" font-size="11" font-weight="600" font-family="Segoe UI, Arial, sans-serif">Put KO 80%</text>
             <circle id="kiDot" cx="0" cy="0" r="5" fill="#0f7a4a"/>
-            <text id="kiLabel" x="0" y="0" fill="#0f7a4a" font-size="11" font-weight="600" font-family="Segoe UI, Arial, sans-serif">Call KI 140%</text>
+            <text id="kiLabel" x="0" y="0" fill="#0f7a4a" font-size="11" font-weight="600" font-family="Segoe UI, Arial, sans-serif">KI 140% · call 100%</text>
             <line id="hoverLine" x1="0" y1="24" x2="0" y2="376" stroke="rgba(122,106,58,0.4)" stroke-width="1.25" stroke-dasharray="4 4" visibility="hidden"/>
             <circle id="hoverStruct" r="5.5" fill="#7a6a3a" visibility="hidden"/>
             <circle id="hoverAsset" r="4" fill="#8b97a8" visibility="hidden"/>
@@ -322,7 +324,7 @@
           </div>
           <div class="zone">
             <strong>&gt; +40% (call KI)</strong>
-            <p>Retorno limitado a +40% se a barreira de alta for acionada.</p>
+            <p>Se KI 140% acionar: call vendida strike 100% — retorno 0% acima da barreira.</p>
           </div>
         </div>
       </section>
@@ -361,7 +363,7 @@
               <tr><td>0%</td><td>0%</td><td><strong>0%</strong></td></tr>
               <tr><td>+20%</td><td>+20%</td><td><strong>+20%</strong></td></tr>
               <tr><td>+40%</td><td>+40%</td><td><strong>+40%</strong></td></tr>
-              <tr><td>+60%</td><td>+60%</td><td><strong>+40%</strong></td></tr>
+              <tr><td>+60%</td><td>+60%</td><td><strong>0%</strong></td></tr>
             </tbody>
           </table>
         </div>
@@ -396,7 +398,7 @@
         Entre put KO 80% (−20%) e call KI 140% (+40%), o retorno é
         <strong>bidirecional</strong> — ganha tanto na alta quanto na queda moderada.
         Put ATM + Put KO garantem <strong>100% de proteção do capital aplicado</strong>, mesmo abaixo de −20%.
-        Acima de +40%, com call KI acionada, o retorno fica limitado a <strong>+40%</strong>.
+        Se o KI 140% acionar, entra call vendida com <strong>strike 100%</strong> — acima de +40% no ativo, retorno da estrutura fica em <strong>0%</strong>.
       </p>
       <p class="speech-label">Fechamento</p>
       <p>
@@ -427,16 +429,16 @@
       var PUT_KO = -20;
       var CALL_KI = 40;
 
-      /** Put ATM + Put KO → 100% proteção abaixo de −20%; bidirecional entre barreiras. */
+      /** Put ATM + Put KO → 100% proteção abaixo de −20%; bidirecional entre barreiras; call 100% se KI. */
       function structureReturn(x) {
         if (x < PUT_KO) return 0;
-        if (x > CALL_KI) return CALL_KI;
+        if (x > CALL_KI) return 0;
         return Math.abs(x);
       }
 
       function regimeFor(x) {
         if (x < PUT_KO) return "Abaixo de −20% (put KO 80%): proteção total — retorno 0% (capital preservado).";
-        if (x > CALL_KI) return "Acima de +40% (call KI 140%): retorno limitado a +40%.";
+        if (x > CALL_KI) return "Acima de +40% (KI 140% acionado): call vendida strike 100% — retorno 0%.";
         if (x < 0) return "Queda moderada: Twin Win — retorno bidirecional.";
         if (x > 0) return "Alta moderada: Twin Win — retorno bidirecional.";
         return "Variação nula: retorno 0%.";
@@ -473,8 +475,9 @@
         for (var x = X_MIN; x < PUT_KO; x += 0.5) add(x, 0);
         move(PUT_KO, structureReturn(PUT_KO));
         for (var x2 = PUT_KO + 0.5; x2 <= CALL_KI; x2 += 0.5) add(x2, structureReturn(x2));
-        move(CALL_KI + 0.001, CALL_KI);
-        for (var x3 = CALL_KI + 0.5; x3 <= X_MAX; x3 += 0.5) add(x3, CALL_KI);
+        add(CALL_KI, structureReturn(CALL_KI));
+        move(CALL_KI + 0.001, 0);
+        for (var x3 = CALL_KI + 0.5; x3 <= X_MAX; x3 += 0.5) add(x3, 0);
         return d.trim();
       }
 
@@ -516,13 +519,17 @@
       document.getElementById("koGap").setAttribute("x2", koX);
       document.getElementById("koGap").setAttribute("y1", yToSvg(0));
       document.getElementById("koGap").setAttribute("y2", yToSvg(structureReturn(PUT_KO)));
+      document.getElementById("kiGap").setAttribute("x1", kiX);
+      document.getElementById("kiGap").setAttribute("x2", kiX);
+      document.getElementById("kiGap").setAttribute("y1", yToSvg(CALL_KI));
+      document.getElementById("kiGap").setAttribute("y2", yToSvg(0));
       document.getElementById("koDot").setAttribute("cx", koX);
       document.getElementById("koDot").setAttribute("cy", yToSvg(structureReturn(PUT_KO)));
       document.getElementById("koLabel").setAttribute("x", koX + 8);
       document.getElementById("koLabel").setAttribute("y", yToSvg(structureReturn(PUT_KO)) - 6);
       document.getElementById("kiDot").setAttribute("cx", kiX);
       document.getElementById("kiDot").setAttribute("cy", yToSvg(CALL_KI));
-      document.getElementById("kiLabel").setAttribute("x", kiX - 90);
+      document.getElementById("kiLabel").setAttribute("x", kiX - 95);
       document.getElementById("kiLabel").setAttribute("y", yToSvg(CALL_KI) - 8);
 
       document.getElementById("structPath").setAttribute("d", buildStructD());
