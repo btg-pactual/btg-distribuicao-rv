@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Prateleira tática | BTG Pactual</title>
+  <style>
+    :root {
+      --btg: #0b1f3a; --btg-mid: #163a5f; --btg-blue: #1e4d7b; --link: #1a66b3;
+      --ink: #0b1f3a; --muted: #5c6b7a; --line: #d0d8e2; --bg: #eef2f6; --card: #ffffff;
+      --ptax: #0d6e6e; --pacb: #2f6b5a; --vale: #007e33; --petr: #00665b; --axia: #5a4a8a; --itub: #ec7000;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: Segoe UI, -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif; color: var(--ink); background: var(--bg); min-height: 100vh; line-height: 1.45; }
+    .hero { background: linear-gradient(135deg, var(--btg) 0%, var(--btg-mid) 55%, var(--btg-blue) 100%); color: #fff; padding: 36px 24px 40px; }
+    .hero-inner { max-width: 960px; margin: 0 auto; }
+    .logo-btg { display: inline-block; font-weight: 700; font-size: 12px; letter-spacing: 0.1em; border: 1px solid rgba(255,255,255,0.35); padding: 7px 12px; border-radius: 2px; margin-bottom: 22px; }
+    .hero-row { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; }
+    h1 { font-size: clamp(28px, 4.5vw, 40px); font-weight: 700; letter-spacing: -0.02em; line-height: 1.15; }
+    .lede { margin-top: 12px; font-size: 15px; color: rgba(255,255,255,0.82); max-width: 40em; }
+    .badge { font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; border: 1px solid rgba(255,255,255,0.35); padding: 8px 12px; border-radius: 2px; white-space: nowrap; }
+    .page { max-width: 960px; margin: 0 auto; padding: 28px 24px 56px; }
+    h2 { font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--btg-blue); margin: 28px 0 14px; }
+    h2:first-of-type { margin-top: 0; }
+    .ops { list-style: none; display: flex; flex-direction: column; gap: 16px; }
+    .op-block { background: var(--card); border: 1px solid var(--line); border-radius: 4px; overflow: hidden; }
+    .op-bar { height: 6px; }
+    .op { display: block; text-decoration: none; color: inherit; padding: 20px 22px 18px; transition: background 0.12s ease; }
+    .op:hover, .op:focus-visible { background: #f5f8fc; outline: none; }
+    .op-top { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 8px; }
+    .op-title { font-size: 18px; font-weight: 700; color: var(--btg); }
+    .op-ticker { font-size: 12px; font-weight: 700; color: var(--link); letter-spacing: 0.04em; }
+    .op-blurb { font-size: 14px; color: var(--muted); max-width: 48em; }
+    .op-meta { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 8px; }
+    .pill { background: #eef2f6; border: 1px solid var(--line); border-radius: 2px; padding: 4px 10px; color: var(--btg-mid); font-size: 11px; font-weight: 600; }
+    .op-cta { margin-top: 12px; font-size: 12px; font-weight: 700; color: var(--link); }
+    .footer { margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--line); font-size: 11px; color: var(--muted); text-align: center; line-height: 1.55; }
+    .footer strong { display: block; margin-top: 10px; color: var(--btg); }
+    @media (max-width: 640px) { .hero { padding: 28px 16px 32px; } .page { padding: 20px 16px 48px; } .hero-row { flex-direction: column; align-items: flex-start; } }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="logo-btg">BTG PACTUAL</div>
+      <div class="hero-row">
+        <div>
+          <h1>Prateleira tática</h1>
+          <p class="lede">Operações estruturadas selecionadas — câmbio, hedge de duration e Smart Hedge / Twin Coupon.</p>
+        </div>
+        <div class="badge">Uso interno</div>
+      </div>
+    </div>
+  </header>
+  <main class="page">
+    <h2>Câmbio e renda fixa</h2>
+    <ul class="ops">
+      <li class="op-block">
+        <div class="op-bar" style="background:var(--ptax)"></div>
+        <a class="op" href="../ops/ptax-call-up-out-ko/index.html">
+          <div class="op-top"><span class="op-title">Call Up and Out PTAX</span><span class="op-ticker">PTAX</span></div>
+          <p class="op-blurb">Call KO 110% · participa da alta até a barreira; no KO líquido +2% (rebate 5% − preço 3%).</p>
+          <div class="op-meta"><span class="pill">Câmbio</span><span class="pill">Fixing 26/10</span><span class="pill">Preço 3%</span><span class="pill">Rebate 5%</span></div>
+          <div class="op-cta">Abrir material →</div>
+        </a>
+      </li>
+      <li class="op-block">
+        <div class="op-bar" style="background:var(--pacb)"></div>
+        <a class="op" href="../ops/pacb11-put-hedge/index.html">
+          <div class="op-top"><span class="op-title">Put ATM PACB11</span><span class="op-ticker">PACB11</span></div>
+          <p class="op-blurb">Compra de put ATM para hedge de duration (NTN-Bs / PACB11). Prazo 1 ano · prêmio 2,9%.</p>
+          <div class="op-meta"><span class="pill">Renda fixa / ETF</span><span class="pill">1 ano</span><span class="pill">Prêmio 2,9%</span><span class="pill">ATM</span></div>
+          <div class="op-cta">Abrir material →</div>
+        </a>
+      </li>
+    </ul>
+
+    <h2>Smart Hedge</h2>
+    <ul class="ops">
+      <li class="op-block">
+        <div class="op-bar" style="background:var(--vale)"></div>
+        <a class="op" href="../ops/smart-hedge-vale3/index.html">
+          <div class="op-top"><span class="op-title">Smart Hedge Vale</span><span class="op-ticker">VALE3</span></div>
+          <p class="op-blurb">Proteção 110% · strike 110% · barreira 174,35% · prazo 2 anos. Piso +10%; teto +10% se atingir a barreira.</p>
+          <div class="op-meta"><span class="pill">Equity</span><span class="pill">2 anos</span><span class="pill">Prot. 110%</span><span class="pill">Barreira 174,35%</span></div>
+          <div class="op-cta">Abrir material →</div>
+        </a>
+      </li>
+      <li class="op-block">
+        <div class="op-bar" style="background:var(--petr)"></div>
+        <a class="op" href="../ops/smart-hedge-petr4/index.html">
+          <div class="op-top"><span class="op-title">Smart Hedge Petrobras</span><span class="op-ticker">PETR4</span></div>
+          <p class="op-blurb">Proteção 100% · strike 110% · barreira 134,80% · prazo 1 ano. Piso 0%; teto +10% se atingir a barreira.</p>
+          <div class="op-meta"><span class="pill">Equity</span><span class="pill">1 ano</span><span class="pill">Prot. 100%</span><span class="pill">Barreira 134,80%</span></div>
+          <div class="op-cta">Abrir material →</div>
+        </a>
+      </li>
+      <li class="op-block">
+        <div class="op-bar" style="background:var(--axia)"></div>
+        <a class="op" href="../ops/smart-hedge-axia3/index.html">
+          <div class="op-top"><span class="op-title">Smart Hedge Axia</span><span class="op-ticker">AXIA3</span></div>
+          <p class="op-blurb">Proteção 100% · strike 110% · barreira 135,44% · prazo 1 ano. Piso 0%; teto +10% se atingir a barreira.</p>
+          <div class="op-meta"><span class="pill">Equity</span><span class="pill">1 ano</span><span class="pill">Prot. 100%</span><span class="pill">Barreira 135,44%</span></div>
+          <div class="op-cta">Abrir material →</div>
+        </a>
+      </li>
+    </ul>
+
+    <h2>Twin Coupon</h2>
+    <ul class="ops">
+      <li class="op-block">
+        <div class="op-bar" style="background:var(--itub)"></div>
+        <a class="op" href="../ops/twin-coupon-itub4/index.html">
+          <div class="op-top"><span class="op-title">Twin Coupon Itaú</span><span class="op-ticker">ITUB4</span></div>
+          <p class="op-blurb">Proteção 110% · barreira de queda 70% · strike 110% · barreira 153% · prazo 2 anos.</p>
+          <div class="op-meta"><span class="pill">Equity</span><span class="pill">2 anos</span><span class="pill">Prot. 110%</span><span class="pill">Down 70% · Up 153%</span></div>
+          <div class="op-cta">Abrir material →</div>
+        </a>
+      </li>
+    </ul>
+
+    <p class="footer">
+      Material ilustrativo para uso interno. Não constitui oferta, recomendação ou garantia de rentabilidade.
+      <strong>MATERIAL DE USO INTERNO, NÃO ENVIAR AOS CLIENTES</strong>
+    </p>
+  </main>
+</body>
+</html>
