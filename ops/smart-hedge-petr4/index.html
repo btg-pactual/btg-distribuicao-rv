@@ -45,6 +45,12 @@
     .tag.b { background: #e8f8ef; color: var(--success); }
     .strike-green { color: var(--success); font-weight: 700; }
     .legend-note { margin-top: 14px; font-size: 11px; color: var(--muted); line-height: 1.5; }
+    .thesis { margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--line); }
+    .thesis p { font-size: 13px; color: var(--ink); margin-bottom: 10px; }
+    .thesis ul { padding-left: 18px; font-size: 13px; color: var(--ink); }
+    .thesis li { margin-bottom: 6px; }
+    .thesis a { color: #1a66b3; font-weight: 600; text-decoration: none; }
+    .thesis a:hover { text-decoration: underline; }
     .chart-panel { padding: 16px; }
     .chart-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 10px; }
     .chart-caption { font-size: 12px; color: var(--muted); }
@@ -126,6 +132,19 @@
           </tbody>
         </table>
         <p class="legend-note"><strong>B</strong> = Compra · <strong>S</strong> = Venda<br />Payoff = long + put 100,00% + short call 110,00% se spot ≥ barreira.</p>
+        <div class="thesis">
+          <h2>Leitura do research</h2>
+          <p><em>Petrobras (PETR4) — Forte produção em julho; agosto parece forte; guidance parece conservador</em></p>
+          <ul>
+            <li>Produção jul/26 ~2,77 mi bpd; média YTD ~2,66 mi bpd — acima do guidance 2,4–2,6 mi bpd</li>
+            <li>Agosto tende a se manter forte (Búzios / FPSOs)</li>
+            <li>Guidance da companhia parece conservador frente à entrega operacional</li>
+            <li>Tese: integração E&amp;P–refino e geração de caixa; research construtivo</li>
+          </ul>
+          <p style="margin-top:14px">
+            <a href="https://content.btgpactual.com/research/home/relatorio/6a8c7cf9d071751ae1261b9c/Petrobras-PETR4-Forte-producao-em-julho-agosto-parece-forte-e-o-Guidance-parece-conservador" target="_blank" rel="noopener noreferrer">Abrir report de research ↗</a>
+          </p>
+        </div>
       </aside>
 
       <section class="panel chart-panel">
@@ -202,15 +221,25 @@
       <h2>Speech comercial</h2>
       <p class="speech-label">Para quem</p>
       <p>Cliente construtivo em Petrobras (PETR4) no horizonte de 1 ano, que quer exposição com colchão na queda.</p>
+      <p class="speech-label">Por que agora</p>
+      <p>
+        Produção de jul/26 em ~2,77 mi bpd e média YTD ~2,66 mi bpd — acima do guidance de 2,4–2,6 mi bpd.
+        Agosto tende a se manter forte (Búzios / FPSOs), e o research lê o guidance da companhia como conservador
+        frente à entrega operacional. A tese segue na integração E&amp;P–refino e na geração de caixa, com leitura construtiva.
+      </p>
       <p class="speech-label">Como encaixa a estrutura</p>
       <p>
         Custo inicial <strong>zero</strong>.
         Até a barreira (134,80%), participa <strong>1:1</strong> da variação do PETR4.
         Na queda, o piso fica em <strong>0%</strong> (put 100,00%).
         Se o ativo atingir a barreira, o retorno fica limitado a <strong>+10%</strong> (call vendida 110,00%).
+        Prazo <strong>1 ano</strong>.
       </p>
       <p class="speech-label">Fechamento</p>
-      <p>Payoff fácil de explicar no vencimento. Material de uso interno — condições oficiais no DIE (Admin BTG).</p>
+      <p>
+        Tese de PETR4 respaldada pelo report de produção/guidance + Smart Hedge fácil de explicar no vencimento.
+        Material de uso interno — para condições oficiais, acessar o DIE no Admin BTG.
+      </p>
     </section>
 
     <p class="footer">Material ilustrativo. Payoff intrínseco no vencimento. Não constitui oferta, recomendação ou garantia de rentabilidade. Produto estruturado envolve risco de perda de capital.</p>

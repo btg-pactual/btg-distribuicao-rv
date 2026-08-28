@@ -45,6 +45,12 @@
     .tag.b { background: #e8f8ef; color: var(--success); }
     .strike-green { color: var(--success); font-weight: 700; }
     .legend-note { margin-top: 14px; font-size: 11px; color: var(--muted); line-height: 1.5; }
+    .thesis { margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--line); }
+    .thesis p { font-size: 13px; color: var(--ink); margin-bottom: 10px; }
+    .thesis ul { padding-left: 18px; font-size: 13px; color: var(--ink); }
+    .thesis li { margin-bottom: 6px; }
+    .thesis a { color: #1a66b3; font-weight: 600; text-decoration: none; }
+    .thesis a:hover { text-decoration: underline; }
     .chart-panel { padding: 16px; }
     .chart-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 10px; }
     .chart-caption { font-size: 12px; color: var(--muted); }
@@ -126,6 +132,19 @@
           </tbody>
         </table>
         <p class="legend-note"><strong>B</strong> = Compra · <strong>S</strong> = Venda<br />Payoff = long + put 110,00% + short call 110,00% se spot ≥ barreira.</p>
+        <div class="thesis">
+          <h2>Leitura do research</h2>
+          <p><em>Vale (VALE3) — Mantendo o Rumo</em></p>
+          <ul>
+            <li>BTG mantém compra; tese de continuidade operacional (“mantendo o rumo”)</li>
+            <li>2T26 acima do esperado em pontos-chave; caixa resiliente; retorno ao acionista ~8–9% a.a. (div + buyback)</li>
+            <li>Pressões de custo mais administráveis do que o mercado teme; assimetria de valuation vs pares</li>
+            <li>Opcionalidade de cobre no longo prazo</li>
+          </ul>
+          <p style="margin-top:14px">
+            <a href="https://content.btgpactual.com/research/home/relatorio/6a845af8fd840a2a343a6847/Vale-VALE3-Mantendo-o-Rumo" target="_blank" rel="noopener noreferrer">Abrir report de research ↗</a>
+          </p>
+        </div>
       </aside>
 
       <section class="panel chart-panel">
@@ -202,15 +221,26 @@
       <h2>Speech comercial</h2>
       <p class="speech-label">Para quem</p>
       <p>Cliente construtivo em Vale (VALE3) no horizonte de 2 anos, que quer exposição com colchão na queda.</p>
+      <p class="speech-label">Por que agora</p>
+      <p>
+        O research <em>Mantendo o Rumo</em> mantém compra: continuidade operacional, 2T26 acima do esperado em pontos-chave
+        e caixa resiliente, com retorno ao acionista na faixa de ~8–9% a.a. (dividendos + buyback).
+        Pressões de custo aparecem mais administráveis do que o mercado teme, com assimetria de valuation versus pares
+        e opcionalidade de cobre no longo prazo.
+      </p>
       <p class="speech-label">Como encaixa a estrutura</p>
       <p>
         Custo inicial <strong>zero</strong>.
         Até a barreira (174,35%), participa <strong>1:1</strong> da variação do VALE3.
         Na queda, o piso fica em <strong>+10%</strong> (put 110,00%).
         Se o ativo atingir a barreira, o retorno fica limitado a <strong>+10%</strong> (call vendida 110,00%).
+        Prazo <strong>2 anos</strong>.
       </p>
       <p class="speech-label">Fechamento</p>
-      <p>Payoff fácil de explicar no vencimento. Material de uso interno — condições oficiais no DIE (Admin BTG).</p>
+      <p>
+        Tese de VALE3 respaldada pelo report <em>Mantendo o Rumo</em> + Smart Hedge fácil de explicar no vencimento.
+        Material de uso interno — para condições oficiais, acessar o DIE no Admin BTG.
+      </p>
     </section>
 
     <p class="footer">Material ilustrativo. Payoff intrínseco no vencimento. Não constitui oferta, recomendação ou garantia de rentabilidade. Produto estruturado envolve risco de perda de capital.</p>
