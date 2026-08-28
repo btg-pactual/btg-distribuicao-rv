@@ -98,8 +98,8 @@
         </div>
         <h1>Twin Coupon <span>ITUB4</span></h1>
         <p class="subtitle">
-          Estrutura sobre ITUB4 com put 110% (piso +10% na queda moderada), put KO barreira 70%,
-          call 110% com barreira alta 153%. Payoff ilustrativo; cupons conforme DIE.
+          Estrutura sobre ITUB4: put 110% + call 110% (collar, retorno +10%) enquanto o put KO 70% não for atingido.
+          Abaixo de −30%, perde a proteção. Cupons conforme DIE.
         </p>
       </div>
       <div class="meta-pills">
@@ -111,9 +111,9 @@
     </header>
 
     <section class="highlights">
-      <div class="hi"><h3>Proteção</h3><p>110%<span>Piso +10% se barreira de queda não for atingida</span></p></div>
-      <div class="hi"><h3>Barreira de queda</h3><p>70%<span>−30% — perde proteção reforçada</span></p></div>
-      <div class="hi"><h3>Strike / barreira alta</h3><p>110% / 153%<span>Se barreira alta: teto +10%</span></p></div>
+      <div class="hi"><h3>Proteção</h3><p>+10%<span>Collar put/call 110% se KO não for atingido</span></p></div>
+      <div class="hi"><h3>Barreira de queda</h3><p>70%<span>−30% — perde o collar e acompanha o ativo</span></p></div>
+      <div class="hi"><h3>Strike / barreira alta</h3><p>110% / 153%<span>Call no collar; barreira alta p/ cupons (DIE)</span></p></div>
       <div class="hi"><h3>Prazo</h3><p>2 anos<span>Cupons: detalhes no DIE</span></p></div>
     </section>
 
@@ -178,9 +178,9 @@
           <input type="range" id="spotSliderMobile" min="-50" max="80" step="0.5" value="20" />
         </div>
         <div class="zones">
-          <div class="zone"><strong>≤ −30% (70%)</strong><p>Put KO: abaixo de −30% perde a proteção — acompanha o ativo 1:1.</p></div>
-          <div class="zone"><strong>−30% → +53%</strong><p>Floor +10% na queda moderada; 1:1 acima de +10% até a barreira alta.</p></div>
-          <div class="zone"><strong>≥ +53% (153%)</strong><p>Barreira alta: retorno limitado a +10% (call 110%).</p></div>
+          <div class="zone"><strong>≤ −30% (70%)</strong><p>Put KO: perde a proteção — acompanha o ativo 1:1.</p></div>
+          <div class="zone"><strong>−30% → +53%</strong><p>Put 110% + call 110%: retorno fixo <strong>+10%</strong> (collar), mesmo na queda ou na alta.</p></div>
+          <div class="zone"><strong>≥ +53% (153%)</strong><p>Barreira alta: retorno permanece em +10%.</p></div>
         </div>
       </section>
 
@@ -192,13 +192,24 @@
           <div class="sim-card"><div class="lbl">Retorno do ativo</div><div class="val" id="assetVal">+20,0%</div></div>
           <div class="sim-card"><div class="lbl">Retorno da estrutura</div><div class="val" id="structVal">+20,0%</div></div>
         </div>
-        <div class="regime" id="regimeText">Entre as barreiras: piso +10% na queda; 1:1 acima de +10%.</div>
+        <div class="regime" id="regimeText">Entre as barreiras: collar put/call 110% — retorno +10%.</div>
         <div style="margin-top:18px">
           <h2>Pontos-chave</h2>
           <table class="struct-table">
             <thead><tr><th>Spot</th><th>Ativo</th><th>Estrutura</th></tr></thead>
             <tbody>
-              <tr><td>-50%</td><td>-50%</td><td><strong>-50,0%</strong></td></tr><tr><td>-40%</td><td>-40%</td><td><strong>-40,0%</strong></td></tr><tr><td>-30%</td><td>-30%</td><td><strong>-30,0%</strong></td></tr><tr><td>-20%</td><td>-20%</td><td><strong>+10,0%</strong></td></tr><tr><td>-10%</td><td>-10%</td><td><strong>+10,0%</strong></td></tr><tr><td>0%</td><td>0%</td><td><strong>+10,0%</strong></td></tr><tr><td>+10%</td><td>+10%</td><td><strong>+10,0%</strong></td></tr><tr><td>+20%</td><td>+20%</td><td><strong>+20,0%</strong></td></tr><tr><td>+40%</td><td>+40%</td><td><strong>+40,0%</strong></td></tr><tr><td>+53%</td><td>+53%</td><td><strong>+10,0%</strong></td></tr><tr><td>+60%</td><td>+60%</td><td><strong>+10,0%</strong></td></tr><tr><td>+80%</td><td>+80%</td><td><strong>+10,0%</strong></td></tr>
+              <tr><td>−50%</td><td>−50%</td><td><strong>−50,0%</strong></td></tr>
+              <tr><td>−40%</td><td>−40%</td><td><strong>−40,0%</strong></td></tr>
+              <tr><td>−30%</td><td>−30%</td><td><strong>−30,0%</strong></td></tr>
+              <tr><td>−20%</td><td>−20%</td><td><strong>+10,0%</strong></td></tr>
+              <tr><td>−10%</td><td>−10%</td><td><strong>+10,0%</strong></td></tr>
+              <tr><td>0%</td><td>0%</td><td><strong>+10,0%</strong></td></tr>
+              <tr><td>+10%</td><td>+10%</td><td><strong>+10,0%</strong></td></tr>
+              <tr><td>+20%</td><td>+20%</td><td><strong>+10,0%</strong></td></tr>
+              <tr><td>+40%</td><td>+40%</td><td><strong>+10,0%</strong></td></tr>
+              <tr><td>+53%</td><td>+53%</td><td><strong>+10,0%</strong></td></tr>
+              <tr><td>+60%</td><td>+60%</td><td><strong>+10,0%</strong></td></tr>
+              <tr><td>+80%</td><td>+80%</td><td><strong>+10,0%</strong></td></tr>
             </tbody>
           </table>
         </div>
@@ -217,8 +228,8 @@
       <p class="speech-label">Zonas de payoff (ilustrativo)</p>
       <p>
         Abaixo de −30%: put KO — perde a proteção e acompanha o ativo.
-        Entre −30% e +53%: floor +10% na queda moderada; 1:1 acima de +10% até a barreira alta.
-        Se a barreira alta for atingida: retorno limitado a +10%.
+        Enquanto o put KO não for atingido: <strong>put 110% + call 110%</strong> formam um collar —
+        retorno fixo de <strong>+10%</strong> na queda e na alta (até / além da barreira 153%).
       </p>
       <p class="speech-label">Cupons</p>
       <p>
@@ -244,15 +255,14 @@
       var DOWN_VAR = -30.0, UP_VAR = 53.0, FLOOR = 10.0, CAP = 10.0;
 
       function structureReturn(x) {
-        if (x <= DOWN_VAR) return x;           // put KO triggered — follow asset
-        if (x >= UP_VAR) return CAP;            // +10%
-        return Math.max(x, FLOOR);              // put 110%: floor +10%, 1:1 above +10%
+        // Put KO 70%: abaixo de −30% perde proteção → acompanha o ativo.
+        // Put 110% + Call 110% (collar): retorno fixo +10% enquanto o KO não for atingido.
+        if (x <= DOWN_VAR) return x;
+        return FLOOR;
       }
       function regimeFor(x) {
         if (x <= DOWN_VAR) return "Put KO (≤ −30% / spot 70%): perde proteção — acompanha o ativo.";
-        if (x >= UP_VAR) return "Barreira alta (≥ +53% / spot 153%): retorno limitado a +10%.";
-        if (x < FLOOR) return "Queda moderada: put 110% — piso +10%.";
-        return "Acima de +10% até a barreira: acompanha o ativo 1:1.";
+        return "Collar put/call 110%: retorno fixo +10% (proteção ITM), mesmo na queda ou na alta.";
       }
       function fmtPct(n, digits) {
         if (digits == null) digits = 1;
@@ -275,14 +285,9 @@
         }
         // Follow asset at/below put KO (−30%)
         for (var x = X_MIN; x <= DOWN_VAR; x += 0.5) add(x, x);
-        // Cliff: (−30, −30) → just above (−30, +10)
+        // Cliff: (−30, −30) → (+10%); then flat +10% (collar) for the rest
         move(DOWN_VAR + 0.01, FLOOR);
-        // max(x, 10) until up barrier
-        for (var x2 = DOWN_VAR + 0.5; x2 < UP_VAR; x2 += 0.5) add(x2, Math.max(x2, FLOOR));
-        add(UP_VAR - 0.01, Math.max(UP_VAR - 0.01, FLOOR));
-        // Flat +10% at/above up barrier
-        move(UP_VAR, CAP);
-        for (var x3 = UP_VAR + 0.5; x3 <= X_MAX; x3 += 0.5) add(x3, CAP);
+        for (var x2 = DOWN_VAR + 0.5; x2 <= X_MAX; x2 += 0.5) add(x2, FLOOR);
         return d.trim();
       }
       function buildAssetPoints() {
@@ -324,8 +329,8 @@
       document.getElementById("downGap").setAttribute("y2", yToSvg(FLOOR));
       document.getElementById("upGap").setAttribute("x1", uX);
       document.getElementById("upGap").setAttribute("x2", uX);
-      document.getElementById("upGap").setAttribute("y1", yToSvg(UP_VAR));
-      document.getElementById("upGap").setAttribute("y2", yToSvg(CAP));
+      document.getElementById("upGap").setAttribute("y1", yToSvg(FLOOR));
+      document.getElementById("upGap").setAttribute("y2", yToSvg(FLOOR));
       document.getElementById("downDot").setAttribute("cx", dX);
       document.getElementById("downDot").setAttribute("cy", yToSvg(FLOOR));
       document.getElementById("downLabel").setAttribute("x", dX + 8);
@@ -335,9 +340,9 @@
       document.getElementById("floorLabel").setAttribute("x", xToSvg(0) + 8);
       document.getElementById("floorLabel").setAttribute("y", yToSvg(FLOOR) - 8);
       document.getElementById("upDot").setAttribute("cx", uX);
-      document.getElementById("upDot").setAttribute("cy", yToSvg(CAP));
+      document.getElementById("upDot").setAttribute("cy", yToSvg(FLOOR));
       document.getElementById("upLabel").setAttribute("x", Math.max(48, uX - 80));
-      document.getElementById("upLabel").setAttribute("y", yToSvg(CAP) - 10);
+      document.getElementById("upLabel").setAttribute("y", yToSvg(FLOOR) - 10);
 
       var hoverLine = document.getElementById("hoverLine");
       var hoverStruct = document.getElementById("hoverStruct");
