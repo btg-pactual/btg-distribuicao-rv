@@ -478,6 +478,38 @@
       line-height: 1.4;
     }
 
+
+    .speech-box {
+      margin-top: 22px;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 22px 24px;
+      border-top: 3px solid var(--fx);
+    }
+    .speech-box h2 {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--fx);
+      margin-bottom: 14px;
+    }
+    .speech-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--fx);
+      margin: 14px 0 6px;
+    }
+    .speech-box p {
+      font-size: 14px;
+      color: var(--ink);
+      line-height: 1.55;
+      max-width: 70em;
+    }
+
     .footer {
       margin-top: 28px;
       font-size: 12px;
@@ -608,7 +640,11 @@
 
         <div class="thesis">
           <h2>Projeção câmbio BTG</h2>
-          <p>Projeção BTG para a PTAX em dezembro/2026: <strong>R$ 5,40</strong> (≈ +4,6% vs. ref. 5,1642 — abaixo do KO).</p>
+          <ul>
+            <li>Target BTG dez/2026: <strong>R$ 5,40</strong></li>
+            <li>Vs ref 5,1642 ≈ +4,6%; KO em 5,6806</li>
+            <li>Ano eleitoral: maior vol / incerteza cambial no radar do research</li>
+          </ul>
         </div>
       </aside>
 
@@ -733,6 +769,42 @@
         </div>
       </aside>
     </div>
+
+
+    <section class="speech-box">
+      <h2>Speech comercial</h2>
+      <p class="speech-label">Para quem</p>
+      <p>
+        Cliente com exposição ou preocupação cambial: importador, fluxo em BRL sensível ao USD,
+        ou alocação que precisa de hedge tático de curto prazo contra alta do dólar.
+      </p>
+      <p class="speech-label">Por que agora</p>
+      <p>
+        Em ano eleitoral (2026), a leitura do research BTG aponta maior volatilidade e prêmio de risco
+        no câmbio — CDS, incerteza fiscal e política no radar. A janela até o fixing (26/10/2026) é curta:
+        período em que o mercado costuma precificar ruído eleitoral. Hedge tático faz sentido antes
+        desse intervalo de maior incerteza.
+      </p>
+      <p class="speech-label">Target de câmbio BTG</p>
+      <p>
+        Projeção BTG para a PTAX em dezembro/2026: <strong>R$ 5,40</strong> (revisada de patamares anteriores).
+        Versus a ref. 5,1642, isso implica alta moderada do dólar (≈ +4,6%). Esse nível fica
+        <strong>abaixo da barreira KO (5,6806 / +10%)</strong> — no cenário base do banco, a call pode
+        capturar a alta do USD sem nocaute. Em estresse, o research cita faixas mais altas
+        (ex. ~5,43–5,50 sob pressão); o KO permanece o teto de sobrevivência da estrutura, com rebate 5% se disparar.
+      </p>
+      <p class="speech-label">Como encaixa a estrutura</p>
+      <p>
+        Compra Call Up&amp;Out PTAX: ganha se a PTAX sobe até o fixing (26/10/2026), enquanto não tocar 110%
+        (R$ 5,6806). Strike 100% = R$ 5,1642. Custo ~3%. Se KO, rebate 5% (líquido +2% sobre o nocional).
+        Hedge tático e assimétrico para alta do dólar, com barreira definida.
+      </p>
+      <p class="speech-label">Fechamento</p>
+      <p>
+        Material de uso interno — condições oficiais no DIE. A projeção de câmbio é cenário BTG,
+        não garantia de rentabilidade ou de trajetória da PTAX.
+      </p>
+    </section>
 
     <p class="footer">
       Material ilustrativo. Payoff intrínseco no vencimento.
