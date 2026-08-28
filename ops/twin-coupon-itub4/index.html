@@ -98,8 +98,8 @@
         </div>
         <h1>Twin Coupon <span>ITUB4</span></h1>
         <p class="subtitle">
-          Estrutura sobre ITUB4 com proteção 110%, barreira de queda 70%, strike 110% e barreira alta 153%.
-          Payoff ilustrativo (twin + proteção); cupons conforme DIE.
+          Estrutura sobre ITUB4 com put 110% (piso +10% na queda moderada), put KO barreira 70%,
+          call 110% com barreira alta 153%. Payoff ilustrativo; cupons conforme DIE.
         </p>
       </div>
       <div class="meta-pills">
@@ -123,10 +123,9 @@
         <table class="struct-table">
           <thead><tr><th>Perna / parâmetro</th><th>Nível</th></tr></thead>
           <tbody>
-            <tr><td><span class="tag b">B</span> Proteção (put)</td><td class="strike-green">110,00%</td></tr>
-            <tr><td>Barreira de queda</td><td>70,00%</td></tr>
-            <tr><td><span class="tag s">S</span> Strike (call)</td><td>110,00%</td></tr>
-            <tr><td>Barreira alta</td><td>153,00%</td></tr>
+            <tr><td><span class="tag b">B</span> Put 110,00%</td><td class="strike-green">110,00%</td></tr>
+            <tr><td><span class="tag b">B</span> Put KO · barreira 70%</td><td>70,00% (strike 110%)</td></tr>
+            <tr><td><span class="tag s">S</span> Call 110% · KI/barreira 153%</td><td>110,00% / 153,00%</td></tr>
           </tbody>
         </table>
         <p class="legend-note">
@@ -179,9 +178,9 @@
           <input type="range" id="spotSliderMobile" min="-50" max="80" step="0.5" value="20" />
         </div>
         <div class="zones">
-          <div class="zone"><strong>≤ −30% (70%)</strong><p>Barreira de queda: perde a proteção reforçada — acompanha o ativo.</p></div>
-          <div class="zone"><strong>−30% → +53%</strong><p>Twin / proteção: piso +10% (110%); na alta/queda moderada, estilo twin com |variação|.</p></div>
-          <div class="zone"><strong>≥ +53% (153%)</strong><p>Barreira alta: aplica strike 110% — teto +10%.</p></div>
+          <div class="zone"><strong>≤ −30% (70%)</strong><p>Put KO: abaixo de −30% perde a proteção — acompanha o ativo 1:1.</p></div>
+          <div class="zone"><strong>−30% → +53%</strong><p>Floor +10% na queda moderada; 1:1 acima de +10% até a barreira alta.</p></div>
+          <div class="zone"><strong>≥ +53% (153%)</strong><p>Barreira alta: retorno limitado a +10% (call 110%).</p></div>
         </div>
       </section>
 
@@ -193,13 +192,13 @@
           <div class="sim-card"><div class="lbl">Retorno do ativo</div><div class="val" id="assetVal">+20,0%</div></div>
           <div class="sim-card"><div class="lbl">Retorno da estrutura</div><div class="val" id="structVal">+20,0%</div></div>
         </div>
-        <div class="regime" id="regimeText">Entre as barreiras: twin com piso +10%.</div>
+        <div class="regime" id="regimeText">Entre as barreiras: piso +10% na queda; 1:1 acima de +10%.</div>
         <div style="margin-top:18px">
           <h2>Pontos-chave</h2>
           <table class="struct-table">
             <thead><tr><th>Spot</th><th>Ativo</th><th>Estrutura</th></tr></thead>
             <tbody>
-              <tr><td>-50%</td><td>-50%</td><td><strong>-50,0%</strong></td></tr><tr><td>-40%</td><td>-40%</td><td><strong>-40,0%</strong></td></tr><tr><td>-30%</td><td>-30%</td><td><strong>-30,0%</strong></td></tr><tr><td>-20%</td><td>-20%</td><td><strong>+20,0%</strong></td></tr><tr><td>-10%</td><td>-10%</td><td><strong>+10,0%</strong></td></tr><tr><td>0%</td><td>0%</td><td><strong>+10,0%</strong></td></tr><tr><td>+10%</td><td>+10%</td><td><strong>+10,0%</strong></td></tr><tr><td>+20%</td><td>+20%</td><td><strong>+20,0%</strong></td></tr><tr><td>+40%</td><td>+40%</td><td><strong>+40,0%</strong></td></tr><tr><td>+53%</td><td>+53%</td><td><strong>+10,0%</strong></td></tr><tr><td>+60%</td><td>+60%</td><td><strong>+10,0%</strong></td></tr><tr><td>+80%</td><td>+80%</td><td><strong>+10,0%</strong></td></tr>
+              <tr><td>-50%</td><td>-50%</td><td><strong>-50,0%</strong></td></tr><tr><td>-40%</td><td>-40%</td><td><strong>-40,0%</strong></td></tr><tr><td>-30%</td><td>-30%</td><td><strong>-30,0%</strong></td></tr><tr><td>-20%</td><td>-20%</td><td><strong>+10,0%</strong></td></tr><tr><td>-10%</td><td>-10%</td><td><strong>+10,0%</strong></td></tr><tr><td>0%</td><td>0%</td><td><strong>+10,0%</strong></td></tr><tr><td>+10%</td><td>+10%</td><td><strong>+10,0%</strong></td></tr><tr><td>+20%</td><td>+20%</td><td><strong>+20,0%</strong></td></tr><tr><td>+40%</td><td>+40%</td><td><strong>+40,0%</strong></td></tr><tr><td>+53%</td><td>+53%</td><td><strong>+10,0%</strong></td></tr><tr><td>+60%</td><td>+60%</td><td><strong>+10,0%</strong></td></tr><tr><td>+80%</td><td>+80%</td><td><strong>+10,0%</strong></td></tr>
             </tbody>
           </table>
         </div>
@@ -210,16 +209,16 @@
       <h2>Speech comercial</h2>
       <p class="speech-label">Parâmetros</p>
       <p>
-        <strong>Proteção 110%</strong> (piso +10% enquanto a barreira de queda não for atingida),
-        <strong>barreira de queda 70%</strong> (−30%),
-        <strong>strike 110%</strong> e <strong>barreira alta 153%</strong> (+53%),
+        <strong>Put 110%</strong> (piso +10% mesmo na queda moderada, enquanto o put KO não for atingido),
+        <strong>Put KO barreira 70%</strong> (−30%),
+        <strong>Call 110%</strong> com <strong>barreira alta 153%</strong> (+53%),
         prazo <strong>2 anos</strong>.
       </p>
       <p class="speech-label">Zonas de payoff (ilustrativo)</p>
       <p>
-        Abaixo de −30%: perde a proteção reforçada e passa a acompanhar o ativo.
-        Entre −30% e +53%: caminho twin / protegido com piso ligado à proteção 110%.
-        Se a barreira alta for atingida: aplica o strike 110% (teto +10%).
+        Abaixo de −30%: put KO — perde a proteção e acompanha o ativo.
+        Entre −30% e +53%: floor +10% na queda moderada; 1:1 acima de +10% até a barreira alta.
+        Se a barreira alta for atingida: retorno limitado a +10%.
       </p>
       <p class="speech-label">Cupons</p>
       <p>
@@ -237,7 +236,7 @@
   <script>
     (function () {
       var X_MIN = -50, X_MAX = 80;
-      var Y_MIN = -45, Y_MAX = 60;
+      var Y_MIN = -50, Y_MAX = 55;
       var PAD = { l: 48, t: 24, r: 48, b: 24 };
       var VW = 600, VH = 400;
       var PLOT_W = VW - PAD.l - PAD.r;
@@ -245,14 +244,15 @@
       var DOWN_VAR = -30.0, UP_VAR = 53.0, FLOOR = 10.0, CAP = 10.0;
 
       function structureReturn(x) {
-        if (x <= DOWN_VAR) return x;
-        if (x >= UP_VAR) return CAP;
-        return Math.max(Math.abs(x), FLOOR);
+        if (x <= DOWN_VAR) return x;           // put KO triggered — follow asset
+        if (x >= UP_VAR) return CAP;            // +10%
+        return Math.max(x, FLOOR);              // put 110%: floor +10%, 1:1 above +10%
       }
       function regimeFor(x) {
-        if (x <= DOWN_VAR) return "Barreira de queda (≤ −30% / spot 70%): perde proteção reforçada — acompanha o ativo.";
-        if (x >= UP_VAR) return "Barreira alta (≥ +53% / spot 153%): aplica strike 110% — retorno limitado a +10%.";
-        return "Entre as barreiras: twin com piso +10% (proteção 110%).";
+        if (x <= DOWN_VAR) return "Put KO (≤ −30% / spot 70%): perde proteção — acompanha o ativo.";
+        if (x >= UP_VAR) return "Barreira alta (≥ +53% / spot 153%): retorno limitado a +10%.";
+        if (x < FLOOR) return "Queda moderada: put 110% — piso +10%.";
+        return "Acima de +10% até a barreira: acompanha o ativo 1:1.";
       }
       function fmtPct(n, digits) {
         if (digits == null) digits = 1;
@@ -273,13 +273,14 @@
           var cmd = first ? "M" : "L"; first = false;
           d += cmd + " " + xToSvg(x).toFixed(3) + " " + yToSvg(y).toFixed(3) + " ";
         }
-        // Follow asset below down barrier
+        // Follow asset at/below put KO (−30%)
         for (var x = X_MIN; x <= DOWN_VAR; x += 0.5) add(x, x);
-        // Cliff into protected/twin zone
-        move(DOWN_VAR + 0.01, structureReturn(DOWN_VAR + 0.01));
-        for (var x2 = DOWN_VAR + 0.5; x2 < UP_VAR; x2 += 0.5) add(x2, structureReturn(x2));
-        add(UP_VAR - 0.01, structureReturn(UP_VAR - 0.01));
-        // Cap at up barrier
+        // Cliff: (−30, −30) → just above (−30, +10)
+        move(DOWN_VAR + 0.01, FLOOR);
+        // max(x, 10) until up barrier
+        for (var x2 = DOWN_VAR + 0.5; x2 < UP_VAR; x2 += 0.5) add(x2, Math.max(x2, FLOOR));
+        add(UP_VAR - 0.01, Math.max(UP_VAR - 0.01, FLOOR));
+        // Flat +10% at/above up barrier
         move(UP_VAR, CAP);
         for (var x3 = UP_VAR + 0.5; x3 <= X_MAX; x3 += 0.5) add(x3, CAP);
         return d.trim();
@@ -298,7 +299,7 @@
       var xLabels = document.getElementById("xLabels");
       if (grid && yLabels && xLabels) {
         grid.innerHTML = ""; yLabels.innerHTML = ""; xLabels.innerHTML = "";
-        for (var y = -40; y <= 60; y += 10) {
+        for (var y = -50; y <= 50; y += 10) {
           var py = yToSvg(y);
           grid.innerHTML += '<line x1="48" y1="' + py + '" x2="552" y2="' + py + '"/>';
           yLabels.innerHTML += '<text x="42" y="' + (py + 3) + '">' + y + "%</text>";
