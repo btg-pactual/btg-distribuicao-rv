@@ -98,7 +98,7 @@
         </div>
         <h1>Twin Coupon <span>ITUB4</span></h1>
         <p class="subtitle">
-          Put 110% sempre (piso +10%); put KO 70%/strike 110% soma na queda até −30% (retorno 20%−variação); call 110% KI 153%.
+          Put 110% sempre (piso +10%); put KO ATM 100% / barreira 70% só soma na queda de fato (até −30%); call 110% KI 153%.
         </p>
       </div>
       <div class="meta-pills">
@@ -110,8 +110,8 @@
     </header>
 
     <section class="highlights">
-      <div class="hi"><h3>Proteção</h3><p>Put 110% sempre<span>+10% no KO (put KO nocauteada)</span></p></div>
-      <div class="hi"><h3>Barreira 70%</h3><p>−30%<span>Put KO contribui até −30% (retorno 20%−var.)</span></p></div>
+      <div class="hi"><h3>Proteção</h3><p>Put 110% sempre<span>Piso +10% em qualquer cenário (incl. após KO)</span></p></div>
+      <div class="hi"><h3>Put KO ATM</h3><p>100% / barreira 70%<span>Só soma na queda de fato (até −30%)</span></p></div>
       <div class="hi"><h3>Strike / barreira alta</h3><p>110% / 153%<span>Call 110% com KI em +53%</span></p></div>
       <div class="hi"><h3>Prazo</h3><p>2 anos<span>Cupons: detalhes no DIE</span></p></div>
     </section>
@@ -123,7 +123,7 @@
           <thead><tr><th>Perna / parâmetro</th><th>Nível</th></tr></thead>
           <tbody>
             <tr><td><span class="tag b">B</span> Put 110,00%</td><td class="strike-green">110,00%</td></tr>
-            <tr><td><span class="tag b">B</span> Put KO · barreira 70%</td><td>70,00% (strike 110%)</td></tr>
+            <tr><td><span class="tag b">B</span> Put KO ATM · barreira 70%</td><td>70,00% (strike 100%)</td></tr>
             <tr><td><span class="tag s">S</span> Call 110% · KI/barreira 153%</td><td>110,00% / 153,00%</td></tr>
           </tbody>
         </table>
@@ -178,7 +178,7 @@
         </div>
         <div class="zones">
           <div class="zone"><strong>≤ −30% (70%)</strong><p>Só put 110% → <strong>+10%</strong> (put KO nocauteada).</p></div>
-          <div class="zone"><strong>−30% → +10%</strong><p>Put 110% + put KO → <strong>20% − variação</strong> (ex.: −20% → +40%). De +10% a +53%: acompanha 1:1.</p></div>
+          <div class="zone"><strong>−30% → +10%</strong><p>Na queda (x &lt; 0): put 110% + put KO ATM → <strong>10% − x</strong> (ex.: −20% → +30%). Em 0 a +10%: só put 110% → +10%. De +10% a +53%: acompanha 1:1.</p></div>
           <div class="zone"><strong>≥ +53% (153%)</strong><p>Call KI → retorno limitado a <strong>+10%</strong>.</p></div>
         </div>
       </section>
@@ -200,14 +200,14 @@
               <tr><td>−50%</td><td>−50%</td><td><strong>+10,0%</strong></td></tr>
               <tr><td>−40%</td><td>−40%</td><td><strong>+10,0%</strong></td></tr>
               <tr><td>−30%</td><td>−30%</td><td><strong>+10,0%</strong></td></tr>
-              <tr><td>−20%</td><td>−20%</td><td><strong>+40,0%</strong></td></tr>
-              <tr><td>−10%</td><td>−10%</td><td><strong>+30,0%</strong></td></tr>
-              <tr><td>0%</td><td>0%</td><td><strong>+20,0%</strong></td></tr>
+              <tr><td>−20%</td><td>−20%</td><td><strong>+30,0%</strong></td></tr>
+              <tr><td>−10%</td><td>−10%</td><td><strong>+20,0%</strong></td></tr>
+              <tr><td>0%</td><td>0%</td><td><strong>+10,0%</strong></td></tr>
               <tr><td>+10%</td><td>+10%</td><td><strong>+10,0%</strong></td></tr>
               <tr><td>+20%</td><td>+20%</td><td><strong>+20,0%</strong></td></tr>
               <tr><td>+40%</td><td>+40%</td><td><strong>+40,0%</strong></td></tr>
               <tr><td>+53%</td><td>+53%</td><td><strong>+10,0%</strong></td></tr>
-              <tr><td>+80%</td><td>+80%</td><td><strong>+10,0%</strong></td></tr>
+              <tr><td>+60%</td><td>+60%</td><td><strong>+10,0%</strong></td></tr>
             </tbody>
           </table>
         </div>
@@ -218,15 +218,16 @@
       <h2>Speech comercial</h2>
       <p class="speech-label">Parâmetros</p>
       <p>
-        <strong>Put 110%</strong> sempre (piso +10% após KO),
-        <strong>Put KO</strong> strike 110% / barreira 70% (contribui enquanto viva: retorno <strong>20% − variação</strong> até −30%),
+        <strong>Put 110%</strong> sempre (piso +10%, incl. após KO),
+        <strong>Put KO ATM</strong> strike 100% / barreira 70% (só soma na <strong>queda de fato</strong> do ativo, até −30%),
         <strong>Call 110%</strong> com <strong>KI/barreira 153%</strong> (+53%),
         prazo <strong>2 anos</strong>.
       </p>
       <p class="speech-label">Zonas de payoff (ilustrativo)</p>
       <p>
         Em ≤ −30%: só put 110% → <strong>+10%</strong> (put KO nocauteada).
-        Entre −30% e +10%: put 110% + put KO → <strong>20% − variação</strong> (ex.: −20% → +40%).
+        Na queda viva (−30% &lt; x &lt; 0): put 110% + put KO ATM → <strong>10% − x</strong> (ex.: −20% → +30%).
+        Em 0 a +10%: só put 110% → <strong>+10%</strong> (put ATM sem valor).
         De +10% a +53%: acompanha o ativo <strong>1:1</strong>.
         Em ≥ +53%: call KI → <strong>+10%</strong>.
       </p>
@@ -246,7 +247,7 @@
   <script>
     (function () {
       var X_MIN = -50, X_MAX = 80;
-      var Y_MIN = -50, Y_MAX = 60;
+      var Y_MIN = -50, Y_MAX = 55;
       var PAD = { l: 48, t: 24, r: 48, b: 24 };
       var VW = 600, VH = 400;
       var PLOT_W = VW - PAD.l - PAD.r;
@@ -254,17 +255,22 @@
       var DOWN_VAR = -30.0, UP_VAR = 53.0, FLOOR = 10.0, CAP = 10.0;
 
       function structureReturn(x) {
-        // Double put 110% while KO alive: stock + 2*put110 → return 20 - x when x < 10
-        // After KO: stock + put110 → FLOOR (+10)
-        // Upside: 1:1 until UP_VAR, then CAP from short call KI
-        if (x <= DOWN_VAR) return FLOOR;           // Put KO out; only Put 110% → +10%
-        if (x < FLOOR) return 20.0 - x;            // both puts ITM: 20% - x
-        if (x < UP_VAR) return x;                  // puts OTM, call not KI → 1:1
-        return CAP;                                // call KI → +10%
+        // Put KO out: only Put 110%
+        if (x <= DOWN_VAR) return FLOOR;
+        // Put KO ATM alive + Put 110%: stock + put110 + put100
+        // When x < 0: return = 10 - x  (= 10% + |queda|)
+        if (x < 0) return FLOOR - x;
+        // 0 <= x < 10: Put ATM worthless; only Put 110% → +10%
+        if (x < FLOOR) return FLOOR;
+        // puts OTM, call not KI → 1:1
+        if (x < UP_VAR) return x;
+        // call KI → +10%
+        return CAP;
       }
       function regimeFor(x) {
         if (x <= DOWN_VAR) return "Put KO nocauteada (≤ −30% / spot ≤70%): só put 110% → piso +10%.";
-        if (x < FLOOR) return "Put 110% + put KO vivos: retorno = 20% − variação (ex.: −20% → +40%).";
+        if (x < 0) return "Queda de fato: put 110% + put KO ATM → retorno = 10% − variação (ex.: −20% → +30%).";
+        if (x < FLOOR) return "Put ATM sem valor; só put 110% → piso +10%.";
         if (x < UP_VAR) return "Puts OTM, call ainda não KI: acompanha o ativo 1:1.";
         return "Call KI (≥ +53% / spot 153%): retorno limitado a +10%.";
       }
@@ -289,15 +295,18 @@
         }
         // Flat +10% from X_MIN to DOWN_VAR (put KO out)
         for (var x = X_MIN; x <= DOWN_VAR; x += 0.5) add(x, FLOOR);
-        // Vertical cliff at DOWN_VAR: jump to peak just above barrier (y = 20 - x ≈ 50)
-        move(DOWN_VAR + 0.01, 20.0 - (DOWN_VAR + 0.01));
-        // y = 20 - x until FLOOR
-        for (var x2 = DOWN_VAR + 0.5; x2 < FLOOR; x2 += 0.5) add(x2, 20.0 - x2);
-        add(FLOOR, 20.0 - FLOOR);
+        // Cliff at DOWN_VAR: from y=10 up to y=10-DOWN_VAR=40
+        move(DOWN_VAR + 0.01, FLOOR - (DOWN_VAR + 0.01));
+        // y = 10 - x from just above DOWN_VAR to x=0
+        for (var x2 = DOWN_VAR + 0.5; x2 < 0; x2 += 0.5) add(x2, FLOOR - x2);
+        add(0, FLOOR);
+        // Flat +10% from 0 to FLOOR
+        for (var xFlat = 0.5; xFlat < FLOOR; xFlat += 0.5) add(xFlat, FLOOR);
+        add(FLOOR, FLOOR);
         // y = x from FLOOR to UP_VAR
         for (var x3 = FLOOR + 0.5; x3 < UP_VAR; x3 += 0.5) add(x3, x3);
         add(UP_VAR - 0.01, UP_VAR - 0.01);
-        // Vertical drop at UP_VAR then flat CAP
+        // Drop at UP_VAR from 53 to 10; flat 10 after
         move(UP_VAR, CAP);
         for (var x4 = UP_VAR + 0.5; x4 <= X_MAX; x4 += 0.5) add(x4, CAP);
         return d.trim();
@@ -316,7 +325,7 @@
       var xLabels = document.getElementById("xLabels");
       if (grid && yLabels && xLabels) {
         grid.innerHTML = ""; yLabels.innerHTML = ""; xLabels.innerHTML = "";
-        for (var y = -50; y <= 60; y += 10) {
+        for (var y = -50; y <= 50; y += 10) {
           var py = yToSvg(y);
           grid.innerHTML += '<line x1="48" y1="' + py + '" x2="552" y2="' + py + '"/>';
           yLabels.innerHTML += '<text x="42" y="' + (py + 3) + '">' + y + "%</text>";
@@ -335,18 +344,19 @@
       document.getElementById("assetPath").setAttribute("points", buildAssetPoints());
 
       var dX = xToSvg(DOWN_VAR), uX = xToSvg(UP_VAR);
+      var peakAtBarrier = FLOOR - DOWN_VAR; // 40
       document.getElementById("downGap").setAttribute("x1", dX);
       document.getElementById("downGap").setAttribute("x2", dX);
       document.getElementById("downGap").setAttribute("y1", yToSvg(FLOOR));
-      document.getElementById("downGap").setAttribute("y2", yToSvg(20.0 - DOWN_VAR));
+      document.getElementById("downGap").setAttribute("y2", yToSvg(peakAtBarrier));
       document.getElementById("upGap").setAttribute("x1", uX);
       document.getElementById("upGap").setAttribute("x2", uX);
       document.getElementById("upGap").setAttribute("y1", yToSvg(UP_VAR));
       document.getElementById("upGap").setAttribute("y2", yToSvg(CAP));
       document.getElementById("downDot").setAttribute("cx", dX);
-      document.getElementById("downDot").setAttribute("cy", yToSvg(20.0 - DOWN_VAR));
+      document.getElementById("downDot").setAttribute("cy", yToSvg(peakAtBarrier));
       document.getElementById("downLabel").setAttribute("x", dX + 8);
-      document.getElementById("downLabel").setAttribute("y", yToSvg(20.0 - DOWN_VAR) - 8);
+      document.getElementById("downLabel").setAttribute("y", yToSvg(peakAtBarrier) - 8);
       document.getElementById("floorDot").setAttribute("cx", xToSvg(0));
       document.getElementById("floorDot").setAttribute("cy", yToSvg(FLOOR));
       document.getElementById("floorLabel").setAttribute("x", xToSvg(0) + 8);
