@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>TWIP GOLD11 | BTG Pactual</title>
+<style>
+:root {
+  --ink:#0b1f3a; --muted:#5c6b7a; --line:#d0d8e2; --bg:#eef2f6; --card:#ffffff;
+  --brand:#b8860b; --btg:#0b1f3a; --success:#0f7a4a; --danger:#c0392b; --dash:#8b83a0;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Segoe UI,-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);min-height:100vh;line-height:1.45}
+.page{max-width:1280px;margin:0 auto;padding:28px 24px 48px}
+.back-link{margin-bottom:16px;font-size:13px}
+.back-link a{color:#1a66b3;text-decoration:none;font-weight:600}
+.back-link a:hover{text-decoration:underline}
+.topbar{display:flex;justify-content:space-between;align-items:flex-start;gap:24px;margin-bottom:28px;padding-bottom:20px;border-bottom:1px solid var(--line)}
+.brand-block{display:flex;flex-direction:column;gap:10px}
+.logos{display:flex;align-items:center;gap:14px}
+.logo-btg{font-weight:700;font-size:13px;letter-spacing:.04em;color:var(--btg);background:#eef2f7;padding:6px 10px;border-radius:4px}
+.logo-co{display:inline-flex;align-items:center;gap:8px;font-weight:700;color:var(--brand);font-size:15px}
+.logo-co .dot{width:22px;height:22px;border-radius:50%;background:var(--brand);display:grid;place-items:center;color:#fff;font-size:9px;font-weight:700}
+h1{font-weight:700;font-size:clamp(24px,3vw,34px);letter-spacing:-.02em;line-height:1.15}
+h1 span{color:var(--brand)}
+.subtitle{color:var(--muted);font-size:14px;max-width:580px}
+.meta-pills{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end}
+.pill{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:8px 14px;font-size:12px;color:var(--muted)}
+.pill strong{color:var(--ink);font-weight:600;margin-right:4px}
+.highlights{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
+.hi{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;border-top:3px solid var(--brand)}
+.hi h3{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px}
+.hi p{font-size:15px;font-weight:700}
+.hi p span{display:block;font-weight:400;color:var(--muted);font-size:12px;margin-top:3px}
+.main{display:grid;grid-template-columns:280px 1fr 300px;gap:18px;align-items:start}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px}
+.panel h2{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--brand);margin-bottom:14px}
+.struct-table{width:100%;border-collapse:collapse;font-size:12px}
+.struct-table th{text-align:left;font-weight:600;color:var(--muted);padding:0 6px 10px;border-bottom:1px solid var(--line);font-size:11px;text-transform:uppercase}
+.struct-table td{padding:10px 6px;border-bottom:1px solid var(--line)}
+.struct-table tr:last-child td{border-bottom:none}
+.tag{display:inline-block;font-weight:700;font-size:11px;padding:2px 7px;border-radius:4px;margin-right:4px}
+.tag.s{background:#fde8e8;color:var(--danger)}
+.tag.b{background:#e8f8ef;color:var(--success)}
+.legend-note{margin-top:14px;font-size:11px;color:var(--muted);line-height:1.5}
+.chart-panel{padding:16px}
+.chart-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:10px}
+.chart-caption{font-size:12px;color:var(--muted)}
+.chart-legend{display:flex;gap:14px;font-size:12px;color:var(--muted);flex-wrap:wrap}
+.chart-legend span{display:inline-flex;align-items:center;gap:6px}
+.swatch{width:18px;height:3px;border-radius:2px;background:var(--brand);display:inline-block}
+.swatch.asset{background:transparent;border-top:2px dashed var(--dash);height:0}
+.chart-box{width:100%;background:#f8fafc;border:1px solid var(--line);border-radius:10px;overflow:hidden;position:relative;user-select:none}
+.chart-box svg{display:block;width:100%;height:auto;min-height:360px;pointer-events:none}
+.chart-overlay{position:absolute;inset:0;z-index:3;touch-action:none;cursor:crosshair}
+.chart-touch-hint{display:block;font-size:12px;color:var(--muted);margin-top:8px;text-align:center}
+@media (hover:hover) and (pointer:fine){.chart-touch-hint{display:none}}
+.mobile-sim{display:block;margin-top:12px;padding:12px;background:var(--bg);border:1px solid var(--line);border-radius:10px}
+.mobile-sim input[type=range]{width:100%;height:44px;accent-color:var(--brand)}
+.tooltip{position:absolute;pointer-events:none;background:var(--ink);color:#fff;padding:10px 12px;border-radius:8px;font-size:12px;min-width:170px;opacity:0;z-index:5;transform:translate(-50%,-120%)}
+.tooltip.on{opacity:1}
+.tooltip .t-title{font-weight:600;margin-bottom:6px;opacity:.85;font-size:11px}
+.tooltip .row{display:flex;justify-content:space-between;gap:16px;margin-top:3px}
+.zones{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+.zone{border:1px solid var(--line);border-radius:8px;padding:10px;background:var(--bg)}
+.zone strong{display:block;font-size:12px;color:var(--brand);margin-bottom:4px}
+.zone p{font-size:11px;color:var(--muted);line-height:1.4}
+.sim-label{display:flex;justify-content:space-between;align-items:baseline;font-size:12px;color:var(--muted);margin-bottom:8px}
+.sim-label output{font-weight:700;color:var(--ink);font-size:14px}
+input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
+.sim-cards{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.sim-card{background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:12px}
+.sim-card .lbl{font-size:11px;color:var(--muted);margin-bottom:4px}
+.sim-card .val{font-size:18px;font-weight:700}
+.sim-card .val.pos{color:var(--success)}
+.sim-card .val.neg{color:var(--danger)}
+.regime{font-size:12px;color:var(--ink);background:#fff7ef;border:1px solid #f0d4b8;border-radius:8px;padding:10px 12px;line-height:1.45}
+.speech-box{margin-top:22px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 24px;border-top:3px solid var(--brand)}
+.speech-box h2{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--brand);margin-bottom:14px}
+.speech-label{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--brand);margin:14px 0 6px}
+.speech-box p{font-size:14px;color:var(--ink);max-width:70em}
+.footer{margin-top:28px;font-size:11px;color:var(--muted);text-align:center;line-height:1.55}
+.footer-alert{margin-top:10px;text-align:center;font-size:11px;color:var(--btg);font-weight:700}
+@media (max-width:1100px){.main{grid-template-columns:1fr}.highlights{grid-template-columns:1fr 1fr}.zones{grid-template-columns:1fr}}
+@media (max-width:640px){.page{padding:16px 14px 40px}.topbar{flex-direction:column}.meta-pills{justify-content:flex-start}.highlights{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="page">
+<p class="back-link"><a href="../../index.html">← Prateleira Tática</a></p>
+<header class="topbar">
+  <div class="brand-block">
+    <div class="logos">
+      <span class="logo-btg">BTG PACTUAL</span>
+      <span class="logo-co"><span class="dot">TW</span> GOLD11</span>
+    </div>
+    <h1>TWIP <span>GOLD11</span></h1>
+    <p class="subtitle">Twin Win Protected: ganha na alta e na queda moderada; fora das barreiras retorno 0% (capital protegido).</p>
+  </div>
+  <div class="meta-pills"><div class="pill"><strong>Ativo</strong> GOLD11</div><div class="pill"><strong>Prazo</strong> 12 meses</div><div class="pill"><strong>Put</strong> 100%</div><div class="pill"><strong>KI</strong> 140%</div><div class="pill"><strong>Put KO</strong> 80%</div><div class="pill"><strong>Bid</strong> 4,51%</div></div>
+</header>
+<section class="highlights"><div class="hi"><h3>Prazo</h3><p>12 meses<span></span></p></div><div class="hi"><h3>Faixa</h3><p>|x|<span>Entre −20% e +40%</span></p></div><div class="hi"><h3>Fora</h3><p>0%<span>Capital protegido</span></p></div><div class="hi"><h3>Bid</h3><p>4,51%<span>Referência</span></p></div></section>
+<div class="main">
+<aside class="panel">
+  <h2>Estrutura</h2>
+  <table class="struct-table"><thead><tr><th>Perna</th><th>Nível</th></tr></thead><tbody><tr><td><span class="tag b">B</span> Put</td><td>100%</td></tr><tr><td><span class="tag s">S</span> Call KI</td><td>100% · barreira 140%</td></tr><tr><td><span class="tag b">B</span> Put KO</td><td>100% · barreira 80%</td></tr></tbody></table>
+  <p class="legend-note">Payoff ilustrativo no vencimento. Condições oficiais no DIE.</p>
+</aside>
+<section class="panel chart-panel">
+  <div class="chart-head">
+    <div><h2>Payoff ilustrativo</h2><p class="chart-caption">Retorno vs. variação do ativo</p></div>
+    <div class="chart-legend"><span><i class="swatch"></i> Estrutura</span><span><i class="swatch asset"></i> Ativo</span></div>
+  </div>
+  <div class="chart-box" id="chartBox">
+    <div class="tooltip" id="tooltip"></div>
+    <div class="chart-overlay" id="chartOverlay"></div>
+    <svg id="payoffSvg" viewBox="0 0 600 400" preserveAspectRatio="xMidYMid meet">
+      <g id="grid"></g>
+      <line id="axisZeroX" x1="0" y1="0" x2="0" y2="400" stroke="#c5ced8" stroke-width="1"/>
+      <line id="axisZeroY" x1="48" y1="0" x2="552" y2="0" stroke="#c5ced8" stroke-width="1"/>
+      <polyline id="assetPath" fill="none" stroke="#8b83a0" stroke-width="2" stroke-dasharray="6 5"/>
+      <path id="structPath" fill="none" stroke="#b8860b" stroke-width="2.5"/>
+      <g id="xLabels"></g><g id="yLabels"></g>
+      <line id="hoverLine" x1="0" y1="24" x2="0" y2="376" stroke="#b8860b" stroke-width="1" opacity="0"/>
+      <circle id="hoverStruct" r="5" fill="#b8860b" opacity="0"/>
+      <circle id="hoverAsset" r="4" fill="#8b83a0" opacity="0"/>
+    </svg>
+  </div>
+  <p class="chart-touch-hint">Arraste no gráfico para simular</p>
+  <div class="mobile-sim">
+    <div class="sim-label"><span>Spot final</span><output id="spotOutMobile">0%</output></div>
+    <input type="range" id="spotSliderMobile" min="-50" max="80" step="0.5" value="0"/>
+  </div>
+  <div class="zones"><div class="zone"><strong>< −20%</strong><p>Retorno 0% (proteção).</p></div><div class="zone"><strong>−20% → +40%</strong><p>Retorno = |variação|.</p></div><div class="zone"><strong>> +40%</strong><p>Retorno 0% (KI).</p></div></div>
+</section>
+<aside class="panel panel-sim">
+  <h2>Simulador</h2>
+  <div class="sim-label"><span>Variação do ativo</span><output id="spotOut">0%</output></div>
+  <input type="range" id="spotSlider" min="-50" max="80" step="0.5" value="0"/>
+  <div class="sim-cards">
+    <div class="sim-card"><div class="lbl">Ativo</div><div class="val" id="assetVal">0,0%</div></div>
+    <div class="sim-card"><div class="lbl">Estrutura</div><div class="val" id="structVal">0,0%</div></div>
+  </div>
+  <div class="regime" id="regimeText">Entre barreiras: retorno absoluto |x|.</div>
+</aside>
+</div>
+<section class="speech-box">
+  <h2>Speech comercial</h2>
+  <p class="speech-label">Para quem</p><p>Cliente construtivo em ouro via GOLD11 (12 meses) que quer payoff bidirecional com proteção.</p><p class="speech-label">Como encaixa</p><p>TWIP · put KO 80% · call KI 140% · bid 4,51%.</p><p class="speech-label">Fechamento</p><p>Material de uso interno — condições no DIE.</p>
+</section>
+<p class="footer">Material ilustrativo para uso interno. Não constitui oferta, recomendação ou garantia de rentabilidade.</p>
+<p class="footer-alert">MATERIAL DE USO INTERNO, NÃO ENVIAR AOS CLIENTES</p>
+</div>
+<script>
+(function(){
+  var X_MIN=-50,X_MAX=80,Y_MIN=-50,Y_MAX=80;
+  var PAD={l:48,t:24,r:48,b:24},VW=600,VH=400;
+  var PLOT_W=VW-PAD.l-PAD.r,PLOT_H=VH-PAD.t-PAD.b;
+  var L=-20, H=40;
+  function structureReturn(x){ if (x < L || x > H) return 0; return Math.abs(x); }
+  function regimeFor(x){ if (x < L || x > H) return 'Fora da faixa: 0%.'; return 'Twin: |x|.'; }
+  function fmtPct(v,d){ d=d==null?1:d; var s=v.toFixed(d).replace('.',','); return (v>0?'+':'')+s+'%'; }
+  function xToSvg(x){ return PAD.l+((x-X_MIN)/(X_MAX-X_MIN))*PLOT_W; }
+  function yToSvg(y){ return PAD.t+((Y_MAX-y)/(Y_MAX-Y_MIN))*PLOT_H; }
+  function svgToX(px){ return X_MIN+((px-PAD.l)/PLOT_W)*(X_MAX-X_MIN); }
+  function buildStructD(){
+    var d='',first=true;
+    function add(x,y){ var c=first?'M':'L'; first=false; d+=c+' '+xToSvg(x).toFixed(2)+' '+yToSvg(y).toFixed(2)+' '; }
+    for(var x=X_MIN;x<=X_MAX;x+=0.5) add(x, structureReturn(x));
+    return d.trim();
+  }
+  function buildAsset(){
+    var pts=[];
+    for(var x=X_MIN;x<=X_MAX;x+=2){
+      var y=Math.max(Y_MIN,Math.min(Y_MAX,x));
+      pts.push(xToSvg(x).toFixed(1)+','+yToSvg(y).toFixed(1));
+    }
+    return pts.join(' ');
+  }
+  var grid=document.getElementById('grid'),xL=document.getElementById('xLabels'),yL=document.getElementById('yLabels');
+  for(var y=-40;y<=60;y+=20){
+    var py=yToSvg(y);
+    grid.innerHTML+='<line x1="48" y1="'+py+'" x2="552" y2="'+py+'" stroke="#e8edf2"/>';
+    yL.innerHTML+='<text x="42" y="'+(py+3)+'" font-size="11" text-anchor="end" fill="#5c6b7a">'+y+'%</text>';
+  }
+  for(var x=-40;x<=80;x+=20){
+    var px=xToSvg(x);
+    grid.innerHTML+='<line x1="'+px+'" y1="24" x2="'+px+'" y2="376" stroke="#e8edf2"/>';
+    xL.innerHTML+='<text x="'+px+'" y="392" font-size="11" text-anchor="middle" fill="#5c6b7a">'+x+'%</text>';
+  }
+  document.getElementById('axisZeroX').setAttribute('x1',xToSvg(0));
+  document.getElementById('axisZeroX').setAttribute('x2',xToSvg(0));
+  document.getElementById('axisZeroY').setAttribute('y1',yToSvg(0));
+  document.getElementById('axisZeroY').setAttribute('y2',yToSvg(0));
+  document.getElementById('structPath').setAttribute('d',buildStructD());
+  document.getElementById('assetPath').setAttribute('points',buildAsset());
+  function showAt(x){
+    x=Math.max(X_MIN,Math.min(X_MAX,x));
+    var ys=structureReturn(x);
+    document.getElementById('spotOut').textContent=fmtPct(x);
+    document.getElementById('spotOutMobile').textContent=fmtPct(x);
+    document.getElementById('spotSlider').value=x;
+    document.getElementById('spotSliderMobile').value=x;
+    var av=document.getElementById('assetVal'),sv=document.getElementById('structVal');
+    av.textContent=fmtPct(x); av.className='val '+(x>0?'pos':x<0?'neg':'');
+    sv.textContent=fmtPct(ys); sv.className='val '+(ys>0?'pos':ys<0?'neg':'');
+    document.getElementById('regimeText').textContent=regimeFor(x);
+    var px=xToSvg(x);
+    document.getElementById('hoverLine').setAttribute('x1',px);
+    document.getElementById('hoverLine').setAttribute('x2',px);
+    document.getElementById('hoverLine').setAttribute('opacity','1');
+    document.getElementById('hoverStruct').setAttribute('cx',px);
+    document.getElementById('hoverStruct').setAttribute('cy',yToSvg(ys));
+    document.getElementById('hoverStruct').setAttribute('opacity','1');
+    document.getElementById('hoverAsset').setAttribute('cx',px);
+    document.getElementById('hoverAsset').setAttribute('cy',yToSvg(Math.max(Y_MIN,Math.min(Y_MAX,x))));
+    document.getElementById('hoverAsset').setAttribute('opacity','1');
+    var tip=document.getElementById('tooltip');
+    tip.innerHTML='<div class="t-title">Spot '+fmtPct(x)+'</div><div class="row"><span>Ativo</span><span>'+fmtPct(x)+'</span></div><div class="row"><span>Estrutura</span><span>'+fmtPct(ys)+'</span></div>';
+    tip.className='tooltip on';
+    tip.style.left=px+'px'; tip.style.top=yToSvg(ys)+'px';
+  }
+  document.getElementById('spotSlider').addEventListener('input',function(e){ showAt(+e.target.value); });
+  document.getElementById('spotSliderMobile').addEventListener('input',function(e){ showAt(+e.target.value); });
+  var ov=document.getElementById('chartOverlay');
+  function fromEvt(e){
+    var r=ov.getBoundingClientRect();
+    var cx=(e.touches?e.touches[0].clientX:e.clientX)-r.left;
+    showAt(svgToX(cx/r.width*VW));
+  }
+  ov.addEventListener('pointerdown',fromEvt);
+  ov.addEventListener('pointermove',function(e){ if(e.buttons||e.pressure) fromEvt(e); else fromEvt(e); });
+  showAt(0);
+})();
+</script>
+</body>
+</html>
