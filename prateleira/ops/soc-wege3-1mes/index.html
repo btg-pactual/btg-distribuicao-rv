@@ -127,7 +127,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
     </svg>
   </div>
   <p class="chart-touch-hint">Arraste no gráfico para simular</p>
-  <div class="mobile-sim">
+      <div class="mobile-sim">
     <div class="sim-label"><span>Spot final</span><output id="spotOutMobile">0%</output></div>
     <input type="range" id="spotSliderMobile" min="-50" max="80" step="0.5" value="0"/>
   </div>
@@ -178,12 +178,14 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
     return pts.join(' ');
   }
   var grid=document.getElementById('grid'),xL=document.getElementById('xLabels'),yL=document.getElementById('yLabels');
-  for(var y=-40;y<=60;y+=20){
+  var yStep = Y_MAX - Y_MIN > 120 ? 40 : 20;
+  var xStep = X_MAX - X_MIN > 120 ? 40 : 20;
+  for(var y=Math.ceil(Y_MIN/yStep)*yStep;y<=Y_MAX;y+=yStep){
     var py=yToSvg(y);
     grid.innerHTML+='<line x1="48" y1="'+py+'" x2="552" y2="'+py+'" stroke="#e8edf2"/>';
     yL.innerHTML+='<text x="42" y="'+(py+3)+'" font-size="11" text-anchor="end" fill="#5c6b7a">'+y+'%</text>';
   }
-  for(var x=-40;x<=80;x+=20){
+  for(var x=Math.ceil(X_MIN/xStep)*xStep;x<=X_MAX;x+=xStep){
     var px=xToSvg(x);
     grid.innerHTML+='<line x1="'+px+'" y1="24" x2="'+px+'" y2="376" stroke="#e8edf2"/>';
     xL.innerHTML+='<text x="'+px+'" y="392" font-size="11" text-anchor="middle" fill="#5c6b7a">'+x+'%</text>';

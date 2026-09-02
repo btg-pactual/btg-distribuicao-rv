@@ -95,15 +95,15 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
       <span class="logo-co"><span class="dot">AC</span> HASH11</span>
     </div>
     <h1>Aceleradora Dinâmica <span>HASH11</span></h1>
-    <p class="subtitle">Participa da alta até a barreira; proteção na queda moderada; fora das barreiras acompanha ou limita.</p>
+    <p class="subtitle">Ganho dobrado (2×) na alta até o strike da call vendida (144%); acima disso o retorno fica fixo em +88%. Proteção parcial na queda até a barreira 80%.</p>
   </div>
-  <div class="meta-pills"><div class="pill"><strong>Ativo</strong> HASH11</div><div class="pill"><strong>Prazo</strong> 12 meses</div><div class="pill"><strong>KO alta</strong> 144%</div><div class="pill"><strong>KO baixa</strong> 80%</div></div>
+  <div class="meta-pills"><div class="pill"><strong>Ativo</strong> HASH11</div><div class="pill"><strong>Prazo</strong> 12 meses</div><div class="pill"><strong>Alta</strong> 2×</div><div class="pill"><strong>Call vendida</strong> 144%</div><div class="pill"><strong>KO baixa</strong> 80%</div></div>
 </header>
-<section class="highlights"><div class="hi"><h3>Prazo</h3><p>12 meses<span></span></p></div><div class="hi"><h3>KO alta</h3><p>144%<span>+44%</span></p></div><div class="hi"><h3>KO baixa</h3><p>80%<span>-20%</span></p></div><div class="hi"><h3>Ideia</h3><p>Upside 1:1<span>Com proteção moderada</span></p></div></section>
+<section class="highlights"><div class="hi"><h3>Prazo</h3><p>12 meses<span></span></p></div><div class="hi"><h3>Alta</h3><p>2×<span>Até call vendida 144% (+44%)</span></p></div><div class="hi"><h3>Teto</h3><p>+88%<span>Fixo se ultrapassar o strike 144%</span></p></div><div class="hi"><h3>Proteção</h3><p>Parcial<span>Piso 0% até KO 80%; abaixo acompanha</span></p></div></section>
 <div class="main">
 <aside class="panel">
   <h2>Estrutura</h2>
-  <table class="struct-table"><thead><tr><th>Perna</th><th>Nível</th></tr></thead><tbody><tr><td><span class="tag b">B</span> Call KO</td><td>100% · barreira 144%</td></tr><tr><td><span class="tag s">S</span> Call</td><td>144%</td></tr><tr><td><span class="tag b">B</span> Put KO</td><td>100% · barreira 80%</td></tr></tbody></table>
+  <table class="struct-table"><thead><tr><th>Perna</th><th>Nível</th></tr></thead><tbody><tr><td><span class="tag b">B</span> Call KO</td><td>100% · barreira 144%</td></tr><tr><td><span class="tag s">S</span> Call</td><td>144% (define o teto 2×)</td></tr><tr><td><span class="tag b">B</span> Put KO</td><td>100% · barreira 80%</td></tr></tbody></table>
   <p class="legend-note">Payoff ilustrativo no vencimento. Condições oficiais no DIE.</p>
 </aside>
 <section class="panel chart-panel">
@@ -127,11 +127,11 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
     </svg>
   </div>
   <p class="chart-touch-hint">Arraste no gráfico para simular</p>
-  <div class="mobile-sim">
+      <div class="mobile-sim">
     <div class="sim-label"><span>Spot final</span><output id="spotOutMobile">0%</output></div>
     <input type="range" id="spotSliderMobile" min="-50" max="80" step="0.5" value="0"/>
   </div>
-  <div class="zones"><div class="zone"><strong>≤ -20%</strong><p>KO baixa: acompanha o ativo.</p></div><div class="zone"><strong>-20% → +44%</strong><p>Queda: 0%; alta: 1:1 até a barreira.</p></div><div class="zone"><strong>≥ +44%</strong><p>Limite +44%.</p></div></div>
+  <div class="zones"><div class="zone"><strong>≤ -20%</strong><p>Put KO nocauteada — acompanha o ativo.</p></div><div class="zone"><strong>-20% → 0%</strong><p>Proteção parcial: retorno 0%.</p></div><div class="zone"><strong>0% → +44%</strong><p>Ganho dobrado: retorno = 2× a alta.</p></div><div class="zone"><strong>≥ +44%</strong><p>Ultrapassou call vendida 144%: retorno fixo +88%.</p></div></div>
 </section>
 <aside class="panel panel-sim">
   <h2>Simulador</h2>
@@ -141,24 +141,24 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
     <div class="sim-card"><div class="lbl">Ativo</div><div class="val" id="assetVal">0,0%</div></div>
     <div class="sim-card"><div class="lbl">Estrutura</div><div class="val" id="structVal">0,0%</div></div>
   </div>
-  <div class="regime" id="regimeText">Na faixa central: upside 1:1 / downside protegido em 0%.</div>
+  <div class="regime" id="regimeText">Na alta até +44%: 2×. Acima do strike da call vendida: fixo +88%.</div>
 </aside>
 </div>
 <section class="speech-box">
   <h2>Speech comercial</h2>
-  <p class="speech-label">Para quem</p><p>Cliente tático em HASH11 (12 meses) que quer upside com proteção na queda moderada.</p><p class="speech-label">Como encaixa</p><p>Call KO 144% + put KO 80%.</p><p class="speech-label">Fechamento</p><p>Material de uso interno — condições no DIE.</p>
+  <p class="speech-label">Para quem</p><p>Cliente tático em HASH11 (12 meses) que quer ganho dobrado na alta com proteção parcial na queda.</p><p class="speech-label">Como encaixa</p><p>Aceleradora Dinâmica: 2× até a call vendida 144% (teto +88% se ultrapassar o strike). Put KO 80%: piso 0% na queda moderada; abaixo do KO, acompanha o ativo.</p><p class="speech-label">Fechamento</p><p>Material de uso interno — condições no DIE.</p>
 </section>
 <p class="footer">Material ilustrativo para uso interno. Não constitui oferta, recomendação ou garantia de rentabilidade.</p>
 <p class="footer-alert">MATERIAL DE USO INTERNO, NÃO ENVIAR AOS CLIENTES</p>
 </div>
 <script>
 (function(){
-  var X_MIN=-50,X_MAX=80,Y_MIN=-50,Y_MAX=80;
+  var X_MIN=-50,X_MAX=80,Y_MIN=-50,Y_MAX=108;
   var PAD={l:48,t:24,r:48,b:24},VW=600,VH=400;
   var PLOT_W=VW-PAD.l-PAD.r,PLOT_H=VH-PAD.t-PAD.b;
-  var L=-20.0, H=44.0;
-  function structureReturn(x){ if (x <= L) return x; if (x >= H) return H; if (x < 0) return 0; return x; }
-  function regimeFor(x){ if (x <= L) return 'KO baixa: acompanha.'; if (x >= H) return 'Teto da barreira alta.'; if (x < 0) return 'Proteção 0%.'; return 'Alta 1:1.'; }
+  var L=-20.0, H=44.0, CAP=88.0;
+  function structureReturn(x){ if (x <= L) return x; if (x < 0) return 0; if (x < H) return 2*x; return CAP; }
+  function regimeFor(x){ if (x <= L) return 'KO baixa: acompanha o ativo.'; if (x < 0) return 'Proteção parcial: 0%.'; if (x < H) return 'Alta acelerada: 2×.'; return 'Acima da call vendida: retorno fixo em '+CAP+'%.'; }
   function fmtPct(v,d){ d=d==null?1:d; var s=v.toFixed(d).replace('.',','); return (v>0?'+':'')+s+'%'; }
   function xToSvg(x){ return PAD.l+((x-X_MIN)/(X_MAX-X_MIN))*PLOT_W; }
   function yToSvg(y){ return PAD.t+((Y_MAX-y)/(Y_MAX-Y_MIN))*PLOT_H; }
@@ -178,12 +178,14 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
     return pts.join(' ');
   }
   var grid=document.getElementById('grid'),xL=document.getElementById('xLabels'),yL=document.getElementById('yLabels');
-  for(var y=-40;y<=60;y+=20){
+  var yStep = Y_MAX - Y_MIN > 120 ? 40 : 20;
+  var xStep = X_MAX - X_MIN > 120 ? 40 : 20;
+  for(var y=Math.ceil(Y_MIN/yStep)*yStep;y<=Y_MAX;y+=yStep){
     var py=yToSvg(y);
     grid.innerHTML+='<line x1="48" y1="'+py+'" x2="552" y2="'+py+'" stroke="#e8edf2"/>';
     yL.innerHTML+='<text x="42" y="'+(py+3)+'" font-size="11" text-anchor="end" fill="#5c6b7a">'+y+'%</text>';
   }
-  for(var x=-40;x<=80;x+=20){
+  for(var x=Math.ceil(X_MIN/xStep)*xStep;x<=X_MAX;x+=xStep){
     var px=xToSvg(x);
     grid.innerHTML+='<line x1="'+px+'" y1="24" x2="'+px+'" y2="376" stroke="#e8edf2"/>';
     xL.innerHTML+='<text x="'+px+'" y="392" font-size="11" text-anchor="middle" fill="#5c6b7a">'+x+'%</text>';

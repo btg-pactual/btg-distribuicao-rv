@@ -241,16 +241,16 @@ def op_page(cfg: dict) -> str:
     </svg>
   </div>
   <p class="chart-touch-hint">Arraste no gráfico para simular</p>
-  <div class="mobile-sim">
+      <div class="mobile-sim">
     <div class="sim-label"><span>Spot final</span><output id="spotOutMobile">0%</output></div>
-    <input type="range" id="spotSliderMobile" min="-50" max="80" step="0.5" value="0"/>
+    <input type="range" id="spotSliderMobile" min="{cfg.get('x_min', -50)}" max="{cfg.get('x_max', 80)}" step="0.5" value="0"/>
   </div>
   <div class="zones">{zones}</div>
 </section>
 aside class="panel panel-sim">
   <h2>Simulador</h2>
   <div class="sim-label"><span>Variação do ativo</span><output id="spotOut">0%</output></div>
-  <input type="range" id="spotSlider" min="-50" max="80" step="0.5" value="0"/>
+  <input type="range" id="spotSlider" min="{cfg.get('x_min', -50)}" max="{cfg.get('x_max', 80)}" step="0.5" value="0"/>
   <div class="sim-cards">
     <div class="sim-card"><div class="lbl">Ativo</div><div class="val" id="assetVal">0,0%</div></div>
     <div class="sim-card"><div class="lbl">Estrutura</div><div class="val" id="structVal">0,0%</div></div>
@@ -267,7 +267,7 @@ aside class="panel panel-sim">
 </div>
 <script>
 (function(){{
-  var X_MIN=-50,X_MAX=80,Y_MIN=-50,Y_MAX=80;
+  var X_MIN={cfg.get('x_min', -50)},X_MAX={cfg.get('x_max', 80)},Y_MIN={cfg.get('y_min', -50)},Y_MAX={cfg.get('y_max', 80)};
   var PAD={{l:48,t:24,r:48,b:24}},VW=600,VH=400;
   var PLOT_W=VW-PAD.l-PAD.r,PLOT_H=VH-PAD.t-PAD.b;
   {cfg['js_const']}
@@ -292,12 +292,14 @@ aside class="panel panel-sim">
     return pts.join(' ');
   }}
   var grid=document.getElementById('grid'),xL=document.getElementById('xLabels'),yL=document.getElementById('yLabels');
-  for(var y=-40;y<=60;y+=20){{
+  var yStep = Y_MAX - Y_MIN > 120 ? 40 : 20;
+  var xStep = X_MAX - X_MIN > 120 ? 40 : 20;
+  for(var y=Math.ceil(Y_MIN/yStep)*yStep;y<=Y_MAX;y+=yStep){{
     var py=yToSvg(y);
     grid.innerHTML+='<line x1="48" y1="'+py+'" x2="552" y2="'+py+'" stroke="#e8edf2"/>';
     yL.innerHTML+='<text x="42" y="'+(py+3)+'" font-size="11" text-anchor="end" fill="#5c6b7a">'+y+'%</text>';
   }}
-  for(var x=-40;x<=80;x+=20){{
+  for(var x=Math.ceil(X_MIN/xStep)*xStep;x<=X_MAX;x+=xStep){{
     var px=xToSvg(x);
     grid.innerHTML+='<line x1="'+px+'" y1="24" x2="'+px+'" y2="376" stroke="#e8edf2"/>';
     xL.innerHTML+='<text x="'+px+'" y="392" font-size="11" text-anchor="middle" fill="#5c6b7a">'+x+'%</text>';
@@ -435,6 +437,7 @@ def make_sh(t, fixing, put, call, ki, bid):
 def make_acel(t, fixing, ko_h, ko_l, bid):
     prazo = months_label(fixing)
     H, L = ko_h - 100, ko_l - 100
+    cap = 2 * H  # ganho dobrado até o strike da call vendida; acima disso, fixo
     slug = slugify("aceleradora", t, prazo.replace(" ", ""))
     return slug, {
         "title": f"Aceleradora {t}",
@@ -442,33 +445,58 @@ def make_acel(t, fixing, ko_h, ko_l, bid):
         "ticker": t,
         "dot": "AC",
         "brand": "#5a4a8a",
-        "subtitle": f"Participa da alta até a barreira; proteção na queda moderada; fora das barreiras acompanha ou limita.",
-        "pills": [("Ativo", t), ("Prazo", prazo), ("KO alta", f"{ko_h:.0f}%"), ("KO baixa", f"{ko_l:.0f}%")],
+        "subtitle": (
+            f"Ganho dobrado (2×) na alta até o strike da call vendida ({ko_h:.0f}%); "
+            f"acima disso o retorno fica fixo em +{cap:.0f}%. Proteção parcial na queda até a barreira {ko_l:.0f}%."
+        ),
+        "pills": [
+            ("Ativo", t),
+            ("Prazo", prazo),
+            ("Alta", "2×"),
+            ("Call vendida", f"{ko_h:.0f}%"),
+            ("KO baixa", f"{ko_l:.0f}%"),
+        ],
         "highlights": [
             ("Prazo", prazo, ""),
-            ("KO alta", f"{ko_h:.0f}%", f"+{H:.0f}%"),
-            ("KO baixa", f"{ko_l:.0f}%", f"{L:.0f}%"),
-            ("Ideia", "Upside 1:1", "Com proteção moderada"),
+            ("Alta", "2×", f"Até call vendida {ko_h:.0f}% (+{H:.0f}%)"),
+            ("Teto", f"+{cap:.0f}%", f"Fixo se ultrapassar o strike {ko_h:.0f}%"),
+            ("Proteção", "Parcial", f"Piso 0% até KO {ko_l:.0f}%; abaixo acompanha"),
         ],
         "struct": [
             ('<span class="tag b">B</span> Call KO', f"100% · barreira {ko_h:.0f}%"),
-            ('<span class="tag s">S</span> Call', f"{ko_h:.0f}%"),
+            ('<span class="tag s">S</span> Call', f"{ko_h:.0f}% (define o teto 2×)"),
             ('<span class="tag b">B</span> Put KO', f"100% · barreira {ko_l:.0f}%"),
         ],
         "zones": [
-            (f"≤ {L:.0f}%", "KO baixa: acompanha o ativo."),
-            (f"{L:.0f}% → +{H:.0f}%", "Queda: 0%; alta: 1:1 até a barreira."),
-            (f"≥ +{H:.0f}%", f"Limite +{H:.0f}%."),
+            (f"≤ {L:.0f}%", "Put KO nocauteada — acompanha o ativo."),
+            (f"{L:.0f}% → 0%", "Proteção parcial: retorno 0%."),
+            (f"0% → +{H:.0f}%", "Ganho dobrado: retorno = 2× a alta."),
+            (f"≥ +{H:.0f}%", f"Ultrapassou call vendida {ko_h:.0f}%: retorno fixo +{cap:.0f}%."),
         ],
-        "regime0": "Na faixa central: upside 1:1 / downside protegido em 0%.",
+        "regime0": f"Na alta até +{H:.0f}%: 2×. Acima do strike da call vendida: fixo +{cap:.0f}%.",
         "speech": [
-            ("Para quem", f"Cliente tático em {t} ({prazo}) que quer upside com proteção na queda moderada."),
-            ("Como encaixa", f"Call KO {ko_h:.0f}% + put KO {ko_l:.0f}%."),
+            ("Para quem", f"Cliente tático em {t} ({prazo}) que quer ganho dobrado na alta com proteção parcial na queda."),
+            (
+                "Como encaixa",
+                f"Aceleradora Dinâmica: 2× até a call vendida {ko_h:.0f}% "
+                f"(teto +{cap:.0f}% se ultrapassar o strike). "
+                f"Put KO {ko_l:.0f}%: piso 0% na queda moderada; abaixo do KO, acompanha o ativo.",
+            ),
             ("Fechamento", "Material de uso interno — condições no DIE."),
         ],
-        "js_const": f"var L={L}, H={H};",
-        "js_fn": "if (x <= L) return x; if (x >= H) return H; if (x < 0) return 0; return x;",
-        "js_regime": "if (x <= L) return 'KO baixa: acompanha.'; if (x >= H) return 'Teto da barreira alta.'; if (x < 0) return 'Proteção 0%.'; return 'Alta 1:1.';",
+        "x_min": min(-50, int(L) - 10),
+        "x_max": max(80, int(H) + 30),
+        "y_min": min(-50, int(L) - 10),
+        "y_max": max(80, int(cap) + 20),
+        "js_const": f"var L={L}, H={H}, CAP={cap};",
+        # 2× até o strike da call vendida; acima, payoff fixo em 2×H
+        "js_fn": "if (x <= L) return x; if (x < 0) return 0; if (x < H) return 2*x; return CAP;",
+        "js_regime": (
+            "if (x <= L) return 'KO baixa: acompanha o ativo.'; "
+            "if (x < 0) return 'Proteção parcial: 0%.'; "
+            "if (x < H) return 'Alta acelerada: 2×.'; "
+            "return 'Acima da call vendida: retorno fixo em '+CAP+'%.';"
+        ),
     }
 
 
@@ -688,7 +716,7 @@ SECTION_META = {
     },
     "Aceleradora Dinâmica": {
         "id": "aceleradora",
-        "blurb": "Upside até a barreira com proteção na queda moderada.",
+        "blurb": "Ganho dobrado (2×) na alta até a call vendida; proteção parcial na queda.",
         "color": "#5a4a8a",
     },
     "Triplo Retorno KO": {
