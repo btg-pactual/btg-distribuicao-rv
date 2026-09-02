@@ -597,39 +597,101 @@ def make_call_ko():
     prazo = months_label(fixing)
     cost, rebate, ko = 3.80, 5.50, 21.0
     slug = slugify("call-ko-rebate", t, prazo.replace(" ", ""))
+
+    def net_at(x: float) -> float:
+        if x >= ko:
+            return rebate - cost
+        return max(x, 0.0) - cost
+
+    def prem_at(x: float) -> float:
+        return (net_at(x) / cost) * 100.0
+
+    spots = [-10.0, 0.0, 5.0, 10.0, 15.0, 20.0, 21.0, 30.0, 40.0]
+    matrix_rows = []
+    for s in spots:
+        n, p = net_at(s), prem_at(s)
+        note = "KO · rebate" if s >= ko else ("OTM" if s <= 0 else "ITM")
+        ns = f"{n:+.1f}".replace(".", ",")
+        ps = f"{p:+.0f}"
+        ss = f"{s:+.0f}"
+        matrix_rows.append(
+            f"<tr><td>{ss}%</td><td>{ns}%</td><td><strong>{ps}%</strong></td><td>{note}</td></tr>"
+        )
+    ko_net = rebate - cost
+    ko_prem = (ko_net / cost) * 100
+    ko_net_s = f"{ko_net:.2f}".replace(".", ",")
+    cost_s = f"{cost:.2f}".replace(".", ",")
+
+    matrix_html = f"""
+  <div class="matrix-wrap">
+    <h2>Matriz de ganho (só prêmio)</h2>
+    <p class="matrix-note">
+      Retorno <strong>sobre o prêmio pago ({cost_s}%)</strong> =
+      (resultado no nocional ÷ {cost_s}%) × 100.
+      No KO: líquido +{ko_net_s}% no nocional → <strong>+{ko_prem:.0f}%</strong> sobre o prêmio.
+    </p>
+    <table class="struct-table">
+      <thead><tr><th>Spot</th><th>Nocional</th><th>Sobre prêmio</th><th></th></tr></thead>
+      <tbody>
+        {''.join(matrix_rows)}
+      </tbody>
+    </table>
+  </div>
+"""
+
     return slug, {
         "title": f"Call KO c/ Rebate {t}",
         "h1": "Call KO com Rebate",
         "ticker": t,
         "dot": "CK",
         "brand": "#c0392b",
-        "subtitle": f"Call up-and-out: participa da alta até a barreira; no KO recebe rebate líquido.",
-        "pills": [("Ativo", t), ("Prazo", prazo), ("KO", "121%"), ("Rebate", "5,50%"), ("Preço", "3,80%")],
+        "subtitle": (
+            f"Call up-and-out {t}: participa da alta até a barreira; no KO recebe rebate. "
+            f"Matriz também em retorno % só sobre o prêmio ({cost_s}%)."
+        ),
+        "pills": [("Ativo", t), ("Prazo", prazo), ("KO", "121%"), ("Rebate", "5,50%"), ("Preço", f"{cost_s}%")],
         "highlights": [
             ("Prazo", prazo, ""),
-            ("Sem KO", "Alta − 3,80%", "Call ATM"),
-            ("No KO", f"+{rebate-cost:.2f}%".replace(".", ","), "Rebate − preço"),
-            ("Risco", "−3,80%", "Preço pago"),
+            ("Sem KO", f"Alta − {cost_s}%", "Call ATM no nocional"),
+            ("No KO", f"+{ko_net_s}%", f"+{ko_prem:.0f}% sobre o prêmio"),
+            ("Risco", "−100%", "Sobre o prêmio (OTM)"),
         ],
         "struct": [
             ('<span class="tag b">B</span> Call KO', "100% · barreira 121%"),
             ("Rebate", "5,50%"),
-            ("Preço (offer)", "3,80%"),
+            ("Preço (offer)", f"{cost_s}%"),
         ],
         "zones": [
-            ("< +21%", "Call: max(alta,0) − 3,80%."),
-            ("≥ +21%", f"Rebate líquido +{rebate-cost:.2f}%."),
-            ("Risco", "Perda máxima = preço 3,80%."),
+            ("< +21%", f"Call ITM: (alta − {cost_s}%) no nocional; ÷{cost_s}% = ganho sobre o prêmio."),
+            ("≥ +21%", f"Rebate líquido +{ko_net_s}% no nocional → +{ko_prem:.0f}% sobre o prêmio."),
+            ("Queda / 0%", f"OTM: −{cost_s}% nocional = −100% sobre o prêmio."),
         ],
-        "regime0": "Sem KO: participa da alta menos o preço.",
+        "regime0": "Sem KO: participa da alta menos o preço. Veja também o ganho % só sobre o prêmio.",
         "speech": [
             ("Para quem", f"Cliente construtivo em {t} no curto prazo ({prazo}) que quer call com rebate se KO."),
-            ("Como encaixa", "Call KO 121% · rebate 5,50% · preço 3,80%."),
+            (
+                "Como encaixa",
+                f"Call KO 121% · rebate 5,50% · preço {cost_s}%. "
+                f"No KO: +{ko_net_s}% no nocional = +{ko_prem:.0f}% sobre o prêmio. "
+                f"Na queda, perda limitada a −100% do prêmio.",
+            ),
             ("Fechamento", "Material de uso interno — condições no DIE."),
         ],
+        "sim_extra_html": (
+            f'<div class="sim-card wide">'
+            f'<div class="lbl">Retorno sobre o prêmio ({cost_s}%)</div>'
+            f'<div class="val" id="premVal">−100%</div>'
+            f"</div>"
+        ),
+        "matrix_html": matrix_html,
         "js_const": f"var KO={ko}, REB={rebate}, COST={cost};",
         "js_fn": "if (x >= KO) return REB - COST; return Math.max(x, 0) - COST;",
-        "js_regime": "if (x >= KO) return 'KO: rebate líquido.'; if (x > 0) return 'Call ITM menos preço.'; return 'OTM: −preço.';",
+        "js_regime": (
+            "var rp=(structureReturn(x)/COST)*100; "
+            "if (x >= KO) return 'KO: rebate líquido +'+(REB-COST).toFixed(2).replace('.',',')+'% no nocional · '+rp.toFixed(0)+'% sobre o prêmio.'; "
+            "if (x > 0) return 'Call ITM: '+structureReturn(x).toFixed(1).replace('.',',')+'% nocional · '+rp.toFixed(0)+'% sobre o prêmio.'; "
+            "return 'OTM: −'+COST.toFixed(2).replace('.',',')+'% nocional · −100% sobre o prêmio.';"
+        ),
     }
 
 

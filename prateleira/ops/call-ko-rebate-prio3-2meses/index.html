@@ -100,11 +100,11 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
       <span class="logo-co"><span class="dot">CK</span> PRIO3</span>
     </div>
     <h1>Call KO com Rebate <span>PRIO3</span></h1>
-    <p class="subtitle">Call up-and-out: participa da alta até a barreira; no KO recebe rebate líquido.</p>
+    <p class="subtitle">Call up-and-out PRIO3: participa da alta até a barreira; no KO recebe rebate. Matriz também em retorno % só sobre o prêmio (3,80%).</p>
   </div>
   <div class="meta-pills"><div class="pill"><strong>Ativo</strong> PRIO3</div><div class="pill"><strong>Prazo</strong> 2 meses</div><div class="pill"><strong>KO</strong> 121%</div><div class="pill"><strong>Rebate</strong> 5,50%</div><div class="pill"><strong>Preço</strong> 3,80%</div></div>
 </header>
-<section class="highlights"><div class="hi"><h3>Prazo</h3><p>2 meses<span></span></p></div><div class="hi"><h3>Sem KO</h3><p>Alta − 3,80%<span>Call ATM</span></p></div><div class="hi"><h3>No KO</h3><p>+1,70%<span>Rebate − preço</span></p></div><div class="hi"><h3>Risco</h3><p>−3,80%<span>Preço pago</span></p></div></section>
+<section class="highlights"><div class="hi"><h3>Prazo</h3><p>2 meses<span></span></p></div><div class="hi"><h3>Sem KO</h3><p>Alta − 3,80%<span>Call ATM no nocional</span></p></div><div class="hi"><h3>No KO</h3><p>+1,70%<span>+45% sobre o prêmio</span></p></div><div class="hi"><h3>Risco</h3><p>−100%<span>Sobre o prêmio (OTM)</span></p></div></section>
 <div class="main">
 <aside class="panel">
   <h2>Estrutura</h2>
@@ -140,7 +140,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
     <div class="sim-label"><span>Spot final</span><output id="spotOutMobile">0%</output></div>
     <input type="range" id="spotSliderMobile" min="-50" max="80" step="0.5" value="0"/>
   </div>
-  <div class="zones"><div class="zone"><strong>< +21%</strong><p>Call: max(alta,0) − 3,80%.</p></div><div class="zone"><strong>≥ +21%</strong><p>Rebate líquido +1.70%.</p></div><div class="zone"><strong>Risco</strong><p>Perda máxima = preço 3,80%.</p></div></div>
+  <div class="zones"><div class="zone"><strong>< +21%</strong><p>Call ITM: (alta − 3,80%) no nocional; ÷3,80% = ganho sobre o prêmio.</p></div><div class="zone"><strong>≥ +21%</strong><p>Rebate líquido +1,70% no nocional → +45% sobre o prêmio.</p></div><div class="zone"><strong>Queda / 0%</strong><p>OTM: −3,80% nocional = −100% sobre o prêmio.</p></div></div>
 </section>
 <aside class="panel panel-sim">
   <h2>Simulador</h2>
@@ -149,15 +149,30 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
   <div class="sim-cards">
     <div class="sim-card"><div class="lbl">Ativo</div><div class="val" id="assetVal">0,0%</div></div>
     <div class="sim-card"><div class="lbl">Put (nocional)</div><div class="val" id="structVal">0,0%</div></div>
-    
+    <div class="sim-card wide"><div class="lbl">Retorno sobre o prêmio (3,80%)</div><div class="val" id="premVal">−100%</div></div>
   </div>
-  <div class="regime" id="regimeText">Sem KO: participa da alta menos o preço.</div>
+  <div class="regime" id="regimeText">Sem KO: participa da alta menos o preço. Veja também o ganho % só sobre o prêmio.</div>
   
+  <div class="matrix-wrap">
+    <h2>Matriz de ganho (só prêmio)</h2>
+    <p class="matrix-note">
+      Retorno <strong>sobre o prêmio pago (3,80%)</strong> =
+      (resultado no nocional ÷ 3,80%) × 100.
+      No KO: líquido +1,70% no nocional → <strong>+45%</strong> sobre o prêmio.
+    </p>
+    <table class="struct-table">
+      <thead><tr><th>Spot</th><th>Nocional</th><th>Sobre prêmio</th><th></th></tr></thead>
+      <tbody>
+        <tr><td>-10%</td><td>-3,8%</td><td><strong>-100%</strong></td><td>OTM</td></tr><tr><td>+0%</td><td>-3,8%</td><td><strong>-100%</strong></td><td>OTM</td></tr><tr><td>+5%</td><td>+1,2%</td><td><strong>+32%</strong></td><td>ITM</td></tr><tr><td>+10%</td><td>+6,2%</td><td><strong>+163%</strong></td><td>ITM</td></tr><tr><td>+15%</td><td>+11,2%</td><td><strong>+295%</strong></td><td>ITM</td></tr><tr><td>+20%</td><td>+16,2%</td><td><strong>+426%</strong></td><td>ITM</td></tr><tr><td>+21%</td><td>+1,7%</td><td><strong>+45%</strong></td><td>KO · rebate</td></tr><tr><td>+30%</td><td>+1,7%</td><td><strong>+45%</strong></td><td>KO · rebate</td></tr><tr><td>+40%</td><td>+1,7%</td><td><strong>+45%</strong></td><td>KO · rebate</td></tr>
+      </tbody>
+    </table>
+  </div>
+
 </aside>
 </div>
 <section class="speech-box">
   <h2>Speech comercial</h2>
-  <p class="speech-label">Para quem</p><p>Cliente construtivo em PRIO3 no curto prazo (2 meses) que quer call com rebate se KO.</p><p class="speech-label">Como encaixa</p><p>Call KO 121% · rebate 5,50% · preço 3,80%.</p><p class="speech-label">Fechamento</p><p>Material de uso interno — condições no DIE.</p>
+  <p class="speech-label">Para quem</p><p>Cliente construtivo em PRIO3 no curto prazo (2 meses) que quer call com rebate se KO.</p><p class="speech-label">Como encaixa</p><p>Call KO 121% · rebate 5,50% · preço 3,80%. No KO: +1,70% no nocional = +45% sobre o prêmio. Na queda, perda limitada a −100% do prêmio.</p><p class="speech-label">Fechamento</p><p>Material de uso interno — condições no DIE.</p>
 </section>
 <p class="footer">Material ilustrativo para uso interno. Não constitui oferta, recomendação ou garantia de rentabilidade.</p>
 <p class="footer-alert">MATERIAL DE USO INTERNO, NÃO ENVIAR AOS CLIENTES</p>
@@ -169,7 +184,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
   var PLOT_W=VW-PAD.l-PAD.r,PLOT_H=VH-PAD.t-PAD.b;
   var KO=21.0, REB=5.5, COST=3.8;
   function structureReturn(x){ if (x >= KO) return REB - COST; return Math.max(x, 0) - COST; }
-  function regimeFor(x){ if (x >= KO) return 'KO: rebate líquido.'; if (x > 0) return 'Call ITM menos preço.'; return 'OTM: −preço.'; }
+  function regimeFor(x){ var rp=(structureReturn(x)/COST)*100; if (x >= KO) return 'KO: rebate líquido +'+(REB-COST).toFixed(2).replace('.',',')+'% no nocional · '+rp.toFixed(0)+'% sobre o prêmio.'; if (x > 0) return 'Call ITM: '+structureReturn(x).toFixed(1).replace('.',',')+'% nocional · '+rp.toFixed(0)+'% sobre o prêmio.'; return 'OTM: −'+COST.toFixed(2).replace('.',',')+'% nocional · −100% sobre o prêmio.'; }
   function fmtPct(v,d){ d=d==null?1:d; var s=v.toFixed(d).replace('.',','); return (v>0?'+':'')+s+'%'; }
   function xToSvg(x){ return PAD.l+((x-X_MIN)/(X_MAX-X_MIN))*PLOT_W; }
   function yToSvg(y){ return PAD.t+((Y_MAX-y)/(Y_MAX-Y_MIN))*PLOT_H; }
