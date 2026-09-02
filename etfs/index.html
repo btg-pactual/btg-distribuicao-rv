@@ -43,17 +43,18 @@
       background: var(--card); border: 1px solid var(--line); border-radius: 4px;
       padding: 16px 18px; margin-bottom: 22px;
     }
-    .snapshot p { font-size: 13px; color: var(--muted); }
-    .nav-chips {
-      display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px;
+    .snapshot-cta {
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+      text-decoration: none; color: inherit;
     }
-    .nav-chips a {
-      text-decoration: none; background: #eef2f6; border: 1px solid var(--line);
-      border-radius: 2px; padding: 6px 11px; color: var(--link);
-      font-size: 12px; font-weight: 700; letter-spacing: 0.02em;
+    .snapshot-cta:hover .snapshot-title,
+    .snapshot-cta:focus-visible .snapshot-title { color: var(--link); }
+    .snapshot-cta:focus-visible { outline: 2px solid rgba(26,102,179,0.25); outline-offset: 2px; }
+    .snapshot-title {
+      font-size: 17px; font-weight: 700; color: var(--btg); line-height: 1.3;
     }
-    .nav-chips a:hover, .nav-chips a:focus-visible {
-      background: #e3ebf5; outline: none;
+    .snapshot-arrow {
+      flex-shrink: 0; font-size: 14px; font-weight: 700; color: var(--link); white-space: nowrap;
     }
 
     .cat-grid {
@@ -136,7 +137,7 @@
       <div class="hero-row">
         <div>
           <h1>ETFs — Distribuição Renda Variável</h1>
-          <p class="lede">Prateleira de ETFs de Renda Fixa · BTG Asset · escolha um card para ver os ETFs</p>
+          <p class="lede">Prateleira de ETFs de Renda Fixa · BTG Asset</p>
         </div>
         <div class="badge">Uso interno</div>
       </div>
@@ -145,10 +146,10 @@
 
   <main class="page">
     <section class="snapshot">
-      <p>ETFs de renda fixa da BTG Asset separados por tipo. Clique no card para abrir a lista de tickers.</p>
-      <nav class="nav-chips" aria-label="Ferramentas" style="margin-top:14px">
-        <a href="./calculadora/">Calculadora RF · ETF × CDB × Fundo →</a>
-      </nav>
+      <a class="snapshot-cta" href="./calculadora/">
+        <strong class="snapshot-title">Calculadora ETFs x Produtos de Renda Fixa</strong>
+        <span class="snapshot-arrow">Abrir →</span>
+      </a>
     </section>
 
     <div class="cat-grid" id="catGrid">
