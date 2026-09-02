@@ -271,6 +271,9 @@
     <details class="sets" open>
       <summary>Custos do ETF (corretagem / emolumentos / IR fixo)</summary>
       <div class="inner">
+        <p class="note" style="margin-bottom:12px;font-size:13px;color:var(--muted)">
+          Nota: Corretagem em % do volume financeiro. Emolumentos = 0,030% (B3 para PF)
+        </p>
         <div class="grid-4">
           <label>Corretagem compra (%)
             <input id="corrCompra" type="number" step="0.001" value="0" />
@@ -280,9 +283,9 @@
             <input id="corrVenda" type="number" step="0.001" value="0.1" />
             <span class="hint">0,1 = 0,10%</span>
           </label>
-          <label>Emolumentos B3 ida+volta (%)
-            <input id="emol" type="number" step="0.001" value="0.06" />
-            <span class="hint">Default 2 × 0,03%</span>
+          <label>Emolumentos B3 (%)
+            <input id="emol" type="number" step="0.001" value="0.03" />
+            <span class="hint">Default 0,030% (B3 PF)</span>
           </label>
           <label>IR ETF fixo (%)
             <input id="irEtf" type="number" step="0.1" value="15" />
