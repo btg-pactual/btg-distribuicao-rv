@@ -147,7 +147,7 @@ h1 span{color:var(--brand)}
 .tooltip.on{opacity:1}
 .tooltip .t-title{font-weight:600;margin-bottom:6px;opacity:.85;font-size:11px}
 .tooltip .row{display:flex;justify-content:space-between;gap:16px;margin-top:3px}
-.zones{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+.zones{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:12px}
 .zone{border:1px solid var(--line);border-radius:8px;padding:10px;background:var(--bg)}
 .zone strong{display:block;font-size:12px;color:var(--brand);margin-bottom:4px}
 .zone p{font-size:11px;color:var(--muted);line-height:1.4}
@@ -167,8 +167,9 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
 .speech-box p{font-size:14px;color:var(--ink);max-width:70em}
 .footer{margin-top:28px;font-size:11px;color:var(--muted);text-align:center;line-height:1.55}
 .footer-alert{margin-top:10px;text-align:center;font-size:11px;color:var(--btg);font-weight:700}
-@media (max-width:1100px){.main{grid-template-columns:1fr}.highlights{grid-template-columns:1fr 1fr}.zones{grid-template-columns:1fr}}
-@media (max-width:640px){.page{padding:16px 14px 40px}.topbar{flex-direction:column}.meta-pills{justify-content:flex-start}.highlights{grid-template-columns:1fr}}
+@media (max-width:1100px){.main{grid-template-columns:1fr}.highlights{grid-template-columns:1fr 1fr}}
+@media (max-width:640px){.page{padding:16px 14px 40px}.topbar{flex-direction:column}.meta-pills{justify-content:flex-start}.highlights{grid-template-columns:1fr}.zones{grid-template-columns:1fr}}
+@media (min-width:1101px){.mobile-sim{display:none}}
 """
 
 
@@ -377,7 +378,7 @@ def op_page(cfg: dict) -> str:
 </script>
 </body>
 </html>
-""".replace("aside class=\"panel panel-sim\">", "<aside class=\"panel panel-sim\">")
+"""
 
 
 def make_soc(t, fixing, strike, ko, bid):
