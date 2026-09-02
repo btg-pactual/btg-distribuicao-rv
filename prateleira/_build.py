@@ -31,7 +31,9 @@ def slugify(*parts: str) -> str:
 
 def copy_pdf() -> bool:
     downloads = Path(r"C:\Users\PIMENTPA\Downloads")
-    cands = list(downloads.glob("Material Prateleira*.pdf"))
+    cands = [p for p in downloads.glob("Material Prateleira*.pdf") if "31082026" in p.name]
+    if not cands:
+        cands = list(downloads.glob("Material Prateleira*.pdf"))
     if not cands:
         return False
     dest = ROOT / PDF_NAME
