@@ -384,7 +384,7 @@
       </div>
       <div class="chart-wrap">
         <div class="chart-title">Rendimento líquido por prazo</div>
-        <p class="chart-hint">O ponto maior e a linha tracejada marcam o melhor produto em cada prazo. Passe o mouse para ver o ranking.</p>
+        <p class="chart-hint">O ponto maior marca o produto vencedor em cada prazo. Passe o mouse para ver o ranking completo.</p>
         <div class="chart-box">
           <canvas id="sensChart" aria-label="Gráfico de rendimento líquido por prazo"></canvas>
         </div>
@@ -798,39 +798,25 @@
         backgroundColor: ps.borderColor,
         borderWidth: 2,
         tension: 0.25,
-        pointHoverRadius: 7,
-        pointBorderColor: "#ffffff",
+        pointHoverRadius: 8,
+        pointBorderColor: ps.data.map(function (_, i) {
+          return winnerIdx[i] === di ? "#0b1f3a" : "#ffffff";
+        }),
         pointBackgroundColor: ps.data.map(function (_, i) {
           return winnerIdx[i] === di ? ps.borderColor : "#ffffff";
         }),
         pointBorderWidth: ps.data.map(function (_, i) {
-          return winnerIdx[i] === di ? 2 : 1.5;
+          return winnerIdx[i] === di ? 2.5 : 1.5;
         }),
         pointRadius: ps.data.map(function (_, i) {
           var isWin = winnerIdx[i] === di;
           var isCur = i === idxAtual;
-          if (isWin && isCur) return 8;
-          if (isWin) return 6.5;
+          if (isWin && isCur) return 9;
+          if (isWin) return 7;
           if (isCur) return 4;
           return 2.5;
-        }),
-        order: 2
+        })
       };
-    });
-
-    datasets.push({
-      label: "Melhor opção",
-      data: winnerIdx.map(function (di, i) { return productSets[di].data[i]; }),
-      borderColor: "#0b1f3a",
-      backgroundColor: "#0b1f3a",
-      borderWidth: 2.5,
-      borderDash: [7, 5],
-      tension: 0.2,
-      pointRadius: 0,
-      pointHoverRadius: 0,
-      pointStyle: "line",
-      order: 1,
-      _isWinnerLine: true
     });
 
     var winnerNames = winnerIdx.map(function (di) { return productSets[di].label; });
@@ -858,35 +844,12 @@
               usePointStyle: true,
               pointStyle: "circle",
               color: "#0b1f3a",
-              font: { size: 12, weight: "600" },
-              generateLabels: function (chart) {
-                return chart.data.datasets.map(function (ds, i) {
-                  var meta = chart.getDatasetMeta(i);
-                  var isWin = !!ds._isWinnerLine;
-                  return {
-                    text: ds.label,
-                    fillStyle: ds.borderColor,
-                    strokeStyle: ds.borderColor,
-                    fontColor: "#0b1f3a",
-                    lineWidth: isWin ? 2.5 : 0,
-                    lineDash: isWin ? [4, 3] : undefined,
-                    pointStyle: isWin ? "line" : "circle",
-                    hidden: meta.hidden,
-                    datasetIndex: i,
-                    index: i
-                  };
-                });
-              }
+              font: { size: 12, weight: "600" }
             }
           },
           tooltip: {
             itemSort: function (a, b) {
-              if (a.dataset._isWinnerLine) return 1;
-              if (b.dataset._isWinnerLine) return -1;
               return b.parsed.y - a.parsed.y;
-            },
-            filter: function (item) {
-              return !item.dataset._isWinnerLine;
             },
             callbacks: {
               title: function (items) {
@@ -901,7 +864,7 @@
                 var siblings = [];
                 var chart = ctx.chart;
                 chart.data.datasets.forEach(function (ds, di) {
-                  if (ds._isWinnerLine || ds.hidden) return;
+                  if (ds.hidden) return;
                   var meta = chart.getDatasetMeta(di);
                   if (meta.hidden) return;
                   siblings.push({ label: ds.label, y: ds.data[ctx.dataIndex], di: di });
@@ -919,7 +882,6 @@
                 var best = -Infinity;
                 var bestDi = -1;
                 chart.data.datasets.forEach(function (ds, di) {
-                  if (ds._isWinnerLine) return;
                   var meta = chart.getDatasetMeta(di);
                   if (meta.hidden) return;
                   if (ds.data[ctx.dataIndex] > best) {
