@@ -262,7 +262,7 @@ def op_page(cfg: dict) -> str:
   <input type="range" id="spotSlider" min="{cfg.get('x_min', -50)}" max="{cfg.get('x_max', 80)}" step="0.5" value="0"/>
   <div class="sim-cards">
     <div class="sim-card"><div class="lbl">Ativo</div><div class="val" id="assetVal">0,0%</div></div>
-    <div class="sim-card"><div class="lbl">Put (nocional)</div><div class="val" id="structVal">0,0%</div></div>
+    <div class="sim-card"><div class="lbl">{cfg.get('struct_lbl', 'Estrutura')}</div><div class="val" id="structVal">0,0%</div></div>
     {cfg.get('sim_extra_html', '')}
   </div>
   <div class="regime" id="regimeText">{cfg['regime0']}</div>
@@ -371,7 +371,7 @@ def op_page(cfg: dict) -> str:
     document.getElementById('hoverAsset').setAttribute('cy',yToSvg(Math.max(Y_MIN,Math.min(Y_MAX,x))));
     document.getElementById('hoverAsset').setAttribute('opacity','1');
     var tip=document.getElementById('tooltip');
-    tip.innerHTML='<div class="t-title">Spot '+fmtPct(x)+'</div><div class="row"><span>Ativo</span><span>'+fmtPct(x)+'</span></div><div class="row"><span>Put (nocional)</span><span>'+fmtPct(ys)+'</span></div>'+(typeof COST==='number' && COST!==0 ? '<div class="row"><span>Sobre o prêmio</span><span>'+fmtPct((ys/COST)*100,0)+'</span></div>' : '');
+    tip.innerHTML='<div class="t-title">Spot '+fmtPct(x)+'</div><div class="row"><span>Ativo</span><span>'+fmtPct(x)+'</span></div><div class="row"><span>{cfg.get('struct_lbl', 'Estrutura')}</span><span>'+fmtPct(ys)+'</span></div>'+(typeof COST==='number' && COST!==0 ? '<div class="row"><span>Sobre o prêmio</span><span>'+fmtPct((ys/COST)*100,0)+'</span></div>' : '');
     tip.className='tooltip on';
     tip.style.left=px+'px'; tip.style.top=yToSvg(ys)+'px';
   }}
@@ -684,6 +684,7 @@ def make_call_ko():
             f"</div>"
         ),
         "matrix_html": matrix_html,
+        "struct_lbl": "Call (nocional)",
         "js_const": f"var KO={ko}, REB={rebate}, COST={cost};",
         "js_fn": "if (x >= KO) return REB - COST; return Math.max(x, 0) - COST;",
         "js_regime": (
@@ -786,6 +787,7 @@ def make_put_ko():
             "</div>"
         ),
         "matrix_html": matrix_html,
+        "struct_lbl": "Put (nocional)",
         "js_const": f"var KO={ko}, REB={rebate}, COST={cost};",
         "js_fn": "if (x <= KO) return REB - COST; return Math.max(-x, 0) - COST;",
         "js_regime": (
