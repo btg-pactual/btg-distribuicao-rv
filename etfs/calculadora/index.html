@@ -162,9 +162,12 @@
     }
     .chart-wrap .chart-title {
       font-size: 12px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase;
-      color: var(--btg-blue); margin-bottom: 10px;
+      color: var(--btg-blue); margin-bottom: 6px;
     }
-    .chart-wrap .chart-box { position: relative; height: 320px; width: 100%; }
+    .chart-wrap .chart-hint {
+      font-size: 12px; color: var(--muted); margin-bottom: 12px; line-height: 1.4;
+    }
+    .chart-wrap .chart-box { position: relative; height: 360px; width: 100%; }
     @media (max-width: 640px) {
       .hero { padding: 28px 16px 32px; }
       .page { padding: 20px 16px 48px; }
@@ -381,6 +384,7 @@
       </div>
       <div class="chart-wrap">
         <div class="chart-title">Rendimento líquido por prazo</div>
+        <p class="chart-hint">Pontos grandes = vencedor no prazo · linha tracejada = melhor opção · tooltip ordenado do 1º ao 4º</p>
         <div class="chart-box">
           <canvas id="sensChart" aria-label="Gráfico de rendimento líquido por prazo"></canvas>
         </div>
@@ -742,58 +746,99 @@
   function renderSensChart(etfName, series, prazoAtual) {
     if (typeof Chart === "undefined") return;
     var labels = SENS_PRAZOS.map(String);
-    var datasets = [
+    var productSets = [
       {
+        key: "compromissada",
         label: "Compromissada",
         data: series.compromissada,
         borderColor: "#6b7c8f",
-        backgroundColor: "rgba(107,124,143,0.12)",
-        borderWidth: 2,
-        tension: 0.25,
-        pointHoverRadius: 5
+        backgroundColor: "rgba(107,124,143,0.12)"
       },
       {
+        key: "cdb",
         label: "CDB",
         data: series.cdb,
         borderColor: "#1a66b3",
-        backgroundColor: "rgba(26,102,179,0.12)",
-        borderWidth: 2,
-        tension: 0.25,
-        pointHoverRadius: 5
+        backgroundColor: "rgba(26,102,179,0.12)"
       },
       {
+        key: "etf",
         label: etfName || "ETF",
         data: series.etf,
         borderColor: "#1f6b4a",
-        backgroundColor: "rgba(31,107,74,0.12)",
-        borderWidth: 2.5,
-        tension: 0.25,
-        pointHoverRadius: 5
+        backgroundColor: "rgba(31,107,74,0.12)"
       },
       {
+        key: "fundo",
         label: "Fundo",
         data: series.fundo,
         borderColor: "#9a6b1f",
-        backgroundColor: "rgba(154,107,31,0.12)",
-        borderWidth: 2,
-        tension: 0.25,
-        pointHoverRadius: 5
+        backgroundColor: "rgba(154,107,31,0.12)"
       }
     ];
 
-    var idxAtual = SENS_PRAZOS.indexOf(prazoAtual);
-    datasets.forEach(function (ds) {
-      ds.pointBackgroundColor = ds.data.map(function (_, i) {
-        return i === idxAtual ? "#0b1f3a" : ds.borderColor;
+    var winnerIdx = series.compromissada.map(function (_, i) {
+      var best = 0;
+      var bestVal = -Infinity;
+      productSets.forEach(function (ds, di) {
+        if (ds.data[i] > bestVal) {
+          bestVal = ds.data[i];
+          best = di;
+        }
       });
-      ds.pointRadius = ds.data.map(function (_, i) {
-        return i === idxAtual ? 5 : 3;
-      });
+      return best;
     });
+
+    var idxAtual = SENS_PRAZOS.indexOf(prazoAtual);
+    var datasets = productSets.map(function (ps, di) {
+      return {
+        label: ps.label,
+        data: ps.data,
+        borderColor: ps.borderColor,
+        backgroundColor: ps.backgroundColor,
+        borderWidth: 2,
+        tension: 0.25,
+        pointHoverRadius: 7,
+        pointBorderColor: "#ffffff",
+        pointBackgroundColor: ps.data.map(function (_, i) {
+          return winnerIdx[i] === di ? ps.borderColor : "#ffffff";
+        }),
+        pointBorderWidth: ps.data.map(function (_, i) {
+          return winnerIdx[i] === di ? 2 : 1.5;
+        }),
+        pointRadius: ps.data.map(function (_, i) {
+          var isWin = winnerIdx[i] === di;
+          var isCur = i === idxAtual;
+          if (isWin && isCur) return 8;
+          if (isWin) return 6.5;
+          if (isCur) return 4;
+          return 2.5;
+        }),
+        order: 2
+      };
+    });
+
+    // Envelope connecting winners — visual cue of best product path
+    datasets.push({
+      label: "Melhor opção",
+      data: winnerIdx.map(function (di, i) { return productSets[di].data[i]; }),
+      borderColor: "#0b1f3a",
+      backgroundColor: "transparent",
+      borderWidth: 2.5,
+      borderDash: [7, 5],
+      tension: 0.2,
+      pointRadius: 0,
+      pointHoverRadius: 0,
+      order: 1,
+      _isWinnerLine: true
+    });
+
+    var winnerNames = winnerIdx.map(function (di) { return productSets[di].label; });
 
     if (sensChart) {
       sensChart.data.labels = labels;
       sensChart.data.datasets = datasets;
+      sensChart.$winnerNames = winnerNames;
       sensChart.update();
       return;
     }
@@ -814,16 +859,78 @@
               usePointStyle: true,
               pointStyle: "circle",
               color: "#0b1f3a",
-              font: { size: 12, weight: "600" }
+              font: { size: 12, weight: "600" },
+              filter: function (item) {
+                // keep Melhor opção in legend
+                return true;
+              },
+              generateLabels: function (chart) {
+                var items = Chart.defaults.plugins.legend.labels.generateLabels(chart);
+                items.forEach(function (it) {
+                  if (it.text === "Melhor opção") {
+                    it.lineDash = [4, 3];
+                    it.pointStyle = "line";
+                  }
+                });
+                return items;
+              }
             }
           },
           tooltip: {
+            itemSort: function (a, b) {
+              if (a.dataset._isWinnerLine) return 1;
+              if (b.dataset._isWinnerLine) return -1;
+              return b.parsed.y - a.parsed.y;
+            },
+            filter: function (item) {
+              return !item.dataset._isWinnerLine;
+            },
             callbacks: {
               title: function (items) {
-                return items[0].label + " DUs";
+                if (!items.length) return "";
+                var i = items[0].dataIndex;
+                var win = (sensChart && sensChart.$winnerNames)
+                  ? sensChart.$winnerNames[i]
+                  : items.slice().sort(function (a, b) { return b.parsed.y - a.parsed.y; })[0].dataset.label;
+                return items[0].label + " DUs  ·  Vencedor: " + win;
               },
               label: function (ctx) {
-                return " " + ctx.dataset.label + ": " + money(ctx.parsed.y);
+                var siblings = [];
+                var chart = ctx.chart;
+                chart.data.datasets.forEach(function (ds, di) {
+                  if (ds._isWinnerLine || ds.hidden) return;
+                  var meta = chart.getDatasetMeta(di);
+                  if (meta.hidden) return;
+                  siblings.push({ label: ds.label, y: ds.data[ctx.dataIndex], di: di });
+                });
+                siblings.sort(function (a, b) { return b.y - a.y; });
+                var rank = 0;
+                for (var r = 0; r < siblings.length; r++) {
+                  if (siblings[r].di === ctx.datasetIndex) { rank = r; break; }
+                }
+                var prefix = rank === 0 ? "★ 1º  " : (rank + 1) + "º  ";
+                return prefix + ctx.dataset.label + ": " + money(ctx.parsed.y);
+              },
+              labelTextColor: function (ctx) {
+                var chart = ctx.chart;
+                var best = -Infinity;
+                var bestDi = -1;
+                chart.data.datasets.forEach(function (ds, di) {
+                  if (ds._isWinnerLine) return;
+                  var meta = chart.getDatasetMeta(di);
+                  if (meta.hidden) return;
+                  if (ds.data[ctx.dataIndex] > best) {
+                    best = ds.data[ctx.dataIndex];
+                    bestDi = di;
+                  }
+                });
+                return ctx.datasetIndex === bestDi ? "#7dffa3" : "#ffffff";
+              },
+              afterBody: function (items) {
+                if (items.length < 2) return [];
+                var sorted = items.slice().sort(function (a, b) { return b.parsed.y - a.parsed.y; });
+                var gap = sorted[0].parsed.y - sorted[1].parsed.y;
+                return ["", "Vantagem vs 2º: " + money(gap)];
               }
             }
           }
@@ -845,6 +952,7 @@
         }
       }
     });
+    sensChart.$winnerNames = winnerNames;
   }
 
   buildIrTable();
