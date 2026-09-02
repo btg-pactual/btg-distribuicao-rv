@@ -61,6 +61,11 @@
       display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 14px; margin-bottom: 8px;
     }
+    .cat-grid[hidden],
+    .cat-section[hidden],
+    .snapshot[hidden] {
+      display: none !important;
+    }
     .cat-card {
       appearance: none; border: 1px solid var(--line); background: var(--card);
       border-radius: 6px; overflow: hidden; text-align: left; cursor: pointer; padding: 0;
@@ -84,11 +89,11 @@
 
     .cat-section-head {
       display: flex; justify-content: space-between; align-items: center; gap: 12px;
-      margin: 8px 0 14px;
+      margin: 0 0 16px; padding-bottom: 12px; border-bottom: 1px solid var(--line);
     }
     .cat-section h2 {
-      font-size: 12px; font-weight: 700; letter-spacing: 0.08em;
-      text-transform: uppercase; color: var(--btg-blue); margin: 0;
+      font-size: 18px; font-weight: 700; letter-spacing: -0.01em;
+      text-transform: none; color: var(--btg); margin: 0;
     }
     .cat-back {
       appearance: none; border: 1px solid var(--line); background: #fff; color: var(--link);
@@ -431,24 +436,34 @@
       var cards = Array.prototype.slice.call(document.querySelectorAll(".cat-card"));
       var sections = Array.prototype.slice.call(document.querySelectorAll(".cat-section"));
       var snapshot = document.querySelector(".snapshot");
+      var lede = document.querySelector(".lede");
+      var defaultLede = lede ? lede.textContent : "";
 
       function showGrid() {
+        document.body.classList.remove("view-detail");
         grid.hidden = false;
         if (snapshot) snapshot.hidden = false;
         sections.forEach(function (s) { s.hidden = true; });
         cards.forEach(function (c) { c.classList.remove("active"); });
-        history.replaceState(null, "", location.pathname);
+        if (lede) lede.textContent = defaultLede;
+        history.replaceState(null, "", location.pathname + location.search);
+        window.scrollTo({ top: 0, behavior: "smooth" });
       }
 
       function openCategory(id) {
         var section = document.getElementById(id);
         if (!section) return;
+        var card = cards.find(function (c) { return c.getAttribute("data-target") === id; });
+        var title = card ? card.querySelector(".cat-title").textContent : id;
+
+        document.body.classList.add("view-detail");
         grid.hidden = true;
         if (snapshot) snapshot.hidden = true;
         sections.forEach(function (s) { s.hidden = s !== section; });
         cards.forEach(function (c) {
           c.classList.toggle("active", c.getAttribute("data-target") === id);
         });
+        if (lede) lede.textContent = "Categoria · " + title;
         history.replaceState(null, "", "#" + id);
         window.scrollTo({ top: 0, behavior: "smooth" });
       }
