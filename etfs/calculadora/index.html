@@ -795,7 +795,7 @@
         label: ps.label,
         data: ps.data,
         borderColor: ps.borderColor,
-        backgroundColor: ps.backgroundColor,
+        backgroundColor: ps.borderColor,
         borderWidth: 2,
         tension: 0.25,
         pointHoverRadius: 7,
@@ -818,17 +818,17 @@
       };
     });
 
-    // Envelope connecting winners — visual cue of best product path
     datasets.push({
       label: "Melhor opção",
       data: winnerIdx.map(function (di, i) { return productSets[di].data[i]; }),
       borderColor: "#0b1f3a",
-      backgroundColor: "transparent",
+      backgroundColor: "#0b1f3a",
       borderWidth: 2.5,
       borderDash: [7, 5],
       tension: 0.2,
       pointRadius: 0,
       pointHoverRadius: 0,
+      pointStyle: "line",
       order: 1,
       _isWinnerLine: true
     });
@@ -836,11 +836,8 @@
     var winnerNames = winnerIdx.map(function (di) { return productSets[di].label; });
 
     if (sensChart) {
-      sensChart.data.labels = labels;
-      sensChart.data.datasets = datasets;
-      sensChart.$winnerNames = winnerNames;
-      sensChart.update();
-      return;
+      sensChart.destroy();
+      sensChart = null;
     }
 
     sensChart = new Chart($("sensChart"), {
@@ -853,26 +850,32 @@
         plugins: {
           legend: {
             position: "bottom",
+            align: "center",
             labels: {
-              boxWidth: 12,
-              boxHeight: 12,
+              boxWidth: 10,
+              boxHeight: 10,
+              padding: 14,
               usePointStyle: true,
               pointStyle: "circle",
               color: "#0b1f3a",
               font: { size: 12, weight: "600" },
-              filter: function (item) {
-                // keep Melhor opção in legend
-                return true;
-              },
               generateLabels: function (chart) {
-                var items = Chart.defaults.plugins.legend.labels.generateLabels(chart);
-                items.forEach(function (it) {
-                  if (it.text === "Melhor opção") {
-                    it.lineDash = [4, 3];
-                    it.pointStyle = "line";
-                  }
+                return chart.data.datasets.map(function (ds, i) {
+                  var meta = chart.getDatasetMeta(i);
+                  var isWin = !!ds._isWinnerLine;
+                  return {
+                    text: ds.label,
+                    fillStyle: ds.borderColor,
+                    strokeStyle: ds.borderColor,
+                    fontColor: "#0b1f3a",
+                    lineWidth: isWin ? 2.5 : 0,
+                    lineDash: isWin ? [4, 3] : undefined,
+                    pointStyle: isWin ? "line" : "circle",
+                    hidden: meta.hidden,
+                    datasetIndex: i,
+                    index: i
+                  };
                 });
-                return items;
               }
             }
           },
