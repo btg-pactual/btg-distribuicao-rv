@@ -874,6 +874,7 @@ def make_ot():
             ("Como encaixa", "One touch 120% · rebate 5% · preço 0,75%."),
             ("Fechamento", "Material de uso interno — condições no DIE."),
         ],
+        "struct_lbl": "One Touch (nocional)",
         "js_const": f"var B={barrier}, REB={rebate}, COST={cost};",
         "js_fn": "if (x >= B) return REB - COST; return -COST;",
         "js_regime": "if (x >= B) return 'One touch: rebate líquido.'; return 'Não tocou: −preço.';",
