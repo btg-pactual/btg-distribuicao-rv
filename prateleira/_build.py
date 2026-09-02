@@ -675,13 +675,78 @@ def make_ot():
     }
 
 
+SECTION_META = {
+    "SOC": {
+        "id": "soc",
+        "blurb": "Stock or Coupon — cupom se a barreira não for atingida.",
+        "color": "#0d6e6e",
+    },
+    "Smart Hedge": {
+        "id": "smart-hedge",
+        "blurb": "Piso na queda, 1:1 até a barreira KI.",
+        "color": "#007e33",
+    },
+    "Aceleradora Dinâmica": {
+        "id": "aceleradora",
+        "blurb": "Upside até a barreira com proteção na queda moderada.",
+        "color": "#5a4a8a",
+    },
+    "Triplo Retorno KO": {
+        "id": "triplo",
+        "blurb": "3× na alta, ganho na queda moderada, teto no KO.",
+        "color": "#820ad1",
+    },
+    "Call KO com Rebate": {
+        "id": "call-ko",
+        "blurb": "Call up-and-out com rebate se bater a barreira.",
+        "color": "#c0392b",
+    },
+    "Put KO com Rebate": {
+        "id": "put-ko",
+        "blurb": "Put down-and-out com rebate se bater a barreira.",
+        "color": "#2f6b5a",
+    },
+    "TWIP": {
+        "id": "twip",
+        "blurb": "Twin Win Protected — |x| entre barreiras, 0% fora.",
+        "color": "#b8860b",
+    },
+    "One Touch de Alta": {
+        "id": "one-touch",
+        "blurb": "Paga rebate se tocar a barreira de alta.",
+        "color": "#1e4d7b",
+    },
+}
+
+
 def hub_html(sections: list[tuple[str, list[tuple[str, dict]]]]) -> str:
-    blocks = []
+    cat_cards = []
+    sections_html = []
+
     for title, items in sections:
-        cards = []
+        meta = SECTION_META.get(title, {"id": slugify(title), "blurb": title, "color": "#1e4d7b"})
+        sid = meta["id"]
+        color = meta["color"]
+        n = len(items)
+        tickers = ", ".join(dict.fromkeys(cfg["ticker"] for _, cfg in items))
+        cat_cards.append(
+            f"""
+<button type="button" class="cat-card" data-target="{sid}" style="--cat:{color}">
+  <span class="cat-bar"></span>
+  <span class="cat-body">
+    <span class="cat-title">{title}</span>
+    <span class="cat-count">{n} operaç{'ão' if n == 1 else 'ões'}</span>
+    <span class="cat-blurb">{meta['blurb']}</span>
+    <span class="cat-tickers">{tickers}</span>
+  </span>
+</button>"""
+        )
+
+        ops = []
         for slug, cfg in items:
             pills = " ".join(f'<span class="pill">{k}: {v}</span>' for k, v in cfg["pills"])
-            cards.append(f"""
+            ops.append(
+                f"""
 <li class="op-block">
   <div class="op-bar" style="background:{cfg['brand']}"></div>
   <a class="op" href="./ops/{slug}/index.html">
@@ -690,9 +755,21 @@ def hub_html(sections: list[tuple[str, list[tuple[str, dict]]]]) -> str:
     <div class="op-meta">{pills}</div>
     <div class="op-cta">Abrir material →</div>
   </a>
-</li>""")
-        blocks.append(f"<h2>{title}</h2><ul class=\"ops\">{''.join(cards)}</ul>")
-    body = "\n".join(blocks)
+</li>"""
+            )
+        sections_html.append(
+            f"""
+<section class="cat-section" id="{sid}" hidden>
+  <div class="cat-section-head">
+    <h2>{title}</h2>
+    <button type="button" class="cat-back" data-back>← Voltar aos cards</button>
+  </div>
+  <ul class="ops">{''.join(ops)}</ul>
+</section>"""
+        )
+
+    cats = "\n".join(cat_cards)
+    body = "\n".join(sections_html)
     return f"""<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -715,8 +792,20 @@ h1{{font-size:clamp(28px,4.5vw,40px);font-weight:700;letter-spacing:-.02em;line-
 .pdf-box a{{color:var(--link);font-weight:700;text-decoration:none}}
 .pdf-box a:hover{{text-decoration:underline}}
 .pdf-box p{{font-size:13px;color:var(--muted);margin-top:6px}}
-h2{{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--btg-blue);margin:28px 0 14px}}
-h2:first-of-type{{margin-top:0}}
+.cat-grid{{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-bottom:8px}}
+.cat-card{{appearance:none;border:1px solid var(--line);background:var(--card);border-radius:6px;overflow:hidden;text-align:left;cursor:pointer;padding:0;display:flex;flex-direction:column;transition:transform .12s ease,box-shadow .12s ease,border-color .12s}}
+.cat-card:hover,.cat-card:focus-visible{{transform:translateY(-2px);box-shadow:0 8px 20px rgba(11,31,58,.08);border-color:#b8c6d6;outline:none}}
+.cat-card.active{{border-color:var(--cat);box-shadow:0 0 0 2px color-mix(in srgb,var(--cat) 28%,transparent)}}
+.cat-bar{{display:block;height:6px;background:var(--cat)}}
+.cat-body{{display:flex;flex-direction:column;gap:6px;padding:16px 18px 18px}}
+.cat-title{{font-size:17px;font-weight:700;color:var(--btg)}}
+.cat-count{{font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--cat)}}
+.cat-blurb{{font-size:13px;color:var(--muted);line-height:1.4}}
+.cat-tickers{{font-size:11px;color:#7a8796;line-height:1.35;margin-top:2px}}
+.cat-section-head{{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:8px 0 14px}}
+.cat-section h2{{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--btg-blue);margin:0}}
+.cat-back{{appearance:none;border:1px solid var(--line);background:#fff;color:var(--link);font-size:12px;font-weight:700;padding:8px 12px;border-radius:4px;cursor:pointer}}
+.cat-back:hover{{background:#f5f8fc}}
 .ops{{list-style:none;display:flex;flex-direction:column;gap:16px}}
 .op-block{{background:var(--card);border:1px solid var(--line);border-radius:4px;overflow:hidden}}
 .op-bar{{height:6px}}
@@ -731,7 +820,8 @@ h2:first-of-type{{margin-top:0}}
 .op-cta{{margin-top:12px;font-size:12px;font-weight:700;color:var(--link)}}
 .footer{{margin-top:32px;padding-top:16px;border-top:1px solid var(--line);font-size:11px;color:var(--muted);text-align:center;line-height:1.55}}
 .footer strong{{display:block;margin-top:10px;color:var(--btg)}}
-@media (max-width:640px){{.hero{{padding:28px 16px 32px}}.page{{padding:20px 16px 48px}}.hero-row{{flex-direction:column;align-items:flex-start}}}}
+@media (max-width:720px){{.cat-grid{{grid-template-columns:1fr}}}}
+@media (max-width:640px){{.hero{{padding:28px 16px 32px}}.page{{padding:20px 16px 48px}}.hero-row{{flex-direction:column;align-items:flex-start}}.cat-section-head{{flex-direction:column;align-items:flex-start}}}}
 </style>
 </head>
 <body>
@@ -741,7 +831,7 @@ h2:first-of-type{{margin-top:0}}
     <div class="hero-row">
       <div>
         <h1>Prateleira Tática</h1>
-        <p class="lede">Distribuição Renda Variável</p>
+        <p class="lede">Distribuição Renda Variável · escolha um card para ver as operações</p>
       </div>
       <div class="badge">Uso interno</div>
     </div>
@@ -752,13 +842,47 @@ h2:first-of-type{{margin-top:0}}
     <a href="./{PDF_NAME}" target="_blank" rel="noopener noreferrer">Abrir material PDF da prateleira ↗</a>
     <p>Atualização semanal</p>
   </div>
+  <div class="cat-grid" id="catGrid">{cats}</div>
   {body}
   <p class="footer">Material ilustrativo para uso interno. Não constitui oferta, recomendação ou garantia de rentabilidade.
   <strong>MATERIAL DE USO INTERNO, NÃO ENVIAR AOS CLIENTES</strong></p>
 </main>
+<script>
+(function(){{
+  var grid=document.getElementById('catGrid');
+  var cards=[].slice.call(document.querySelectorAll('.cat-card'));
+  var sections=[].slice.call(document.querySelectorAll('.cat-section'));
+  function show(id){{
+    cards.forEach(function(c){{ c.classList.toggle('active', c.getAttribute('data-target')===id); }});
+    sections.forEach(function(s){{
+      var on=s.id===id;
+      if(on) s.removeAttribute('hidden'); else s.setAttribute('hidden','');
+    }});
+    if(id){{
+      grid.style.display='none';
+      var el=document.getElementById(id);
+      if(el) el.scrollIntoView({{behavior:'smooth',block:'start'}});
+      history.replaceState(null,'','#'+id);
+    }} else {{
+      grid.style.display='';
+      history.replaceState(null,'',location.pathname);
+      window.scrollTo({{top:0,behavior:'smooth'}});
+    }}
+  }}
+  cards.forEach(function(c){{
+    c.addEventListener('click',function(){{ show(c.getAttribute('data-target')); }});
+  }});
+  document.querySelectorAll('[data-back]').forEach(function(b){{
+    b.addEventListener('click',function(){{ show(null); }});
+  }});
+  var hash=(location.hash||'').replace('#','');
+  if(hash && document.getElementById(hash)) show(hash);
+}})();
+</script>
 </body>
 </html>
 """
+
 
 
 def patch_root_index():
