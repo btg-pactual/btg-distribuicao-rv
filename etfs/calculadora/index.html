@@ -70,18 +70,43 @@
       font-family: inherit;
     }
     input:focus, select:focus { outline: 2px solid rgba(26,102,179,0.25); border-color: var(--link); }
-    .check-row {
-      display: flex; align-items: center; gap: 8px; margin-top: 8px;
-      font-size: 13px; font-weight: 600; color: var(--btg-mid);
+    .subhead {
+      font-size: 12px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase;
+      color: var(--btg-blue); margin: 18px 0 10px;
     }
-    .check-row input { width: 16px; height: 16px; }
-    .pill-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+    .mode-toggle {
+      display: inline-flex; border: 1px solid var(--line); border-radius: 4px;
+      overflow: hidden; background: #fff; margin-bottom: 12px;
+    }
+    .mode-toggle label {
+      flex-direction: row; align-items: center; gap: 0; cursor: pointer;
+      font-size: 13px; font-weight: 700; color: var(--btg-mid);
+    }
+    .mode-toggle input { position: absolute; opacity: 0; pointer-events: none; }
+    .mode-toggle span {
+      display: block; padding: 9px 14px; border-right: 1px solid var(--line);
+      background: #fff; transition: background 0.12s, color 0.12s;
+    }
+    .mode-toggle label:last-child span { border-right: none; }
+    .mode-toggle input:checked + span {
+      background: var(--btg); color: #fff;
+    }
+    .mode-toggle label:focus-within span {
+      outline: 2px solid rgba(26,102,179,0.25); outline-offset: -2px;
+    }
+    .horizon-box {
+      border: 1px solid var(--line); border-radius: 4px; background: #f7f9fc;
+      padding: 14px 16px; margin-bottom: 4px;
+    }
+    .horizon-box[hidden] { display: none !important; }
+    .pill-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
     .pill {
       background: #eef2f6; border: 1px solid var(--line); border-radius: 2px;
       padding: 5px 10px; color: var(--btg-mid); font-size: 12px; font-weight: 600;
     }
     .pill.ok { background: #e8f5ef; color: var(--ok); border-color: #b7d9c8; }
     .pill.warn { background: #f8f1dd; color: var(--warn); border-color: #e2d3a2; }
+    .pill.strong { background: #e8eef6; color: var(--btg); border-color: #b8c6d6; }
     .winner {
       border: 1px solid #b7d9c8; background: #f3faf6; border-radius: 6px;
       padding: 16px 18px; margin-bottom: 14px;
@@ -154,36 +179,55 @@
     <h2>Parâmetros de entrada</h2>
     <section class="panel">
       <p class="note">Mesma lógica da planilha “Calculadora de ETF x outros produtos (renda fixa)”. Altere os campos e o ranking atualiza na hora.</p>
-      <div class="grid-4">
+      <div class="grid-3">
         <label>CDI anual (%)
           <input id="cdi" type="number" step="0.01" value="14" />
           <span class="hint">Ex.: 14 = 14% a.a.</span>
         </label>
         <label>Valor investido (R$)
-          <input id="valor" type="number" step="1000" value="2000000" />
-        </label>
-        <label>Horizonte (dias úteis)
-          <input id="horizonte" type="number" step="1" min="1" value="30" />
+          <input id="valor" type="number" step="1000" value="1000000" />
         </label>
         <label>Dias úteis no ano
           <input id="dusAno" type="number" step="1" value="252" />
         </label>
       </div>
-      <div class="grid-3" style="margin-top:12px">
-        <label>Data inicial
-          <input id="dataIni" type="date" value="2026-09-02" />
+
+      <div class="subhead">Horizonte</div>
+      <div class="mode-toggle" role="radiogroup" aria-label="Modo de horizonte">
+        <label>
+          <input type="radio" name="modoHorizonte" id="modoManual" value="manual" checked />
+          <span>Informar DUs</span>
         </label>
-        <label>Data final
-          <input id="dataFim" type="date" value="2027-09-02" />
-        </label>
-        <label>&nbsp;
-          <span class="check-row" style="margin-top:8px">
-            <input id="usarDatas" type="checkbox" checked />
-            Usar datas para calcular DUs
-          </span>
-          <span class="hint" id="dusCalcHint" style="margin-top:6px"></span>
+        <label>
+          <input type="radio" name="modoHorizonte" id="modoDatas" value="datas" />
+          <span>Calcular por datas</span>
         </label>
       </div>
+
+      <div class="horizon-box" id="boxManual">
+        <div class="grid-3">
+          <label>Horizonte (dias úteis)
+            <input id="horizonte" type="number" step="1" min="1" value="30" />
+            <span class="hint">Valor usado no cálculo</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="horizon-box" id="boxDatas" hidden>
+        <div class="grid-3">
+          <label>Data inicial
+            <input id="dataIni" type="date" value="2026-09-02" />
+          </label>
+          <label>Data final
+            <input id="dataFim" type="date" value="2027-09-02" />
+          </label>
+          <label>DUs calculados
+            <input id="dusCalcOut" type="text" readonly value="—" />
+            <span class="hint">Aprox. Excel · só leitura</span>
+          </label>
+        </div>
+      </div>
+
       <div class="pill-row" id="aliquotasPill"></div>
     </section>
 
@@ -453,11 +497,21 @@
     return Math.floor(diff / 7) * 5 + Math.min(diff % 7, 5);
   }
 
+  function usaDatas() {
+    return $("modoDatas").checked;
+  }
+
   function horizonteEfetivo() {
-    if ($("usarDatas").checked) {
+    if (usaDatas()) {
       return dusEntreDatas($("dataIni").value, $("dataFim").value);
     }
     return Number($("horizonte").value) || 0;
+  }
+
+  function syncHorizonMode() {
+    var datas = usaDatas();
+    $("boxManual").hidden = datas;
+    $("boxDatas").hidden = !datas;
   }
 
   function rendimentoBruto(valor, cdiAa, pctCdi, prazo, dusAno) {
@@ -550,17 +604,18 @@
   }
 
   function render() {
+    syncHorizonMode();
     var p = inputs();
     var dusHint = dusEntreDatas($("dataIni").value, $("dataFim").value);
-    $("dusCalcHint").textContent = "DUs pelas datas (aprox. Excel): " + dusHint;
-    $("horizonte").disabled = $("usarDatas").checked;
+    $("dusCalcOut").value = dusHint + " DUs";
 
     var res = runAll(p);
     var ranked = res.produtos.slice().sort(function (a, b) { return b.liquido - a.liquido; });
     var best = ranked[0];
+    var modoLabel = usaDatas() ? "por datas" : "manual";
 
     $("aliquotasPill").innerHTML =
-      '<span class="pill">Horizonte efetivo: <strong>' + res.prazo + " DUs</strong></span>" +
+      '<span class="pill strong">Horizonte em uso: <strong>' + res.prazo + " DUs</strong> (" + modoLabel + ")</span>" +
       '<span class="pill warn">IR regressivo: <strong>' + pct(res.irReg, 1) + "</strong></span>" +
       '<span class="pill">IOF CDB/Fundo: <strong>' + pct(res.iof, 1) + "</strong></span>" +
       '<span class="pill">IR ETF: <strong>' + pct(p.irEtf, 1) + "</strong></span>";
@@ -628,11 +683,14 @@
   buildIofTable();
 
   [
-    "cdi","valor","horizonte","dusAno","dataIni","dataFim","usarDatas",
+    "cdi","valor","horizonte","dusAno","dataIni","dataFim",
     "pctComp","pctCdb","pctEtf","pctFundo","nomeEtf",
     "corrCompra","corrVenda","emol","irEtf"
   ].forEach(function (id) {
     $(id).addEventListener("input", render);
+    $(id).addEventListener("change", render);
+  });
+  ["modoManual", "modoDatas"].forEach(function (id) {
     $(id).addEventListener("change", render);
   });
   document.querySelectorAll("[data-ir-ate],[data-ir-aliq],[data-iof]").forEach(function (el) {
