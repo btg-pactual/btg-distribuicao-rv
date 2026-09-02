@@ -44,6 +44,17 @@
       padding: 16px 18px; margin-bottom: 22px;
     }
     .snapshot p { font-size: 13px; color: var(--muted); }
+    .nav-chips {
+      display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px;
+    }
+    .nav-chips a {
+      text-decoration: none; background: #eef2f6; border: 1px solid var(--line);
+      border-radius: 2px; padding: 6px 11px; color: var(--link);
+      font-size: 12px; font-weight: 700; letter-spacing: 0.02em;
+    }
+    .nav-chips a:hover, .nav-chips a:focus-visible {
+      background: #e3ebf5; outline: none;
+    }
 
     .cat-grid {
       display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -135,6 +146,9 @@
   <main class="page">
     <section class="snapshot">
       <p>ETFs de renda fixa da BTG Asset separados por tipo. Clique no card para abrir a lista de tickers.</p>
+      <nav class="nav-chips" aria-label="Ferramentas" style="margin-top:14px">
+        <a href="./calculadora/">Calculadora RF · ETF × CDB × Fundo →</a>
+      </nav>
     </section>
 
     <div class="cat-grid" id="catGrid">

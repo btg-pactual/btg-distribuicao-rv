@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Calculadora RF — Distribuição Renda Variável | BTG Pactual</title>
+  <style>
+    :root {
+      --btg: #0b1f3a;
+      --btg-mid: #163a5f;
+      --btg-blue: #1e4d7b;
+      --link: #1a66b3;
+      --ink: #0b1f3a;
+      --muted: #5c6b7a;
+      --line: #d0d8e2;
+      --bg: #eef2f6;
+      --card: #ffffff;
+      --alert: #b42318;
+      --ok: #1f6b4a;
+      --warn: #8a6a1a;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: Segoe UI, -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif;
+      color: var(--ink); background: var(--bg); min-height: 100vh; line-height: 1.45;
+    }
+    .hero {
+      background: linear-gradient(135deg, var(--btg) 0%, var(--btg-mid) 55%, var(--btg-blue) 100%);
+      color: #fff; padding: 36px 24px 40px;
+    }
+    .hero-inner { max-width: 1100px; margin: 0 auto; }
+    .logo-btg {
+      display: inline-block; font-weight: 700; font-size: 12px; letter-spacing: 0.1em;
+      border: 1px solid rgba(255,255,255,0.35); padding: 7px 12px; border-radius: 2px; margin-bottom: 22px;
+    }
+    .hero-row { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; }
+    h1 { font-size: clamp(26px, 4.5vw, 38px); font-weight: 700; letter-spacing: -0.02em; line-height: 1.15; }
+    .lede { margin-top: 12px; font-size: 15px; color: rgba(255,255,255,0.82); max-width: 42em; }
+    .badge {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+      border: 1px solid rgba(255,255,255,0.35); padding: 8px 12px; border-radius: 2px; white-space: nowrap;
+    }
+    .page { max-width: 1100px; margin: 0 auto; padding: 28px 24px 56px; }
+    .top-nav { margin-bottom: 18px; }
+    .top-nav a {
+      color: var(--link); font-weight: 700; font-size: 13px; text-decoration: none;
+    }
+    .top-nav a:hover { text-decoration: underline; }
+    h2 {
+      font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--btg-blue); margin: 28px 0 12px;
+    }
+    h2:first-of-type { margin-top: 0; }
+    .panel {
+      background: var(--card); border: 1px solid var(--line); border-radius: 6px;
+      padding: 18px 20px; margin-bottom: 14px;
+    }
+    .panel p.note { font-size: 13px; color: var(--muted); margin-bottom: 14px; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    label {
+      display: flex; flex-direction: column; gap: 6px;
+      font-size: 12px; font-weight: 700; color: var(--btg-mid);
+    }
+    label span.hint { font-weight: 600; color: var(--muted); font-size: 11px; }
+    input[type="number"], input[type="date"], input[type="text"], select {
+      appearance: none; border: 1px solid var(--line); border-radius: 4px;
+      padding: 9px 11px; font-size: 14px; color: var(--ink); background: #fff;
+      font-family: inherit;
+    }
+    input:focus, select:focus { outline: 2px solid rgba(26,102,179,0.25); border-color: var(--link); }
+    .check-row {
+      display: flex; align-items: center; gap: 8px; margin-top: 8px;
+      font-size: 13px; font-weight: 600; color: var(--btg-mid);
+    }
+    .check-row input { width: 16px; height: 16px; }
+    .pill-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+    .pill {
+      background: #eef2f6; border: 1px solid var(--line); border-radius: 2px;
+      padding: 5px 10px; color: var(--btg-mid); font-size: 12px; font-weight: 600;
+    }
+    .pill.ok { background: #e8f5ef; color: var(--ok); border-color: #b7d9c8; }
+    .pill.warn { background: #f8f1dd; color: var(--warn); border-color: #e2d3a2; }
+    .winner {
+      border: 1px solid #b7d9c8; background: #f3faf6; border-radius: 6px;
+      padding: 16px 18px; margin-bottom: 14px;
+    }
+    .winner .kicker { font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ok); }
+    .winner .name { font-size: 22px; font-weight: 700; color: var(--btg); margin-top: 4px; }
+    .winner .meta { font-size: 14px; color: var(--muted); margin-top: 6px; }
+    table {
+      width: 100%; border-collapse: collapse; font-size: 13px; background: var(--card);
+      border: 1px solid var(--line); border-radius: 6px; overflow: hidden;
+    }
+    th, td { padding: 10px 12px; border-bottom: 1px solid var(--line); text-align: right; }
+    th:first-child, td:first-child, th.left, td.left { text-align: left; }
+    th {
+      background: #f5f8fc; font-size: 11px; letter-spacing: 0.04em; text-transform: uppercase;
+      color: var(--btg-blue); font-weight: 700;
+    }
+    tr:last-child td { border-bottom: none; }
+    tr.best td { background: #f3faf6; font-weight: 700; }
+    tr.current td { background: #fff8e6; }
+    .tiny-table input {
+      width: 100%; max-width: 90px; padding: 6px 8px; font-size: 13px; text-align: right;
+    }
+    details.sets {
+      background: var(--card); border: 1px solid var(--line); border-radius: 6px;
+      padding: 0; margin-bottom: 14px; overflow: hidden;
+    }
+    details.sets > summary {
+      cursor: pointer; list-style: none; padding: 14px 18px;
+      font-size: 13px; font-weight: 700; color: var(--btg);
+      background: #f7f9fc; border-bottom: 1px solid transparent;
+    }
+    details.sets[open] > summary { border-bottom-color: var(--line); }
+    details.sets > summary::-webkit-details-marker { display: none; }
+    details.sets .inner { padding: 16px 18px 18px; }
+    .footer {
+      margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--line);
+      font-size: 11px; color: var(--muted); text-align: center; line-height: 1.55;
+    }
+    .footer strong { display: block; margin-top: 10px; color: var(--alert); font-size: 14px; }
+    @media (max-width: 900px) {
+      .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 640px) {
+      .hero { padding: 28px 16px 32px; }
+      .page { padding: 20px 16px 48px; }
+      .hero-row { flex-direction: column; align-items: flex-start; }
+      .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+      .scroll-x { overflow-x: auto; }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="logo-btg">BTG PACTUAL</div>
+      <div class="hero-row">
+        <div>
+          <h1>Calculadora RF — Distribuição Renda Variável</h1>
+          <p class="lede">Compare Compromissada, CDB, ETF e Fundo · IOF, IR regressivo e custos abertos</p>
+        </div>
+        <div class="badge">Uso interno</div>
+      </div>
+    </div>
+  </header>
+
+  <main class="page">
+    <div class="top-nav"><a href="../">← Voltar à prateleira de ETFs</a></div>
+
+    <h2>Parâmetros de entrada</h2>
+    <section class="panel">
+      <p class="note">Mesma lógica da planilha “Calculadora de ETF x outros produtos (renda fixa)”. Altere os campos e o ranking atualiza na hora.</p>
+      <div class="grid-4">
+        <label>CDI anual (%)
+          <input id="cdi" type="number" step="0.01" value="14" />
+          <span class="hint">Ex.: 14 = 14% a.a.</span>
+        </label>
+        <label>Valor investido (R$)
+          <input id="valor" type="number" step="1000" value="2000000" />
+        </label>
+        <label>Horizonte (dias úteis)
+          <input id="horizonte" type="number" step="1" min="1" value="30" />
+        </label>
+        <label>Dias úteis no ano
+          <input id="dusAno" type="number" step="1" value="252" />
+        </label>
+      </div>
+      <div class="grid-3" style="margin-top:12px">
+        <label>Data inicial
+          <input id="dataIni" type="date" value="2026-09-02" />
+        </label>
+        <label>Data final
+          <input id="dataFim" type="date" value="2027-09-02" />
+        </label>
+        <label>&nbsp;
+          <span class="check-row" style="margin-top:8px">
+            <input id="usarDatas" type="checkbox" checked />
+            Usar datas para calcular DUs
+          </span>
+          <span class="hint" id="dusCalcHint" style="margin-top:6px"></span>
+        </label>
+      </div>
+      <div class="pill-row" id="aliquotasPill"></div>
+    </section>
+
+    <h2>% CDI dos produtos</h2>
+    <section class="panel">
+      <div class="grid-4">
+        <label>Compromissada (% CDI)
+          <input id="pctComp" type="number" step="0.01" value="85" />
+          <span class="hint">Ex.: 85 = 85% do CDI</span>
+        </label>
+        <label>CDB (% CDI)
+          <input id="pctCdb" type="number" step="0.01" value="100" />
+        </label>
+        <label>ETF (% CDI)
+          <input id="pctEtf" type="number" step="0.01" value="98" />
+          <span class="hint">Default LIQB11 = 98%</span>
+        </label>
+        <label>Fundo de investimento (% CDI)
+          <input id="pctFundo" type="number" step="0.01" value="102" />
+        </label>
+      </div>
+      <div class="grid-2" style="margin-top:12px">
+        <label>Nome do ETF (rótulo)
+          <input id="nomeEtf" type="text" value="ETF LIQB11" />
+        </label>
+      </div>
+    </section>
+
+    <details class="sets" open>
+      <summary>Custos do ETF (corretagem / emolumentos / IR fixo)</summary>
+      <div class="inner">
+        <div class="grid-4">
+          <label>Corretagem compra (%)
+            <input id="corrCompra" type="number" step="0.001" value="0" />
+            <span class="hint">% do volume</span>
+          </label>
+          <label>Corretagem venda (%)
+            <input id="corrVenda" type="number" step="0.001" value="0.1" />
+            <span class="hint">0,1 = 0,10%</span>
+          </label>
+          <label>Emolumentos B3 ida+volta (%)
+            <input id="emol" type="number" step="0.001" value="0.06" />
+            <span class="hint">Default 2 × 0,03%</span>
+          </label>
+          <label>IR ETF fixo (%)
+            <input id="irEtf" type="number" step="0.1" value="15" />
+          </label>
+        </div>
+      </div>
+    </details>
+
+    <details class="sets">
+      <summary>Tabela regressiva de IR (editável)</summary>
+      <div class="inner">
+        <p class="note" style="margin-bottom:12px;font-size:13px;color:var(--muted)">Aplicada a Compromissada, CDB e Fundo conforme o horizonte em dias.</p>
+        <div class="scroll-x">
+          <table class="tiny-table" id="irTable">
+            <thead>
+              <tr><th class="left">Faixa</th><th>Até (dias)</th><th>Alíquota (%)</th></tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </details>
+
+    <details class="sets">
+      <summary>Tabela IOF regressivo — fundos/CDB até 30 dias (editável)</summary>
+      <div class="inner">
+        <p class="note" style="margin-bottom:12px;font-size:13px;color:var(--muted)">% do rendimento retido a título de IOF. Compromissada e ETF: sem IOF. Acima de 30 dias: 0%.</p>
+        <div class="scroll-x">
+          <table class="tiny-table" id="iofTable">
+            <thead>
+              <tr><th>Dias</th><th>IOF (%)</th><th>Dias</th><th>IOF (%)</th><th>Dias</th><th>IOF (%)</th></tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </details>
+
+    <h2>Resultado — ranking por rendimento líquido</h2>
+    <div id="winner" class="winner"></div>
+    <div class="scroll-x">
+      <table id="rankTable">
+        <thead>
+          <tr>
+            <th class="left">#</th>
+            <th class="left">Ativo</th>
+            <th>% CDI</th>
+            <th>Taxa bruta a.a.</th>
+            <th>Rend. bruto</th>
+            <th>IOF</th>
+            <th>IR</th>
+            <th>Custos</th>
+            <th>Rend. líquido</th>
+            <th>% CDI líq.</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <h2>Sensibilidade por prazo</h2>
+    <section class="panel" style="padding:0;overflow:hidden">
+      <div class="scroll-x">
+        <table id="sensTable">
+          <thead>
+            <tr>
+              <th>Prazo (DUs)</th>
+              <th>Compromissada</th>
+              <th>CDB</th>
+              <th id="sensEtfHead">ETF</th>
+              <th>Fundo</th>
+              <th class="left">Melhor opção</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <h2>Tributação por produto</h2>
+    <div class="scroll-x">
+      <table>
+        <thead>
+          <tr>
+            <th class="left">Produto</th>
+            <th class="left">IOF</th>
+            <th class="left">IR</th>
+            <th class="left">Corretagem / Emolumentos</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="left">Compromissada</td>
+            <td class="left">Não incide</td>
+            <td class="left">Regressivo (tabela aberta)</td>
+            <td class="left">Não incide</td>
+          </tr>
+          <tr>
+            <td class="left">CDB</td>
+            <td class="left">Sim (até 30 dias)</td>
+            <td class="left">Regressivo (tabela aberta)</td>
+            <td class="left">Não incide</td>
+          </tr>
+          <tr>
+            <td class="left" id="taxEtfName">ETF</td>
+            <td class="left">Não incide</td>
+            <td class="left">Fixo (input IR ETF)</td>
+            <td class="left">Sim (compra/venda + B3)</td>
+          </tr>
+          <tr>
+            <td class="left">Fundo de investimento</td>
+            <td class="left">Sim (até 30 dias)</td>
+            <td class="left">Regressivo (tabela aberta)</td>
+            <td class="left">Não incide</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="footer">
+      Material ilustrativo para uso interno. Não constitui oferta, recomendação ou garantia de rentabilidade.
+      Motor alinhado à planilha RI Asset (ETF × outros produtos de renda fixa). IR regressivo aplicado pelo horizonte efetivo.
+      <strong>MATERIAL DE USO INTERNO, NÃO ENVIAR AOS CLIENTES</strong>
+    </p>
+  </main>
+
+  <script>
+(function () {
+  var IR_DEFAULT = [
+    { label: "Até 180 dias", ate: 180, aliq: 22.5 },
+    { label: "181 a 360 dias", ate: 360, aliq: 20 },
+    { label: "361 a 720 dias", ate: 720, aliq: 17.5 },
+    { label: "Acima de 720 dias", ate: 999999, aliq: 15 }
+  ];
+
+  // Excel: J = fraction of yield (0.96 = 96%)
+  var IOF_DEFAULT = [
+    96,93,90,86,83,80,76,73,70,66,63,60,56,53,50,46,43,40,36,33,30,26,23,20,16,13,10,6,3,0
+  ];
+
+  var SENS_PRAZOS = [7, 15, 22, 30, 60, 90, 120, 180, 252, 360, 504, 720];
+
+  function $(id) { return document.getElementById(id); }
+
+  function pctInput(id) {
+    // UI shows 14 for 14%; internally 0.14
+    return Number($(id).value) / 100;
+  }
+
+  function money(n) {
+    return n.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+  }
+
+  function pct(n, d) {
+    return (n * 100).toLocaleString("pt-BR", { minimumFractionDigits: d, maximumFractionDigits: d }) + "%";
+  }
+
+  function buildIrTable() {
+    var tb = $("irTable").querySelector("tbody");
+    tb.innerHTML = "";
+    IR_DEFAULT.forEach(function (row, i) {
+      var tr = document.createElement("tr");
+      tr.innerHTML =
+        '<td class="left">' + row.label + "</td>" +
+        '<td><input data-ir-ate="' + i + '" type="number" value="' + row.ate + '" /></td>' +
+        '<td><input data-ir-aliq="' + i + '" type="number" step="0.1" value="' + row.aliq + '" /></td>';
+      tb.appendChild(tr);
+    });
+  }
+
+  function buildIofTable() {
+    var tb = $("iofTable").querySelector("tbody");
+    tb.innerHTML = "";
+    for (var i = 0; i < 30; i += 3) {
+      var tr = document.createElement("tr");
+      var html = "";
+      for (var j = 0; j < 3; j++) {
+        var day = i + j + 1;
+        var val = IOF_DEFAULT[i + j];
+        html += "<td>" + day + '</td><td><input data-iof="' + (i + j) + '" type="number" step="0.1" value="' + val + '" /></td>';
+      }
+      tr.innerHTML = html;
+      tb.appendChild(tr);
+    }
+  }
+
+  function readIrBrackets() {
+    return IR_DEFAULT.map(function (_, i) {
+      return {
+        ate: Number(document.querySelector('[data-ir-ate="' + i + '"]').value),
+        aliq: Number(document.querySelector('[data-ir-aliq="' + i + '"]').value) / 100
+      };
+    });
+  }
+
+  function readIofTable() {
+    var arr = [];
+    for (var i = 0; i < 30; i++) {
+      arr.push(Number(document.querySelector('[data-iof="' + i + '"]').value) / 100);
+    }
+    return arr;
+  }
+
+  function irRegressivo(dias, brackets) {
+    for (var i = 0; i < brackets.length; i++) {
+      if (dias <= brackets[i].ate) return brackets[i].aliq;
+    }
+    return brackets[brackets.length - 1].aliq;
+  }
+
+  function iofRate(dias, table) {
+    if (dias > 30) return 0;
+    if (dias < 1) dias = 1;
+    var idx = Math.min(Math.floor(dias), 30) - 1;
+    return table[idx] || 0;
+  }
+
+  // Same approximation as Excel: INT((fim-ini)/7)*5 + MIN(MOD(diff,7),5)
+  function dusEntreDatas(iniStr, fimStr) {
+    var a = new Date(iniStr + "T00:00:00");
+    var b = new Date(fimStr + "T00:00:00");
+    var diff = Math.round((b - a) / 86400000);
+    if (diff < 0) return 0;
+    return Math.floor(diff / 7) * 5 + Math.min(diff % 7, 5);
+  }
+
+  function horizonteEfetivo() {
+    if ($("usarDatas").checked) {
+      return dusEntreDatas($("dataIni").value, $("dataFim").value);
+    }
+    return Number($("horizonte").value) || 0;
+  }
+
+  function rendimentoBruto(valor, cdiAa, pctCdi, prazo, dusAno) {
+    var taxa = cdiAa * pctCdi;
+    return valor * (Math.pow(1 + taxa, prazo / dusAno) - 1);
+  }
+
+  function calcProduto(cfg) {
+    var bruto = rendimentoBruto(cfg.valor, cfg.cdi, cfg.pctCdi, cfg.prazo, cfg.dusAno);
+    var iof = 0;
+    var ir = 0;
+    var custos = 0;
+
+    if (cfg.tipo === "compromissada") {
+      iof = 0;
+      ir = bruto * cfg.irReg;
+      custos = 0;
+    } else if (cfg.tipo === "cdb" || cfg.tipo === "fundo") {
+      iof = cfg.prazo <= 30 ? bruto * cfg.iof : 0;
+      ir = (bruto - iof) * cfg.irReg;
+      custos = 0;
+    } else if (cfg.tipo === "etf") {
+      iof = 0;
+      custos = cfg.valor * (cfg.corrCompra + cfg.corrVenda + cfg.emol);
+      ir = Math.max(bruto - custos, 0) * cfg.irEtf;
+      // Keep parity with Excel sensitivity: (bruto - custos) * (1 - irEtf)
+      // which equals bruto - custos - (bruto-custos)*irEtf when bruto>custos
+    }
+
+    var liquido = bruto - iof - ir - custos;
+    return {
+      nome: cfg.nome,
+      tipo: cfg.tipo,
+      pctCdi: cfg.pctCdi,
+      taxaBruta: cfg.cdi * cfg.pctCdi,
+      bruto: bruto,
+      iof: iof,
+      ir: ir,
+      custos: custos,
+      liquido: liquido
+    };
+  }
+
+  function inputs() {
+    return {
+      cdi: pctInput("cdi"),
+      valor: Number($("valor").value),
+      prazo: horizonteEfetivo(),
+      dusAno: Number($("dusAno").value) || 252,
+      pctComp: pctInput("pctComp"),
+      pctCdb: pctInput("pctCdb"),
+      pctEtf: pctInput("pctEtf"),
+      pctFundo: pctInput("pctFundo"),
+      nomeEtf: $("nomeEtf").value || "ETF",
+      corrCompra: pctInput("corrCompra"),
+      corrVenda: pctInput("corrVenda"),
+      emol: pctInput("emol"),
+      irEtf: pctInput("irEtf"),
+      irBrackets: readIrBrackets(),
+      iofTable: readIofTable()
+    };
+  }
+
+  function runAll(p, prazoOverride) {
+    var prazo = prazoOverride != null ? prazoOverride : p.prazo;
+    var irReg = irRegressivo(prazo, p.irBrackets);
+    var iof = iofRate(prazo, p.iofTable);
+    var base = {
+      valor: p.valor, cdi: p.cdi, prazo: prazo, dusAno: p.dusAno,
+      irReg: irReg, iof: iof,
+      corrCompra: p.corrCompra, corrVenda: p.corrVenda, emol: p.emol, irEtf: p.irEtf
+    };
+    var cdiBench = {
+      nome: "CDI (Benchmark)",
+      tipo: "cdi",
+      pctCdi: 1,
+      taxaBruta: p.cdi,
+      bruto: rendimentoBruto(p.valor, p.cdi, 1, prazo, p.dusAno),
+      iof: 0, ir: 0, custos: 0
+    };
+    cdiBench.liquido = cdiBench.bruto;
+
+    var produtos = [
+      calcProduto(Object.assign({}, base, { tipo: "compromissada", nome: "Compromissada", pctCdi: p.pctComp })),
+      calcProduto(Object.assign({}, base, { tipo: "cdb", nome: "CDB", pctCdi: p.pctCdb })),
+      calcProduto(Object.assign({}, base, { tipo: "etf", nome: p.nomeEtf, pctCdi: p.pctEtf })),
+      calcProduto(Object.assign({}, base, { tipo: "fundo", nome: "Fundo de Investimento", pctCdi: p.pctFundo }))
+    ];
+    return { cdiBench: cdiBench, produtos: produtos, irReg: irReg, iof: iof, prazo: prazo };
+  }
+
+  function render() {
+    var p = inputs();
+    var dusHint = dusEntreDatas($("dataIni").value, $("dataFim").value);
+    $("dusCalcHint").textContent = "DUs pelas datas (aprox. Excel): " + dusHint;
+    $("horizonte").disabled = $("usarDatas").checked;
+
+    var res = runAll(p);
+    var ranked = res.produtos.slice().sort(function (a, b) { return b.liquido - a.liquido; });
+    var best = ranked[0];
+
+    $("aliquotasPill").innerHTML =
+      '<span class="pill">Horizonte efetivo: <strong>' + res.prazo + " DUs</strong></span>" +
+      '<span class="pill warn">IR regressivo: <strong>' + pct(res.irReg, 1) + "</strong></span>" +
+      '<span class="pill">IOF CDB/Fundo: <strong>' + pct(res.iof, 1) + "</strong></span>" +
+      '<span class="pill">IR ETF: <strong>' + pct(p.irEtf, 1) + "</strong></span>";
+
+    $("winner").innerHTML =
+      '<div class="kicker">Melhor rendimento líquido</div>' +
+      '<div class="name">' + best.nome + "</div>" +
+      '<div class="meta">' + money(best.liquido) +
+      " · " + pct(best.liquido / res.cdiBench.liquido, 1) + " do CDI líquido" +
+      " · " + pct(best.pctCdi, 0) + " do CDI bruto</div>";
+
+    $("taxEtfName").textContent = p.nomeEtf;
+    $("sensEtfHead").textContent = p.nomeEtf;
+
+    var tb = $("rankTable").querySelector("tbody");
+    tb.innerHTML = "";
+    ranked.forEach(function (row, idx) {
+      var tr = document.createElement("tr");
+      if (idx === 0) tr.className = "best";
+      tr.innerHTML =
+        "<td class='left'>" + (idx + 1) + "º</td>" +
+        "<td class='left'>" + row.nome + "</td>" +
+        "<td>" + pct(row.pctCdi, 0) + "</td>" +
+        "<td>" + pct(row.taxaBruta, 2) + "</td>" +
+        "<td>" + money(row.bruto) + "</td>" +
+        "<td>" + money(row.iof) + "</td>" +
+        "<td>" + money(row.ir) + "</td>" +
+        "<td>" + money(row.custos) + "</td>" +
+        "<td>" + money(row.liquido) + "</td>" +
+        "<td>" + pct(row.liquido / res.cdiBench.liquido, 1) + "</td>";
+      tb.appendChild(tr);
+    });
+
+    // benchmark row
+    var trb = document.createElement("tr");
+    trb.innerHTML =
+      "<td class='left'>—</td><td class='left'>CDI (Benchmark)</td><td>100%</td>" +
+      "<td>" + pct(res.cdiBench.taxaBruta, 2) + "</td>" +
+      "<td>" + money(res.cdiBench.bruto) + "</td>" +
+      "<td>" + money(0) + "</td><td>" + money(0) + "</td><td>" + money(0) + "</td>" +
+      "<td>" + money(res.cdiBench.liquido) + "</td><td>100,0%</td>";
+    tb.appendChild(trb);
+
+    var stb = $("sensTable").querySelector("tbody");
+    stb.innerHTML = "";
+    SENS_PRAZOS.forEach(function (prazo) {
+      var r = runAll(p, prazo);
+      var map = {};
+      r.produtos.forEach(function (x) { map[x.tipo] = x; });
+      var bestName = r.produtos.slice().sort(function (a, b) { return b.liquido - a.liquido; })[0].nome;
+      var tr = document.createElement("tr");
+      if (prazo === res.prazo) tr.className = "current";
+      tr.innerHTML =
+        "<td>" + prazo + (prazo === res.prazo ? " ◄" : "") + "</td>" +
+        "<td>" + money(map.compromissada.liquido) + "</td>" +
+        "<td>" + money(map.cdb.liquido) + "</td>" +
+        "<td>" + money(map.etf.liquido) + "</td>" +
+        "<td>" + money(map.fundo.liquido) + "</td>" +
+        "<td class='left'>" + bestName + "</td>";
+      stb.appendChild(tr);
+    });
+  }
+
+  buildIrTable();
+  buildIofTable();
+
+  [
+    "cdi","valor","horizonte","dusAno","dataIni","dataFim","usarDatas",
+    "pctComp","pctCdb","pctEtf","pctFundo","nomeEtf",
+    "corrCompra","corrVenda","emol","irEtf"
+  ].forEach(function (id) {
+    $(id).addEventListener("input", render);
+    $(id).addEventListener("change", render);
+  });
+  document.querySelectorAll("[data-ir-ate],[data-ir-aliq],[data-iof]").forEach(function (el) {
+    el.addEventListener("input", render);
+  });
+
+  render();
+})();
+  </script>
+</body>
+</html>
