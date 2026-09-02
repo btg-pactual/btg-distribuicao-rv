@@ -184,10 +184,9 @@
     <h2>Parâmetros de entrada</h2>
     <section class="panel">
       <p class="note">
-        Motor alinhado à planilha RI Asset. O IR de Compromissada/CDB/Fundo segue a
-        <strong>tabela regressiva pelo prazo</strong> (como a célula “Alíquota IR” e a aba Sensibilidade).
-        Na aba Inputs do Excel, as linhas de cálculo usam 22,5% fixo (G13) — em prazos longos isso
-        gera divergência; use o toggle abaixo se quiser espelhar exatamente essa aba.
+        Motor alinhado à planilha RI Asset. IR de Compromissada/CDB/Fundo pela
+        <strong>tabela regressiva</strong> (mesma lógica da célula “Alíquota IR” / F20 e da aba Sensibilidade).
+        Em 2 anos use <strong>504 DUs</strong> (não 730 dias corridos).
       </p>
       <div class="grid-2">
         <label>CDI anual (%)
@@ -234,11 +233,6 @@
           </label>
         </div>
       </div>
-
-      <label class="check-row" style="margin-top:12px">
-        <input id="irExcelInputs" type="checkbox" />
-        Replicar aba Inputs do Excel (IR 22,5% fixo em Compromissada/CDB/Fundo)
-      </label>
 
       <div class="pill-row" id="aliquotasPill"></div>
     </section>
@@ -422,8 +416,7 @@
 
     <p class="footer">
       Material ilustrativo para uso interno. Não constitui oferta, recomendação ou garantia de rentabilidade.
-      Motor alinhado à planilha RI Asset. Default: IR regressivo pelo prazo (Sensibilidade / Alíquota IR).
-      Toggle disponível para espelhar a aba Inputs (IR 22,5% fixo em RF).
+      Motor alinhado à planilha RI Asset (ETF × outros produtos de renda fixa). IR regressivo pelo horizonte efetivo.
       <strong>MATERIAL DE USO INTERNO, NÃO ENVIAR AOS CLIENTES</strong>
     </p>
   </main>
@@ -601,14 +594,13 @@
       emol: pctInput("emol"),
       irEtf: pctInput("irEtf"),
       irBrackets: readIrBrackets(),
-      iofTable: readIofTable(),
-      irExcelInputs: $("irExcelInputs").checked
+      iofTable: readIofTable()
     };
   }
 
   function runAll(p, prazoOverride) {
     var prazo = prazoOverride != null ? prazoOverride : p.prazo;
-    var irReg = p.irExcelInputs ? 0.225 : irRegressivo(prazo, p.irBrackets);
+    var irReg = irRegressivo(prazo, p.irBrackets);
     var iof = iofRate(prazo, p.iofTable);
     var base = {
       valor: p.valor, cdi: p.cdi, prazo: prazo, dusAno: p.dusAno,
@@ -644,11 +636,10 @@
     var ranked = res.produtos.slice().sort(function (a, b) { return b.liquido - a.liquido; });
     var best = ranked[0];
     var modoLabel = usaDatas() ? "por datas" : "manual";
-    var irLabel = p.irExcelInputs ? "IR Excel Inputs (22,5% fixo)" : "IR regressivo";
 
     $("aliquotasPill").innerHTML =
       '<span class="pill strong">Horizonte em uso: <strong>' + res.prazo + " DUs</strong> (" + modoLabel + ")</span>" +
-      '<span class="pill warn">' + irLabel + ': <strong>' + pct(res.irReg, 1) + "</strong></span>" +
+      '<span class="pill warn">IR regressivo: <strong>' + pct(res.irReg, 1) + "</strong></span>" +
       '<span class="pill">IOF CDB/Fundo: <strong>' + pct(res.iof, 1) + "</strong></span>" +
       '<span class="pill">IR ETF: <strong>' + pct(p.irEtf, 1) + "</strong></span>";
 
@@ -717,7 +708,7 @@
   [
     "cdi","valor","horizonte","dusAno","dataIni","dataFim",
     "pctComp","pctCdb","pctEtf","pctFundo","nomeEtf",
-    "corrCompra","corrVenda","emol","irEtf","irExcelInputs"
+    "corrCompra","corrVenda","emol","irEtf"
   ].forEach(function (id) {
     $(id).addEventListener("input", render);
     $(id).addEventListener("change", render);
