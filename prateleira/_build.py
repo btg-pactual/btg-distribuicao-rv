@@ -404,7 +404,7 @@ def make_sh(t, fixing, put, call, ki, bid):
         "dot": "SH",
         "brand": "#007e33",
         "subtitle": f"Smart Hedge sobre {t}: piso na queda, participação 1:1 até a barreira KI; se KI, retorno limitado ao strike da call.",
-        "pills": [("Ativo", t), ("Prazo", prazo), ("Put", f"{put:.0f}%"), ("Call", f"{call:.0f}%"), ("KI", f"{ki:.2f}%"), ("Bid", f"{bid:.2f}%")],
+        "pills": [("Ativo", t), ("Prazo", prazo), ("Put", f"{put:.0f}%"), ("Call", f"{call:.0f}%"), ("KI", f"{ki:.2f}%")],
         "highlights": [
             ("Prazo", prazo, ""),
             ("Piso", f"{floor:+.0f}%", f"Put {put:.0f}%"),
@@ -423,7 +423,7 @@ def make_sh(t, fixing, put, call, ki, bid):
         "regime0": "Entre o piso e a barreira: participa 1:1.",
         "speech": [
             ("Para quem", f"Cliente construtivo em {t} no horizonte de {prazo}, com proteção na queda."),
-            ("Como encaixa", f"Put {put:.0f}% · call {call:.0f}% KI em {ki:.2f}% · prazo {prazo}. Bid ref. {bid:.2f}%."),
+            ("Como encaixa", f"Put {put:.0f}% · call {call:.0f}% KI em {ki:.2f}% · prazo {prazo}."),
             ("Fechamento", "Material de uso interno — condições no DIE."),
         ],
         "js_const": f"var PUT={put}, CALL={call}, KI={ki};",
@@ -443,12 +443,12 @@ def make_acel(t, fixing, ko_h, ko_l, bid):
         "dot": "AC",
         "brand": "#5a4a8a",
         "subtitle": f"Participa da alta até a barreira; proteção na queda moderada; fora das barreiras acompanha ou limita.",
-        "pills": [("Ativo", t), ("Prazo", prazo), ("KO alta", f"{ko_h:.0f}%"), ("KO baixa", f"{ko_l:.0f}%"), ("Bid", f"{bid:.2f}%")],
+        "pills": [("Ativo", t), ("Prazo", prazo), ("KO alta", f"{ko_h:.0f}%"), ("KO baixa", f"{ko_l:.0f}%")],
         "highlights": [
             ("Prazo", prazo, ""),
             ("KO alta", f"{ko_h:.0f}%", f"+{H:.0f}%"),
             ("KO baixa", f"{ko_l:.0f}%", f"{L:.0f}%"),
-            ("Bid", f"{bid:.2f}%", "Referência"),
+            ("Ideia", "Upside 1:1", "Com proteção moderada"),
         ],
         "struct": [
             ('<span class="tag b">B</span> Call KO', f"100% · barreira {ko_h:.0f}%"),
@@ -463,7 +463,7 @@ def make_acel(t, fixing, ko_h, ko_l, bid):
         "regime0": "Na faixa central: upside 1:1 / downside protegido em 0%.",
         "speech": [
             ("Para quem", f"Cliente tático em {t} ({prazo}) que quer upside com proteção na queda moderada."),
-            ("Como encaixa", f"Call KO {ko_h:.0f}% + put KO {ko_l:.0f}% · bid ref. {bid:.2f}%."),
+            ("Como encaixa", f"Call KO {ko_h:.0f}% + put KO {ko_l:.0f}%."),
             ("Fechamento", "Material de uso interno — condições no DIE."),
         ],
         "js_const": f"var L={L}, H={H};",
@@ -483,7 +483,7 @@ def make_triplo(t, fixing, sold, ko_h, ko_l, bid):
         "dot": "3x",
         "brand": "#820ad1",
         "subtitle": f"3× na alta até a barreira, ganho na queda moderada, teto se KO de alta.",
-        "pills": [("Ativo", t), ("Prazo", prazo), ("Teto", f"{CAP:+.0f}%"), ("KO alta", f"{ko_h:.0f}%"), ("KO baixa", f"{ko_l:.0f}%"), ("Bid", f"{bid:.2f}%")],
+        "pills": [("Ativo", t), ("Prazo", prazo), ("Teto", f"{CAP:+.0f}%"), ("KO alta", f"{ko_h:.0f}%"), ("KO baixa", f"{ko_l:.0f}%")],
         "highlights": [
             ("Prazo", prazo, ""),
             ("Alta", "3×", f"Até +{H:.0f}%"),
@@ -503,7 +503,7 @@ def make_triplo(t, fixing, sold, ko_h, ko_l, bid):
         "regime0": "Entre as barreiras: 3× na alta ou |x| na queda.",
         "speech": [
             ("Para quem", f"Cliente construtivo em {t} ({prazo}) que quer assimetria 3× com proteção na queda moderada."),
-            ("Como encaixa", f"Triplo KO · alta até {ko_h:.0f}% · queda até {ko_l:.0f}% · teto {CAP:+.0f}% · bid {bid:.2f}%."),
+            ("Como encaixa", f"Triplo KO · alta até {ko_h:.0f}% · queda até {ko_l:.0f}% · teto {CAP:+.0f}%."),
             ("Fechamento", "Material de uso interno — condições no DIE."),
         ],
         "js_const": f"var L={L}, H={H}, CAP={CAP};",
@@ -605,12 +605,12 @@ def make_twip():
         "dot": "TW",
         "brand": "#b8860b",
         "subtitle": "Twin Win Protected: ganha na alta e na queda moderada; fora das barreiras retorno 0% (capital protegido).",
-        "pills": [("Ativo", t), ("Prazo", prazo), ("Put", "100%"), ("KI", "140%"), ("Put KO", "80%"), ("Bid", "4,51%")],
+        "pills": [("Ativo", t), ("Prazo", prazo), ("Put", "100%"), ("KI", "140%"), ("Put KO", "80%")],
         "highlights": [
             ("Prazo", prazo, ""),
             ("Faixa", "|x|", "Entre −20% e +40%"),
             ("Fora", "0%", "Capital protegido"),
-            ("Bid", "4,51%", "Referência"),
+            ("Ideia", "Twin Win", "Ganha na alta e na queda"),
         ],
         "struct": [
             ('<span class="tag b">B</span> Put', "100%"),
@@ -625,7 +625,7 @@ def make_twip():
         "regime0": "Entre barreiras: retorno absoluto |x|.",
         "speech": [
             ("Para quem", f"Cliente construtivo em ouro via {t} ({prazo}) que quer payoff bidirecional com proteção."),
-            ("Como encaixa", "TWIP · put KO 80% · call KI 140% · bid 4,51%."),
+            ("Como encaixa", "TWIP · put KO 80% · call KI 140%."),
             ("Fechamento", "Material de uso interno — condições no DIE."),
         ],
         "js_const": "var L=-20, H=40;",
