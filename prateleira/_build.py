@@ -234,6 +234,10 @@ def op_page(cfg: dict) -> str:
       <line id="axisZeroY" x1="48" y1="0" x2="552" y2="0" stroke="#c5ced8" stroke-width="1"/>
       <polyline id="assetPath" fill="none" stroke="#8b83a0" stroke-width="2" stroke-dasharray="6 5"/>
       <path id="structPath" fill="none" stroke="{brand}" stroke-width="2.5"/>
+      <line id="putKoGap" x1="0" y1="0" x2="0" y2="0" stroke="#0f7a4a" stroke-width="2" stroke-dasharray="4 3" opacity="0"/>
+      <line id="callKoGap" x1="0" y1="0" x2="0" y2="0" stroke="{brand}" stroke-width="2" stroke-dasharray="4 3" opacity="0"/>
+      <text id="putKoLabel" font-size="11" fill="#0f7a4a" font-weight="700" opacity="0">Put KO</text>
+      <text id="callKoLabel" font-size="11" fill="{brand}" font-weight="700" opacity="0">Call vendida</text>
       <g id="xLabels"></g><g id="yLabels"></g>
       <line id="hoverLine" x1="0" y1="24" x2="0" y2="376" stroke="{brand}" stroke-width="1" opacity="0"/>
       <circle id="hoverStruct" r="5" fill="{brand}" opacity="0"/>
@@ -247,7 +251,7 @@ def op_page(cfg: dict) -> str:
   </div>
   <div class="zones">{zones}</div>
 </section>
-aside class="panel panel-sim">
+<aside class="panel panel-sim">
   <h2>Simulador</h2>
   <div class="sim-label"><span>Variação do ativo</span><output id="spotOut">0%</output></div>
   <input type="range" id="spotSlider" min="{cfg.get('x_min', -50)}" max="{cfg.get('x_max', 80)}" step="0.5" value="0"/>
@@ -280,7 +284,8 @@ aside class="panel panel-sim">
   function buildStructD(){{
     var d='',first=true;
     function add(x,y){{ var c=first?'M':'L'; first=false; d+=c+' '+xToSvg(x).toFixed(2)+' '+yToSvg(y).toFixed(2)+' '; }}
-    for(var x=X_MIN;x<=X_MAX;x+=0.5) add(x, structureReturn(x));
+    function move(x,y){{ first=true; add(x,y); }}
+    {cfg.get('js_build', 'for(var x=X_MIN;x<=X_MAX;x+=0.5) add(x, structureReturn(x));')}
     return d.trim();
   }}
   function buildAsset(){{
@@ -310,6 +315,27 @@ aside class="panel panel-sim">
   document.getElementById('axisZeroY').setAttribute('y2',yToSvg(0));
   document.getElementById('structPath').setAttribute('d',buildStructD());
   document.getElementById('assetPath').setAttribute('points',buildAsset());
+  {"if (true) {" if cfg.get("ko_markers") else "if (false) {"}
+    if (typeof L === 'number') {{
+      var pL=document.getElementById('putKoGap'), pT=document.getElementById('putKoLabel');
+      pL.setAttribute('x1', xToSvg(L)); pL.setAttribute('x2', xToSvg(L));
+      pL.setAttribute('y1', yToSvg(L)); pL.setAttribute('y2', yToSvg(0));
+      pL.setAttribute('opacity', '1');
+      pT.setAttribute('x', xToSvg(L) + 6); pT.setAttribute('y', yToSvg(0) - 8);
+      pT.textContent = 'Put KO · proteção 0%';
+      pT.setAttribute('opacity', '1');
+    }}
+    if (typeof H === 'number') {{
+      var cL=document.getElementById('callKoGap'), cT=document.getElementById('callKoLabel');
+      var peakY = 2 * (H - 0.01);
+      cL.setAttribute('x1', xToSvg(H)); cL.setAttribute('x2', xToSvg(H));
+      cL.setAttribute('y1', yToSvg(peakY)); cL.setAttribute('y2', yToSvg(0));
+      cL.setAttribute('opacity', '1');
+      cT.setAttribute('x', Math.max(48, xToSvg(H) - 72)); cT.setAttribute('y', yToSvg(peakY) - 8);
+      cT.textContent = 'Call vendida / KO';
+      cT.setAttribute('opacity', '1');
+    }}
+  }}
   function showAt(x){{
     x=Math.max(X_MIN,Math.min(X_MAX,x));
     var ys=structureReturn(x);
@@ -489,15 +515,27 @@ def make_acel(t, fixing, ko_h, ko_l, bid):
         "x_max": max(80, int(H) + 30),
         "y_min": min(-50, int(L) - 10),
         "y_max": max(80, int(peak) + 20),
+        "ko_markers": True,
         "js_const": f"var L={L}, H={H};",
-        # 2× até (sem atingir) a call vendida; ao atingir/ultrapassar: call KO vira pó → 0%
+        # Put KO viva (x > L): piso 0% na queda. Atingiu KO (x <= L): acompanha.
+        # Alta 2× enquanto x < H; ao atingir call vendida: 0%.
         "js_fn": "if (x <= L) return x; if (x < 0) return 0; if (x < H) return 2*x; return 0;",
         "js_regime": (
-            "if (x <= L) return 'KO baixa: acompanha o ativo.'; "
-            "if (x < 0) return 'Proteção parcial: 0%.'; "
+            "if (x <= L) return 'Put KO atingida: perde a proteção e acompanha o ativo.'; "
+            "if (x < 0) return 'Put KO viva: proteção até a barreira — piso 0%.'; "
             "if (x < H) return 'Alta acelerada: 2× (ainda não atingiu a call vendida).'; "
             "return 'Atingiu call vendida: call KO vira pó → 0%.';"
         ),
+        # Path com cliffs explícitos na Put KO e na call vendida
+        "js_build": """
+    for (var x = X_MIN; x <= L; x += 0.5) add(x, x);
+    add(L, 0);
+    for (var x2 = L + 0.5; x2 <= 0; x2 += 0.5) add(x2, 0);
+    for (var x3 = 0.5; x3 < H; x3 += 0.5) add(x3, 2 * x3);
+    add(H - 0.01, 2 * (H - 0.01));
+    move(H, 0);
+    for (var x4 = H + 0.5; x4 <= X_MAX; x4 += 0.5) add(x4, 0);
+""",
     }
 
 

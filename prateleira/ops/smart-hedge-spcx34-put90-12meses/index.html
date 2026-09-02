@@ -120,6 +120,10 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
       <line id="axisZeroY" x1="48" y1="0" x2="552" y2="0" stroke="#c5ced8" stroke-width="1"/>
       <polyline id="assetPath" fill="none" stroke="#8b83a0" stroke-width="2" stroke-dasharray="6 5"/>
       <path id="structPath" fill="none" stroke="#007e33" stroke-width="2.5"/>
+      <line id="putKoGap" x1="0" y1="0" x2="0" y2="0" stroke="#0f7a4a" stroke-width="2" stroke-dasharray="4 3" opacity="0"/>
+      <line id="callKoGap" x1="0" y1="0" x2="0" y2="0" stroke="#007e33" stroke-width="2" stroke-dasharray="4 3" opacity="0"/>
+      <text id="putKoLabel" font-size="11" fill="#0f7a4a" font-weight="700" opacity="0">Put KO</text>
+      <text id="callKoLabel" font-size="11" fill="#007e33" font-weight="700" opacity="0">Call vendida</text>
       <g id="xLabels"></g><g id="yLabels"></g>
       <line id="hoverLine" x1="0" y1="24" x2="0" y2="376" stroke="#007e33" stroke-width="1" opacity="0"/>
       <circle id="hoverStruct" r="5" fill="#007e33" opacity="0"/>
@@ -133,7 +137,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
   </div>
   <div class="zones"><div class="zone"><strong>Queda</strong><p>Piso -10% (put).</p></div><div class="zone"><strong>Até +90%</strong><p>Acompanha o ativo 1:1.</p></div><div class="zone"><strong>≥ +90%</strong><p>KI: retorno limitado a +14%.</p></div></div>
 </section>
-<aside class="panel panel-sim">
+<<aside class="panel panel-sim">
   <h2>Simulador</h2>
   <div class="sim-label"><span>Variação do ativo</span><output id="spotOut">0%</output></div>
   <input type="range" id="spotSlider" min="-50" max="80" step="0.5" value="0"/>
@@ -166,6 +170,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
   function buildStructD(){
     var d='',first=true;
     function add(x,y){ var c=first?'M':'L'; first=false; d+=c+' '+xToSvg(x).toFixed(2)+' '+yToSvg(y).toFixed(2)+' '; }
+    function move(x,y){ first=true; add(x,y); }
     for(var x=X_MIN;x<=X_MAX;x+=0.5) add(x, structureReturn(x));
     return d.trim();
   }
@@ -196,6 +201,27 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
   document.getElementById('axisZeroY').setAttribute('y2',yToSvg(0));
   document.getElementById('structPath').setAttribute('d',buildStructD());
   document.getElementById('assetPath').setAttribute('points',buildAsset());
+  if (false) {
+    if (typeof L === 'number') {
+      var pL=document.getElementById('putKoGap'), pT=document.getElementById('putKoLabel');
+      pL.setAttribute('x1', xToSvg(L)); pL.setAttribute('x2', xToSvg(L));
+      pL.setAttribute('y1', yToSvg(L)); pL.setAttribute('y2', yToSvg(0));
+      pL.setAttribute('opacity', '1');
+      pT.setAttribute('x', xToSvg(L) + 6); pT.setAttribute('y', yToSvg(0) - 8);
+      pT.textContent = 'Put KO · proteção 0%';
+      pT.setAttribute('opacity', '1');
+    }
+    if (typeof H === 'number') {
+      var cL=document.getElementById('callKoGap'), cT=document.getElementById('callKoLabel');
+      var peakY = 2 * (H - 0.01);
+      cL.setAttribute('x1', xToSvg(H)); cL.setAttribute('x2', xToSvg(H));
+      cL.setAttribute('y1', yToSvg(peakY)); cL.setAttribute('y2', yToSvg(0));
+      cL.setAttribute('opacity', '1');
+      cT.setAttribute('x', Math.max(48, xToSvg(H) - 72)); cT.setAttribute('y', yToSvg(peakY) - 8);
+      cT.textContent = 'Call vendida / KO';
+      cT.setAttribute('opacity', '1');
+    }
+  }
   function showAt(x){
     x=Math.max(X_MIN,Math.min(X_MAX,x));
     var ys=structureReturn(x);
