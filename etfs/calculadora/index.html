@@ -155,14 +155,26 @@
     @media (max-width: 900px) {
       .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr 1fr; }
     }
+    .chart-wrap {
+      border-top: 1px solid var(--line);
+      padding: 16px 18px 8px;
+      background: #fff;
+    }
+    .chart-wrap .chart-title {
+      font-size: 12px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase;
+      color: var(--btg-blue); margin-bottom: 10px;
+    }
+    .chart-wrap .chart-box { position: relative; height: 320px; width: 100%; }
     @media (max-width: 640px) {
       .hero { padding: 28px 16px 32px; }
       .page { padding: 20px 16px 48px; }
       .hero-row { flex-direction: column; align-items: flex-start; }
       .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
       .scroll-x { overflow-x: auto; }
+      .chart-wrap .chart-box { height: 280px; }
     }
   </style>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.6/dist/chart.umd.min.js"></script>
 </head>
 <body>
   <header class="hero">
@@ -367,6 +379,12 @@
           <tbody></tbody>
         </table>
       </div>
+      <div class="chart-wrap">
+        <div class="chart-title">Rendimento líquido por prazo</div>
+        <div class="chart-box">
+          <canvas id="sensChart" aria-label="Gráfico de rendimento líquido por prazo"></canvas>
+        </div>
+      </div>
     </section>
 
     <h2>Tributação por produto</h2>
@@ -431,6 +449,7 @@
   ];
 
   var SENS_PRAZOS = [7, 15, 22, 30, 60, 90, 120, 180, 252, 360, 504, 720];
+  var sensChart = null;
 
   function $(id) { return document.getElementById(id); }
 
@@ -441,6 +460,17 @@
 
   function money(n) {
     return n.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+  }
+
+  function moneyShort(n) {
+    var abs = Math.abs(n);
+    if (abs >= 1e6) {
+      return "R$ " + (n / 1e6).toLocaleString("pt-BR", { maximumFractionDigits: 2 }) + " mi";
+    }
+    if (abs >= 1e3) {
+      return "R$ " + (n / 1e3).toLocaleString("pt-BR", { maximumFractionDigits: 1 }) + " mil";
+    }
+    return money(n);
   }
 
   function pct(n, d) {
@@ -679,10 +709,20 @@
 
     var stb = $("sensTable").querySelector("tbody");
     stb.innerHTML = "";
+    var series = {
+      compromissada: [],
+      cdb: [],
+      etf: [],
+      fundo: []
+    };
     SENS_PRAZOS.forEach(function (prazo) {
       var r = runAll(p, prazo);
       var map = {};
       r.produtos.forEach(function (x) { map[x.tipo] = x; });
+      series.compromissada.push(map.compromissada.liquido);
+      series.cdb.push(map.cdb.liquido);
+      series.etf.push(map.etf.liquido);
+      series.fundo.push(map.fundo.liquido);
       var bestName = r.produtos.slice().sort(function (a, b) { return b.liquido - a.liquido; })[0].nome;
       var tr = document.createElement("tr");
       if (prazo === res.prazo) tr.className = "current";
@@ -694,6 +734,116 @@
         "<td>" + money(map.fundo.liquido) + "</td>" +
         "<td class='left'>" + bestName + "</td>";
       stb.appendChild(tr);
+    });
+
+    renderSensChart(p.nomeEtf, series, res.prazo);
+  }
+
+  function renderSensChart(etfName, series, prazoAtual) {
+    if (typeof Chart === "undefined") return;
+    var labels = SENS_PRAZOS.map(String);
+    var datasets = [
+      {
+        label: "Compromissada",
+        data: series.compromissada,
+        borderColor: "#6b7c8f",
+        backgroundColor: "rgba(107,124,143,0.12)",
+        borderWidth: 2,
+        tension: 0.25,
+        pointHoverRadius: 5
+      },
+      {
+        label: "CDB",
+        data: series.cdb,
+        borderColor: "#1a66b3",
+        backgroundColor: "rgba(26,102,179,0.12)",
+        borderWidth: 2,
+        tension: 0.25,
+        pointHoverRadius: 5
+      },
+      {
+        label: etfName || "ETF",
+        data: series.etf,
+        borderColor: "#1f6b4a",
+        backgroundColor: "rgba(31,107,74,0.12)",
+        borderWidth: 2.5,
+        tension: 0.25,
+        pointHoverRadius: 5
+      },
+      {
+        label: "Fundo",
+        data: series.fundo,
+        borderColor: "#9a6b1f",
+        backgroundColor: "rgba(154,107,31,0.12)",
+        borderWidth: 2,
+        tension: 0.25,
+        pointHoverRadius: 5
+      }
+    ];
+
+    var idxAtual = SENS_PRAZOS.indexOf(prazoAtual);
+    datasets.forEach(function (ds) {
+      ds.pointBackgroundColor = ds.data.map(function (_, i) {
+        return i === idxAtual ? "#0b1f3a" : ds.borderColor;
+      });
+      ds.pointRadius = ds.data.map(function (_, i) {
+        return i === idxAtual ? 5 : 3;
+      });
+    });
+
+    if (sensChart) {
+      sensChart.data.labels = labels;
+      sensChart.data.datasets = datasets;
+      sensChart.update();
+      return;
+    }
+
+    sensChart = new Chart($("sensChart"), {
+      type: "line",
+      data: { labels: labels, datasets: datasets },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: { mode: "index", intersect: false },
+        plugins: {
+          legend: {
+            position: "bottom",
+            labels: {
+              boxWidth: 12,
+              boxHeight: 12,
+              usePointStyle: true,
+              pointStyle: "circle",
+              color: "#0b1f3a",
+              font: { size: 12, weight: "600" }
+            }
+          },
+          tooltip: {
+            callbacks: {
+              title: function (items) {
+                return items[0].label + " DUs";
+              },
+              label: function (ctx) {
+                return " " + ctx.dataset.label + ": " + money(ctx.parsed.y);
+              }
+            }
+          }
+        },
+        scales: {
+          x: {
+            title: { display: true, text: "Prazo (DUs)", color: "#5c6b7a", font: { size: 11, weight: "600" } },
+            grid: { color: "rgba(208,216,226,0.55)" },
+            ticks: { color: "#5c6b7a" }
+          },
+          y: {
+            title: { display: true, text: "Rend. líquido (R$)", color: "#5c6b7a", font: { size: 11, weight: "600" } },
+            grid: { color: "rgba(208,216,226,0.55)" },
+            ticks: {
+              color: "#5c6b7a",
+              callback: function (v) { return moneyShort(v); }
+            }
+          }
+        }
+      }
     });
   }
 
