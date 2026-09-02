@@ -437,7 +437,7 @@ def make_sh(t, fixing, put, call, ki, bid):
 def make_acel(t, fixing, ko_h, ko_l, bid):
     prazo = months_label(fixing)
     H, L = ko_h - 100, ko_l - 100
-    cap = 2 * H  # ganho dobrado até o strike da call vendida; acima disso, fixo
+    peak = 2 * H  # pico 2× logo antes de atingir a call vendida
     slug = slugify("aceleradora", t, prazo.replace(" ", ""))
     return slug, {
         "title": f"Aceleradora {t}",
@@ -446,8 +446,9 @@ def make_acel(t, fixing, ko_h, ko_l, bid):
         "dot": "AC",
         "brand": "#5a4a8a",
         "subtitle": (
-            f"Ganho dobrado (2×) na alta até o strike da call vendida ({ko_h:.0f}%); "
-            f"acima disso o retorno fica fixo em +{cap:.0f}%. Proteção parcial na queda até a barreira {ko_l:.0f}%."
+            f"Ganho dobrado (2×) na alta enquanto não atingir a call vendida ({ko_h:.0f}%). "
+            f"Ao atingir esse strike, a call KO (mesmo nível) nocauteia e vira pó — retorno 0%. "
+            f"Proteção parcial na queda até a barreira {ko_l:.0f}%."
         ),
         "pills": [
             ("Ativo", t),
@@ -458,28 +459,28 @@ def make_acel(t, fixing, ko_h, ko_l, bid):
         ],
         "highlights": [
             ("Prazo", prazo, ""),
-            ("Alta", "2×", f"Até call vendida {ko_h:.0f}% (+{H:.0f}%)"),
-            ("Teto", f"+{cap:.0f}%", f"Fixo se ultrapassar o strike {ko_h:.0f}%"),
+            ("Alta", "2×", f"Enquanto não atingir call vendida {ko_h:.0f}%"),
+            ("Se atingir", "0%", f"Call KO no strike {ko_h:.0f}% vira pó"),
             ("Proteção", "Parcial", f"Piso 0% até KO {ko_l:.0f}%; abaixo acompanha"),
         ],
         "struct": [
             ('<span class="tag b">B</span> Call KO', f"100% · barreira {ko_h:.0f}%"),
-            ('<span class="tag s">S</span> Call', f"{ko_h:.0f}% (define o teto 2×)"),
+            ('<span class="tag s">S</span> Call', f"{ko_h:.0f}%"),
             ('<span class="tag b">B</span> Put KO', f"100% · barreira {ko_l:.0f}%"),
         ],
         "zones": [
             (f"≤ {L:.0f}%", "Put KO nocauteada — acompanha o ativo."),
             (f"{L:.0f}% → 0%", "Proteção parcial: retorno 0%."),
-            (f"0% → +{H:.0f}%", "Ganho dobrado: retorno = 2× a alta."),
-            (f"≥ +{H:.0f}%", f"Ultrapassou call vendida {ko_h:.0f}%: retorno fixo +{cap:.0f}%."),
+            (f"0% → +{H:.0f}%", "Ganho dobrado: retorno = 2× a alta (ainda não atingiu a call vendida)."),
+            (f"≥ +{H:.0f}%", f"Atingiu call vendida {ko_h:.0f}%: call KO vira pó → retorno 0%."),
         ],
-        "regime0": f"Na alta até +{H:.0f}%: 2×. Acima do strike da call vendida: fixo +{cap:.0f}%.",
+        "regime0": f"Na alta até +{H:.0f}%: 2×. Se atingir a call vendida: call KO vira pó (0%).",
         "speech": [
             ("Para quem", f"Cliente tático em {t} ({prazo}) que quer ganho dobrado na alta com proteção parcial na queda."),
             (
                 "Como encaixa",
-                f"Aceleradora Dinâmica: 2× até a call vendida {ko_h:.0f}% "
-                f"(teto +{cap:.0f}% se ultrapassar o strike). "
+                f"Aceleradora Dinâmica: 2× enquanto não atingir a call vendida {ko_h:.0f}%. "
+                f"Ao atingir esse nível, a call KO no mesmo strike nocauteia e vira pó (retorno 0%). "
                 f"Put KO {ko_l:.0f}%: piso 0% na queda moderada; abaixo do KO, acompanha o ativo.",
             ),
             ("Fechamento", "Material de uso interno — condições no DIE."),
@@ -487,15 +488,15 @@ def make_acel(t, fixing, ko_h, ko_l, bid):
         "x_min": min(-50, int(L) - 10),
         "x_max": max(80, int(H) + 30),
         "y_min": min(-50, int(L) - 10),
-        "y_max": max(80, int(cap) + 20),
-        "js_const": f"var L={L}, H={H}, CAP={cap};",
-        # 2× até o strike da call vendida; acima, payoff fixo em 2×H
-        "js_fn": "if (x <= L) return x; if (x < 0) return 0; if (x < H) return 2*x; return CAP;",
+        "y_max": max(80, int(peak) + 20),
+        "js_const": f"var L={L}, H={H};",
+        # 2× até (sem atingir) a call vendida; ao atingir/ultrapassar: call KO vira pó → 0%
+        "js_fn": "if (x <= L) return x; if (x < 0) return 0; if (x < H) return 2*x; return 0;",
         "js_regime": (
             "if (x <= L) return 'KO baixa: acompanha o ativo.'; "
             "if (x < 0) return 'Proteção parcial: 0%.'; "
-            "if (x < H) return 'Alta acelerada: 2×.'; "
-            "return 'Acima da call vendida: retorno fixo em '+CAP+'%.';"
+            "if (x < H) return 'Alta acelerada: 2× (ainda não atingiu a call vendida).'; "
+            "return 'Atingiu call vendida: call KO vira pó → 0%.';"
         ),
     }
 
@@ -716,7 +717,7 @@ SECTION_META = {
     },
     "Aceleradora Dinâmica": {
         "id": "aceleradora",
-        "blurb": "Ganho dobrado (2×) na alta até a call vendida; proteção parcial na queda.",
+        "blurb": "2× na alta até a call vendida; se atingir, call KO vira pó (0%). Proteção parcial.",
         "color": "#5a4a8a",
     },
     "Triplo Retorno KO": {

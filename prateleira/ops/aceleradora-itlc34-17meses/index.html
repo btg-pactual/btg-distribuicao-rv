@@ -95,15 +95,15 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
       <span class="logo-co"><span class="dot">AC</span> ITLC34</span>
     </div>
     <h1>Aceleradora Dinâmica <span>ITLC34</span></h1>
-    <p class="subtitle">Ganho dobrado (2×) na alta até o strike da call vendida (170%); acima disso o retorno fica fixo em +140%. Proteção parcial na queda até a barreira 40%.</p>
+    <p class="subtitle">Ganho dobrado (2×) na alta enquanto não atingir a call vendida (170%). Ao atingir esse strike, a call KO (mesmo nível) nocauteia e vira pó — retorno 0%. Proteção parcial na queda até a barreira 40%.</p>
   </div>
   <div class="meta-pills"><div class="pill"><strong>Ativo</strong> ITLC34</div><div class="pill"><strong>Prazo</strong> 17 meses</div><div class="pill"><strong>Alta</strong> 2×</div><div class="pill"><strong>Call vendida</strong> 170%</div><div class="pill"><strong>KO baixa</strong> 40%</div></div>
 </header>
-<section class="highlights"><div class="hi"><h3>Prazo</h3><p>17 meses<span></span></p></div><div class="hi"><h3>Alta</h3><p>2×<span>Até call vendida 170% (+70%)</span></p></div><div class="hi"><h3>Teto</h3><p>+140%<span>Fixo se ultrapassar o strike 170%</span></p></div><div class="hi"><h3>Proteção</h3><p>Parcial<span>Piso 0% até KO 40%; abaixo acompanha</span></p></div></section>
+<section class="highlights"><div class="hi"><h3>Prazo</h3><p>17 meses<span></span></p></div><div class="hi"><h3>Alta</h3><p>2×<span>Enquanto não atingir call vendida 170%</span></p></div><div class="hi"><h3>Se atingir</h3><p>0%<span>Call KO no strike 170% vira pó</span></p></div><div class="hi"><h3>Proteção</h3><p>Parcial<span>Piso 0% até KO 40%; abaixo acompanha</span></p></div></section>
 <div class="main">
 <aside class="panel">
   <h2>Estrutura</h2>
-  <table class="struct-table"><thead><tr><th>Perna</th><th>Nível</th></tr></thead><tbody><tr><td><span class="tag b">B</span> Call KO</td><td>100% · barreira 170%</td></tr><tr><td><span class="tag s">S</span> Call</td><td>170% (define o teto 2×)</td></tr><tr><td><span class="tag b">B</span> Put KO</td><td>100% · barreira 40%</td></tr></tbody></table>
+  <table class="struct-table"><thead><tr><th>Perna</th><th>Nível</th></tr></thead><tbody><tr><td><span class="tag b">B</span> Call KO</td><td>100% · barreira 170%</td></tr><tr><td><span class="tag s">S</span> Call</td><td>170%</td></tr><tr><td><span class="tag b">B</span> Put KO</td><td>100% · barreira 40%</td></tr></tbody></table>
   <p class="legend-note">Payoff ilustrativo no vencimento. Condições oficiais no DIE.</p>
 </aside>
 <section class="panel chart-panel">
@@ -131,7 +131,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
     <div class="sim-label"><span>Spot final</span><output id="spotOutMobile">0%</output></div>
     <input type="range" id="spotSliderMobile" min="-70" max="100" step="0.5" value="0"/>
   </div>
-  <div class="zones"><div class="zone"><strong>≤ -60%</strong><p>Put KO nocauteada — acompanha o ativo.</p></div><div class="zone"><strong>-60% → 0%</strong><p>Proteção parcial: retorno 0%.</p></div><div class="zone"><strong>0% → +70%</strong><p>Ganho dobrado: retorno = 2× a alta.</p></div><div class="zone"><strong>≥ +70%</strong><p>Ultrapassou call vendida 170%: retorno fixo +140%.</p></div></div>
+  <div class="zones"><div class="zone"><strong>≤ -60%</strong><p>Put KO nocauteada — acompanha o ativo.</p></div><div class="zone"><strong>-60% → 0%</strong><p>Proteção parcial: retorno 0%.</p></div><div class="zone"><strong>0% → +70%</strong><p>Ganho dobrado: retorno = 2× a alta (ainda não atingiu a call vendida).</p></div><div class="zone"><strong>≥ +70%</strong><p>Atingiu call vendida 170%: call KO vira pó → retorno 0%.</p></div></div>
 </section>
 <aside class="panel panel-sim">
   <h2>Simulador</h2>
@@ -141,12 +141,12 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
     <div class="sim-card"><div class="lbl">Ativo</div><div class="val" id="assetVal">0,0%</div></div>
     <div class="sim-card"><div class="lbl">Estrutura</div><div class="val" id="structVal">0,0%</div></div>
   </div>
-  <div class="regime" id="regimeText">Na alta até +70%: 2×. Acima do strike da call vendida: fixo +140%.</div>
+  <div class="regime" id="regimeText">Na alta até +70%: 2×. Se atingir a call vendida: call KO vira pó (0%).</div>
 </aside>
 </div>
 <section class="speech-box">
   <h2>Speech comercial</h2>
-  <p class="speech-label">Para quem</p><p>Cliente tático em ITLC34 (17 meses) que quer ganho dobrado na alta com proteção parcial na queda.</p><p class="speech-label">Como encaixa</p><p>Aceleradora Dinâmica: 2× até a call vendida 170% (teto +140% se ultrapassar o strike). Put KO 40%: piso 0% na queda moderada; abaixo do KO, acompanha o ativo.</p><p class="speech-label">Fechamento</p><p>Material de uso interno — condições no DIE.</p>
+  <p class="speech-label">Para quem</p><p>Cliente tático em ITLC34 (17 meses) que quer ganho dobrado na alta com proteção parcial na queda.</p><p class="speech-label">Como encaixa</p><p>Aceleradora Dinâmica: 2× enquanto não atingir a call vendida 170%. Ao atingir esse nível, a call KO no mesmo strike nocauteia e vira pó (retorno 0%). Put KO 40%: piso 0% na queda moderada; abaixo do KO, acompanha o ativo.</p><p class="speech-label">Fechamento</p><p>Material de uso interno — condições no DIE.</p>
 </section>
 <p class="footer">Material ilustrativo para uso interno. Não constitui oferta, recomendação ou garantia de rentabilidade.</p>
 <p class="footer-alert">MATERIAL DE USO INTERNO, NÃO ENVIAR AOS CLIENTES</p>
@@ -156,9 +156,9 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
   var X_MIN=-70,X_MAX=100,Y_MIN=-70,Y_MAX=160;
   var PAD={l:48,t:24,r:48,b:24},VW=600,VH=400;
   var PLOT_W=VW-PAD.l-PAD.r,PLOT_H=VH-PAD.t-PAD.b;
-  var L=-60.0, H=70.0, CAP=140.0;
-  function structureReturn(x){ if (x <= L) return x; if (x < 0) return 0; if (x < H) return 2*x; return CAP; }
-  function regimeFor(x){ if (x <= L) return 'KO baixa: acompanha o ativo.'; if (x < 0) return 'Proteção parcial: 0%.'; if (x < H) return 'Alta acelerada: 2×.'; return 'Acima da call vendida: retorno fixo em '+CAP+'%.'; }
+  var L=-60.0, H=70.0;
+  function structureReturn(x){ if (x <= L) return x; if (x < 0) return 0; if (x < H) return 2*x; return 0; }
+  function regimeFor(x){ if (x <= L) return 'KO baixa: acompanha o ativo.'; if (x < 0) return 'Proteção parcial: 0%.'; if (x < H) return 'Alta acelerada: 2× (ainda não atingiu a call vendida).'; return 'Atingiu call vendida: call KO vira pó → 0%.'; }
   function fmtPct(v,d){ d=d==null?1:d; var s=v.toFixed(d).replace('.',','); return (v>0?'+':'')+s+'%'; }
   function xToSvg(x){ return PAD.l+((x-X_MIN)/(X_MAX-X_MIN))*PLOT_W; }
   function yToSvg(y){ return PAD.t+((Y_MAX-y)/(Y_MAX-Y_MIN))*PLOT_H; }
