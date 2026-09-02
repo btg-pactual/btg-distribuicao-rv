@@ -156,8 +156,12 @@ h1 span{color:var(--brand)}
 input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
 .sim-cards{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
 .sim-card{background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:12px}
+.sim-card.wide{grid-column:1 / -1}
 .sim-card .lbl{font-size:11px;color:var(--muted);margin-bottom:4px}
 .sim-card .val{font-size:18px;font-weight:700}
+.matrix-wrap{margin-top:16px}
+.matrix-wrap h2{margin-top:4px}
+.matrix-note{font-size:11px;color:var(--muted);margin:0 0 10px;line-height:1.4}
 .sim-card .val.pos{color:var(--success)}
 .sim-card .val.neg{color:var(--danger)}
 .regime{font-size:12px;color:var(--ink);background:#fff7ef;border:1px solid #f0d4b8;border-radius:8px;padding:10px 12px;line-height:1.45}
@@ -258,9 +262,11 @@ def op_page(cfg: dict) -> str:
   <input type="range" id="spotSlider" min="{cfg.get('x_min', -50)}" max="{cfg.get('x_max', 80)}" step="0.5" value="0"/>
   <div class="sim-cards">
     <div class="sim-card"><div class="lbl">Ativo</div><div class="val" id="assetVal">0,0%</div></div>
-    <div class="sim-card"><div class="lbl">Estrutura</div><div class="val" id="structVal">0,0%</div></div>
+    <div class="sim-card"><div class="lbl">Put (nocional)</div><div class="val" id="structVal">0,0%</div></div>
+    {cfg.get('sim_extra_html', '')}
   </div>
   <div class="regime" id="regimeText">{cfg['regime0']}</div>
+  {cfg.get('matrix_html', '')}
 </aside>
 </div>
 <section class="speech-box">
@@ -347,6 +353,12 @@ def op_page(cfg: dict) -> str:
     var av=document.getElementById('assetVal'),sv=document.getElementById('structVal');
     av.textContent=fmtPct(x); av.className='val '+(x>0?'pos':x<0?'neg':'');
     sv.textContent=fmtPct(ys); sv.className='val '+(ys>0?'pos':ys<0?'neg':'');
+    var pv=document.getElementById('premVal');
+    if (pv && typeof COST === 'number' && COST !== 0) {{
+      var rp = (ys / COST) * 100;
+      pv.textContent = fmtPct(rp, 0);
+      pv.className = 'val ' + (rp > 0 ? 'pos' : rp < 0 ? 'neg' : '');
+    }}
     document.getElementById('regimeText').textContent=regimeFor(x);
     var px=xToSvg(x);
     document.getElementById('hoverLine').setAttribute('x1',px);
@@ -359,7 +371,7 @@ def op_page(cfg: dict) -> str:
     document.getElementById('hoverAsset').setAttribute('cy',yToSvg(Math.max(Y_MIN,Math.min(Y_MAX,x))));
     document.getElementById('hoverAsset').setAttribute('opacity','1');
     var tip=document.getElementById('tooltip');
-    tip.innerHTML='<div class="t-title">Spot '+fmtPct(x)+'</div><div class="row"><span>Ativo</span><span>'+fmtPct(x)+'</span></div><div class="row"><span>Estrutura</span><span>'+fmtPct(ys)+'</span></div>';
+    tip.innerHTML='<div class="t-title">Spot '+fmtPct(x)+'</div><div class="row"><span>Ativo</span><span>'+fmtPct(x)+'</span></div><div class="row"><span>Put (nocional)</span><span>'+fmtPct(ys)+'</span></div>'+(typeof COST==='number' && COST!==0 ? '<div class="row"><span>Sobre o prêmio</span><span>'+fmtPct((ys/COST)*100,0)+'</span></div>' : '');
     tip.className='tooltip on';
     tip.style.left=px+'px'; tip.style.top=yToSvg(ys)+'px';
   }}
@@ -626,19 +638,63 @@ def make_put_ko():
     prazo = months_label(fixing)
     cost, rebate, ko = 2.0, 5.50, -20.0
     slug = slugify("put-ko-rebate", t, prazo.replace(" ", ""))
+
+    def net_at(x: float) -> float:
+        if x <= ko:
+            return rebate - cost
+        return max(-x, 0.0) - cost
+
+    def prem_at(x: float) -> float:
+        return (net_at(x) / cost) * 100.0
+
+    spots = [10.0, 0.0, -5.0, -10.0, -15.0, -19.0, -20.0, -30.0, -40.0]
+    matrix_rows = []
+    for s in spots:
+        n, p = net_at(s), prem_at(s)
+        note = "KO · rebate" if s <= ko else ("OTM" if s >= 0 else "ITM")
+        ns = f"{n:+.1f}".replace(".", ",")
+        ps = f"{p:+.0f}"
+        ss = f"{s:+.0f}"
+        matrix_rows.append(
+            f"<tr><td>{ss}%</td><td>{ns}%</td><td><strong>{ps}%</strong></td><td>{note}</td></tr>"
+        )
+    ko_net = rebate - cost
+    ko_prem = (ko_net / cost) * 100
+    ko_net_s = f"{ko_net:.2f}".replace(".", ",")
+
+    matrix_html = f"""
+  <div class="matrix-wrap">
+    <h2>Matriz de ganho (só prêmio)</h2>
+    <p class="matrix-note">
+      Retorno <strong>sobre o prêmio pago (2,00%)</strong> =
+      (resultado no nocional ÷ 2,00%) × 100.
+      No KO: líquido +{ko_net_s}% no nocional → <strong>+{ko_prem:.0f}%</strong> sobre o prêmio.
+    </p>
+    <table class="struct-table">
+      <thead><tr><th>Spot</th><th>Nocional</th><th>Sobre prêmio</th><th></th></tr></thead>
+      <tbody>
+        {''.join(matrix_rows)}
+      </tbody>
+    </table>
+  </div>
+"""
+
     return slug, {
         "title": f"Put KO c/ Rebate {t}",
         "h1": "Put KO com Rebate",
         "ticker": t,
         "dot": "PK",
         "brand": "#2f6b5a",
-        "subtitle": f"Put down-and-out: ganha na queda até a barreira; no KO recebe rebate líquido.",
+        "subtitle": (
+            f"Put down-and-out EMBJ3: ganha na queda até a barreira; no KO recebe rebate. "
+            f"Matriz também em retorno % só sobre o prêmio (2,00%)."
+        ),
         "pills": [("Ativo", t), ("Prazo", prazo), ("KO", "80%"), ("Rebate", "5,50%"), ("Preço", "2,00%")],
         "highlights": [
             ("Prazo", prazo, ""),
-            ("Sem KO", "|queda| − 2%", "Put ATM"),
-            ("No KO", f"+{rebate-cost:.2f}%".replace(".", ","), "Rebate − preço"),
-            ("Risco", "−2,00%", "Preço pago"),
+            ("Sem KO", "|queda| − 2%", "Put ATM no nocional"),
+            ("No KO", f"+{ko_net:.2f}%".replace(".", ","), f"+{ko_prem:.0f}% sobre o prêmio"),
+            ("Risco", "−100%", "Sobre o prêmio (OTM)"),
         ],
         "struct": [
             ('<span class="tag b">B</span> Put KO', "100% · barreira 80%"),
@@ -646,19 +702,36 @@ def make_put_ko():
             ("Preço (offer)", "2,00%"),
         ],
         "zones": [
-            ("> −20%", "Put: max(|queda|,0) − 2%."),
-            ("≤ −20%", f"Rebate líquido +{rebate-cost:.2f}%."),
-            ("Risco", "Perda máxima = preço 2%."),
+            ("> −20%", "Put ITM: (|queda| − 2%) no nocional; ÷2% = ganho sobre o prêmio."),
+            ("≤ −20%", f"Rebate líquido +{ko_net:.2f}% no nocional → +{ko_prem:.0f}% sobre o prêmio.".replace(".", ",")),
+            ("Alta / 0%", "OTM: −2% nocional = −100% sobre o prêmio."),
         ],
-        "regime0": "Sem KO: participa da queda menos o preço.",
+        "regime0": "Sem KO: participa da queda menos o preço. Veja também o ganho % só sobre o prêmio.",
         "speech": [
-            ("Para quem", f"Cliente que quer proteção/tática de queda em {t} ({prazo}) com rebate se KO."),
-            ("Como encaixa", "Put KO 80% · rebate 5,50% · preço 2,00%."),
+            ("Para quem", f"Cliente tático em queda de {t} ({prazo}) — put com rebate se KO."),
+            (
+                "Como encaixa",
+                f"Put KO 80% · rebate 5,50% · preço 2,00%. "
+                f"No KO: +{ko_net_s}% no nocional = +{ko_prem:.0f}% sobre o prêmio. "
+                f"Na alta, perda limitada a −100% do prêmio.",
+            ),
             ("Fechamento", "Material de uso interno — condições no DIE."),
         ],
+        "sim_extra_html": (
+            '<div class="sim-card wide">'
+            '<div class="lbl">Retorno sobre o prêmio (2,00%)</div>'
+            '<div class="val" id="premVal">−100%</div>'
+            "</div>"
+        ),
+        "matrix_html": matrix_html,
         "js_const": f"var KO={ko}, REB={rebate}, COST={cost};",
         "js_fn": "if (x <= KO) return REB - COST; return Math.max(-x, 0) - COST;",
-        "js_regime": "if (x <= KO) return 'KO: rebate líquido.'; if (x < 0) return 'Put ITM menos preço.'; return 'OTM: −preço.';",
+        "js_regime": (
+            "var rp=(structureReturn(x)/COST)*100; "
+            "if (x <= KO) return 'KO: rebate líquido +'+(REB-COST).toFixed(2).replace('.',',')+'% no nocional · '+rp.toFixed(0)+'% sobre o prêmio.'; "
+            "if (x < 0) return 'Put ITM: '+structureReturn(x).toFixed(1).replace('.',',')+'% nocional · '+rp.toFixed(0)+'% sobre o prêmio.'; "
+            "return 'OTM: −2% nocional · −100% sobre o prêmio.';"
+        ),
     }
 
 

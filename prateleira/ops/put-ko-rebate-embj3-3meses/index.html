@@ -70,8 +70,12 @@ h1 span{color:var(--brand)}
 input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
 .sim-cards{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
 .sim-card{background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:12px}
+.sim-card.wide{grid-column:1 / -1}
 .sim-card .lbl{font-size:11px;color:var(--muted);margin-bottom:4px}
 .sim-card .val{font-size:18px;font-weight:700}
+.matrix-wrap{margin-top:16px}
+.matrix-wrap h2{margin-top:4px}
+.matrix-note{font-size:11px;color:var(--muted);margin:0 0 10px;line-height:1.4}
 .sim-card .val.pos{color:var(--success)}
 .sim-card .val.neg{color:var(--danger)}
 .regime{font-size:12px;color:var(--ink);background:#fff7ef;border:1px solid #f0d4b8;border-radius:8px;padding:10px 12px;line-height:1.45}
@@ -96,11 +100,11 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
       <span class="logo-co"><span class="dot">PK</span> EMBJ3</span>
     </div>
     <h1>Put KO com Rebate <span>EMBJ3</span></h1>
-    <p class="subtitle">Put down-and-out: ganha na queda até a barreira; no KO recebe rebate líquido.</p>
+    <p class="subtitle">Put down-and-out EMBJ3: ganha na queda até a barreira; no KO recebe rebate. Matriz também em retorno % só sobre o prêmio (2,00%).</p>
   </div>
   <div class="meta-pills"><div class="pill"><strong>Ativo</strong> EMBJ3</div><div class="pill"><strong>Prazo</strong> 3 meses</div><div class="pill"><strong>KO</strong> 80%</div><div class="pill"><strong>Rebate</strong> 5,50%</div><div class="pill"><strong>Preço</strong> 2,00%</div></div>
 </header>
-<section class="highlights"><div class="hi"><h3>Prazo</h3><p>3 meses<span></span></p></div><div class="hi"><h3>Sem KO</h3><p>|queda| − 2%<span>Put ATM</span></p></div><div class="hi"><h3>No KO</h3><p>+3,50%<span>Rebate − preço</span></p></div><div class="hi"><h3>Risco</h3><p>−2,00%<span>Preço pago</span></p></div></section>
+<section class="highlights"><div class="hi"><h3>Prazo</h3><p>3 meses<span></span></p></div><div class="hi"><h3>Sem KO</h3><p>|queda| − 2%<span>Put ATM no nocional</span></p></div><div class="hi"><h3>No KO</h3><p>+3,50%<span>+175% sobre o prêmio</span></p></div><div class="hi"><h3>Risco</h3><p>−100%<span>Sobre o prêmio (OTM)</span></p></div></section>
 <div class="main">
 <aside class="panel">
   <h2>Estrutura</h2>
@@ -136,7 +140,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
     <div class="sim-label"><span>Spot final</span><output id="spotOutMobile">0%</output></div>
     <input type="range" id="spotSliderMobile" min="-50" max="80" step="0.5" value="0"/>
   </div>
-  <div class="zones"><div class="zone"><strong>> −20%</strong><p>Put: max(|queda|,0) − 2%.</p></div><div class="zone"><strong>≤ −20%</strong><p>Rebate líquido +3.50%.</p></div><div class="zone"><strong>Risco</strong><p>Perda máxima = preço 2%.</p></div></div>
+  <div class="zones"><div class="zone"><strong>> −20%</strong><p>Put ITM: (|queda| − 2%) no nocional; ÷2% = ganho sobre o prêmio.</p></div><div class="zone"><strong>≤ −20%</strong><p>Rebate líquido +3,50% no nocional → +175% sobre o prêmio,</p></div><div class="zone"><strong>Alta / 0%</strong><p>OTM: −2% nocional = −100% sobre o prêmio.</p></div></div>
 </section>
 <aside class="panel panel-sim">
   <h2>Simulador</h2>
@@ -144,14 +148,31 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
   <input type="range" id="spotSlider" min="-50" max="80" step="0.5" value="0"/>
   <div class="sim-cards">
     <div class="sim-card"><div class="lbl">Ativo</div><div class="val" id="assetVal">0,0%</div></div>
-    <div class="sim-card"><div class="lbl">Estrutura</div><div class="val" id="structVal">0,0%</div></div>
+    <div class="sim-card"><div class="lbl">Put (nocional)</div><div class="val" id="structVal">0,0%</div></div>
+    <div class="sim-card wide"><div class="lbl">Retorno sobre o prêmio (2,00%)</div><div class="val" id="premVal">−100%</div></div>
   </div>
-  <div class="regime" id="regimeText">Sem KO: participa da queda menos o preço.</div>
+  <div class="regime" id="regimeText">Sem KO: participa da queda menos o preço. Veja também o ganho % só sobre o prêmio.</div>
+  
+  <div class="matrix-wrap">
+    <h2>Matriz de ganho (só prêmio)</h2>
+    <p class="matrix-note">
+      Retorno <strong>sobre o prêmio pago (2,00%)</strong> =
+      (resultado no nocional ÷ 2,00%) × 100.
+      No KO: líquido +3,50% no nocional → <strong>+175%</strong> sobre o prêmio.
+    </p>
+    <table class="struct-table">
+      <thead><tr><th>Spot</th><th>Nocional</th><th>Sobre prêmio</th><th></th></tr></thead>
+      <tbody>
+        <tr><td>+10%</td><td>-2,0%</td><td><strong>-100%</strong></td><td>OTM</td></tr><tr><td>+0%</td><td>-2,0%</td><td><strong>-100%</strong></td><td>OTM</td></tr><tr><td>-5%</td><td>+3,0%</td><td><strong>+150%</strong></td><td>ITM</td></tr><tr><td>-10%</td><td>+8,0%</td><td><strong>+400%</strong></td><td>ITM</td></tr><tr><td>-15%</td><td>+13,0%</td><td><strong>+650%</strong></td><td>ITM</td></tr><tr><td>-19%</td><td>+17,0%</td><td><strong>+850%</strong></td><td>ITM</td></tr><tr><td>-20%</td><td>+3,5%</td><td><strong>+175%</strong></td><td>KO · rebate</td></tr><tr><td>-30%</td><td>+3,5%</td><td><strong>+175%</strong></td><td>KO · rebate</td></tr><tr><td>-40%</td><td>+3,5%</td><td><strong>+175%</strong></td><td>KO · rebate</td></tr>
+      </tbody>
+    </table>
+  </div>
+
 </aside>
 </div>
 <section class="speech-box">
   <h2>Speech comercial</h2>
-  <p class="speech-label">Para quem</p><p>Cliente que quer proteção/tática de queda em EMBJ3 (3 meses) com rebate se KO.</p><p class="speech-label">Como encaixa</p><p>Put KO 80% · rebate 5,50% · preço 2,00%.</p><p class="speech-label">Fechamento</p><p>Material de uso interno — condições no DIE.</p>
+  <p class="speech-label">Para quem</p><p>Cliente tático em queda de EMBJ3 (3 meses) — put com rebate se KO.</p><p class="speech-label">Como encaixa</p><p>Put KO 80% · rebate 5,50% · preço 2,00%. No KO: +3,50% no nocional = +175% sobre o prêmio. Na alta, perda limitada a −100% do prêmio.</p><p class="speech-label">Fechamento</p><p>Material de uso interno — condições no DIE.</p>
 </section>
 <p class="footer">Material ilustrativo para uso interno. Não constitui oferta, recomendação ou garantia de rentabilidade.</p>
 <p class="footer-alert">MATERIAL DE USO INTERNO, NÃO ENVIAR AOS CLIENTES</p>
@@ -163,7 +184,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
   var PLOT_W=VW-PAD.l-PAD.r,PLOT_H=VH-PAD.t-PAD.b;
   var KO=-20.0, REB=5.5, COST=2.0;
   function structureReturn(x){ if (x <= KO) return REB - COST; return Math.max(-x, 0) - COST; }
-  function regimeFor(x){ if (x <= KO) return 'KO: rebate líquido.'; if (x < 0) return 'Put ITM menos preço.'; return 'OTM: −preço.'; }
+  function regimeFor(x){ var rp=(structureReturn(x)/COST)*100; if (x <= KO) return 'KO: rebate líquido +'+(REB-COST).toFixed(2).replace('.',',')+'% no nocional · '+rp.toFixed(0)+'% sobre o prêmio.'; if (x < 0) return 'Put ITM: '+structureReturn(x).toFixed(1).replace('.',',')+'% nocional · '+rp.toFixed(0)+'% sobre o prêmio.'; return 'OTM: −2% nocional · −100% sobre o prêmio.'; }
   function fmtPct(v,d){ d=d==null?1:d; var s=v.toFixed(d).replace('.',','); return (v>0?'+':'')+s+'%'; }
   function xToSvg(x){ return PAD.l+((x-X_MIN)/(X_MAX-X_MIN))*PLOT_W; }
   function yToSvg(y){ return PAD.t+((Y_MAX-y)/(Y_MAX-Y_MIN))*PLOT_H; }
@@ -233,6 +254,12 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
     var av=document.getElementById('assetVal'),sv=document.getElementById('structVal');
     av.textContent=fmtPct(x); av.className='val '+(x>0?'pos':x<0?'neg':'');
     sv.textContent=fmtPct(ys); sv.className='val '+(ys>0?'pos':ys<0?'neg':'');
+    var pv=document.getElementById('premVal');
+    if (pv && typeof COST === 'number' && COST !== 0) {
+      var rp = (ys / COST) * 100;
+      pv.textContent = fmtPct(rp, 0);
+      pv.className = 'val ' + (rp > 0 ? 'pos' : rp < 0 ? 'neg' : '');
+    }
     document.getElementById('regimeText').textContent=regimeFor(x);
     var px=xToSvg(x);
     document.getElementById('hoverLine').setAttribute('x1',px);
@@ -245,7 +272,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
     document.getElementById('hoverAsset').setAttribute('cy',yToSvg(Math.max(Y_MIN,Math.min(Y_MAX,x))));
     document.getElementById('hoverAsset').setAttribute('opacity','1');
     var tip=document.getElementById('tooltip');
-    tip.innerHTML='<div class="t-title">Spot '+fmtPct(x)+'</div><div class="row"><span>Ativo</span><span>'+fmtPct(x)+'</span></div><div class="row"><span>Estrutura</span><span>'+fmtPct(ys)+'</span></div>';
+    tip.innerHTML='<div class="t-title">Spot '+fmtPct(x)+'</div><div class="row"><span>Ativo</span><span>'+fmtPct(x)+'</span></div><div class="row"><span>Put (nocional)</span><span>'+fmtPct(ys)+'</span></div>'+(typeof COST==='number' && COST!==0 ? '<div class="row"><span>Sobre o prêmio</span><span>'+fmtPct((ys/COST)*100,0)+'</span></div>' : '');
     tip.className='tooltip on';
     tip.style.left=px+'px'; tip.style.top=yToSvg(ys)+'px';
   }
