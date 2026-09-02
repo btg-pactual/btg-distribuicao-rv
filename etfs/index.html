@@ -16,99 +16,105 @@
       --bg: #eef2f6;
       --card: #ffffff;
       --alert: #b42318;
-      --pos: #4a7a6a;
-      --inf: #5a6e8a;
-      --pre: #4a5d7a;
-      --deb: #4a6e7a;
-      --lf: #5a7088;
-      --clo: #8a7a4a;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: Segoe UI, -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif;
-      color: var(--ink); background: var(--bg); min-height: 100vh; line-height: 1.5;
-      font-size: 16px;
+      color: var(--ink); background: var(--bg); min-height: 100vh; line-height: 1.45;
     }
     .hero {
       background: linear-gradient(135deg, var(--btg) 0%, var(--btg-mid) 55%, var(--btg-blue) 100%);
-      color: #fff; padding: 40px 24px 44px;
+      color: #fff; padding: 36px 24px 40px;
     }
     .hero-inner { max-width: 960px; margin: 0 auto; }
     .logo-btg {
-      display: inline-block; font-weight: 700; font-size: 13px; letter-spacing: 0.1em;
-      color: #fff; border: 1px solid rgba(255,255,255,0.35); padding: 7px 12px;
-      border-radius: 2px; margin-bottom: 22px;
+      display: inline-block; font-weight: 700; font-size: 12px; letter-spacing: 0.1em;
+      border: 1px solid rgba(255,255,255,0.35); padding: 7px 12px; border-radius: 2px; margin-bottom: 22px;
     }
     .hero-row { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; }
-    h1 { font-size: clamp(30px, 5vw, 44px); font-weight: 700; letter-spacing: -0.02em; line-height: 1.15; }
-    .lede { margin-top: 14px; font-size: 18px; color: rgba(255,255,255,0.88); max-width: 36em; }
+    h1 { font-size: clamp(28px, 4.5vw, 40px); font-weight: 700; letter-spacing: -0.02em; line-height: 1.15; }
+    .lede { margin-top: 12px; font-size: 15px; color: rgba(255,255,255,0.82); max-width: 40em; }
     .badge {
-      font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
-      color: #fff; border: 1px solid rgba(255,255,255,0.35); padding: 8px 12px; border-radius: 2px; white-space: nowrap;
+      font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+      border: 1px solid rgba(255,255,255,0.35); padding: 8px 12px; border-radius: 2px; white-space: nowrap;
     }
-    .page { max-width: 960px; margin: 0 auto; padding: 32px 24px 56px; }
-    h2 {
-      font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
-      color: var(--btg-blue); margin: 32px 0 14px; scroll-margin-top: 16px;
-    }
-    h2:first-of-type { margin-top: 0; }
+    .page { max-width: 960px; margin: 0 auto; padding: 28px 24px 56px; }
     .snapshot {
       background: var(--card); border: 1px solid var(--line); border-radius: 4px;
-      padding: 18px 22px; margin-bottom: 8px;
+      padding: 16px 18px; margin-bottom: 22px;
     }
-    .snapshot p { font-size: 16px; color: var(--muted); max-width: 54em; }
-    .nav-chips {
-      display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px;
+    .snapshot p { font-size: 13px; color: var(--muted); }
+
+    .cat-grid {
+      display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px; margin-bottom: 8px;
     }
-    .nav-chips a {
-      text-decoration: none; background: #eef2f6; border: 1px solid var(--line);
-      border-radius: 2px; padding: 6px 11px; color: var(--btg-mid);
-      font-size: 12px; font-weight: 700; letter-spacing: 0.02em;
+    .cat-card {
+      appearance: none; border: 1px solid var(--line); background: var(--card);
+      border-radius: 6px; overflow: hidden; text-align: left; cursor: pointer; padding: 0;
+      display: flex; flex-direction: column;
+      transition: transform 0.12s ease, box-shadow 0.12s ease, border-color 0.12s;
     }
-    .nav-chips a:hover, .nav-chips a:focus-visible {
-      background: #e3ebf5; color: var(--link); outline: none;
+    .cat-card:hover, .cat-card:focus-visible {
+      transform: translateY(-2px); box-shadow: 0 8px 20px rgba(11,31,58,0.08);
+      border-color: #b8c6d6; outline: none;
     }
-    .count {
-      margin-left: 8px; font-weight: 600; color: var(--muted); letter-spacing: 0;
-      text-transform: none; font-size: 12px;
+    .cat-card.active {
+      border-color: var(--cat);
+      box-shadow: 0 0 0 2px color-mix(in srgb, var(--cat) 28%, transparent);
     }
+    .cat-bar { display: block; height: 6px; background: var(--cat); }
+    .cat-body { display: flex; flex-direction: column; gap: 6px; padding: 16px 18px 18px; }
+    .cat-title { font-size: 17px; font-weight: 700; color: var(--btg); }
+    .cat-count { font-size: 11px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--cat); }
+    .cat-blurb { font-size: 13px; color: var(--muted); line-height: 1.4; }
+    .cat-tickers { font-size: 11px; color: #7a8796; line-height: 1.35; margin-top: 2px; }
+
+    .cat-section-head {
+      display: flex; justify-content: space-between; align-items: center; gap: 12px;
+      margin: 8px 0 14px;
+    }
+    .cat-section h2 {
+      font-size: 12px; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--btg-blue); margin: 0;
+    }
+    .cat-back {
+      appearance: none; border: 1px solid var(--line); background: #fff; color: var(--link);
+      font-size: 12px; font-weight: 700; padding: 8px 12px; border-radius: 4px; cursor: pointer;
+    }
+    .cat-back:hover { background: #f5f8fc; }
+
     .ops { list-style: none; display: flex; flex-direction: column; gap: 16px; }
     .op-block { background: var(--card); border: 1px solid var(--line); border-radius: 4px; overflow: hidden; }
+    .op-bar { height: 6px; }
     .op {
-      display: block; text-decoration: none; color: inherit; padding: 24px 22px 20px;
-      transition: background 0.12s ease;
+      display: block; text-decoration: none; color: inherit; padding: 20px 22px 18px;
+      transition: background 0.12s;
     }
     .op:hover, .op:focus-visible { background: #f5f8fc; outline: none; }
-    .op-bar { height: 6px; }
-    .op-bar.pos { background: var(--pos); }
-    .op-bar.inf { background: var(--inf); }
-    .op-bar.pre { background: var(--pre); }
-    .op-bar.deb { background: var(--deb); }
-    .op-bar.lf { background: var(--lf); }
-    .op-bar.clo { background: var(--clo); }
     .op-top { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 8px; }
-    .op-title { font-size: 22px; font-weight: 700; color: var(--btg); }
-    .op-ticker { font-size: 13px; font-weight: 700; color: var(--link); letter-spacing: 0.04em; }
-    .op-blurb { font-size: 16px; color: var(--muted); max-width: 48em; }
+    .op-title { font-size: 18px; font-weight: 700; color: var(--btg); }
+    .op-ticker { font-size: 12px; font-weight: 700; color: var(--link); letter-spacing: 0.04em; }
+    .op-blurb { font-size: 14px; color: var(--muted); max-width: 48em; }
     .op-meta { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 8px; }
     .pill {
       background: #eef2f6; border: 1px solid var(--line); border-radius: 2px;
-      padding: 5px 11px; color: var(--btg-mid); font-size: 12px; font-weight: 600;
+      padding: 4px 10px; color: var(--btg-mid); font-size: 11px; font-weight: 600;
     }
-    .op-cta { margin-top: 14px; font-size: 14px; font-weight: 700; color: var(--link); }
+    .op-cta { margin-top: 12px; font-size: 12px; font-weight: 700; color: var(--link); }
+
     .footer {
-      margin-top: 36px; padding-top: 18px; border-top: 1px solid var(--line);
-      font-size: 13px; color: var(--muted); text-align: center; line-height: 1.55;
+      margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--line);
+      font-size: 11px; color: var(--muted); text-align: center; line-height: 1.55;
     }
-    .footer strong {
-      display: block; margin-top: 14px; color: var(--alert);
-      font-size: 16px; letter-spacing: 0.02em;
-    }
+    .footer strong { display: block; margin-top: 10px; color: var(--alert); font-size: 14px; }
+
+    @media (max-width: 720px) { .cat-grid { grid-template-columns: 1fr; } }
     @media (max-width: 640px) {
       .hero { padding: 28px 16px 32px; }
       .page { padding: 20px 16px 48px; }
       .hero-row { flex-direction: column; align-items: flex-start; }
-      .op-title { font-size: 18px; }
+      .cat-section-head { flex-direction: column; align-items: flex-start; }
     }
   </style>
 </head>
@@ -119,7 +125,7 @@
       <div class="hero-row">
         <div>
           <h1>ETFs — Distribuição Renda Variável</h1>
-          <p class="lede">Prateleira de ETFs de Renda Fixa · BTG Asset</p>
+          <p class="lede">Prateleira de ETFs de Renda Fixa · BTG Asset · escolha um card para ver os ETFs</p>
         </div>
         <div class="badge">Uso interno</div>
       </div>
@@ -127,339 +133,275 @@
   </header>
 
   <main class="page">
-    <h2>Como usar</h2>
     <section class="snapshot">
-      <p>
-        ETFs de renda fixa da BTG Asset separados por tipo: pós-fixado (CDI/Selic), inflação,
-        prefixado, debêntures, letras financeiras e CLO. Cada card abre a página do produto no site da Asset.
-      </p>
-      <nav class="nav-chips" aria-label="Tipos de ETF">
-        <a href="#pos">Pós-fixado</a>
-        <a href="#inflacao">Inflação</a>
-        <a href="#prefixado">Prefixado</a>
-        <a href="#debentures">Debêntures</a>
-        <a href="#lfs">Letras Financeiras</a>
-        <a href="#clo">CLO</a>
-      </nav>
+      <p>ETFs de renda fixa da BTG Asset separados por tipo. Clique no card para abrir a lista de tickers.</p>
     </section>
 
-    <h2 id="pos">Pós-fixado <span class="count">CDI / Selic / Liquidez · 3</span></h2>
-    <ul class="ops">
-      <li class="op-block">
-        <div class="op-bar pos"></div>
-        <a class="op" href="https://www.btgpactual.com/asset-management/etf-lft-lt/" target="_blank" rel="noopener noreferrer">
-          <div class="op-top">
-            <span class="op-title">Tesouro Selic</span>
-            <span class="op-ticker">LLFT11</span>
-          </div>
-          <p class="op-blurb">
-            Replica o Tesouro Selic (ITBR Selic / LFT). Caixa sofisticado com liquidez em bolsa,
-            sem IOF e sem come-cotas.
-          </p>
-          <div class="op-meta">
-            <span class="pill">Pós-fixado</span>
-            <span class="pill">Selic / LFT</span>
-            <span class="pill">ITBR Selic</span>
-          </div>
-          <div class="op-cta">Abrir página do ETF →</div>
-        </a>
-      </li>
-      <li class="op-block">
-        <div class="op-bar pos"></div>
-        <a class="op" href="https://www.btgpactual.com/asset-management/etf/AUPO11" target="_blank" rel="noopener noreferrer">
-          <div class="op-top">
-            <span class="op-title">ITBR Liquidez</span>
-            <span class="op-ticker">AUPO11</span>
-          </div>
-          <p class="op-blurb">
-            Índice TEVA ITBR Liquidez — gestão de caixa com títulos públicos e foco em liquidez
-            e baixa volatilidade.
-          </p>
-          <div class="op-meta">
-            <span class="pill">Pós-fixado</span>
-            <span class="pill">Liquidez</span>
-            <span class="pill">TEVA ITBR Liquidez</span>
-          </div>
-          <div class="op-cta">Abrir página do ETF →</div>
-        </a>
-      </li>
-      <li class="op-block">
-        <div class="op-bar pos"></div>
-        <a class="op" href="https://www.btgpactual.com/asset-management/etf/LIQB11" target="_blank" rel="noopener noreferrer">
-          <div class="op-top">
-            <span class="op-title">ITBR Target 750</span>
-            <span class="op-ticker">LIQB11</span>
-          </div>
-          <p class="op-blurb">
-            Carteira de títulos públicos com prazo médio alvo de ~750 dias — liquidez, baixo risco
-            e eficiência tributária.
-          </p>
-          <div class="op-meta">
-            <span class="pill">Pós-fixado</span>
-            <span class="pill">Target 750 dias</span>
-            <span class="pill">TEVA ITBR Target 750</span>
-          </div>
-          <div class="op-cta">Abrir página do ETF →</div>
-        </a>
-      </li>
-    </ul>
+    <div class="cat-grid" id="catGrid">
+      <button type="button" class="cat-card" data-target="pos" style="--cat:#4a7a6a">
+        <span class="cat-bar"></span>
+        <span class="cat-body">
+          <span class="cat-title">Pós-fixado</span>
+          <span class="cat-count">3 ETFs</span>
+          <span class="cat-blurb">CDI / Selic / liquidez — caixa e pós com títulos públicos.</span>
+          <span class="cat-tickers">LLFT11, AUPO11, LIQB11</span>
+        </span>
+      </button>
 
-    <h2 id="inflacao">Inflação <span class="count">IPCA · 8</span></h2>
-    <ul class="ops">
-      <li class="op-block">
-        <div class="op-bar inf"></div>
-        <a class="op" href="https://www.btgpactual.com/asset-management/etf-inflacao-anbima-curta/sobre-imab5p2-e-etf" target="_blank" rel="noopener noreferrer">
-          <div class="op-top">
-            <span class="op-title">IMA-B 5 P2 · Curta</span>
-            <span class="op-ticker">PACC11</span>
-          </div>
-          <p class="op-blurb">
-            NTN-Bs de prazo curto (IMA-B 5 P2). Inflação com menor duration e menor volatilidade.
-          </p>
-          <div class="op-meta">
-            <span class="pill">Inflação</span>
-            <span class="pill">IMA-B 5 P2</span>
-            <span class="pill">Duration curta</span>
-          </div>
-          <div class="op-cta">Abrir página do ETF →</div>
-        </a>
-      </li>
-      <li class="op-block">
-        <div class="op-bar inf"></div>
-        <a class="op" href="https://www.btgpactual.com/asset-management/etf/WEJR11" target="_blank" rel="noopener noreferrer">
-          <div class="op-top">
-            <span class="op-title">ITBR IPCA</span>
-            <span class="op-ticker">WEJR11</span>
-          </div>
-          <p class="op-blurb">
-            Índice TEVA ITBR IPCA — exposição ampla a NTN-Bs líquidas no mercado brasileiro.
-          </p>
-          <div class="op-meta">
-            <span class="pill">Inflação</span>
-            <span class="pill">TEVA ITBR IPCA</span>
-            <span class="pill">NTN-B</span>
-          </div>
-          <div class="op-cta">Abrir página do ETF →</div>
-        </a>
-      </li>
-      <li class="op-block">
-        <div class="op-bar inf"></div>
-        <a class="op" href="https://www.btgpactual.com/asset-management/SFIX11" target="_blank" rel="noopener noreferrer">
-          <div class="op-top">
-            <span class="op-title">IPCA 95</span>
-            <span class="op-ticker">SFIX11</span>
-          </div>
-          <p class="op-blurb">
-            Estratégia Teva IPCA 95 — mix de inflação com componente de eficiência/prazo.
-          </p>
-          <div class="op-meta">
-            <span class="pill">Inflação</span>
-            <span class="pill">Teva IPCA 95</span>
-            <span class="pill">NTN-B</span>
-          </div>
-          <div class="op-cta">Abrir página do ETF →</div>
-        </a>
-      </li>
-      <li class="op-block">
-        <div class="op-bar inf"></div>
-        <a class="op" href="https://www.btgpactual.com/asset-management/etf-inflacao-anbima-geral/sobre-imab-e-etf" target="_blank" rel="noopener noreferrer">
-          <div class="op-top">
-            <span class="op-title">IMA-B · Geral</span>
-            <span class="op-ticker">PACG11</span>
-          </div>
-          <p class="op-blurb">
-            Replica o IMA-B completo — cesta de NTN-Bs em todos os vértices da curva de inflação.
-          </p>
-          <div class="op-meta">
-            <span class="pill">Inflação</span>
-            <span class="pill">IMA-B</span>
-            <span class="pill">Curva completa</span>
-          </div>
-          <div class="op-cta">Abrir página do ETF →</div>
-        </a>
-      </li>
-      <li class="op-block">
-        <div class="op-bar inf"></div>
-        <a class="op" href="https://www.btgpactual.com/asset-management/PACL11" target="_blank" rel="noopener noreferrer">
-          <div class="op-top">
-            <span class="op-title">IMA-B 5+</span>
-            <span class="op-ticker">PACL11</span>
-          </div>
-          <p class="op-blurb">
-            NTN-Bs com vencimento acima de 5 anos (IMA-B 5+). Maior duration e sensibilidade a juros reais.
-          </p>
-          <div class="op-meta">
-            <span class="pill">Inflação</span>
-            <span class="pill">IMA-B 5+</span>
-            <span class="pill">Duration longa</span>
-          </div>
-          <div class="op-cta">Abrir página do ETF →</div>
-        </a>
-      </li>
-      <li class="op-block">
-        <div class="op-bar inf"></div>
-        <a class="op" href="https://www.btgpactual.com/asset-management/etf/MIDB11/" target="_blank" rel="noopener noreferrer">
-          <div class="op-top">
-            <span class="op-title">IPCA 2035 · Ponto</span>
-            <span class="op-ticker">MIDB11</span>
-          </div>
-          <p class="op-blurb">
-            Exposição concentrada na NTN-B 2035 (TEVA ITBR IPCA 2035) — vértice específico da curva.
-          </p>
-          <div class="op-meta">
-            <span class="pill">Inflação</span>
-            <span class="pill">NTN-B 2035</span>
-            <span class="pill">Ponto da curva</span>
-          </div>
-          <div class="op-cta">Abrir página do ETF →</div>
-        </a>
-      </li>
-      <li class="op-block">
-        <div class="op-bar inf"></div>
-        <a class="op" href="https://www.btgpactual.com/asset-management/etf-inflacao/sobre-itbr-ipca-ultra-longo-ce-e-etf" target="_blank" rel="noopener noreferrer">
-          <div class="op-top">
-            <span class="op-title">IPCA Ultra Longo CE</span>
-            <span class="op-ticker">PACB11</span>
-          </div>
-          <p class="op-blurb">
-            NTN-Bs de maior prazo com convexidade aprimorada (ITBR IPCA Ultra Longo CE).
-            Máxima duration na prateleira de inflação.
-          </p>
-          <div class="op-meta">
-            <span class="pill">Inflação</span>
-            <span class="pill">Ultra longo</span>
-            <span class="pill">Convexity Enhanced</span>
-          </div>
-          <div class="op-cta">Abrir página do ETF →</div>
-        </a>
-      </li>
-      <li class="op-block">
-        <div class="op-bar inf"></div>
-        <a class="op" href="https://www.btgpactual.com/asset-management/etf/AREA11" target="_blank" rel="noopener noreferrer">
-          <div class="op-top">
-            <span class="op-title">IPCA Rendimento · Renda</span>
-            <span class="op-ticker">AREA11</span>
-          </div>
-          <p class="op-blurb">
-            Teva ITBR-IPCA Rendimento — NTN-Bs com cupom, pensadas para fluxo de renda mais recorrente.
-          </p>
-          <div class="op-meta">
-            <span class="pill">Inflação</span>
-            <span class="pill">Renda / cupom</span>
-            <span class="pill">ITBR IPCA Rendimento</span>
-          </div>
-          <div class="op-cta">Abrir página do ETF →</div>
-        </a>
-      </li>
-    </ul>
+      <button type="button" class="cat-card" data-target="inflacao" style="--cat:#5a6e8a">
+        <span class="cat-bar"></span>
+        <span class="cat-body">
+          <span class="cat-title">Inflação</span>
+          <span class="cat-count">8 ETFs</span>
+          <span class="cat-blurb">IPCA / NTN-B — da duration curta ao ultra longo e renda.</span>
+          <span class="cat-tickers">PACC11, WEJR11, SFIX11, PACG11, PACL11, MIDB11, PACB11, AREA11</span>
+        </span>
+      </button>
 
-    <h2 id="prefixado">Prefixado <span class="count">1</span></h2>
-    <ul class="ops">
-      <li class="op-block">
-        <div class="op-bar pre"></div>
-        <a class="op" href="https://www.btgpactual.com/asset-management/LTNB11" target="_blank" rel="noopener noreferrer">
-          <div class="op-top">
-            <span class="op-title">IRF-M</span>
-            <span class="op-ticker">LTNB11</span>
-          </div>
-          <p class="op-blurb">
-            Replica o IRF-M — títulos públicos prefixados (LTN e NTN-F). Sensível à trajetória da Selic
-            e dos prêmios de juros.
-          </p>
-          <div class="op-meta">
-            <span class="pill">Prefixado</span>
-            <span class="pill">IRF-M</span>
-            <span class="pill">LTN / NTN-F</span>
-          </div>
-          <div class="op-cta">Abrir página do ETF →</div>
-        </a>
-      </li>
-    </ul>
+      <button type="button" class="cat-card" data-target="prefixado" style="--cat:#4a5d7a">
+        <span class="cat-bar"></span>
+        <span class="cat-body">
+          <span class="cat-title">Prefixado</span>
+          <span class="cat-count">1 ETF</span>
+          <span class="cat-blurb">Curva pré (LTN / NTN-F) via IRF-M.</span>
+          <span class="cat-tickers">LTNB11</span>
+        </span>
+      </button>
 
-    <h2 id="debentures">Debêntures <span class="count">Crédito privado · 2</span></h2>
-    <ul class="ops">
-      <li class="op-block">
-        <div class="op-bar deb"></div>
-        <a class="op" href="https://www.btgpactual.com/asset-management/etf-debentures/sobre-debentures-e-etf" target="_blank" rel="noopener noreferrer">
-          <div class="op-top">
-            <span class="op-title">Debêntures DI</span>
-            <span class="op-ticker">DEBB11</span>
-          </div>
-          <p class="op-blurb">
-            Índice Teva Debêntures DI — crédito privado pós-fixado com liquidez de bolsa.
-          </p>
-          <div class="op-meta">
-            <span class="pill">Debêntures</span>
-            <span class="pill">CDI</span>
-            <span class="pill">Teva Debêntures DI</span>
-          </div>
-          <div class="op-cta">Abrir página do ETF →</div>
-        </a>
-      </li>
-      <li class="op-block">
-        <div class="op-bar deb"></div>
-        <a class="op" href="https://www.btgpactual.com/asset-management/etf-debentures-margem" target="_blank" rel="noopener noreferrer">
-          <div class="op-top">
-            <span class="op-title">Debêntures Margem DI</span>
-            <span class="op-ticker">MARG11</span>
-          </div>
-          <p class="op-blurb">
-            Debêntures elegíveis a margem na B3, indexadas ao DI — crédito privado com uso em conta margem.
-          </p>
-          <div class="op-meta">
-            <span class="pill">Debêntures</span>
-            <span class="pill">Margem B3</span>
-            <span class="pill">DI</span>
-          </div>
-          <div class="op-cta">Abrir página do ETF →</div>
-        </a>
-      </li>
-    </ul>
+      <button type="button" class="cat-card" data-target="debentures" style="--cat:#4a6e7a">
+        <span class="cat-bar"></span>
+        <span class="cat-body">
+          <span class="cat-title">Debêntures</span>
+          <span class="cat-count">2 ETFs</span>
+          <span class="cat-blurb">Crédito privado pós-fixado (DI), inclusive elegível a margem.</span>
+          <span class="cat-tickers">DEBB11, MARG11</span>
+        </span>
+      </button>
 
-    <h2 id="lfs">Letras Financeiras <span class="count">1</span></h2>
-    <ul class="ops">
-      <li class="op-block">
-        <div class="op-bar lf"></div>
-        <a class="op" href="https://www.btgpactual.com/asset-management/LFIN11" target="_blank" rel="noopener noreferrer">
-          <div class="op-top">
-            <span class="op-title">LFs DI Qualidade</span>
-            <span class="op-ticker">LFIN11</span>
-          </div>
-          <p class="op-blurb">
-            Letras Financeiras indexadas ao DI com critério de qualidade de crédito (Teva LFs DI).
-          </p>
-          <div class="op-meta">
-            <span class="pill">Letras Financeiras</span>
-            <span class="pill">DI</span>
-            <span class="pill">Teva LFs DI</span>
-          </div>
-          <div class="op-cta">Abrir página do ETF →</div>
-        </a>
-      </li>
-    </ul>
+      <button type="button" class="cat-card" data-target="lfs" style="--cat:#5a7088">
+        <span class="cat-bar"></span>
+        <span class="cat-body">
+          <span class="cat-title">Letras Financeiras</span>
+          <span class="cat-count">1 ETF</span>
+          <span class="cat-blurb">LFs DI com critério de qualidade de crédito.</span>
+          <span class="cat-tickers">LFIN11</span>
+        </span>
+      </button>
 
-    <h2 id="clo">CLO <span class="count">Crédito estruturado · 1</span></h2>
-    <ul class="ops">
-      <li class="op-block">
-        <div class="op-bar clo"></div>
-        <a class="op" href="https://www.btgpactual.com/asset-management/etf/CLOB11" target="_blank" rel="noopener noreferrer">
-          <div class="op-top">
-            <span class="op-title">CLO SMART</span>
-            <span class="op-ticker">CLOB11</span>
-          </div>
-          <p class="op-blurb">
-            Primeiro ETF de CLO na B3 — exposição a Collateralized Loan Obligations via índice
-            Dynamic Balanced CLO (JAAA / JBBB).
-          </p>
-          <div class="op-meta">
-            <span class="pill">CLO</span>
-            <span class="pill">Crédito estruturado</span>
-            <span class="pill">USD / BRL</span>
-          </div>
-          <div class="op-cta">Abrir página do ETF →</div>
-        </a>
-      </li>
-    </ul>
+      <button type="button" class="cat-card" data-target="clo" style="--cat:#8a7a4a">
+        <span class="cat-bar"></span>
+        <span class="cat-body">
+          <span class="cat-title">CLO</span>
+          <span class="cat-count">1 ETF</span>
+          <span class="cat-blurb">Crédito estruturado — Collateralized Loan Obligations.</span>
+          <span class="cat-tickers">CLOB11</span>
+        </span>
+      </button>
+    </div>
+
+    <!-- Pós-fixado -->
+    <section class="cat-section" id="pos" hidden>
+      <div class="cat-section-head">
+        <h2>Pós-fixado</h2>
+        <button type="button" class="cat-back" data-back>← Voltar aos cards</button>
+      </div>
+      <ul class="ops">
+        <li class="op-block">
+          <div class="op-bar" style="background:#4a7a6a"></div>
+          <a class="op" href="https://www.btgpactual.com/asset-management/etf-lft-lt/" target="_blank" rel="noopener noreferrer">
+            <div class="op-top"><span class="op-title">Tesouro Selic</span><span class="op-ticker">LLFT11</span></div>
+            <p class="op-blurb">Replica o Tesouro Selic (ITBR Selic / LFT). Caixa sofisticado com liquidez em bolsa, sem IOF e sem come-cotas.</p>
+            <div class="op-meta"><span class="pill">Pós-fixado</span><span class="pill">Selic / LFT</span><span class="pill">ITBR Selic</span></div>
+            <div class="op-cta">Abrir página do ETF →</div>
+          </a>
+        </li>
+        <li class="op-block">
+          <div class="op-bar" style="background:#4a7a6a"></div>
+          <a class="op" href="https://www.btgpactual.com/asset-management/etf/AUPO11" target="_blank" rel="noopener noreferrer">
+            <div class="op-top"><span class="op-title">ITBR Liquidez</span><span class="op-ticker">AUPO11</span></div>
+            <p class="op-blurb">Índice TEVA ITBR Liquidez — gestão de caixa com títulos públicos e foco em liquidez e baixa volatilidade.</p>
+            <div class="op-meta"><span class="pill">Pós-fixado</span><span class="pill">Liquidez</span><span class="pill">TEVA ITBR Liquidez</span></div>
+            <div class="op-cta">Abrir página do ETF →</div>
+          </a>
+        </li>
+        <li class="op-block">
+          <div class="op-bar" style="background:#4a7a6a"></div>
+          <a class="op" href="https://www.btgpactual.com/asset-management/etf/LIQB11" target="_blank" rel="noopener noreferrer">
+            <div class="op-top"><span class="op-title">ITBR Target 750</span><span class="op-ticker">LIQB11</span></div>
+            <p class="op-blurb">Carteira de títulos públicos com prazo médio alvo de ~750 dias — liquidez, baixo risco e eficiência tributária.</p>
+            <div class="op-meta"><span class="pill">Pós-fixado</span><span class="pill">Target 750 dias</span><span class="pill">TEVA ITBR Target 750</span></div>
+            <div class="op-cta">Abrir página do ETF →</div>
+          </a>
+        </li>
+      </ul>
+    </section>
+
+    <!-- Inflação -->
+    <section class="cat-section" id="inflacao" hidden>
+      <div class="cat-section-head">
+        <h2>Inflação</h2>
+        <button type="button" class="cat-back" data-back>← Voltar aos cards</button>
+      </div>
+      <ul class="ops">
+        <li class="op-block">
+          <div class="op-bar" style="background:#5a6e8a"></div>
+          <a class="op" href="https://www.btgpactual.com/asset-management/etf-inflacao-anbima-curta/sobre-imab5p2-e-etf" target="_blank" rel="noopener noreferrer">
+            <div class="op-top"><span class="op-title">IMA-B 5 P2 · Curta</span><span class="op-ticker">PACC11</span></div>
+            <p class="op-blurb">NTN-Bs de prazo curto (IMA-B 5 P2). Inflação com menor duration e menor volatilidade.</p>
+            <div class="op-meta"><span class="pill">Inflação</span><span class="pill">IMA-B 5 P2</span><span class="pill">Duration curta</span></div>
+            <div class="op-cta">Abrir página do ETF →</div>
+          </a>
+        </li>
+        <li class="op-block">
+          <div class="op-bar" style="background:#5a6e8a"></div>
+          <a class="op" href="https://www.btgpactual.com/asset-management/etf/WEJR11" target="_blank" rel="noopener noreferrer">
+            <div class="op-top"><span class="op-title">ITBR IPCA</span><span class="op-ticker">WEJR11</span></div>
+            <p class="op-blurb">Índice TEVA ITBR IPCA — exposição ampla a NTN-Bs líquidas no mercado brasileiro.</p>
+            <div class="op-meta"><span class="pill">Inflação</span><span class="pill">TEVA ITBR IPCA</span><span class="pill">NTN-B</span></div>
+            <div class="op-cta">Abrir página do ETF →</div>
+          </a>
+        </li>
+        <li class="op-block">
+          <div class="op-bar" style="background:#5a6e8a"></div>
+          <a class="op" href="https://www.btgpactual.com/asset-management/SFIX11" target="_blank" rel="noopener noreferrer">
+            <div class="op-top"><span class="op-title">IPCA 95</span><span class="op-ticker">SFIX11</span></div>
+            <p class="op-blurb">Estratégia Teva IPCA 95 — mix de inflação com componente de eficiência/prazo.</p>
+            <div class="op-meta"><span class="pill">Inflação</span><span class="pill">Teva IPCA 95</span><span class="pill">NTN-B</span></div>
+            <div class="op-cta">Abrir página do ETF →</div>
+          </a>
+        </li>
+        <li class="op-block">
+          <div class="op-bar" style="background:#5a6e8a"></div>
+          <a class="op" href="https://www.btgpactual.com/asset-management/etf-inflacao-anbima-geral/sobre-imab-e-etf" target="_blank" rel="noopener noreferrer">
+            <div class="op-top"><span class="op-title">IMA-B · Geral</span><span class="op-ticker">PACG11</span></div>
+            <p class="op-blurb">Replica o IMA-B completo — cesta de NTN-Bs em todos os vértices da curva de inflação.</p>
+            <div class="op-meta"><span class="pill">Inflação</span><span class="pill">IMA-B</span><span class="pill">Curva completa</span></div>
+            <div class="op-cta">Abrir página do ETF →</div>
+          </a>
+        </li>
+        <li class="op-block">
+          <div class="op-bar" style="background:#5a6e8a"></div>
+          <a class="op" href="https://www.btgpactual.com/asset-management/PACL11" target="_blank" rel="noopener noreferrer">
+            <div class="op-top"><span class="op-title">IMA-B 5+</span><span class="op-ticker">PACL11</span></div>
+            <p class="op-blurb">NTN-Bs com vencimento acima de 5 anos (IMA-B 5+). Maior duration e sensibilidade a juros reais.</p>
+            <div class="op-meta"><span class="pill">Inflação</span><span class="pill">IMA-B 5+</span><span class="pill">Duration longa</span></div>
+            <div class="op-cta">Abrir página do ETF →</div>
+          </a>
+        </li>
+        <li class="op-block">
+          <div class="op-bar" style="background:#5a6e8a"></div>
+          <a class="op" href="https://www.btgpactual.com/asset-management/etf/MIDB11/" target="_blank" rel="noopener noreferrer">
+            <div class="op-top"><span class="op-title">IPCA 2035 · Ponto</span><span class="op-ticker">MIDB11</span></div>
+            <p class="op-blurb">Exposição concentrada na NTN-B 2035 (TEVA ITBR IPCA 2035) — vértice específico da curva.</p>
+            <div class="op-meta"><span class="pill">Inflação</span><span class="pill">NTN-B 2035</span><span class="pill">Ponto da curva</span></div>
+            <div class="op-cta">Abrir página do ETF →</div>
+          </a>
+        </li>
+        <li class="op-block">
+          <div class="op-bar" style="background:#5a6e8a"></div>
+          <a class="op" href="https://www.btgpactual.com/asset-management/etf-inflacao/sobre-itbr-ipca-ultra-longo-ce-e-etf" target="_blank" rel="noopener noreferrer">
+            <div class="op-top"><span class="op-title">IPCA Ultra Longo CE</span><span class="op-ticker">PACB11</span></div>
+            <p class="op-blurb">NTN-Bs de maior prazo com convexidade aprimorada (ITBR IPCA Ultra Longo CE). Máxima duration na prateleira de inflação.</p>
+            <div class="op-meta"><span class="pill">Inflação</span><span class="pill">Ultra longo</span><span class="pill">Convexity Enhanced</span></div>
+            <div class="op-cta">Abrir página do ETF →</div>
+          </a>
+        </li>
+        <li class="op-block">
+          <div class="op-bar" style="background:#5a6e8a"></div>
+          <a class="op" href="https://www.btgpactual.com/asset-management/etf/AREA11" target="_blank" rel="noopener noreferrer">
+            <div class="op-top"><span class="op-title">IPCA Rendimento · Renda</span><span class="op-ticker">AREA11</span></div>
+            <p class="op-blurb">Teva ITBR-IPCA Rendimento — NTN-Bs com cupom, pensadas para fluxo de renda mais recorrente.</p>
+            <div class="op-meta"><span class="pill">Inflação</span><span class="pill">Renda / cupom</span><span class="pill">ITBR IPCA Rendimento</span></div>
+            <div class="op-cta">Abrir página do ETF →</div>
+          </a>
+        </li>
+      </ul>
+    </section>
+
+    <!-- Prefixado -->
+    <section class="cat-section" id="prefixado" hidden>
+      <div class="cat-section-head">
+        <h2>Prefixado</h2>
+        <button type="button" class="cat-back" data-back>← Voltar aos cards</button>
+      </div>
+      <ul class="ops">
+        <li class="op-block">
+          <div class="op-bar" style="background:#4a5d7a"></div>
+          <a class="op" href="https://www.btgpactual.com/asset-management/LTNB11" target="_blank" rel="noopener noreferrer">
+            <div class="op-top"><span class="op-title">IRF-M</span><span class="op-ticker">LTNB11</span></div>
+            <p class="op-blurb">Replica o IRF-M — títulos públicos prefixados (LTN e NTN-F). Sensível à trajetória da Selic e dos prêmios de juros.</p>
+            <div class="op-meta"><span class="pill">Prefixado</span><span class="pill">IRF-M</span><span class="pill">LTN / NTN-F</span></div>
+            <div class="op-cta">Abrir página do ETF →</div>
+          </a>
+        </li>
+      </ul>
+    </section>
+
+    <!-- Debêntures -->
+    <section class="cat-section" id="debentures" hidden>
+      <div class="cat-section-head">
+        <h2>Debêntures</h2>
+        <button type="button" class="cat-back" data-back>← Voltar aos cards</button>
+      </div>
+      <ul class="ops">
+        <li class="op-block">
+          <div class="op-bar" style="background:#4a6e7a"></div>
+          <a class="op" href="https://www.btgpactual.com/asset-management/etf-debentures/sobre-debentures-e-etf" target="_blank" rel="noopener noreferrer">
+            <div class="op-top"><span class="op-title">Debêntures DI</span><span class="op-ticker">DEBB11</span></div>
+            <p class="op-blurb">Índice Teva Debêntures DI — crédito privado pós-fixado com liquidez de bolsa.</p>
+            <div class="op-meta"><span class="pill">Debêntures</span><span class="pill">CDI</span><span class="pill">Teva Debêntures DI</span></div>
+            <div class="op-cta">Abrir página do ETF →</div>
+          </a>
+        </li>
+        <li class="op-block">
+          <div class="op-bar" style="background:#4a6e7a"></div>
+          <a class="op" href="https://www.btgpactual.com/asset-management/etf-debentures-margem" target="_blank" rel="noopener noreferrer">
+            <div class="op-top"><span class="op-title">Debêntures Margem DI</span><span class="op-ticker">MARG11</span></div>
+            <p class="op-blurb">Debêntures elegíveis a margem na B3, indexadas ao DI — crédito privado com uso em conta margem.</p>
+            <div class="op-meta"><span class="pill">Debêntures</span><span class="pill">Margem B3</span><span class="pill">DI</span></div>
+            <div class="op-cta">Abrir página do ETF →</div>
+          </a>
+        </li>
+      </ul>
+    </section>
+
+    <!-- LFs -->
+    <section class="cat-section" id="lfs" hidden>
+      <div class="cat-section-head">
+        <h2>Letras Financeiras</h2>
+        <button type="button" class="cat-back" data-back>← Voltar aos cards</button>
+      </div>
+      <ul class="ops">
+        <li class="op-block">
+          <div class="op-bar" style="background:#5a7088"></div>
+          <a class="op" href="https://www.btgpactual.com/asset-management/LFIN11" target="_blank" rel="noopener noreferrer">
+            <div class="op-top"><span class="op-title">LFs DI Qualidade</span><span class="op-ticker">LFIN11</span></div>
+            <p class="op-blurb">Letras Financeiras indexadas ao DI com critério de qualidade de crédito (Teva LFs DI).</p>
+            <div class="op-meta"><span class="pill">Letras Financeiras</span><span class="pill">DI</span><span class="pill">Teva LFs DI</span></div>
+            <div class="op-cta">Abrir página do ETF →</div>
+          </a>
+        </li>
+      </ul>
+    </section>
+
+    <!-- CLO -->
+    <section class="cat-section" id="clo" hidden>
+      <div class="cat-section-head">
+        <h2>CLO</h2>
+        <button type="button" class="cat-back" data-back>← Voltar aos cards</button>
+      </div>
+      <ul class="ops">
+        <li class="op-block">
+          <div class="op-bar" style="background:#8a7a4a"></div>
+          <a class="op" href="https://www.btgpactual.com/asset-management/etf/CLOB11" target="_blank" rel="noopener noreferrer">
+            <div class="op-top"><span class="op-title">CLO SMART</span><span class="op-ticker">CLOB11</span></div>
+            <p class="op-blurb">Primeiro ETF de CLO na B3 — exposição a Collateralized Loan Obligations via índice Dynamic Balanced CLO (JAAA / JBBB).</p>
+            <div class="op-meta"><span class="pill">CLO</span><span class="pill">Crédito estruturado</span><span class="pill">USD / BRL</span></div>
+            <div class="op-cta">Abrir página do ETF →</div>
+          </a>
+        </li>
+      </ul>
+    </section>
 
     <p class="footer">
       Material ilustrativo para uso interno. Não constitui oferta, recomendação ou garantia de rentabilidade.
@@ -467,5 +409,48 @@
       <strong>MATERIAL DE USO INTERNO, NÃO ENVIAR AOS CLIENTES</strong>
     </p>
   </main>
+
+  <script>
+    (function () {
+      var grid = document.getElementById("catGrid");
+      var cards = Array.prototype.slice.call(document.querySelectorAll(".cat-card"));
+      var sections = Array.prototype.slice.call(document.querySelectorAll(".cat-section"));
+      var snapshot = document.querySelector(".snapshot");
+
+      function showGrid() {
+        grid.hidden = false;
+        if (snapshot) snapshot.hidden = false;
+        sections.forEach(function (s) { s.hidden = true; });
+        cards.forEach(function (c) { c.classList.remove("active"); });
+        history.replaceState(null, "", location.pathname);
+      }
+
+      function openCategory(id) {
+        var section = document.getElementById(id);
+        if (!section) return;
+        grid.hidden = true;
+        if (snapshot) snapshot.hidden = true;
+        sections.forEach(function (s) { s.hidden = s !== section; });
+        cards.forEach(function (c) {
+          c.classList.toggle("active", c.getAttribute("data-target") === id);
+        });
+        history.replaceState(null, "", "#" + id);
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      cards.forEach(function (card) {
+        card.addEventListener("click", function () {
+          openCategory(card.getAttribute("data-target"));
+        });
+      });
+
+      document.querySelectorAll("[data-back]").forEach(function (btn) {
+        btn.addEventListener("click", showGrid);
+      });
+
+      var hash = (location.hash || "").replace(/^#/, "");
+      if (hash && document.getElementById(hash)) openCategory(hash);
+    })();
+  </script>
 </body>
 </html>
