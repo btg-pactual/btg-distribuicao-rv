@@ -698,6 +698,10 @@ def make_sh(t, fixing, put, call, ki, bid):
             ("Como encaixa", f"Put {put:.0f}% · call {call:.0f}% KI em {ki:.2f}% · prazo {prazo}."),
             ("Fechamento", "Material de uso interno — condições no DIE."),
         ],
+        "x_min": min(-50, int(floor) - 15),
+        "x_max": max(80, int(ki_var) + 25),
+        "y_min": min(-50, int(floor) - 15),
+        "y_max": max(80, int(ki_var) + 25, int(cap) + 20),
         "js_const": f"var PUT={put}, CALL={call}, KI={ki};",
         "js_fn": "var st=100+x; var r=st+Math.max(PUT-st,0)-(st>=KI?Math.max(st-CALL,0):0)-100; return r;",
         "js_regime": f"var st=100+x; if(st>=KI) return 'KI: teto {cap:+.0f}%.'; if(x<=(PUT-100)) return 'Piso da put.'; return 'Participa 1:1.';",
@@ -786,6 +790,7 @@ def make_acel(t, fixing, ko_h, ko_l, bid):
 def make_triplo(t, fixing, sold, ko_h, ko_l, bid):
     prazo = months_label(fixing)
     H, L, CAP = ko_h - 100, ko_l - 100, sold - 100
+    peak = 3 * H
     slug = slugify("triplo", t, f"ki{int(ko_h)}", prazo.replace(" ", ""))
     return slug, {
         "title": f"Triplo Retorno KO {t}",
@@ -817,6 +822,10 @@ def make_triplo(t, fixing, sold, ko_h, ko_l, bid):
             ("Como encaixa", f"Triplo KO · alta até {ko_h:.0f}% · queda até {ko_l:.0f}% · teto {CAP:+.0f}%."),
             ("Fechamento", "Material de uso interno — condições no DIE."),
         ],
+        "x_min": min(-50, int(L) - 15),
+        "x_max": max(80, int(H) + 30),
+        "y_min": min(-50, int(L) - 15),
+        "y_max": max(100, int(math.ceil(peak / 10.0) * 10) + 20),
         "js_const": f"var L={L}, H={H}, CAP={CAP};",
         "js_fn": "if (x < L) return x; if (x < 0) return -x; if (x < H) return 3*x; return CAP;",
         "js_regime": "if (x < L) return 'Abaixo do put KO: acompanha.'; if (x < 0) return 'Queda moderada: |x|.'; if (x < H) return 'Alta: 3×.'; return 'KO alta: teto.';",
@@ -1415,18 +1424,17 @@ def main():
         if up is not None:
             xmax = cfg.get("x_max", 80)
             xmin = cfg.get("x_min", -50)
+            ymax = cfg.get("y_max", 80)
+            ymin = cfg.get("y_min", -50)
             if up > xmax - 8:
                 xmax = int(math.ceil((up + 10) / 10.0) * 10)
             if up < xmin + 8:
                 xmin = int(math.floor((up - 10) / 10.0) * 10)
+            # Expande só o eixo do ativo p/ caber o PA; não achata o Y do payoff (ex.: Triplo 3×).
             cfg["x_max"] = xmax
             cfg["x_min"] = xmin
-            ymax = cfg.get("y_max", xmax)
-            ymin = cfg.get("y_min", xmin)
-            if xmax > ymax:
-                cfg["y_max"] = xmax
-            if xmin < ymin:
-                cfg["y_min"] = xmin
+            cfg["y_max"] = max(ymax, int(math.ceil(abs(up) / 10.0) * 10) + 10)
+            cfg["y_min"] = min(ymin, xmin)
         cfg["research_html"] = research_html(cfg)
 
     for slug, cfg in all_ops:

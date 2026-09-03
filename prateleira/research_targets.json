@@ -2,283 +2,283 @@
   "NVDC34": {
     "ticker": "NVDC34",
     "url": "https://content.btgpactual.com/research/ativo/NVDC34",
-    "price": 24.32,
-    "last_trade": "2026-09-03T19:53:42"
+    "price": 24.26,
+    "last_trade": "2026-09-03T20:08:00"
   },
   "TEND3": {
     "ticker": "TEND3",
     "url": "https://content.btgpactual.com/research/ativo/TEND3",
-    "price": 33.41,
-    "last_trade": "2026-09-03T19:53:46",
+    "price": 33.48,
+    "last_trade": "2026-09-03T20:04:00",
     "rec": "COMPRA",
     "rec_lbl": "Compra",
     "rec_cls": "buy",
     "date": "2026-08-18T19:50:50.134Z",
     "company": "Tenda",
     "target": 44.0,
-    "upside": 31.697096677641447
+    "upside": 31.421744324970135
   },
   "RDOR3": {
     "ticker": "RDOR3",
     "url": "https://content.btgpactual.com/research/ativo/RDOR3",
-    "price": 37.44,
-    "last_trade": "2026-09-03T19:53:49",
+    "price": 37.39,
+    "last_trade": "2026-09-03T20:05:46",
     "rec": "COMPRA",
     "rec_lbl": "Compra",
     "rec_cls": "buy",
     "date": "2026-08-18T10:07:31.843Z",
     "company": "Rede D'or",
     "target": 58.0,
-    "upside": 54.91452991452992
+    "upside": 55.12169029152179
   },
   "AXIA3": {
     "ticker": "AXIA3",
     "url": "https://content.btgpactual.com/research/ativo/AXIA3",
-    "price": 55.82,
-    "last_trade": "2026-09-03T19:53:50",
+    "price": 55.72,
+    "last_trade": "2026-09-03T20:05:30",
     "rec": "COMPRA",
     "rec_lbl": "Compra",
     "rec_cls": "buy",
     "date": "2026-08-19T14:11:11.050Z",
     "company": "Axia Energia",
     "target": 74.0,
-    "upside": 32.56897169473307
+    "upside": 32.806891600861455
   },
   "WEGE3": {
     "ticker": "WEGE3",
     "url": "https://content.btgpactual.com/research/ativo/WEGE3",
-    "price": 52.04,
-    "last_trade": "2026-09-03T19:53:49",
+    "price": 52.07,
+    "last_trade": "2026-09-03T20:05:39",
     "rec": "COMPRA",
     "rec_lbl": "Compra",
     "rec_cls": "buy",
     "date": "2026-07-27T16:04:32.859Z",
     "company": "WEG",
     "target": 65.0,
-    "upside": 24.903920061491156
+    "upside": 24.831956980987123
   },
   "PRIO3": {
     "ticker": "PRIO3",
     "url": "https://content.btgpactual.com/research/ativo/PRIO3",
-    "price": 61.49,
-    "last_trade": "2026-09-03T19:53:52",
+    "price": 61.5,
+    "last_trade": "2026-09-03T20:05:39",
     "rec": "COMPRA",
     "rec_lbl": "Compra",
     "rec_cls": "buy",
     "date": "2026-08-17T15:44:31.951Z",
     "company": "PetroRio",
     "target": 73.0,
-    "upside": 18.718490811514066
+    "upside": 18.699186991869922
   },
   "SPCX34": {
     "ticker": "SPCX34",
     "url": "https://content.btgpactual.com/research/ativo/SPCX34",
-    "price": 51.22,
-    "last_trade": "2026-09-03T19:53:49",
+    "price": 51.0,
+    "last_trade": "2026-09-03T20:07:00",
     "rec": "COMPRA",
     "rec_lbl": "Compra",
     "rec_cls": "buy",
     "date": "2026-08-05T11:17:22.812Z",
     "company": "SpaceX",
     "target": 77.0,
-    "upside": 50.331901600937144
+    "upside": 50.98039215686274
   },
   "TOTS3": {
     "ticker": "TOTS3",
     "url": "https://content.btgpactual.com/research/ativo/TOTS3",
-    "price": 34.75,
-    "last_trade": "2026-09-03T19:53:52",
+    "price": 34.78,
+    "last_trade": "2026-09-03T20:05:37",
     "rec": "COMPRA",
     "rec_lbl": "Compra",
     "rec_cls": "buy",
     "date": "2026-08-06T13:57:47.970Z",
     "company": "TOTVS",
     "target": 55.0,
-    "upside": 58.273381294964025
+    "upside": 58.13686026451983
   },
   "B3SA3": {
     "ticker": "B3SA3",
     "url": "https://content.btgpactual.com/research/ativo/B3SA3",
-    "price": 17.39,
-    "last_trade": "2026-09-03T19:53:53",
+    "price": 17.41,
+    "last_trade": "2026-09-03T20:05:48",
     "rec": "NEUTRO",
     "rec_lbl": "Neutro",
     "rec_cls": "hold",
     "date": "2026-08-18T00:00:00.000Z",
     "company": "B3",
     "target": 19.0,
-    "upside": 9.258194364577331
+    "upside": 9.132682366456057
   },
   "MRVE3": {
     "ticker": "MRVE3",
     "url": "https://content.btgpactual.com/research/ativo/MRVE3",
-    "price": 5.63,
-    "last_trade": "2026-09-03T19:53:51",
+    "price": 5.61,
+    "last_trade": "2026-09-03T20:05:57",
     "rec": "COMPRA",
     "rec_lbl": "Compra",
     "rec_cls": "buy",
     "date": "2026-08-18T19:50:50.134Z",
     "company": "MRV",
     "target": 12.0,
-    "upside": 113.14387211367674
+    "upside": 113.903743315508
   },
   "ITUB4": {
     "ticker": "ITUB4",
     "url": "https://content.btgpactual.com/research/ativo/ITUB4",
-    "price": 42.01,
-    "last_trade": "2026-09-03T19:53:53",
+    "price": 41.99,
+    "last_trade": "2026-09-03T20:05:52",
     "rec": "COMPRA",
     "rec_lbl": "Compra",
     "rec_cls": "buy",
     "date": "2026-08-06T00:00:00.000Z",
     "company": "Itau Unibanco",
     "target": 54.0,
-    "upside": 28.54082361342538
+    "upside": 28.602048106692067
   },
   "PETR4": {
     "ticker": "PETR4",
     "url": "https://content.btgpactual.com/research/ativo/PETR4",
-    "price": 47.62,
-    "last_trade": "2026-09-03T19:53:52",
+    "price": 47.56,
+    "last_trade": "2026-09-03T20:05:38",
     "rec": "COMPRA",
     "rec_lbl": "Compra",
     "rec_cls": "buy",
     "date": "2026-08-24T14:18:49.467Z",
     "company": "Petrobras",
     "target": 56.0,
-    "upside": 17.597648047039073
+    "upside": 17.746005046257363
   },
   "BBSE3": {
     "ticker": "BBSE3",
     "url": "https://content.btgpactual.com/research/ativo/BBSE3",
-    "price": 41.78,
-    "last_trade": "2026-09-03T19:53:50",
+    "price": 41.82,
+    "last_trade": "2026-09-03T20:05:46",
     "rec": "NEUTRO",
     "rec_lbl": "Neutro",
     "rec_cls": "hold",
     "date": "2026-08-19T10:40:30.000Z",
     "company": "BB Seguridade",
     "target": 40.0,
-    "upside": -4.260411680229781
+    "upside": -4.351984696317556
   },
   "VALE3": {
     "ticker": "VALE3",
     "url": "https://content.btgpactual.com/research/ativo/VALE3",
-    "price": 78.44,
-    "last_trade": "2026-09-03T19:53:52",
+    "price": 78.41,
+    "last_trade": "2026-09-03T20:05:37",
     "rec": "COMPRA",
     "rec_lbl": "Compra",
     "rec_cls": "buy",
     "date": "2026-08-18T10:15:36.602Z",
     "company": "Vale",
     "target": 90.0,
-    "upside": 14.737378888322294
+    "upside": 14.781277898227273
   },
   "EMBJ3": {
     "ticker": "EMBJ3",
     "url": "https://content.btgpactual.com/research/ativo/EMBJ3",
-    "price": 93.47,
-    "last_trade": "2026-09-03T19:53:51",
+    "price": 93.39,
+    "last_trade": "2026-09-03T20:05:36",
     "rec": "COMPRA",
     "rec_lbl": "Compra",
     "rec_cls": "buy",
     "date": "2026-08-24T13:21:19.087Z",
     "company": "Embraer",
     "target": 126.0,
-    "upside": 34.80261046325024
+    "upside": 34.918085448120785
   },
   "ITLC34": {
     "ticker": "ITLC34",
     "url": "https://content.btgpactual.com/research/ativo/ITLC34",
-    "price": 78.0,
-    "last_trade": "2026-09-03T19:53:21"
+    "price": 77.81,
+    "last_trade": "2026-09-03T20:07:00"
   },
   "TSMC34": {
     "ticker": "TSMC34",
     "url": "https://content.btgpactual.com/research/ativo/TSMC34",
-    "price": 265.64,
-    "last_trade": "2026-09-03T19:53:13"
+    "price": 265.8,
+    "last_trade": "2026-09-03T20:07:00"
   },
   "LILY34": {
     "ticker": "LILY34",
     "url": "https://content.btgpactual.com/research/ativo/LILY34",
     "price": 197.59,
-    "last_trade": "2026-09-03T19:51:43"
+    "last_trade": "2026-09-03T20:05:00"
   },
   "HASH11": {
     "ticker": "HASH11",
     "url": "https://content.btgpactual.com/research/ativo/HASH11",
-    "price": 53.95,
-    "last_trade": "2026-09-03T19:53:41"
+    "price": 53.92,
+    "last_trade": "2026-09-03T19:54:33"
   },
   "ROXO34": {
     "ticker": "ROXO34",
     "url": "https://content.btgpactual.com/research/ativo/ROXO34",
-    "price": 13.23,
-    "last_trade": "2026-09-03T19:53:50",
+    "price": 13.21,
+    "last_trade": "2026-09-03T20:06:00",
     "rec": "COMPRA",
     "rec_lbl": "Compra",
     "rec_cls": "buy",
     "date": "2026-08-14T10:09:46.000Z",
     "company": "Nubank",
     "target": 20.0,
-    "upside": 51.1715797430083
+    "upside": 51.40045420136259
   },
   "GOGL34": {
     "ticker": "GOGL34",
     "url": "https://content.btgpactual.com/research/ativo/GOGL34",
     "price": 145.51,
-    "last_trade": "2026-09-03T19:53:00"
+    "last_trade": "2026-09-03T20:07:00"
   },
   "SMFT3": {
     "ticker": "SMFT3",
     "url": "https://content.btgpactual.com/research/ativo/SMFT3",
-    "price": 17.76,
-    "last_trade": "2026-09-03T19:53:50",
+    "price": 17.74,
+    "last_trade": "2026-09-03T20:05:43",
     "rec": "COMPRA",
     "rec_lbl": "Compra",
     "rec_cls": "buy",
     "date": "2026-08-25T10:07:19.363Z",
     "company": "Smart Fit",
     "target": 30.0,
-    "upside": 68.9189189189189
+    "upside": 69.10935738444195
   },
   "CYRE3": {
     "ticker": "CYRE3",
     "url": "https://content.btgpactual.com/research/ativo/CYRE3",
-    "price": 25.45,
-    "last_trade": "2026-09-03T19:53:52",
+    "price": 25.47,
+    "last_trade": "2026-09-03T20:05:43",
     "rec": "COMPRA",
     "rec_lbl": "Compra",
     "rec_cls": "buy",
     "date": "2026-08-18T19:50:50.134Z",
     "company": "Cyrela",
     "target": 40.0,
-    "upside": 57.170923379174866
+    "upside": 57.04750687082842
   },
   "RENT3": {
     "ticker": "RENT3",
     "url": "https://content.btgpactual.com/research/ativo/RENT3",
-    "price": 36.84,
-    "last_trade": "2026-09-03T19:53:52",
+    "price": 36.83,
+    "last_trade": "2026-09-03T20:05:54",
     "rec": "COMPRA",
     "rec_lbl": "Compra",
     "rec_cls": "buy",
     "date": "2026-08-07T10:05:22.711Z",
     "company": "Localiza",
     "target": 65.0,
-    "upside": 76.4386536373507
+    "upside": 76.48655986967148
   },
   "GOLD11": {
     "ticker": "GOLD11",
     "url": "https://content.btgpactual.com/research/ativo/GOLD11",
-    "price": 23.75,
-    "last_trade": "2026-09-03T19:53:45"
+    "price": 23.74,
+    "last_trade": "2026-09-03T19:54:39"
   },
   "BOVA11": {
     "ticker": "BOVA11",
     "url": "https://content.btgpactual.com/research/ativo/BOVA11",
-    "price": 182.36,
-    "last_trade": "2026-09-03T19:53:52"
+    "price": 182.3,
+    "last_trade": "2026-09-03T19:54:58"
   }
 }

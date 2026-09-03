@@ -127,7 +127,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
     <h2>Research BTG</h2>
     <a href="https://content.btgpactual.com/research/ativo/SPCX34" target="_blank" rel="noopener">Abrir SPCX34 no Research →</a>
   </div>
-  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 51,22</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 77,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+50,33%</div></div></div><p class="research-note">Spot do fechamento anterior (03/09/2026) · alvo em 05/08/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
+  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 51,00</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 77,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+50,98%</div></div></div><p class="research-note">Spot do fechamento anterior (03/09/2026) · alvo em 05/08/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
 </section>
 
 <div class="main">
@@ -194,7 +194,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
   var X_MIN=-50,X_MAX=80,Y_MIN=-50,Y_MAX=110;
   var PAD={l:48,t:24,r:48,b:24},VW=600,VH=400;
   var PLOT_W=VW-PAD.l-PAD.r,PLOT_H=VH-PAD.t-PAD.b;
-  var RESEARCH_X=50.3319;
+  var RESEARCH_X=50.9804;
   var L=-20.0, H=45.0;
   function structureReturn(x){ if (x <= L) return x; if (x < 0) return 0; if (x < H) return 2*x; return 0; }
   function regimeFor(x){ if (x <= L) return 'Put KO atingida: perde a proteção e acompanha o ativo.'; if (x < 0) return 'Put KO viva: proteção até a barreira — piso 0%.'; if (x < H) return 'Alta acelerada: 2× (ainda não atingiu a call vendida).'; return 'Atingiu call vendida: call KO vira pó → 0%.'; }

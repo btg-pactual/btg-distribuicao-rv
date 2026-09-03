@@ -127,7 +127,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
     <h2>Research BTG</h2>
     <a href="https://content.btgpactual.com/research/ativo/NVDC34" target="_blank" rel="noopener">Abrir NVDC34 no Research →</a>
   </div>
-  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 24,32</div></div></div><p class="research-note">Spot do fechamento anterior (03/09/2026) · sem preço-alvo publicado para este ticker · atualizado às 18h30 · fonte Research BTG.</p>
+  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 24,26</div></div></div><p class="research-note">Spot do fechamento anterior (03/09/2026) · sem preço-alvo publicado para este ticker · atualizado às 18h30 · fonte Research BTG.</p>
 </section>
 
 <div class="main">
@@ -165,14 +165,14 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
   <p class="chart-touch-hint">Arraste no gráfico para simular</p>
       <div class="mobile-sim">
     <div class="sim-label"><span>Spot final</span><output id="spotOutMobile">0%</output></div>
-    <input type="range" id="spotSliderMobile" min="-50" max="80" step="0.5" value="0"/>
+    <input type="range" id="spotSliderMobile" min="-50" max="84" step="0.5" value="0"/>
   </div>
   <div class="zones"><div class="zone"><strong>< -20%</strong><p>Acompanha o ativo.</p></div><div class="zone"><strong>-20% → 0%</strong><p>Ganho ≈ |queda|.</p></div><div class="zone"><strong>0% → +54%</strong><p>3× a alta; acima: teto.</p></div></div>
 </section>
 <aside class="panel panel-sim">
   <h2>Simulador</h2>
   <div class="sim-label"><span>Variação do ativo</span><output id="spotOut">0%</output></div>
-  <input type="range" id="spotSlider" min="-50" max="80" step="0.5" value="0"/>
+  <input type="range" id="spotSlider" min="-50" max="84" step="0.5" value="0"/>
   <div class="sim-cards">
     <div class="sim-card"><div class="lbl">Ativo</div><div class="val" id="assetVal">0,0%</div></div>
     <div class="sim-card"><div class="lbl">Estrutura</div><div class="val" id="structVal">0,0%</div></div>
@@ -191,7 +191,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
 </div>
 <script>
 (function(){
-  var X_MIN=-50,X_MAX=80,Y_MIN=-50,Y_MAX=80;
+  var X_MIN=-50,X_MAX=84,Y_MIN=-50,Y_MAX=190;
   var PAD={l:48,t:24,r:48,b:24},VW=600,VH=400;
   var PLOT_W=VW-PAD.l-PAD.r,PLOT_H=VH-PAD.t-PAD.b;
   var RESEARCH_X=null;

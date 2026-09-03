@@ -127,7 +127,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
     <h2>Research BTG</h2>
     <a href="https://content.btgpactual.com/research/ativo/ITUB4" target="_blank" rel="noopener">Abrir ITUB4 no Research →</a>
   </div>
-  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 42,01</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 54,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+28,54%</div></div></div><p class="research-note">Spot do fechamento anterior (03/09/2026) · alvo em 06/08/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
+  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 41,99</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 54,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+28,60%</div></div></div><p class="research-note">Spot do fechamento anterior (03/09/2026) · alvo em 06/08/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
 </section>
 
 <div class="main">
@@ -165,14 +165,14 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
   <p class="chart-touch-hint">Arraste no gráfico para simular</p>
       <div class="mobile-sim">
     <div class="sim-label"><span>Spot final</span><output id="spotOutMobile">0%</output></div>
-    <input type="range" id="spotSliderMobile" min="-50" max="80" step="0.5" value="0"/>
+    <input type="range" id="spotSliderMobile" min="-50" max="91" step="0.5" value="0"/>
   </div>
   <div class="zones"><div class="zone"><strong>Queda</strong><p>Piso -10% (put).</p></div><div class="zone"><strong>Até +66%</strong><p>Acompanha o ativo 1:1.</p></div><div class="zone"><strong>≥ +66%</strong><p>KI: retorno limitado a +30%.</p></div></div>
 </section>
 <aside class="panel panel-sim">
   <h2>Simulador</h2>
   <div class="sim-label"><span>Variação do ativo</span><output id="spotOut">0%</output></div>
-  <input type="range" id="spotSlider" min="-50" max="80" step="0.5" value="0"/>
+  <input type="range" id="spotSlider" min="-50" max="91" step="0.5" value="0"/>
   <div class="sim-cards">
     <div class="sim-card"><div class="lbl">Ativo</div><div class="val" id="assetVal">0,0%</div></div>
     <div class="sim-card"><div class="lbl">Estrutura</div><div class="val" id="structVal">0,0%</div></div>
@@ -191,10 +191,10 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
 </div>
 <script>
 (function(){
-  var X_MIN=-50,X_MAX=80,Y_MIN=-50,Y_MAX=80;
+  var X_MIN=-50,X_MAX=91,Y_MIN=-50,Y_MAX=91;
   var PAD={l:48,t:24,r:48,b:24},VW=600,VH=400;
   var PLOT_W=VW-PAD.l-PAD.r,PLOT_H=VH-PAD.t-PAD.b;
-  var RESEARCH_X=28.5408;
+  var RESEARCH_X=28.6020;
   var PUT=90.0, CALL=130.0, KI=166.0;
   function structureReturn(x){ var st=100+x; var r=st+Math.max(PUT-st,0)-(st>=KI?Math.max(st-CALL,0):0)-100; return r; }
   function regimeFor(x){ var st=100+x; if(st>=KI) return 'KI: teto +30%.'; if(x<=(PUT-100)) return 'Piso da put.'; return 'Participa 1:1.'; }
