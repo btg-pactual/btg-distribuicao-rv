@@ -83,6 +83,16 @@ def rec_label(raw: str | None) -> str:
     }.get(key, raw.title())
 
 
+def fmt_date(raw) -> str:
+    if not raw:
+        return ""
+    try:
+        dt = datetime.fromisoformat(str(raw).replace("Z", "+00:00"))
+        return dt.strftime("%d/%m/%Y")
+    except ValueError:
+        return ""
+
+
 def rec_class(raw: str | None) -> str:
     key = (raw or "").strip().upper()
     if key == "COMPRA":
@@ -106,22 +116,27 @@ def _http_json(url: str, payload: object | None = None):
 
 def fetch_research(tickers: list[str]) -> dict[str, dict]:
     uniq = list(dict.fromkeys(tickers))
-    quotes: dict[str, float] = {}
+    quotes: dict[str, dict] = {}
     try:
         rows = _http_json(RESEARCH_QUOTES, uniq) or []
         for row in rows:
             t = str(row.get("ticker") or "").upper()
             if t and row.get("price") is not None:
-                quotes[t] = float(row["price"])
+                quotes[t] = {
+                    "price": float(row["price"]),
+                    "last_trade": row.get("lastTrade"),
+                }
     except Exception as exc:
         print("research_quotes_fail", exc)
 
     out: dict[str, dict] = {}
     for t in uniq:
+        q = quotes.get(t) or {}
         item: dict = {
             "ticker": t,
             "url": RESEARCH_PAGE.format(ticker=t),
-            "price": quotes.get(t),
+            "price": q.get("price"),
+            "last_trade": q.get("last_trade"),
         }
         try:
             rec = _http_json(RESEARCH_REC.format(ticker=t))
@@ -176,17 +191,17 @@ def research_html(cfg: dict) -> str:
             f'<div><div class="lbl">{lab}</div><div class="val {cls}">{val}</div></div>'
             for lab, val, cls in cells
         )
-        note = ""
+        bits = []
+        spot_d = fmt_date(rs.get("last_trade"))
+        alvo_d = fmt_date(rs.get("date"))
+        if spot_d:
+            bits.append(f"Spot em {spot_d}")
         if not rs.get("target"):
-            note = '<p class="research-note">Cotação ao vivo; sem preço-alvo publicado para este ticker.</p>'
-        elif rs.get("date"):
-            try:
-                dt = datetime.fromisoformat(str(rs["date"]).replace("Z", "+00:00"))
-                note = f'<p class="research-note">Alvo atualizado em {dt.strftime("%d/%m/%Y")} · fonte Research BTG.</p>'
-            except ValueError:
-                note = '<p class="research-note">Fonte: Research BTG.</p>'
-        else:
-            note = '<p class="research-note">Fonte: Research BTG.</p>'
+            bits.append("sem preço-alvo publicado para este ticker")
+        elif alvo_d:
+            bits.append(f"alvo em {alvo_d}")
+        bits.append("fonte Research BTG")
+        note = f'<p class="research-note">{ " · ".join(bits) }.</p>'
         body = f'<div class="research-grid">{grid}</div>{note}'
     return f"""
 <section class="research">

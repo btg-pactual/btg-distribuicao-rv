@@ -2,217 +2,239 @@
   "NVDC34": {
     "ticker": "NVDC34",
     "url": "https://content.btgpactual.com/research/ativo/NVDC34",
-    "price": 24.39
+    "price": 24.35,
+    "last_trade": "2026-09-03T19:40:27"
   },
   "TEND3": {
     "ticker": "TEND3",
     "url": "https://content.btgpactual.com/research/ativo/TEND3",
-    "price": 33.45,
+    "price": 33.42,
+    "last_trade": "2026-09-03T19:40:29",
     "rec": "COMPRA",
     "rec_lbl": "Compra",
     "rec_cls": "buy",
     "date": "2026-08-18T19:50:50.134Z",
     "company": "Tenda",
     "target": 44.0,
-    "upside": 31.53961136023915
+    "upside": 31.657690005984442
   },
   "RDOR3": {
     "ticker": "RDOR3",
     "url": "https://content.btgpactual.com/research/ativo/RDOR3",
-    "price": 37.54,
+    "price": 37.53,
+    "last_trade": "2026-09-03T19:40:30",
     "rec": "COMPRA",
     "rec_lbl": "Compra",
     "rec_cls": "buy",
     "date": "2026-08-18T10:07:31.843Z",
     "company": "Rede D'or",
     "target": 58.0,
-    "upside": 54.50186467767715
+    "upside": 54.543032240873956
   },
   "AXIA3": {
     "ticker": "AXIA3",
     "url": "https://content.btgpactual.com/research/ativo/AXIA3",
-    "price": 55.9,
+    "price": 55.82,
+    "last_trade": "2026-09-03T19:40:28",
     "rec": "COMPRA",
     "rec_lbl": "Compra",
     "rec_cls": "buy",
     "date": "2026-08-19T14:11:11.050Z",
     "company": "Axia Energia",
     "target": 74.0,
-    "upside": 32.379248658318424
+    "upside": 32.56897169473307
   },
   "WEGE3": {
     "ticker": "WEGE3",
     "url": "https://content.btgpactual.com/research/ativo/WEGE3",
-    "price": 51.79,
+    "price": 51.97,
+    "last_trade": "2026-09-03T19:40:31",
     "rec": "COMPRA",
     "rec_lbl": "Compra",
     "rec_cls": "buy",
     "date": "2026-07-27T16:04:32.859Z",
     "company": "WEG",
     "target": 65.0,
-    "upside": 25.50685460513613
+    "upside": 25.072157013661723
   },
   "PRIO3": {
     "ticker": "PRIO3",
     "url": "https://content.btgpactual.com/research/ativo/PRIO3",
-    "price": 61.8,
+    "price": 61.52,
+    "last_trade": "2026-09-03T19:40:31",
     "rec": "COMPRA",
     "rec_lbl": "Compra",
     "rec_cls": "buy",
     "date": "2026-08-17T15:44:31.951Z",
     "company": "PetroRio",
     "target": 73.0,
-    "upside": 18.122977346278326
+    "upside": 18.660598179453824
   },
   "SPCX34": {
     "ticker": "SPCX34",
     "url": "https://content.btgpactual.com/research/ativo/SPCX34",
-    "price": 51.64,
+    "price": 51.42,
+    "last_trade": "2026-09-03T19:40:27",
     "rec": "COMPRA",
     "rec_lbl": "Compra",
     "rec_cls": "buy",
     "date": "2026-08-05T11:17:22.812Z",
     "company": "SpaceX",
     "target": 77.0,
-    "upside": 49.10921766072811
+    "upside": 49.74718008556982
   },
   "TOTS3": {
     "ticker": "TOTS3",
     "url": "https://content.btgpactual.com/research/ativo/TOTS3",
-    "price": 34.89,
+    "price": 34.87,
+    "last_trade": "2026-09-03T19:40:28",
     "rec": "COMPRA",
     "rec_lbl": "Compra",
     "rec_cls": "buy",
     "date": "2026-08-06T13:57:47.970Z",
     "company": "TOTVS",
     "target": 55.0,
-    "upside": 57.63829177414732
+    "upside": 57.7287066246057
   },
   "B3SA3": {
     "ticker": "B3SA3",
     "url": "https://content.btgpactual.com/research/ativo/B3SA3",
-    "price": 17.4,
+    "price": 17.43,
+    "last_trade": "2026-09-03T19:40:29",
     "rec": "NEUTRO",
     "rec_lbl": "Neutro",
     "rec_cls": "hold",
     "date": "2026-08-18T00:00:00.000Z",
     "company": "B3",
     "target": 19.0,
-    "upside": 9.195402298850585
+    "upside": 9.007458405048773
   },
   "MRVE3": {
     "ticker": "MRVE3",
     "url": "https://content.btgpactual.com/research/ativo/MRVE3",
-    "price": 5.62,
+    "price": 5.63,
+    "last_trade": "2026-09-03T19:40:30",
     "rec": "COMPRA",
     "rec_lbl": "Compra",
     "rec_cls": "buy",
     "date": "2026-08-18T19:50:50.134Z",
     "company": "MRV",
     "target": 12.0,
-    "upside": 113.52313167259784
+    "upside": 113.14387211367674
   },
   "ITUB4": {
     "ticker": "ITUB4",
     "url": "https://content.btgpactual.com/research/ativo/ITUB4",
-    "price": 41.92,
+    "price": 41.97,
+    "last_trade": "2026-09-03T19:40:31",
     "rec": "COMPRA",
     "rec_lbl": "Compra",
     "rec_cls": "buy",
     "date": "2026-08-06T00:00:00.000Z",
     "company": "Itau Unibanco",
     "target": 54.0,
-    "upside": 28.816793893129766
+    "upside": 28.663330950679054
   },
   "PETR4": {
     "ticker": "PETR4",
     "url": "https://content.btgpactual.com/research/ativo/PETR4",
-    "price": 47.68,
+    "price": 47.62,
+    "last_trade": "2026-09-03T19:40:32",
     "rec": "COMPRA",
     "rec_lbl": "Compra",
     "rec_cls": "buy",
     "date": "2026-08-24T14:18:49.467Z",
     "company": "Petrobras",
     "target": 56.0,
-    "upside": 17.4496644295302
+    "upside": 17.597648047039073
   },
   "BBSE3": {
     "ticker": "BBSE3",
     "url": "https://content.btgpactual.com/research/ativo/BBSE3",
-    "price": 41.64,
+    "price": 41.74,
+    "last_trade": "2026-09-03T19:40:28",
     "rec": "NEUTRO",
     "rec_lbl": "Neutro",
     "rec_cls": "hold",
     "date": "2026-08-19T10:40:30.000Z",
     "company": "BB Seguridade",
     "target": 40.0,
-    "upside": -3.9385206532180583
+    "upside": -4.168663152850982
   },
   "VALE3": {
     "ticker": "VALE3",
     "url": "https://content.btgpactual.com/research/ativo/VALE3",
-    "price": 77.91,
+    "price": 78.12,
+    "last_trade": "2026-09-03T19:40:29",
     "rec": "COMPRA",
     "rec_lbl": "Compra",
     "rec_cls": "buy",
     "date": "2026-08-18T10:15:36.602Z",
     "company": "Vale",
     "target": 90.0,
-    "upside": 15.51790527531769
+    "upside": 15.207373271889391
   },
   "EMBJ3": {
     "ticker": "EMBJ3",
     "url": "https://content.btgpactual.com/research/ativo/EMBJ3",
-    "price": 93.82,
+    "price": 93.7,
+    "last_trade": "2026-09-03T19:40:25",
     "rec": "COMPRA",
     "rec_lbl": "Compra",
     "rec_cls": "buy",
     "date": "2026-08-24T13:21:19.087Z",
     "company": "Embraer",
     "target": 126.0,
-    "upside": 34.29972287358773
+    "upside": 34.471718249733186
   },
   "ITLC34": {
     "ticker": "ITLC34",
     "url": "https://content.btgpactual.com/research/ativo/ITLC34",
-    "price": 77.47
+    "price": 77.51,
+    "last_trade": "2026-09-03T19:40:11"
   },
   "TSMC34": {
     "ticker": "TSMC34",
     "url": "https://content.btgpactual.com/research/ativo/TSMC34",
-    "price": 265.26
+    "price": 265.6,
+    "last_trade": "2026-09-03T19:40:29"
   },
   "LILY34": {
     "ticker": "LILY34",
     "url": "https://content.btgpactual.com/research/ativo/LILY34",
-    "price": 197.1
+    "price": 196.9,
+    "last_trade": "2026-09-03T19:38:24"
   },
   "HASH11": {
     "ticker": "HASH11",
     "url": "https://content.btgpactual.com/research/ativo/HASH11",
-    "price": 53.9
+    "price": 53.9,
+    "last_trade": "2026-09-03T19:40:26"
   },
   "ROXO34": {
     "ticker": "ROXO34",
     "url": "https://content.btgpactual.com/research/ativo/ROXO34",
-    "price": 13.22,
+    "price": 13.24,
+    "last_trade": "2026-09-03T19:40:31",
     "rec": "COMPRA",
     "rec_lbl": "Compra",
     "rec_cls": "buy",
     "date": "2026-08-14T10:09:46.000Z",
     "company": "Nubank",
     "target": 20.0,
-    "upside": 51.285930408472005
+    "upside": 51.05740181268883
   },
   "GOGL34": {
     "ticker": "GOGL34",
     "url": "https://content.btgpactual.com/research/ativo/GOGL34",
-    "price": 145.88
+    "price": 146.12,
+    "last_trade": "2026-09-03T19:40:23"
   },
   "SMFT3": {
     "ticker": "SMFT3",
     "url": "https://content.btgpactual.com/research/ativo/SMFT3",
     "price": 17.83,
+    "last_trade": "2026-09-03T19:40:30",
     "rec": "COMPRA",
     "rec_lbl": "Compra",
     "rec_cls": "buy",
@@ -224,35 +246,39 @@
   "CYRE3": {
     "ticker": "CYRE3",
     "url": "https://content.btgpactual.com/research/ativo/CYRE3",
-    "price": 25.52,
+    "price": 25.47,
+    "last_trade": "2026-09-03T19:40:32",
     "rec": "COMPRA",
     "rec_lbl": "Compra",
     "rec_cls": "buy",
     "date": "2026-08-18T19:50:50.134Z",
     "company": "Cyrela",
     "target": 40.0,
-    "upside": 56.739811912225704
+    "upside": 57.04750687082842
   },
   "RENT3": {
     "ticker": "RENT3",
     "url": "https://content.btgpactual.com/research/ativo/RENT3",
-    "price": 36.97,
+    "price": 36.94,
+    "last_trade": "2026-09-03T19:40:31",
     "rec": "COMPRA",
     "rec_lbl": "Compra",
     "rec_cls": "buy",
     "date": "2026-08-07T10:05:22.711Z",
     "company": "Localiza",
     "target": 65.0,
-    "upside": 75.81823099810659
+    "upside": 75.96101786681106
   },
   "GOLD11": {
     "ticker": "GOLD11",
     "url": "https://content.btgpactual.com/research/ativo/GOLD11",
-    "price": 23.74
+    "price": 23.74,
+    "last_trade": "2026-09-03T19:40:31"
   },
   "BOVA11": {
     "ticker": "BOVA11",
     "url": "https://content.btgpactual.com/research/ativo/BOVA11",
-    "price": 182.16
+    "price": 182.34,
+    "last_trade": "2026-09-03T19:40:35"
   }
 }
