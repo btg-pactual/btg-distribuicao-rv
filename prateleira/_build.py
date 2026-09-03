@@ -195,12 +195,14 @@ def research_html(cfg: dict) -> str:
         spot_d = fmt_date(rs.get("last_trade"))
         alvo_d = fmt_date(rs.get("date"))
         if spot_d:
-            bits.append(f"Spot em {spot_d}")
+            bits.append(f"Spot do fechamento anterior ({spot_d})")
+        else:
+            bits.append("Spot do fechamento anterior")
         if not rs.get("target"):
             bits.append("sem preço-alvo publicado para este ticker")
         elif alvo_d:
             bits.append(f"alvo em {alvo_d}")
-        bits.append("fonte Research BTG")
+        bits.append("atualizado às 18h30 · fonte Research BTG")
         note = f'<p class="research-note">{ " · ".join(bits) }.</p>'
         body = f'<div class="research-grid">{grid}</div>{note}'
     return f"""
