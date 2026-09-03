@@ -44,6 +44,9 @@ h1 span{color:var(--brand)}
 .research-grid .val.hold{color:#b8860b}
 .research-grid .val.sell{color:var(--danger)}
 .research-note{font-size:12px;color:var(--muted);margin-top:10px}
+.research-bullets{margin:14px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.research-bullets li{position:relative;padding:10px 12px 10px 28px;background:var(--bg);border:1px solid var(--line);border-radius:8px;font-size:13px;line-height:1.45;color:var(--ink)}
+.research-bullets li::before{content:"";position:absolute;left:12px;top:16px;width:6px;height:6px;border-radius:50%;background:var(--brand)}
 .research-actions{margin-top:12px}
 .research-btn{appearance:none;border:1px solid var(--brand);background:#fff;color:var(--brand);font-size:12px;font-weight:700;padding:9px 14px;border-radius:8px;cursor:pointer}
 .research-btn:hover{background:color-mix(in srgb,var(--brand) 8%,#fff)}
@@ -127,7 +130,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
     <h2>Research BTG</h2>
     <a href="https://content.btgpactual.com/research/ativo/BBSE3" target="_blank" rel="noopener">Abrir BBSE3 no Research →</a>
   </div>
-  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 41,82</div></div><div><div class="lbl">Recomendação</div><div class="val hold">Neutro</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 40,00</div></div><div><div class="lbl">Potencial</div><div class="val sell">-4,35%</div></div></div><p class="research-note">Spot do fechamento anterior (03/09/2026) · alvo em 19/08/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
+  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 41,69</div></div><div><div class="lbl">Recomendação</div><div class="val hold">Neutro</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 40,00</div></div><div><div class="lbl">Potencial</div><div class="val sell">-4,05%</div></div></div><p class="research-note">Spot do fechamento anterior (03/09/2026) · alvo em 19/08/2026 · atualizado às 18h30 · fonte Research BTG.</p><ul class="research-bullets"><li>A BB Seguridade reportou lucro líquido recorrente de R$2,15 bi no 2T26, -3% t/t e -4% a/a, em linha com o BTG e 1% acima do consenso, com resiliência operacional sustentada por sinistralidade muito benigna na BrasilSeg, apesar da…</li><li>Na principal controlada operacional, a BrasilSeg lucrou R$1,23 bi, +11% t/t e -2% a/a, com prêmios de R$3,55 bi, -10% t/t e -5% a/a, pressionados por seguro agrícola (-43% a/a), penhor rural (-11%) e vida a prazo (-6%), enquanto a…</li><li>Na BrasilPrev, o lucro foi de R$337 mi, -37% t/t e -19% a/a, com contribuições de R$10,2 bi (+4% a/a), taxa de administração de R$997 mi (+8%) e reservas médias de R$491 bi (+10,5%).</li></ul><p class="research-note">Insights BTG · 19/08/2026.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
 </section>
 
 <div class="main">
@@ -194,7 +197,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
   var X_MIN=-50,X_MAX=80,Y_MIN=-50,Y_MAX=80;
   var PAD={l:48,t:24,r:48,b:24},VW=600,VH=400;
   var PLOT_W=VW-PAD.l-PAD.r,PLOT_H=VH-PAD.t-PAD.b;
-  var RESEARCH_X=-4.3520;
+  var RESEARCH_X=-4.0537;
   var PUT=100.0, CALL=110.0, KI=136.83;
   function structureReturn(x){ var st=100+x; var r=st+Math.max(PUT-st,0)-(st>=KI?Math.max(st-CALL,0):0)-100; return r; }
   function regimeFor(x){ var st=100+x; if(st>=KI) return 'KI: teto +10%.'; if(x<=(PUT-100)) return 'Piso da put.'; return 'Participa 1:1.'; }

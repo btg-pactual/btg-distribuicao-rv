@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import math
+import re
 import shutil
 import ssl
 import unicodedata
@@ -19,6 +20,7 @@ REF = date(2026, 9, 1)
 PDF_NAME = "Material-Prateleira-Tatica-31082026.pdf"
 RESEARCH_REC = "https://content.btgpactual.com/api/research/content-hub/recommendations/ticker/{ticker}?includeInstitutionalData=true"
 RESEARCH_QUOTES = "https://content.btgpactual.com/api/research/research/public/asset/quotes"
+RESEARCH_SUMMARY = "https://content.btgpactual.com/api/research/content-hub-assets/v1/asset/summary/{ticker}"
 RESEARCH_PAGE = "https://content.btgpactual.com/research/ativo/{ticker}"
 RESEARCH_SNAP = ROOT / "research_targets.json"
 SSL_CTX = ssl.create_default_context()
@@ -93,6 +95,16 @@ def fmt_date(raw) -> str:
         return ""
 
 
+def html_esc(s: str) -> str:
+    return (
+        str(s)
+        .replace("&", "&amp;")
+        .replace("<", "&lt;")
+        .replace(">", "&gt;")
+        .replace('"', "&quot;")
+    )
+
+
 def rec_class(raw: str | None) -> str:
     key = (raw or "").strip().upper()
     if key == "COMPRA":
@@ -102,6 +114,34 @@ def rec_class(raw: str | None) -> str:
     if key in {"NEUTRO", "REVISAO", "REVISÃO"}:
         return "hold"
     return ""
+
+
+def summary_bullets(text: str, n: int = 3) -> list[str]:
+    """Extrai até n bullets a partir do Insights BTG (fullSummary)."""
+    text = re.sub(r"\s+", " ", (text or "").strip())
+    if not text:
+        return []
+
+    parts = [p.strip(" ;.") for p in text.split(";") if p.strip()]
+    if len(parts) < n:
+        parts = re.split(r"(?<=[.!?])\s+(?=[A-ZÀ-Ü])", text)
+        parts = [p.strip(" ;.") for p in parts if p.strip()]
+
+    bullets: list[str] = []
+    for part in parts:
+        if len(part) < 35:
+            continue
+        if len(part) > 240:
+            cut = part[:237].rsplit(" ", 1)[0].rstrip(",;:")
+            part = cut + "…"
+        if part and part[0].islower():
+            part = part[0].upper() + part[1:]
+        if not part.endswith((".", "…", "!", "?")):
+            part += "."
+        bullets.append(part)
+        if len(bullets) >= n:
+            break
+    return bullets
 
 
 def _http_json(url: str, payload: object | None = None):
@@ -156,6 +196,14 @@ def fetch_research(tickers: list[str]) -> dict[str, dict]:
                 item["target"] = float(rec.get("targetPrice"))
             except (TypeError, ValueError):
                 item["target"] = None
+            try:
+                summary = _http_json(RESEARCH_SUMMARY.format(ticker=t)) or {}
+                bullets = summary_bullets(summary.get("fullSummary") or "")
+                if bullets:
+                    item["bullets"] = bullets
+                    item["summary_date"] = summary.get("summaryGenerationDate")
+            except Exception as exc:
+                item["summary_error"] = str(exc)
         price = item.get("price")
         target = item.get("target")
         if price and target:
@@ -164,7 +212,8 @@ def fetch_research(tickers: list[str]) -> dict[str, dict]:
 
     RESEARCH_SNAP.write_text(json.dumps(out, ensure_ascii=False, indent=2), encoding="utf-8")
     n_ok = sum(1 for v in out.values() if v.get("target"))
-    print("research", n_ok, "/", len(uniq))
+    n_bullets = sum(1 for v in out.values() if v.get("bullets"))
+    print("research", n_ok, "/", len(uniq), "bullets", n_bullets)
     return out
 
 
@@ -204,6 +253,16 @@ def research_html(cfg: dict) -> str:
             bits.append(f"alvo em {alvo_d}")
         bits.append("atualizado às 18h30 · fonte Research BTG")
         note = f'<p class="research-note">{ " · ".join(bits) }.</p>'
+        bullets_html = ""
+        bullets = rs.get("bullets") or []
+        if bullets:
+            lis = "".join(f"<li>{html_esc(b)}</li>" for b in bullets)
+            sum_d = fmt_date(rs.get("summary_date"))
+            sum_note = f"Insights BTG{f' · {sum_d}' if sum_d else ''}."
+            bullets_html = (
+                f'<ul class="research-bullets">{lis}</ul>'
+                f'<p class="research-note">{sum_note}</p>'
+            )
         btn = ""
         if rs.get("upside") is not None:
             btn = (
@@ -212,7 +271,7 @@ def research_html(cfg: dict) -> str:
                 "Ver preço-alvo no gráfico"
                 "</button></div>"
             )
-        body = f'<div class="research-grid">{grid}</div>{note}{btn}'
+        body = f'<div class="research-grid">{grid}</div>{note}{bullets_html}{btn}'
     return f"""
 <section class="research">
   <div class="research-head">
@@ -313,6 +372,9 @@ h1 span{color:var(--brand)}
 .research-grid .val.hold{color:#b8860b}
 .research-grid .val.sell{color:var(--danger)}
 .research-note{font-size:12px;color:var(--muted);margin-top:10px}
+.research-bullets{margin:14px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.research-bullets li{position:relative;padding:10px 12px 10px 28px;background:var(--bg);border:1px solid var(--line);border-radius:8px;font-size:13px;line-height:1.45;color:var(--ink)}
+.research-bullets li::before{content:"";position:absolute;left:12px;top:16px;width:6px;height:6px;border-radius:50%;background:var(--brand)}
 .research-actions{margin-top:12px}
 .research-btn{appearance:none;border:1px solid var(--brand);background:#fff;color:var(--brand);font-size:12px;font-weight:700;padding:9px 14px;border-radius:8px;cursor:pointer}
 .research-btn:hover{background:color-mix(in srgb,var(--brand) 8%,#fff)}
