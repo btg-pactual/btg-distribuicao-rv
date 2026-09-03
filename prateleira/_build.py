@@ -204,7 +204,15 @@ def research_html(cfg: dict) -> str:
             bits.append(f"alvo em {alvo_d}")
         bits.append("atualizado às 18h30 · fonte Research BTG")
         note = f'<p class="research-note">{ " · ".join(bits) }.</p>'
-        body = f'<div class="research-grid">{grid}</div>{note}'
+        btn = ""
+        if rs.get("upside") is not None:
+            btn = (
+                '<div class="research-actions">'
+                '<button type="button" class="research-btn" id="btnResearchTarget">'
+                "Ver preço-alvo no gráfico"
+                "</button></div>"
+            )
+        body = f'<div class="research-grid">{grid}</div>{note}{btn}'
     return f"""
 <section class="research">
   <div class="research-head">
@@ -305,6 +313,10 @@ h1 span{color:var(--brand)}
 .research-grid .val.hold{color:#b8860b}
 .research-grid .val.sell{color:var(--danger)}
 .research-note{font-size:12px;color:var(--muted);margin-top:10px}
+.research-actions{margin-top:12px}
+.research-btn{appearance:none;border:1px solid var(--brand);background:#fff;color:var(--brand);font-size:12px;font-weight:700;padding:9px 14px;border-radius:8px;cursor:pointer}
+.research-btn:hover{background:color-mix(in srgb,var(--brand) 8%,#fff)}
+.research-btn:disabled{opacity:.45;cursor:not-allowed}
 .main{display:grid;grid-template-columns:280px 1fr 300px;gap:18px;align-items:start}
 .panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px}
 .panel h2{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--brand);margin-bottom:14px}
@@ -383,6 +395,12 @@ def op_page(cfg: dict) -> str:
     pills = "".join(
         f'<div class="pill"><strong>{k}</strong> {v}</div>' for k, v in cfg["pills"]
     )
+    rs = cfg.get("research") or {}
+    research_x = rs.get("upside")
+    if research_x is None:
+        js_research = "var RESEARCH_X=null;"
+    else:
+        js_research = f"var RESEARCH_X={float(research_x):.4f};"
     return f"""<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -416,7 +434,7 @@ def op_page(cfg: dict) -> str:
 <section class="panel chart-panel">
   <div class="chart-head">
     <div><h2>Payoff ilustrativo</h2><p class="chart-caption">Retorno vs. variação do ativo</p></div>
-    <div class="chart-legend"><span><i class="swatch"></i> Estrutura</span><span><i class="swatch asset"></i> Ativo</span></div>
+    <div class="chart-legend"><span><i class="swatch"></i> Estrutura</span><span><i class="swatch asset"></i> Ativo</span><span><i class="swatch" style="background:#1a66b3;border-top:none;height:2px;background:repeating-linear-gradient(90deg,#1a66b3 0 4px,transparent 4px 7px)"></i> PA Research</span></div>
   </div>
   <div class="chart-box" id="chartBox">
     <div class="tooltip" id="tooltip"></div>
@@ -431,6 +449,8 @@ def op_page(cfg: dict) -> str:
       <line id="callKoGap" x1="0" y1="0" x2="0" y2="0" stroke="{brand}" stroke-width="2" stroke-dasharray="4 3" opacity="0"/>
       <text id="putKoLabel" font-size="11" fill="#0f7a4a" font-weight="700" opacity="0">Put KO</text>
       <text id="callKoLabel" font-size="11" fill="{brand}" font-weight="700" opacity="0">Call vendida</text>
+      <line id="researchTargetLine" x1="0" y1="24" x2="0" y2="376" stroke="#1a66b3" stroke-width="1.5" stroke-dasharray="5 4" opacity="0"/>
+      <text id="researchTargetLabel" font-size="11" fill="#1a66b3" font-weight="700" opacity="0">PA Research</text>
       <g id="xLabels"></g><g id="yLabels"></g>
       <line id="hoverLine" x1="0" y1="24" x2="0" y2="376" stroke="{brand}" stroke-width="1" opacity="0"/>
       <circle id="hoverStruct" r="5" fill="{brand}" opacity="0"/>
@@ -469,6 +489,7 @@ def op_page(cfg: dict) -> str:
   var X_MIN={cfg.get('x_min', -50)},X_MAX={cfg.get('x_max', 80)},Y_MIN={cfg.get('y_min', -50)},Y_MAX={cfg.get('y_max', 80)};
   var PAD={{l:48,t:24,r:48,b:24}},VW=600,VH=400;
   var PLOT_W=VW-PAD.l-PAD.r,PLOT_H=VH-PAD.t-PAD.b;
+  {js_research}
   {cfg['js_const']}
   function structureReturn(x){{ {cfg['js_fn']} }}
   function regimeFor(x){{ {cfg['js_regime']} }}
@@ -476,6 +497,18 @@ def op_page(cfg: dict) -> str:
   function xToSvg(x){{ return PAD.l+((x-X_MIN)/(X_MAX-X_MIN))*PLOT_W; }}
   function yToSvg(y){{ return PAD.t+((Y_MAX-y)/(Y_MAX-Y_MIN))*PLOT_H; }}
   function svgToX(px){{ return X_MIN+((px-PAD.l)/PLOT_W)*(X_MAX-X_MIN); }}
+  function placeResearchMarker(){{
+    if (RESEARCH_X==null) return;
+    var x=Math.max(X_MIN,Math.min(X_MAX,RESEARCH_X));
+    var px=xToSvg(x);
+    var line=document.getElementById('researchTargetLine');
+    var lab=document.getElementById('researchTargetLabel');
+    line.setAttribute('x1',px); line.setAttribute('x2',px); line.setAttribute('opacity','1');
+    lab.setAttribute('x', Math.min(VW-PAD.r-8, px+6));
+    lab.setAttribute('y', PAD.t+14);
+    lab.textContent = 'PA Research '+fmtPct(RESEARCH_X,1);
+    lab.setAttribute('opacity','1');
+  }}
   function buildStructD(){{
     var d='',first=true;
     function add(x,y){{ var c=first?'M':'L'; first=false; d+=c+' '+xToSvg(x).toFixed(2)+' '+yToSvg(y).toFixed(2)+' '; }}
@@ -573,6 +606,16 @@ def op_page(cfg: dict) -> str:
   }}
   ov.addEventListener('pointerdown',fromEvt);
   ov.addEventListener('pointermove',function(e){{ if(e.buttons||e.pressure) fromEvt(e); else fromEvt(e); }});
+  placeResearchMarker();
+  var btnPa=document.getElementById('btnResearchTarget');
+  if (btnPa && RESEARCH_X!=null) {{
+    btnPa.addEventListener('click', function(){{
+      showAt(RESEARCH_X);
+      placeResearchMarker();
+      var box=document.getElementById('chartBox');
+      if (box) box.scrollIntoView({{behavior:'smooth',block:'center'}});
+    }});
+  }}
   showAt(0);
 }})();
 </script>
@@ -1367,6 +1410,21 @@ def main():
             research = {}
     for slug, cfg in all_ops:
         cfg["research"] = research.get(cfg["ticker"], {})
+        rs = cfg["research"]
+        up = rs.get("upside")
+        if up is not None:
+            xmax = cfg.get("x_max", 80)
+            xmin = cfg.get("x_min", -50)
+            if up > xmax - 8:
+                cfg["x_max"] = int(math.ceil((up + 10) / 10.0) * 10)
+            if up < xmin + 8:
+                cfg["x_min"] = int(math.floor((up - 10) / 10.0) * 10)
+            ymax = cfg.get("y_max", cfg.get("x_max", 80))
+            ymin = cfg.get("y_min", cfg.get("x_min", -50))
+            if cfg["x_max"] > ymax:
+                cfg["y_max"] = cfg["x_max"]
+            if cfg["x_min"] < ymin:
+                cfg["y_min"] = cfg["x_min"]
         cfg["research_html"] = research_html(cfg)
 
     for slug, cfg in all_ops:
