@@ -325,17 +325,19 @@ def research_insights_html(cfg: dict) -> str:
 
 
 # ---- data ----
+# (ticker, fixing, strike, ko, bid/cupom, backtest_barreira%)
+# backtest = % histórico de toque da barreira no material; None = sem janelas (*).
 SOC = [
-    ("NVDC34", date(2026, 9, 30), 103.14, 90.0, 0.80),
-    ("TEND3", date(2026, 9, 18), 104.0, 90.0, 1.00),
-    ("RDOR3", date(2026, 9, 30), 103.42, 90.0, 0.80),
-    ("AXIA3", date(2026, 10, 14), 104.33, 90.0, 1.00),
-    ("WEGE3", date(2026, 9, 30), 103.31, 92.0, 0.70),
-    ("PRIO3", date(2026, 10, 15), 105.87, 90.0, 0.70),
-    ("SPCX34", date(2026, 9, 18), 104.75, 87.0, 0.80),
-    ("TOTS3", date(2026, 9, 29), 104.72, 90.0, 1.20),
-    ("B3SA3", date(2026, 9, 29), 105.43, 90.0, 1.00),
-    ("MRVE3", date(2026, 10, 14), 109.99, 88.0, 1.00),
+    ("NVDC34", date(2026, 9, 30), 103.14, 90.0, 0.80, 15.0),
+    ("TEND3", date(2026, 9, 18), 104.0, 90.0, 1.00, 27.0),
+    ("RDOR3", date(2026, 9, 30), 103.42, 90.0, 0.80, None),
+    ("AXIA3", date(2026, 10, 14), 104.33, 90.0, 1.00, 25.0),
+    ("WEGE3", date(2026, 9, 30), 103.31, 92.0, 0.70, 25.0),
+    ("PRIO3", date(2026, 10, 15), 105.87, 90.0, 0.70, 42.0),
+    ("SPCX34", date(2026, 9, 18), 104.75, 87.0, 0.80, None),
+    ("TOTS3", date(2026, 9, 29), 104.72, 90.0, 1.20, 42.0),
+    ("B3SA3", date(2026, 9, 29), 105.43, 90.0, 1.00, 27.0),
+    ("MRVE3", date(2026, 10, 14), 109.99, 88.0, 1.00, 58.0),
 ]
 
 SMART = [
@@ -396,7 +398,7 @@ h1 span{color:var(--brand)}
 .meta-pills{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end}
 .pill{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:8px 14px;font-size:12px;color:var(--muted)}
 .pill strong{color:var(--ink);font-weight:600;margin-right:4px}
-.highlights{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
+.highlights{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:24px}
 .hi{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;border-top:3px solid var(--brand)}
 .hi h3{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px}
 .hi p{font-size:15px;font-weight:700}
@@ -475,7 +477,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
 .speech-box p{font-size:14px;color:var(--ink);max-width:70em}
 .footer{margin-top:28px;font-size:11px;color:var(--muted);text-align:center;line-height:1.55}
 .footer-alert{margin-top:10px;text-align:center;font-size:11px;color:var(--btg);font-weight:700}
-@media (max-width:1100px){.main{grid-template-columns:1fr}.highlights,.research-grid{grid-template-columns:1fr 1fr}}
+@media (max-width:1100px){.main{grid-template-columns:1fr}.research-grid{grid-template-columns:1fr 1fr}}
 @media (max-width:640px){.page{padding:16px 14px 40px}.topbar{flex-direction:column}.meta-pills{justify-content:flex-start}.highlights{grid-template-columns:1fr}.zones{grid-template-columns:1fr}}
 @media (min-width:1101px){.mobile-sim{display:none}}
 """
@@ -730,10 +732,35 @@ def op_page(cfg: dict) -> str:
 """
 
 
-def make_soc(t, fixing, strike, ko, bid):
+def make_soc(t, fixing, strike, ko, bid, backtest=None):
     prazo = months_label(fixing)
     ko_var = ko - 100
     slug = slugify("soc", t, prazo.replace(" ", ""))
+    # No PDF: SPCX34 marca —* (sem janelas). Demais sem número = não publicado.
+    no_windows = {"SPCX34"}
+    if backtest is None and t in no_windows:
+        bt_lbl = "—*"
+        bt_note = "Sem janelas suficientes no material"
+        bt_speech = "Backtest (barreira) indisponível: ativo ainda sem janelas suficientes no material."
+        speech_close = "Material de uso interno — condições no DIE. * Sem janelas suficientes para calcular backtest."
+    elif backtest is None:
+        bt_lbl = "—"
+        bt_note = "Não publicado no material desta semana"
+        bt_speech = "Backtest (barreira) não publicado no material desta semana."
+        speech_close = "Material de uso interno — condições no DIE."
+    else:
+        bt_lbl = f"{backtest:.0f}%"
+        bt_note = "Histórico de toque da barreira"
+        bt_speech = f"Backtest (barreira): {bt_lbl} das janelas históricas tocaram a barreira {ko:.0f}% (material da prateleira)."
+        speech_close = "Material de uso interno — condições no DIE."
+    pills = [
+        ("Ativo", t),
+        ("Prazo", prazo),
+        ("Strike", f"{strike:.2f}%"),
+        ("KO", f"{ko:.0f}%"),
+        ("Cupom", f"{bid:.2f}%"),
+        ("Backtest (barreira)", bt_lbl),
+    ]
     return slug, {
         "title": f"SOC {t}",
         "h1": "SOC",
@@ -741,12 +768,13 @@ def make_soc(t, fixing, strike, ko, bid):
         "dot": "SOC",
         "brand": "#0d6e6e",
         "subtitle": f"Stock or Coupon sobre {t}: cupom se a barreira de queda não for atingida; se KO, acompanha o ativo.",
-        "pills": [("Ativo", t), ("Prazo", prazo), ("Strike", f"{strike:.2f}%"), ("KO", f"{ko:.0f}%"), ("Cupom", f"{bid:.2f}%")],
+        "pills": pills,
         "highlights": [
             ("Prazo", prazo, "Horizonte em meses"),
             ("Cupom", f"+{bid:.2f}%", "Se barreira não for atingida"),
             ("KO", f"{ko:.0f}%", f"Abaixo de {ko_var:.0f}%: acompanha o ativo"),
             ("Strike", f"{strike:.2f}%", "Put KO / Call KO"),
+            ("Backtest (barreira)", bt_lbl, bt_note),
         ],
         "struct": [
             ('<span class="tag b">B</span> Put KO', f"{strike:.2f}% · barreira {ko:.0f}%"),
@@ -760,8 +788,8 @@ def make_soc(t, fixing, strike, ko, bid):
         "regime0": f"Acima da barreira: cupom +{bid:.2f}%.",
         "speech": [
             ("Para quem", f"Cliente que quer cupom curto em {t}, aceitando risco de exposição se o papel cair além da barreira."),
-            ("Como encaixa", f"SOC · prazo {prazo}. Sem KO: cupom +{bid:.2f}%. Com KO ({ko:.0f}%): acompanha o ativo."),
-            ("Fechamento", "Material de uso interno — condições no DIE."),
+            ("Como encaixa", f"SOC · prazo {prazo}. Sem KO: cupom +{bid:.2f}%. Com KO ({ko:.0f}%): acompanha o ativo. {bt_speech}"),
+            ("Fechamento", speech_close),
         ],
         "js_const": f"var KO_VAR={ko_var}, CUPON={bid};",
         "js_fn": "if (x <= KO_VAR) return x; return CUPON;",
