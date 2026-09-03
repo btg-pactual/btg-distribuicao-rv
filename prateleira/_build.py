@@ -266,7 +266,7 @@ def research_html(cfg: dict) -> str:
 <section class="research">
   <div class="research-head">
     <h2>Research BTG</h2>
-    <a href="{url}" target="_blank" rel="noopener">Abrir {t} no Research →</a>
+    <a class="research-link" href="{url}" target="_blank" rel="noopener">Abrir {t} no Research <span class="arrow" aria-hidden="true">→</span></a>
   </div>
   {body}
 </section>
@@ -368,10 +368,11 @@ h1 span{color:var(--brand)}
 .hi p{font-size:15px;font-weight:700}
 .hi p span{display:block;font-weight:400;color:var(--muted);font-size:12px;margin-top:3px}
 .research{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin-bottom:18px}
-.research-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:12px;flex-wrap:wrap}
+.research-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px;flex-wrap:wrap}
 .research-head h2{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--brand);margin:0}
-.research-head a{color:#1a66b3;font-weight:700;text-decoration:none;font-size:13px}
-.research-head a:hover{text-decoration:underline}
+.research-link{display:inline-flex;align-items:center;gap:8px;background:var(--brand);color:#fff !important;text-decoration:none !important;font-weight:700;font-size:13px;padding:10px 14px;border-radius:8px;border:1px solid var(--brand);box-shadow:0 1px 0 rgba(11,31,58,.08);transition:transform .12s ease,filter .12s ease}
+.research-link:hover{filter:brightness(1.06);transform:translateY(-1px)}
+.research-link .arrow{font-size:14px;line-height:1}
 .research-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
 .research-grid .lbl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);margin-bottom:4px}
 .research-grid .val{font-size:18px;font-weight:700}

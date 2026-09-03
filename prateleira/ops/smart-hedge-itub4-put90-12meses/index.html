@@ -33,10 +33,11 @@ h1 span{color:var(--brand)}
 .hi p{font-size:15px;font-weight:700}
 .hi p span{display:block;font-weight:400;color:var(--muted);font-size:12px;margin-top:3px}
 .research{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin-bottom:18px}
-.research-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:12px;flex-wrap:wrap}
+.research-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px;flex-wrap:wrap}
 .research-head h2{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--brand);margin:0}
-.research-head a{color:#1a66b3;font-weight:700;text-decoration:none;font-size:13px}
-.research-head a:hover{text-decoration:underline}
+.research-link{display:inline-flex;align-items:center;gap:8px;background:var(--brand);color:#fff !important;text-decoration:none !important;font-weight:700;font-size:13px;padding:10px 14px;border-radius:8px;border:1px solid var(--brand);box-shadow:0 1px 0 rgba(11,31,58,.08);transition:transform .12s ease,filter .12s ease}
+.research-link:hover{filter:brightness(1.06);transform:translateY(-1px)}
+.research-link .arrow{font-size:14px;line-height:1}
 .research-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
 .research-grid .lbl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);margin-bottom:4px}
 .research-grid .val{font-size:18px;font-weight:700}
@@ -129,7 +130,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
 <section class="research">
   <div class="research-head">
     <h2>Research BTG</h2>
-    <a href="https://content.btgpactual.com/research/ativo/ITUB4" target="_blank" rel="noopener">Abrir ITUB4 no Research →</a>
+    <a class="research-link" href="https://content.btgpactual.com/research/ativo/ITUB4" target="_blank" rel="noopener">Abrir ITUB4 no Research <span class="arrow" aria-hidden="true">→</span></a>
   </div>
   <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 41,92</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 54,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+28,82%</div></div></div><p class="research-note">Spot do fechamento anterior (03/09/2026) · alvo em 06/08/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
 </section>
