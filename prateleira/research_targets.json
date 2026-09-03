@@ -199,7 +199,20 @@
     "ticker": "PETR4",
     "url": "https://content.btgpactual.com/research/ativo/PETR4",
     "price": 47.56,
-    "last_trade": "2026-09-03T20:59:34"
+    "last_trade": "2026-09-03T20:59:34",
+    "rec": "COMPRA",
+    "rec_lbl": "Compra",
+    "rec_cls": "buy",
+    "date": "2026-08-24T14:18:49.467Z",
+    "company": "Petrobras",
+    "target": 56.0,
+    "bullets": [
+      "No 2T26, a Petrobras entregou EBITDA de US$18,9 bi, ~5% acima do consenso, com produção de petróleo ~4% t/t maior, lifting cost de US$6,3/boe e refino ainda resiliente apesar de perdas de estoque de ~US$1,7 bi.",
+      "O fluxo de caixa pela fórmula da companhia foi de US$7,7 bi, com capital de giro pressionado por ~US$3,2 bi, incluindo ~US$1,9 bi ligados ao atraso no ressarcimento de subsídios, enquanto a dívida líquida caiu para US$60,4 bi, o caixa…",
+      "No refino, a utilização média foi de 101%, com processamento de 1,83 mi bpd e recordes em diesel, gasolina e QAV. Em julho, a produção de petróleo ficou em 2,77 mi bpd, levando a média do ano a 2,66 mi bpd, acima do guidance de 2,4–2,6…"
+    ],
+    "summary_date": "2026-08-24 14:19:42.412249+00:00",
+    "upside": 17.746005046257363
   },
   "BBSE3": {
     "ticker": "BBSE3",
@@ -286,7 +299,20 @@
     "ticker": "ROXO34",
     "url": "https://content.btgpactual.com/research/ativo/ROXO34",
     "price": 13.11,
-    "last_trade": "2026-09-03T20:59:54"
+    "last_trade": "2026-09-03T20:59:54",
+    "rec": "COMPRA",
+    "rec_lbl": "Compra",
+    "rec_cls": "buy",
+    "date": "2026-08-14T10:09:46.000Z",
+    "company": "Nubank",
+    "target": 20.0,
+    "bullets": [
+      "No 2T26, o Nubank entregou lucro líquido GAAP de US$1,06 bi, +22% t/t e +67% a/a, com ROE de 33% e resultado ~10% acima do consenso, sustentado por forte expansão do NII e provisões menores.",
+      "A carteira de crédito chegou a US$39,4 bi, +5% t/t e +37% a/a em base neutra de câmbio, enquanto os depósitos somaram US$45,3 bi, +6% t/t e +18% a/a, com custo de funding estável em 88% do CDI.",
+      "O NIM avançou 80 bps no trimestre, favorecido por maior mix de cartões e crédito sem garantia, e o NIM ajustado ao risco subiu para 12,4%, +190 bps t/t, após provisões de US$1,48 bi, -14% t/t e 12% abaixo do esperado; mesmo excluindo o…"
+    ],
+    "summary_date": "2026-08-14 10:13:24.162483+00:00",
+    "upside": 52.55530129672006
   },
   "GOGL34": {
     "ticker": "GOGL34",

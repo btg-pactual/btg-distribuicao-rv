@@ -21,6 +21,7 @@ PDF_NAME = "Material-Prateleira-Tatica-31082026.pdf"
 RESEARCH_REC = "https://content.btgpactual.com/api/research/content-hub/recommendations/ticker/{ticker}?includeInstitutionalData=true"
 RESEARCH_QUOTES = "https://content.btgpactual.com/api/research/research/public/asset/quotes"
 RESEARCH_SUMMARY = "https://content.btgpactual.com/api/research/content-hub-assets/v1/asset/summary/{ticker}"
+RESEARCH_INFO = "https://content.btgpactual.com/api/research/content-hub-assets/v1/assets/{ticker}/info"
 RESEARCH_PAGE = "https://content.btgpactual.com/research/ativo/{ticker}"
 RESEARCH_SNAP = ROOT / "research_targets.json"
 SSL_CTX = ssl.create_default_context()
@@ -156,6 +157,13 @@ def _http_json(url: str, payload: object | None = None):
 
 def fetch_research(tickers: list[str]) -> dict[str, dict]:
     uniq = list(dict.fromkeys(tickers))
+    prev: dict[str, dict] = {}
+    if RESEARCH_SNAP.exists():
+        try:
+            prev = json.loads(RESEARCH_SNAP.read_text(encoding="utf-8"))
+        except Exception:
+            prev = {}
+
     quotes: dict[str, dict] = {}
     try:
         rows = _http_json(RESEARCH_QUOTES, uniq) or []
@@ -178,14 +186,33 @@ def fetch_research(tickers: list[str]) -> dict[str, dict]:
             "price": q.get("price"),
             "last_trade": q.get("last_trade"),
         }
+
+        rec = None
         try:
             rec = _http_json(RESEARCH_REC.format(ticker=t))
-        except urllib.error.HTTPError as exc:
-            rec = None
-            item["http"] = exc.code
         except Exception as exc:
-            rec = None
-            item["error"] = str(exc)
+            item["rec_error"] = str(exc)
+
+        # Fallback: endpoint /info também traz recommendation + marketData.
+        info = None
+        if not (rec and rec.get("recommendation")):
+            try:
+                info = _http_json(RESEARCH_INFO.format(ticker=t))
+            except Exception as exc:
+                item["info_error"] = str(exc)
+            if info and isinstance(info.get("recommendation"), dict):
+                nested = info["recommendation"]
+                rec = {
+                    "recommendation": nested.get("recommendation"),
+                    "recommendationDate": nested.get("recommendationDate"),
+                    "targetPrice": nested.get("targetPrice"),
+                    "asset": (info.get("asset") or {}),
+                }
+            md = (info or {}).get("marketData") or {}
+            if item.get("price") is None and md.get("price") is not None:
+                item["price"] = float(md["price"])
+                item["last_trade"] = md.get("consolidationDate") or item.get("last_trade")
+
         if rec and rec.get("recommendation"):
             item["rec"] = rec.get("recommendation")
             item["rec_lbl"] = rec_label(rec.get("recommendation"))
@@ -204,6 +231,13 @@ def fetch_research(tickers: list[str]) -> dict[str, dict]:
                     item["summary_date"] = summary.get("summaryGenerationDate")
             except Exception as exc:
                 item["summary_error"] = str(exc)
+
+        # Se a API falhar pontualmente, preserva PA/rec/bullets do snapshot anterior.
+        old = prev.get(t) or {}
+        for key in ("rec", "rec_lbl", "rec_cls", "date", "company", "target", "bullets", "summary_date"):
+            if item.get(key) in (None, "", []) and old.get(key) not in (None, "", []):
+                item[key] = old[key]
+
         price = item.get("price")
         target = item.get("target")
         if price and target:

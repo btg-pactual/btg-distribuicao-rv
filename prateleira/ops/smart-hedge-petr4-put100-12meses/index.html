@@ -132,7 +132,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
     <h2>Research BTG</h2>
     <a class="research-link" href="https://content.btgpactual.com/research/ativo/PETR4" target="_blank" rel="noopener">Abrir PETR4 no Research <span class="arrow" aria-hidden="true">→</span></a>
   </div>
-  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 47,56</div></div></div><p class="research-note">Spot do fechamento anterior (03/09/2026) · sem preço-alvo publicado para este ticker · atualizado às 18h30 · fonte Research BTG.</p>
+  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 47,56</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 56,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+17,75%</div></div></div><p class="research-note">Spot do fechamento anterior (03/09/2026) · alvo em 24/08/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
 </section>
 
 <div class="main">
@@ -192,6 +192,12 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
   <p class="speech-label">Para quem</p><p>Cliente construtivo em PETR4 no horizonte de 12 meses, com proteção na queda.</p><p class="speech-label">Como encaixa</p><p>Put 100% · call 110% KI em 134.70% · prazo 12 meses.</p><p class="speech-label">Fechamento</p><p>Material de uso interno — condições no DIE.</p>
 </section>
 
+<section class="speech-box insights-box">
+  <h2>Insights Research BTG</h2>
+  <ul class="research-bullets"><li>No 2T26, a Petrobras entregou EBITDA de US$18,9 bi, ~5% acima do consenso, com produção de petróleo ~4% t/t maior, lifting cost de US$6,3/boe e refino ainda resiliente apesar de perdas de estoque de ~US$1,7 bi.</li><li>O fluxo de caixa pela fórmula da companhia foi de US$7,7 bi, com capital de giro pressionado por ~US$3,2 bi, incluindo ~US$1,9 bi ligados ao atraso no ressarcimento de subsídios, enquanto a dívida líquida caiu para US$60,4 bi, o caixa…</li><li>No refino, a utilização média foi de 101%, com processamento de 1,83 mi bpd e recordes em diesel, gasolina e QAV. Em julho, a produção de petróleo ficou em 2,77 mi bpd, levando a média do ano a 2,66 mi bpd, acima do guidance de 2,4–2,6…</li></ul>
+  <p class="research-note">Insights BTG · 24/08/2026 · fonte Research BTG.</p>
+</section>
+
 <p class="footer">Material ilustrativo para uso interno. Não constitui oferta, recomendação ou garantia de rentabilidade.</p>
 <p class="footer-alert">MATERIAL DE USO INTERNO, NÃO ENVIAR AOS CLIENTES</p>
 </div>
@@ -200,7 +206,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
   var X_MIN=-50,X_MAX=80,Y_MIN=-50,Y_MAX=80;
   var PAD={l:48,t:24,r:48,b:24},VW=600,VH=400;
   var PLOT_W=VW-PAD.l-PAD.r,PLOT_H=VH-PAD.t-PAD.b;
-  var RESEARCH_X=null;
+  var RESEARCH_X=17.7460;
   var PUT=100.0, CALL=110.0, KI=134.7;
   function structureReturn(x){ var st=100+x; var r=st+Math.max(PUT-st,0)-(st>=KI?Math.max(st-CALL,0):0)-100; return r; }
   function regimeFor(x){ var st=100+x; if(st>=KI) return 'KI: teto +10%.'; if(x<=(PUT-100)) return 'Piso da put.'; return 'Participa 1:1.'; }
