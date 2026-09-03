@@ -32,6 +32,18 @@ h1 span{color:var(--brand)}
 .hi h3{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px}
 .hi p{font-size:15px;font-weight:700}
 .hi p span{display:block;font-weight:400;color:var(--muted);font-size:12px;margin-top:3px}
+.research{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin-bottom:18px}
+.research-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:12px;flex-wrap:wrap}
+.research-head h2{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--brand);margin:0}
+.research-head a{color:#1a66b3;font-weight:700;text-decoration:none;font-size:13px}
+.research-head a:hover{text-decoration:underline}
+.research-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.research-grid .lbl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);margin-bottom:4px}
+.research-grid .val{font-size:18px;font-weight:700}
+.research-grid .val.buy{color:var(--success)}
+.research-grid .val.hold{color:#b8860b}
+.research-grid .val.sell{color:var(--danger)}
+.research-note{font-size:12px;color:var(--muted);margin-top:10px}
 .main{display:grid;grid-template-columns:280px 1fr 300px;gap:18px;align-items:start}
 .panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px}
 .panel h2{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--brand);margin-bottom:14px}
@@ -85,7 +97,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
 .speech-box p{font-size:14px;color:var(--ink);max-width:70em}
 .footer{margin-top:28px;font-size:11px;color:var(--muted);text-align:center;line-height:1.55}
 .footer-alert{margin-top:10px;text-align:center;font-size:11px;color:var(--btg);font-weight:700}
-@media (max-width:1100px){.main{grid-template-columns:1fr}.highlights{grid-template-columns:1fr 1fr}}
+@media (max-width:1100px){.main{grid-template-columns:1fr}.highlights,.research-grid{grid-template-columns:1fr 1fr}}
 @media (max-width:640px){.page{padding:16px 14px 40px}.topbar{flex-direction:column}.meta-pills{justify-content:flex-start}.highlights{grid-template-columns:1fr}.zones{grid-template-columns:1fr}}
 @media (min-width:1101px){.mobile-sim{display:none}}
 </style>
@@ -105,6 +117,15 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
   <div class="meta-pills"><div class="pill"><strong>Ativo</strong> SPCX34</div><div class="pill"><strong>Prazo</strong> 6 meses</div><div class="pill"><strong>Alta</strong> 2×</div><div class="pill"><strong>Call vendida</strong> 145%</div><div class="pill"><strong>KO baixa</strong> 80%</div></div>
 </header>
 <section class="highlights"><div class="hi"><h3>Prazo</h3><p>6 meses<span></span></p></div><div class="hi"><h3>Alta</h3><p>2×<span>Enquanto não atingir call vendida 145%</span></p></div><div class="hi"><h3>Se atingir</h3><p>0%<span>Call KO no strike 145% vira pó</span></p></div><div class="hi"><h3>Proteção</h3><p>Parcial<span>Piso 0% até KO 80%; abaixo acompanha</span></p></div></section>
+
+<section class="research">
+  <div class="research-head">
+    <h2>Research BTG</h2>
+    <a href="https://content.btgpactual.com/research/ativo/SPCX34" target="_blank" rel="noopener">Abrir SPCX34 no Research →</a>
+  </div>
+  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 51,64</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 77,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+49,11%</div></div></div><p class="research-note">Alvo atualizado em 05/08/2026 · fonte Research BTG.</p>
+</section>
+
 <div class="main">
 <aside class="panel">
   <h2>Estrutura</h2>

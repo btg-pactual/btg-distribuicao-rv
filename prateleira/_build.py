@@ -2,10 +2,14 @@
 """Build Prateleira Tática hub + operation pages."""
 from __future__ import annotations
 
+import json
 import math
 import shutil
+import ssl
 import unicodedata
-from datetime import date
+import urllib.error
+import urllib.request
+from datetime import date, datetime
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
@@ -13,6 +17,21 @@ REPO = ROOT.parent
 OPS = ROOT / "ops"
 REF = date(2026, 9, 1)
 PDF_NAME = "Material-Prateleira-Tatica-31082026.pdf"
+RESEARCH_REC = "https://content.btgpactual.com/api/research/content-hub/recommendations/ticker/{ticker}?includeInstitutionalData=true"
+RESEARCH_QUOTES = "https://content.btgpactual.com/api/research/research/public/asset/quotes"
+RESEARCH_PAGE = "https://content.btgpactual.com/research/ativo/{ticker}"
+RESEARCH_SNAP = ROOT / "research_targets.json"
+SSL_CTX = ssl.create_default_context()
+HTTP_HEADERS = {
+    "User-Agent": (
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+        "(KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36"
+    ),
+    "Accept": "application/json, text/plain, */*",
+    "Origin": "https://content.btgpactual.com",
+    "Referer": "https://content.btgpactual.com/research/home/acoes",
+    "Content-Type": "application/json",
+}
 
 
 def months_label(fixing: date) -> str:
@@ -39,6 +58,145 @@ def copy_pdf() -> bool:
     dest = ROOT / PDF_NAME
     shutil.copy2(cands[0], dest)
     return dest.exists()
+
+
+def fmt_brl(n: float) -> str:
+    s = f"{n:,.2f}"
+    return "R$ " + s.replace(",", "X").replace(".", ",").replace("X", ".")
+
+
+def fmt_pct(n: float) -> str:
+    s = f"{n:.2f}".replace(".", ",")
+    return f"+{s}%" if n > 0 else f"{s}%"
+
+
+def rec_label(raw: str | None) -> str:
+    if not raw:
+        return ""
+    key = raw.strip().upper()
+    return {
+        "COMPRA": "Compra",
+        "NEUTRO": "Neutro",
+        "VENDA": "Venda",
+        "REVISAO": "Em revisão",
+        "REVISÃO": "Em revisão",
+    }.get(key, raw.title())
+
+
+def rec_class(raw: str | None) -> str:
+    key = (raw or "").strip().upper()
+    if key == "COMPRA":
+        return "buy"
+    if key == "VENDA":
+        return "sell"
+    if key in {"NEUTRO", "REVISAO", "REVISÃO"}:
+        return "hold"
+    return ""
+
+
+def _http_json(url: str, payload: object | None = None):
+    data = None if payload is None else json.dumps(payload).encode("utf-8")
+    req = urllib.request.Request(url, data=data, headers=HTTP_HEADERS, method="GET" if data is None else "POST")
+    with urllib.request.urlopen(req, timeout=25, context=SSL_CTX) as resp:
+        raw = resp.read()
+        if not raw:
+            return None
+        return json.loads(raw.decode("utf-8"))
+
+
+def fetch_research(tickers: list[str]) -> dict[str, dict]:
+    uniq = list(dict.fromkeys(tickers))
+    quotes: dict[str, float] = {}
+    try:
+        rows = _http_json(RESEARCH_QUOTES, uniq) or []
+        for row in rows:
+            t = str(row.get("ticker") or "").upper()
+            if t and row.get("price") is not None:
+                quotes[t] = float(row["price"])
+    except Exception as exc:
+        print("research_quotes_fail", exc)
+
+    out: dict[str, dict] = {}
+    for t in uniq:
+        item: dict = {
+            "ticker": t,
+            "url": RESEARCH_PAGE.format(ticker=t),
+            "price": quotes.get(t),
+        }
+        try:
+            rec = _http_json(RESEARCH_REC.format(ticker=t))
+        except urllib.error.HTTPError as exc:
+            rec = None
+            item["http"] = exc.code
+        except Exception as exc:
+            rec = None
+            item["error"] = str(exc)
+        if rec and rec.get("recommendation"):
+            item["rec"] = rec.get("recommendation")
+            item["rec_lbl"] = rec_label(rec.get("recommendation"))
+            item["rec_cls"] = rec_class(rec.get("recommendation"))
+            item["date"] = rec.get("recommendationDate")
+            item["company"] = (rec.get("asset") or {}).get("company")
+            try:
+                item["target"] = float(rec.get("targetPrice"))
+            except (TypeError, ValueError):
+                item["target"] = None
+        price = item.get("price")
+        target = item.get("target")
+        if price and target:
+            item["upside"] = (target / price - 1.0) * 100.0
+        out[t] = item
+
+    RESEARCH_SNAP.write_text(json.dumps(out, ensure_ascii=False, indent=2), encoding="utf-8")
+    n_ok = sum(1 for v in out.values() if v.get("target"))
+    print("research", n_ok, "/", len(uniq))
+    return out
+
+
+def research_html(cfg: dict) -> str:
+    t = cfg["ticker"]
+    rs = cfg.get("research") or {}
+    url = rs.get("url") or RESEARCH_PAGE.format(ticker=t)
+    cells = []
+    if rs.get("price") is not None:
+        cells.append(("Preço atual", fmt_brl(rs["price"]), ""))
+    rec_lbl = rs.get("rec_lbl")
+    if rec_lbl:
+        cells.append(("Recomendação", rec_lbl, rs.get("rec_cls") or ""))
+    if rs.get("target") is not None:
+        cells.append(("Preço-alvo", fmt_brl(rs["target"]), ""))
+    if rs.get("upside") is not None:
+        up = rs["upside"]
+        cls = "buy" if up > 0 else ("sell" if up < 0 else "")
+        cells.append(("Potencial", fmt_pct(up), cls))
+    if not cells:
+        body = '<p class="research-note">Sem cobertura de preço-alvo no Research BTG para este ticker.</p>'
+    else:
+        grid = "".join(
+            f'<div><div class="lbl">{lab}</div><div class="val {cls}">{val}</div></div>'
+            for lab, val, cls in cells
+        )
+        note = ""
+        if not rs.get("target"):
+            note = '<p class="research-note">Cotação ao vivo; sem preço-alvo publicado para este ticker.</p>'
+        elif rs.get("date"):
+            try:
+                dt = datetime.fromisoformat(str(rs["date"]).replace("Z", "+00:00"))
+                note = f'<p class="research-note">Alvo atualizado em {dt.strftime("%d/%m/%Y")} · fonte Research BTG.</p>'
+            except ValueError:
+                note = '<p class="research-note">Fonte: Research BTG.</p>'
+        else:
+            note = '<p class="research-note">Fonte: Research BTG.</p>'
+        body = f'<div class="research-grid">{grid}</div>{note}'
+    return f"""
+<section class="research">
+  <div class="research-head">
+    <h2>Research BTG</h2>
+    <a href="{url}" target="_blank" rel="noopener">Abrir {t} no Research →</a>
+  </div>
+  {body}
+</section>
+"""
 
 
 # ---- data ----
@@ -118,6 +276,18 @@ h1 span{color:var(--brand)}
 .hi h3{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px}
 .hi p{font-size:15px;font-weight:700}
 .hi p span{display:block;font-weight:400;color:var(--muted);font-size:12px;margin-top:3px}
+.research{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin-bottom:18px}
+.research-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:12px;flex-wrap:wrap}
+.research-head h2{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--brand);margin:0}
+.research-head a{color:#1a66b3;font-weight:700;text-decoration:none;font-size:13px}
+.research-head a:hover{text-decoration:underline}
+.research-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.research-grid .lbl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);margin-bottom:4px}
+.research-grid .val{font-size:18px;font-weight:700}
+.research-grid .val.buy{color:var(--success)}
+.research-grid .val.hold{color:#b8860b}
+.research-grid .val.sell{color:var(--danger)}
+.research-note{font-size:12px;color:var(--muted);margin-top:10px}
 .main{display:grid;grid-template-columns:280px 1fr 300px;gap:18px;align-items:start}
 .panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px}
 .panel h2{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--brand);margin-bottom:14px}
@@ -171,7 +341,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
 .speech-box p{font-size:14px;color:var(--ink);max-width:70em}
 .footer{margin-top:28px;font-size:11px;color:var(--muted);text-align:center;line-height:1.55}
 .footer-alert{margin-top:10px;text-align:center;font-size:11px;color:var(--btg);font-weight:700}
-@media (max-width:1100px){.main{grid-template-columns:1fr}.highlights{grid-template-columns:1fr 1fr}}
+@media (max-width:1100px){.main{grid-template-columns:1fr}.highlights,.research-grid{grid-template-columns:1fr 1fr}}
 @media (max-width:640px){.page{padding:16px 14px 40px}.topbar{flex-direction:column}.meta-pills{justify-content:flex-start}.highlights{grid-template-columns:1fr}.zones{grid-template-columns:1fr}}
 @media (min-width:1101px){.mobile-sim{display:none}}
 """
@@ -219,6 +389,7 @@ def op_page(cfg: dict) -> str:
   <div class="meta-pills">{pills}</div>
 </header>
 <section class="highlights">{his}</section>
+{cfg.get('research_html', '')}
 <div class="main">
 <aside class="panel">
   <h2>Estrutura</h2>
@@ -950,7 +1121,13 @@ def hub_html(sections: list[tuple[str, list[tuple[str, dict]]]]) -> str:
 
         ops = []
         for slug, cfg in items:
-            pills = " ".join(f'<span class="pill">{k}: {v}</span>' for k, v in cfg["pills"])
+            extra = ""
+            rs = cfg.get("research") or {}
+            if rs.get("rec_lbl"):
+                extra += f'<span class="pill">Research: {rs["rec_lbl"]}</span>'
+            if rs.get("target") is not None:
+                extra += f'<span class="pill">PA: {fmt_brl(rs["target"])}</span>'
+            pills = " ".join(f'<span class="pill">{k}: {v}</span>' for k, v in cfg["pills"]) + extra
             ops.append(
                 f"""
 <li class="op-block">
@@ -1161,6 +1338,19 @@ def main():
     ot = make_ot()
     sections.append(("One Touch de Alta", [ot]))
     all_ops.append(ot)
+
+    tickers = [cfg["ticker"] for _, cfg in all_ops]
+    try:
+        research = fetch_research(tickers)
+    except Exception as exc:
+        print("research_fail", exc)
+        if RESEARCH_SNAP.exists():
+            research = json.loads(RESEARCH_SNAP.read_text(encoding="utf-8"))
+        else:
+            research = {}
+    for slug, cfg in all_ops:
+        cfg["research"] = research.get(cfg["ticker"], {})
+        cfg["research_html"] = research_html(cfg)
 
     for slug, cfg in all_ops:
         d = OPS / slug
