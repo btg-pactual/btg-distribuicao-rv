@@ -1416,15 +1416,17 @@ def main():
             xmax = cfg.get("x_max", 80)
             xmin = cfg.get("x_min", -50)
             if up > xmax - 8:
-                cfg["x_max"] = int(math.ceil((up + 10) / 10.0) * 10)
+                xmax = int(math.ceil((up + 10) / 10.0) * 10)
             if up < xmin + 8:
-                cfg["x_min"] = int(math.floor((up - 10) / 10.0) * 10)
-            ymax = cfg.get("y_max", cfg.get("x_max", 80))
-            ymin = cfg.get("y_min", cfg.get("x_min", -50))
-            if cfg["x_max"] > ymax:
-                cfg["y_max"] = cfg["x_max"]
-            if cfg["x_min"] < ymin:
-                cfg["y_min"] = cfg["x_min"]
+                xmin = int(math.floor((up - 10) / 10.0) * 10)
+            cfg["x_max"] = xmax
+            cfg["x_min"] = xmin
+            ymax = cfg.get("y_max", xmax)
+            ymin = cfg.get("y_min", xmin)
+            if xmax > ymax:
+                cfg["y_max"] = xmax
+            if xmin < ymin:
+                cfg["y_min"] = xmin
         cfg["research_html"] = research_html(cfg)
 
     for slug, cfg in all_ops:
