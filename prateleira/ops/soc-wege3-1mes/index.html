@@ -44,9 +44,10 @@ h1 span{color:var(--brand)}
 .research-grid .val.hold{color:#b8860b}
 .research-grid .val.sell{color:var(--danger)}
 .research-note{font-size:12px;color:var(--muted);margin-top:10px}
-.research-bullets{margin:14px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.research-bullets{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
 .research-bullets li{position:relative;padding:10px 12px 10px 28px;background:var(--bg);border:1px solid var(--line);border-radius:8px;font-size:13px;line-height:1.45;color:var(--ink)}
 .research-bullets li::before{content:"";position:absolute;left:12px;top:16px;width:6px;height:6px;border-radius:50%;background:var(--brand)}
+.insights-box .research-note{margin-top:12px}
 .research-actions{margin-top:12px}
 .research-btn{appearance:none;border:1px solid var(--brand);background:#fff;color:var(--brand);font-size:12px;font-weight:700;padding:9px 14px;border-radius:8px;cursor:pointer}
 .research-btn:hover{background:color-mix(in srgb,var(--brand) 8%,#fff)}
@@ -130,7 +131,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
     <h2>Research BTG</h2>
     <a href="https://content.btgpactual.com/research/ativo/WEGE3" target="_blank" rel="noopener">Abrir WEGE3 no Research →</a>
   </div>
-  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 52,06</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 65,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+24,86%</div></div></div><p class="research-note">Spot do fechamento anterior (03/09/2026) · alvo em 27/07/2026 · atualizado às 18h30 · fonte Research BTG.</p><ul class="research-bullets"><li>No 2T26, a WEG entregou receita líquida de R$10,1 bi, EBITDA de R$2,21 bi e margem de 21,8%, com LL de R$1,56 bi.</li><li>O EBITDA veio 5,7% acima do esperado, apoiado por mix melhor, reajustes de preços e menor peso de renováveis, enquanto EEI doméstico foi o principal destaque, com receita de R$1,67 bi (+16,5% a/a), compensando GTD mais fraco. Na prévia…</li><li>O capex foi de R$795 mi e a companhia encerrou junho com caixa líquido de R$3,7 bi. Após o resultado, as projeções subiram para receita de R$42,6 bi em 2026 e R$49,9 bi em 2027, com margem EBITDA de 21,9%–22,0% e LL de R$6,4 bi e R$7,6…</li></ul><p class="research-note">Insights BTG · 14/08/2026.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
+  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 52,06</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 65,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+24,86%</div></div></div><p class="research-note">Spot do fechamento anterior (03/09/2026) · alvo em 27/07/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
 </section>
 
 <div class="main">
@@ -189,6 +190,13 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
   <h2>Speech comercial</h2>
   <p class="speech-label">Para quem</p><p>Cliente que quer cupom curto em WEGE3, aceitando risco de exposição se o papel cair além da barreira.</p><p class="speech-label">Como encaixa</p><p>SOC · prazo 1 mês. Sem KO: cupom +0.70%. Com KO (92%): acompanha o ativo.</p><p class="speech-label">Fechamento</p><p>Material de uso interno — condições no DIE.</p>
 </section>
+
+<section class="speech-box insights-box">
+  <h2>Insights Research BTG</h2>
+  <ul class="research-bullets"><li>No 2T26, a WEG entregou receita líquida de R$10,1 bi, EBITDA de R$2,21 bi e margem de 21,8%, com LL de R$1,56 bi.</li><li>O EBITDA veio 5,7% acima do esperado, apoiado por mix melhor, reajustes de preços e menor peso de renováveis, enquanto EEI doméstico foi o principal destaque, com receita de R$1,67 bi (+16,5% a/a), compensando GTD mais fraco. Na prévia…</li><li>O capex foi de R$795 mi e a companhia encerrou junho com caixa líquido de R$3,7 bi. Após o resultado, as projeções subiram para receita de R$42,6 bi em 2026 e R$49,9 bi em 2027, com margem EBITDA de 21,9%–22,0% e LL de R$6,4 bi e R$7,6…</li></ul>
+  <p class="research-note">Insights BTG · 14/08/2026 · fonte Research BTG.</p>
+</section>
+
 <p class="footer">Material ilustrativo para uso interno. Não constitui oferta, recomendação ou garantia de rentabilidade.</p>
 <p class="footer-alert">MATERIAL DE USO INTERNO, NÃO ENVIAR AOS CLIENTES</p>
 </div>

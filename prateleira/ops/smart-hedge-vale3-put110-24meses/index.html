@@ -44,9 +44,10 @@ h1 span{color:var(--brand)}
 .research-grid .val.hold{color:#b8860b}
 .research-grid .val.sell{color:var(--danger)}
 .research-note{font-size:12px;color:var(--muted);margin-top:10px}
-.research-bullets{margin:14px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.research-bullets{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
 .research-bullets li{position:relative;padding:10px 12px 10px 28px;background:var(--bg);border:1px solid var(--line);border-radius:8px;font-size:13px;line-height:1.45;color:var(--ink)}
 .research-bullets li::before{content:"";position:absolute;left:12px;top:16px;width:6px;height:6px;border-radius:50%;background:var(--brand)}
+.insights-box .research-note{margin-top:12px}
 .research-actions{margin-top:12px}
 .research-btn{appearance:none;border:1px solid var(--brand);background:#fff;color:var(--brand);font-size:12px;font-weight:700;padding:9px 14px;border-radius:8px;cursor:pointer}
 .research-btn:hover{background:color-mix(in srgb,var(--brand) 8%,#fff)}
@@ -130,7 +131,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
     <h2>Research BTG</h2>
     <a href="https://content.btgpactual.com/research/ativo/VALE3" target="_blank" rel="noopener">Abrir VALE3 no Research →</a>
   </div>
-  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 78,45</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 90,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+14,72%</div></div></div><p class="research-note">Spot do fechamento anterior (03/09/2026) · alvo em 18/08/2026 · atualizado às 18h30 · fonte Research BTG.</p><ul class="research-bullets"><li>A Vale reportou 2T26 acima do esperado, com EBITDA consolidado de US$4,1 bi, 6% acima da estimativa do BTG, apesar da pressão de custos; ferrosos entregaram US$3,1 bi, com vendas de finos de 69,9 Mt e preço realizado de US$95/t, pelotas…</li><li>Na prévia, o banco já indicava vendas de minério de ferro e pelotas de 77,7–79,7 Mt, produção de 84,3 Mt e preços mais fortes em finos, pelotas e cobre, compensando parcialmente um trimestre pressionado por diesel, frete e câmbio.</li><li>O guidance de 2026 foi ajustado para C1 do minério em ~US$23/t no ponto médio e custo total em ~US$60/t, mas com corte relevante de custos na VBM, de ~US$1.000/t no cobre e ~US$2.000/t no níquel, além de piso maior de volumes.</li></ul><p class="research-note">Insights BTG · 18/08/2026.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
+  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 78,45</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 90,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+14,72%</div></div></div><p class="research-note">Spot do fechamento anterior (03/09/2026) · alvo em 18/08/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
 </section>
 
 <div class="main">
@@ -189,6 +190,13 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
   <h2>Speech comercial</h2>
   <p class="speech-label">Para quem</p><p>Cliente construtivo em VALE3 no horizonte de 24 meses, com proteção na queda.</p><p class="speech-label">Como encaixa</p><p>Put 110% · call 110% KI em 174.35% · prazo 24 meses.</p><p class="speech-label">Fechamento</p><p>Material de uso interno — condições no DIE.</p>
 </section>
+
+<section class="speech-box insights-box">
+  <h2>Insights Research BTG</h2>
+  <ul class="research-bullets"><li>A Vale reportou 2T26 acima do esperado, com EBITDA consolidado de US$4,1 bi, 6% acima da estimativa do BTG, apesar da pressão de custos; ferrosos entregaram US$3,1 bi, com vendas de finos de 69,9 Mt e preço realizado de US$95/t, pelotas…</li><li>Na prévia, o banco já indicava vendas de minério de ferro e pelotas de 77,7–79,7 Mt, produção de 84,3 Mt e preços mais fortes em finos, pelotas e cobre, compensando parcialmente um trimestre pressionado por diesel, frete e câmbio.</li><li>O guidance de 2026 foi ajustado para C1 do minério em ~US$23/t no ponto médio e custo total em ~US$60/t, mas com corte relevante de custos na VBM, de ~US$1.000/t no cobre e ~US$2.000/t no níquel, além de piso maior de volumes.</li></ul>
+  <p class="research-note">Insights BTG · 18/08/2026 · fonte Research BTG.</p>
+</section>
+
 <p class="footer">Material ilustrativo para uso interno. Não constitui oferta, recomendação ou garantia de rentabilidade.</p>
 <p class="footer-alert">MATERIAL DE USO INTERNO, NÃO ENVIAR AOS CLIENTES</p>
 </div>

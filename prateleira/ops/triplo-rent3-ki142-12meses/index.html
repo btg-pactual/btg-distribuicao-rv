@@ -44,9 +44,10 @@ h1 span{color:var(--brand)}
 .research-grid .val.hold{color:#b8860b}
 .research-grid .val.sell{color:var(--danger)}
 .research-note{font-size:12px;color:var(--muted);margin-top:10px}
-.research-bullets{margin:14px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.research-bullets{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
 .research-bullets li{position:relative;padding:10px 12px 10px 28px;background:var(--bg);border:1px solid var(--line);border-radius:8px;font-size:13px;line-height:1.45;color:var(--ink)}
 .research-bullets li::before{content:"";position:absolute;left:12px;top:16px;width:6px;height:6px;border-radius:50%;background:var(--brand)}
+.insights-box .research-note{margin-top:12px}
 .research-actions{margin-top:12px}
 .research-btn{appearance:none;border:1px solid var(--brand);background:#fff;color:var(--brand);font-size:12px;font-weight:700;padding:9px 14px;border-radius:8px;cursor:pointer}
 .research-btn:hover{background:color-mix(in srgb,var(--brand) 8%,#fff)}
@@ -130,7 +131,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
     <h2>Research BTG</h2>
     <a href="https://content.btgpactual.com/research/ativo/RENT3" target="_blank" rel="noopener">Abrir RENT3 no Research →</a>
   </div>
-  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 36,75</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 65,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+76,87%</div></div></div><p class="research-note">Spot do fechamento anterior (03/09/2026) · alvo em 07/08/2026 · atualizado às 18h30 · fonte Research BTG.</p><ul class="research-bullets"><li>A Localiza reportou 2T26 acima das estimativas no consolidado, com receita líquida de R$12,3 bi, +25% a/a, EBITDA de R$3,8 bi, +14% a/a, e lucro líquido de R$1,0 bi, +31% a/a, enquanto o spread de ROIC ajustado subiu para 6,1%, de 5,9%…</li><li>Em Gestão de Frotas, os volumes cresceram 1% a/a, a diária média foi a R$109, a receita somou R$2,4 bi, +6% a/a, e a margem EBITDA atingiu 76%, acima de 71% no 2T25. A operação no México ainda segue em fase de investimento, com receita…</li><li>A companhia comprou 120,6 mil veículos no trimestre, ante 74 mil um ano antes. Parte do lucro foi beneficiada por menor alíquota efetiva e créditos de PIS/COFINS, o que pode limitar a qualidade percebida do resultado. Em valuation, o…</li></ul><p class="research-note">Insights BTG · 12/08/2026.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
+  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 36,75</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 65,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+76,87%</div></div></div><p class="research-note">Spot do fechamento anterior (03/09/2026) · alvo em 07/08/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
 </section>
 
 <div class="main">
@@ -189,6 +190,13 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
   <h2>Speech comercial</h2>
   <p class="speech-label">Para quem</p><p>Cliente construtivo em RENT3 (12 meses) que quer assimetria 3× com proteção na queda moderada.</p><p class="speech-label">Como encaixa</p><p>Triplo KO · alta até 142% · queda até 80% · teto +15%.</p><p class="speech-label">Fechamento</p><p>Material de uso interno — condições no DIE.</p>
 </section>
+
+<section class="speech-box insights-box">
+  <h2>Insights Research BTG</h2>
+  <ul class="research-bullets"><li>A Localiza reportou 2T26 acima das estimativas no consolidado, com receita líquida de R$12,3 bi, +25% a/a, EBITDA de R$3,8 bi, +14% a/a, e lucro líquido de R$1,0 bi, +31% a/a, enquanto o spread de ROIC ajustado subiu para 6,1%, de 5,9%…</li><li>Em Gestão de Frotas, os volumes cresceram 1% a/a, a diária média foi a R$109, a receita somou R$2,4 bi, +6% a/a, e a margem EBITDA atingiu 76%, acima de 71% no 2T25. A operação no México ainda segue em fase de investimento, com receita…</li><li>A companhia comprou 120,6 mil veículos no trimestre, ante 74 mil um ano antes. Parte do lucro foi beneficiada por menor alíquota efetiva e créditos de PIS/COFINS, o que pode limitar a qualidade percebida do resultado. Em valuation, o…</li></ul>
+  <p class="research-note">Insights BTG · 12/08/2026 · fonte Research BTG.</p>
+</section>
+
 <p class="footer">Material ilustrativo para uso interno. Não constitui oferta, recomendação ou garantia de rentabilidade.</p>
 <p class="footer-alert">MATERIAL DE USO INTERNO, NÃO ENVIAR AOS CLIENTES</p>
 </div>

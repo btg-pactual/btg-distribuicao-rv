@@ -44,9 +44,10 @@ h1 span{color:var(--brand)}
 .research-grid .val.hold{color:#b8860b}
 .research-grid .val.sell{color:var(--danger)}
 .research-note{font-size:12px;color:var(--muted);margin-top:10px}
-.research-bullets{margin:14px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.research-bullets{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
 .research-bullets li{position:relative;padding:10px 12px 10px 28px;background:var(--bg);border:1px solid var(--line);border-radius:8px;font-size:13px;line-height:1.45;color:var(--ink)}
 .research-bullets li::before{content:"";position:absolute;left:12px;top:16px;width:6px;height:6px;border-radius:50%;background:var(--brand)}
+.insights-box .research-note{margin-top:12px}
 .research-actions{margin-top:12px}
 .research-btn{appearance:none;border:1px solid var(--brand);background:#fff;color:var(--brand);font-size:12px;font-weight:700;padding:9px 14px;border-radius:8px;cursor:pointer}
 .research-btn:hover{background:color-mix(in srgb,var(--brand) 8%,#fff)}
@@ -130,7 +131,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
     <h2>Research BTG</h2>
     <a href="https://content.btgpactual.com/research/ativo/RDOR3" target="_blank" rel="noopener">Abrir RDOR3 no Research →</a>
   </div>
-  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 37,39</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 58,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+55,12%</div></div></div><p class="research-note">Spot do fechamento anterior (03/09/2026) · alvo em 18/08/2026 · atualizado às 18h30 · fonte Research BTG.</p><ul class="research-bullets"><li>A Rede D’Or entregou 2T26 acima do esperado, com receita líquida de R$14,9 bi, EBITDA ajustado de R$3,4 bi, alta de 24% a/a e 8% acima das estimativas, além de lucro líquido de R$1,16 bi, 12% acima do esperado. No hospitalar, a receita…</li><li>A ocupação ficou em 80,2%, os dias de internação caíram 1%, mas o ticket médio subiu 11%, enquanto a oncologia seguiu forte, com receita de R$1,15 bi (+22%). Na SulAmérica, a receita líquida cresceu 7% para R$8,7 bi, a sinistralidade…</li><li>O realizado veio melhor, reforçando ganhos de eficiência e execução. Entre os KPIs, a alavancagem caiu para ~1,7x, mesmo com dívida líquida de R$22,8 bi e R$620 mi em recompras no trimestre, enquanto o FCFE foi de R$303 mi. Para 2026, o…</li></ul><p class="research-note">Insights BTG · 18/08/2026.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
+  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 37,39</div></div></div><p class="research-note">Spot do fechamento anterior (03/09/2026) · sem preço-alvo publicado para este ticker · atualizado às 18h30 · fonte Research BTG.</p>
 </section>
 
 <div class="main">
@@ -189,6 +190,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
   <h2>Speech comercial</h2>
   <p class="speech-label">Para quem</p><p>Cliente que quer cupom curto em RDOR3, aceitando risco de exposição se o papel cair além da barreira.</p><p class="speech-label">Como encaixa</p><p>SOC · prazo 1 mês. Sem KO: cupom +0.80%. Com KO (90%): acompanha o ativo.</p><p class="speech-label">Fechamento</p><p>Material de uso interno — condições no DIE.</p>
 </section>
+
 <p class="footer">Material ilustrativo para uso interno. Não constitui oferta, recomendação ou garantia de rentabilidade.</p>
 <p class="footer-alert">MATERIAL DE USO INTERNO, NÃO ENVIAR AOS CLIENTES</p>
 </div>
@@ -197,7 +199,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
   var X_MIN=-50,X_MAX=80,Y_MIN=-50,Y_MAX=80;
   var PAD={l:48,t:24,r:48,b:24},VW=600,VH=400;
   var PLOT_W=VW-PAD.l-PAD.r,PLOT_H=VH-PAD.t-PAD.b;
-  var RESEARCH_X=55.1217;
+  var RESEARCH_X=null;
   var KO_VAR=-10.0, CUPON=0.8;
   function structureReturn(x){ if (x <= KO_VAR) return x; return CUPON; }
   function regimeFor(x){ if (x <= KO_VAR) return 'KO: acompanha o ativo.'; return 'Cupom SOC +0.80%.'; }

@@ -44,9 +44,10 @@ h1 span{color:var(--brand)}
 .research-grid .val.hold{color:#b8860b}
 .research-grid .val.sell{color:var(--danger)}
 .research-note{font-size:12px;color:var(--muted);margin-top:10px}
-.research-bullets{margin:14px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.research-bullets{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
 .research-bullets li{position:relative;padding:10px 12px 10px 28px;background:var(--bg);border:1px solid var(--line);border-radius:8px;font-size:13px;line-height:1.45;color:var(--ink)}
 .research-bullets li::before{content:"";position:absolute;left:12px;top:16px;width:6px;height:6px;border-radius:50%;background:var(--brand)}
+.insights-box .research-note{margin-top:12px}
 .research-actions{margin-top:12px}
 .research-btn{appearance:none;border:1px solid var(--brand);background:#fff;color:var(--brand);font-size:12px;font-weight:700;padding:9px 14px;border-radius:8px;cursor:pointer}
 .research-btn:hover{background:color-mix(in srgb,var(--brand) 8%,#fff)}
@@ -130,7 +131,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
     <h2>Research BTG</h2>
     <a href="https://content.btgpactual.com/research/ativo/EMBJ3" target="_blank" rel="noopener">Abrir EMBJ3 no Research →</a>
   </div>
-  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 93,93</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 126,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+34,14%</div></div></div><p class="research-note">Spot do fechamento anterior (03/09/2026) · alvo em 24/08/2026 · atualizado às 18h30 · fonte Research BTG.</p><ul class="research-bullets"><li>No 2T26, a Embraer entregou 65 aeronaves, +7% a/a e ~10% acima da prévia, com receita de US$2,2 bi, +23% a/a e ~6% acima do esperado.</li><li>O EBITDA ajustado ficou em US$356 mi, ou ~US$296 mi ao excluir crédito tributário e tarifas, com margem de ~13%, enquanto o EBIT ajustado foi de US$237 mi e margem de 10,6%, 280 bps acima da estimativa. O lucro líquido ajustado somou…</li><li>A dívida líquida ex-Eve caiu para US$124 mi, com alavancagem de 0,2x. Na prévia, o BTG esperava 65 jatos, receita de ~US$2,1 bi, EBITDA de US$217 mi e LL de US$102 mi, e o trimestre confirmou recuperação operacional após um 1T mais…</li></ul><p class="research-note">Insights BTG · 24/08/2026.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
+  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 93,93</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 126,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+34,14%</div></div></div><p class="research-note">Spot do fechamento anterior (03/09/2026) · alvo em 24/08/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
 </section>
 
 <div class="main">
@@ -204,6 +205,13 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
   <h2>Speech comercial</h2>
   <p class="speech-label">Para quem</p><p>Cliente tático em queda de EMBJ3 (3 meses) — put com rebate se KO.</p><p class="speech-label">Como encaixa</p><p>Put KO 80% · rebate 5,50% · preço 2,00%. No KO: +3,50% no nocional = +175% sobre o prêmio. Na alta, perda limitada a −100% do prêmio.</p><p class="speech-label">Fechamento</p><p>Material de uso interno — condições no DIE.</p>
 </section>
+
+<section class="speech-box insights-box">
+  <h2>Insights Research BTG</h2>
+  <ul class="research-bullets"><li>No 2T26, a Embraer entregou 65 aeronaves, +7% a/a e ~10% acima da prévia, com receita de US$2,2 bi, +23% a/a e ~6% acima do esperado.</li><li>O EBITDA ajustado ficou em US$356 mi, ou ~US$296 mi ao excluir crédito tributário e tarifas, com margem de ~13%, enquanto o EBIT ajustado foi de US$237 mi e margem de 10,6%, 280 bps acima da estimativa. O lucro líquido ajustado somou…</li><li>A dívida líquida ex-Eve caiu para US$124 mi, com alavancagem de 0,2x. Na prévia, o BTG esperava 65 jatos, receita de ~US$2,1 bi, EBITDA de US$217 mi e LL de US$102 mi, e o trimestre confirmou recuperação operacional após um 1T mais…</li></ul>
+  <p class="research-note">Insights BTG · 24/08/2026 · fonte Research BTG.</p>
+</section>
+
 <p class="footer">Material ilustrativo para uso interno. Não constitui oferta, recomendação ou garantia de rentabilidade.</p>
 <p class="footer-alert">MATERIAL DE USO INTERNO, NÃO ENVIAR AOS CLIENTES</p>
 </div>

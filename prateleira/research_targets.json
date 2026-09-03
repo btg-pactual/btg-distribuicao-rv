@@ -28,20 +28,7 @@
     "ticker": "RDOR3",
     "url": "https://content.btgpactual.com/research/ativo/RDOR3",
     "price": 37.39,
-    "last_trade": "2026-09-03T20:54:57",
-    "rec": "COMPRA",
-    "rec_lbl": "Compra",
-    "rec_cls": "buy",
-    "date": "2026-08-18T10:07:31.843Z",
-    "company": "Rede D'or",
-    "target": 58.0,
-    "bullets": [
-      "A Rede D’Or entregou 2T26 acima do esperado, com receita líquida de R$14,9 bi, EBITDA ajustado de R$3,4 bi, alta de 24% a/a e 8% acima das estimativas, além de lucro líquido de R$1,16 bi, 12% acima do esperado. No hospitalar, a receita…",
-      "A ocupação ficou em 80,2%, os dias de internação caíram 1%, mas o ticket médio subiu 11%, enquanto a oncologia seguiu forte, com receita de R$1,15 bi (+22%). Na SulAmérica, a receita líquida cresceu 7% para R$8,7 bi, a sinistralidade…",
-      "O realizado veio melhor, reforçando ganhos de eficiência e execução. Entre os KPIs, a alavancagem caiu para ~1,7x, mesmo com dívida líquida de R$22,8 bi e R$620 mi em recompras no trimestre, enquanto o FCFE foi de R$303 mi. Para 2026, o…"
-    ],
-    "summary_date": "2026-08-18 11:14:39.436195+00:00",
-    "upside": 55.12169029152179
+    "last_trade": "2026-09-03T20:54:57"
   },
   "AXIA3": {
     "ticker": "AXIA3",

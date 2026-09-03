@@ -44,9 +44,10 @@ h1 span{color:var(--brand)}
 .research-grid .val.hold{color:#b8860b}
 .research-grid .val.sell{color:var(--danger)}
 .research-note{font-size:12px;color:var(--muted);margin-top:10px}
-.research-bullets{margin:14px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.research-bullets{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
 .research-bullets li{position:relative;padding:10px 12px 10px 28px;background:var(--bg);border:1px solid var(--line);border-radius:8px;font-size:13px;line-height:1.45;color:var(--ink)}
 .research-bullets li::before{content:"";position:absolute;left:12px;top:16px;width:6px;height:6px;border-radius:50%;background:var(--brand)}
+.insights-box .research-note{margin-top:12px}
 .research-actions{margin-top:12px}
 .research-btn{appearance:none;border:1px solid var(--brand);background:#fff;color:var(--brand);font-size:12px;font-weight:700;padding:9px 14px;border-radius:8px;cursor:pointer}
 .research-btn:hover{background:color-mix(in srgb,var(--brand) 8%,#fff)}
@@ -130,7 +131,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
     <h2>Research BTG</h2>
     <a href="https://content.btgpactual.com/research/ativo/TOTS3" target="_blank" rel="noopener">Abrir TOTS3 no Research →</a>
   </div>
-  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 34,82</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 55,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+57,96%</div></div></div><p class="research-note">Spot do fechamento anterior (03/09/2026) · alvo em 06/08/2026 · atualizado às 18h30 · fonte Research BTG.</p><ul class="research-bullets"><li>A Totvs reportou 2T26 sólido, com receita consolidada de R$1,97 bi, alta de 14% a/a, EBITDA ajustado de R$484 mi, +22% a/a, e margem de 24,6%, levemente abaixo da projeção, enquanto o lucro líquido ajustado chegou a R$240,6 mi, 17%…</li><li>No software, agora consolidando Management, Linx e RD Station em um único reporte, a receita atingiu R$1,92 bi, +13,3% a/a e +1,6% t/t, com receita recorrente de R$1,78 bi, +15,3% a/a, adições líquidas de ARR de R$209 mi em linha com o…</li><li>A margem bruta do software ficou em 73,2% e a margem EBITDA em 25,4%.</li></ul><p class="research-note">Insights BTG · 12/08/2026.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
+  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 34,82</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 55,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+57,96%</div></div></div><p class="research-note">Spot do fechamento anterior (03/09/2026) · alvo em 06/08/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
 </section>
 
 <div class="main">
@@ -189,6 +190,13 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
   <h2>Speech comercial</h2>
   <p class="speech-label">Para quem</p><p>Cliente que quer cupom curto em TOTS3, aceitando risco de exposição se o papel cair além da barreira.</p><p class="speech-label">Como encaixa</p><p>SOC · prazo 1 mês. Sem KO: cupom +1.20%. Com KO (90%): acompanha o ativo.</p><p class="speech-label">Fechamento</p><p>Material de uso interno — condições no DIE.</p>
 </section>
+
+<section class="speech-box insights-box">
+  <h2>Insights Research BTG</h2>
+  <ul class="research-bullets"><li>A Totvs reportou 2T26 sólido, com receita consolidada de R$1,97 bi, alta de 14% a/a, EBITDA ajustado de R$484 mi, +22% a/a, e margem de 24,6%, levemente abaixo da projeção, enquanto o lucro líquido ajustado chegou a R$240,6 mi, 17%…</li><li>No software, agora consolidando Management, Linx e RD Station em um único reporte, a receita atingiu R$1,92 bi, +13,3% a/a e +1,6% t/t, com receita recorrente de R$1,78 bi, +15,3% a/a, adições líquidas de ARR de R$209 mi em linha com o…</li><li>A margem bruta do software ficou em 73,2% e a margem EBITDA em 25,4%.</li></ul>
+  <p class="research-note">Insights BTG · 12/08/2026 · fonte Research BTG.</p>
+</section>
+
 <p class="footer">Material ilustrativo para uso interno. Não constitui oferta, recomendação ou garantia de rentabilidade.</p>
 <p class="footer-alert">MATERIAL DE USO INTERNO, NÃO ENVIAR AOS CLIENTES</p>
 </div>

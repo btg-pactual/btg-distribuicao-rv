@@ -253,16 +253,6 @@ def research_html(cfg: dict) -> str:
             bits.append(f"alvo em {alvo_d}")
         bits.append("atualizado às 18h30 · fonte Research BTG")
         note = f'<p class="research-note">{ " · ".join(bits) }.</p>'
-        bullets_html = ""
-        bullets = rs.get("bullets") or []
-        if bullets:
-            lis = "".join(f"<li>{html_esc(b)}</li>" for b in bullets)
-            sum_d = fmt_date(rs.get("summary_date"))
-            sum_note = f"Insights BTG{f' · {sum_d}' if sum_d else ''}."
-            bullets_html = (
-                f'<ul class="research-bullets">{lis}</ul>'
-                f'<p class="research-note">{sum_note}</p>'
-            )
         btn = ""
         if rs.get("upside") is not None:
             btn = (
@@ -271,7 +261,7 @@ def research_html(cfg: dict) -> str:
                 "Ver preço-alvo no gráfico"
                 "</button></div>"
             )
-        body = f'<div class="research-grid">{grid}</div>{note}{bullets_html}{btn}'
+        body = f'<div class="research-grid">{grid}</div>{note}{btn}'
     return f"""
 <section class="research">
   <div class="research-head">
@@ -279,6 +269,23 @@ def research_html(cfg: dict) -> str:
     <a href="{url}" target="_blank" rel="noopener">Abrir {t} no Research →</a>
   </div>
   {body}
+</section>
+"""
+
+
+def research_insights_html(cfg: dict) -> str:
+    rs = cfg.get("research") or {}
+    bullets = rs.get("bullets") or []
+    if not bullets:
+        return ""
+    lis = "".join(f"<li>{html_esc(b)}</li>" for b in bullets)
+    sum_d = fmt_date(rs.get("summary_date"))
+    sum_note = f"Insights BTG{f' · {sum_d}' if sum_d else ''} · fonte Research BTG."
+    return f"""
+<section class="speech-box insights-box">
+  <h2>Insights Research BTG</h2>
+  <ul class="research-bullets">{lis}</ul>
+  <p class="research-note">{sum_note}</p>
 </section>
 """
 
@@ -372,9 +379,10 @@ h1 span{color:var(--brand)}
 .research-grid .val.hold{color:#b8860b}
 .research-grid .val.sell{color:var(--danger)}
 .research-note{font-size:12px;color:var(--muted);margin-top:10px}
-.research-bullets{margin:14px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.research-bullets{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
 .research-bullets li{position:relative;padding:10px 12px 10px 28px;background:var(--bg);border:1px solid var(--line);border-radius:8px;font-size:13px;line-height:1.45;color:var(--ink)}
 .research-bullets li::before{content:"";position:absolute;left:12px;top:16px;width:6px;height:6px;border-radius:50%;background:var(--brand)}
+.insights-box .research-note{margin-top:12px}
 .research-actions{margin-top:12px}
 .research-btn{appearance:none;border:1px solid var(--brand);background:#fff;color:var(--brand);font-size:12px;font-weight:700;padding:9px 14px;border-radius:8px;cursor:pointer}
 .research-btn:hover{background:color-mix(in srgb,var(--brand) 8%,#fff)}
@@ -543,6 +551,7 @@ def op_page(cfg: dict) -> str:
   <h2>Speech comercial</h2>
   {speech}
 </section>
+{cfg.get('research_insights_html', '')}
 <p class="footer">Material ilustrativo para uso interno. Não constitui oferta, recomendação ou garantia de rentabilidade.</p>
 <p class="footer-alert">MATERIAL DE USO INTERNO, NÃO ENVIAR AOS CLIENTES</p>
 </div>
@@ -1498,6 +1507,7 @@ def main():
             cfg["y_max"] = max(ymax, int(math.ceil(abs(up) / 10.0) * 10) + 10)
             cfg["y_min"] = min(ymin, xmin)
         cfg["research_html"] = research_html(cfg)
+        cfg["research_insights_html"] = research_insights_html(cfg)
 
     for slug, cfg in all_ops:
         d = OPS / slug
