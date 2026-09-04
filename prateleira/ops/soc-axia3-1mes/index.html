@@ -132,7 +132,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
     <h2>Research BTG</h2>
     <a class="research-link" href="https://content.btgpactual.com/research/ativo/AXIA3" target="_blank" rel="noopener">Abrir AXIA3 no Research <span class="arrow" aria-hidden="true">→</span></a>
   </div>
-  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 55,69</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 74,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+32,88%</div></div></div><p class="research-note">Spot do fechamento anterior (04/09/2026) · alvo em 19/08/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
+  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 55,28</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 74,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+33,86%</div></div></div><p class="research-note">Spot do fechamento anterior (04/09/2026) · alvo em 19/08/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
 </section>
 
 <div class="main">
@@ -206,7 +206,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
   var X_MIN=-50,X_MAX=80,Y_MIN=-50,Y_MAX=80;
   var PAD={l:48,t:24,r:48,b:24},VW=600,VH=400;
   var PLOT_W=VW-PAD.l-PAD.r,PLOT_H=VH-PAD.t-PAD.b;
-  var RESEARCH_X=32.8784;
+  var RESEARCH_X=33.8640;
   var KO_VAR=-10.0, CUPON=1.5;
   function structureReturn(x){ if (x <= KO_VAR) return x; return CUPON; }
   function regimeFor(x){ if (x <= KO_VAR) return 'KO: acompanha o ativo.'; return 'Cupom SOC +1.50%.'; }
@@ -272,12 +272,12 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
     }
     if (typeof H === 'number') {
       var cL=document.getElementById('callKoGap'), cT=document.getElementById('callKoLabel');
-      var peakY = 2 * (H - 0.01);
+      var peakY = (typeof CAP === 'number') ? CAP : (2 * H);
       cL.setAttribute('x1', xToSvg(H)); cL.setAttribute('x2', xToSvg(H));
       cL.setAttribute('y1', yToSvg(peakY)); cL.setAttribute('y2', yToSvg(0));
       cL.setAttribute('opacity', '1');
       cT.setAttribute('x', Math.max(48, xToSvg(H) - 72)); cT.setAttribute('y', yToSvg(peakY) - 8);
-      cT.textContent = 'Call vendida / KO';
+      cT.textContent = 'Call vanilla · teto 2×';
       cT.setAttribute('opacity', '1');
     }
   }

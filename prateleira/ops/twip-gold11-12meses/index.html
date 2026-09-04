@@ -132,7 +132,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
     <h2>Research BTG</h2>
     <a class="research-link" href="https://content.btgpactual.com/research/ativo/GOLD11" target="_blank" rel="noopener">Abrir GOLD11 no Research <span class="arrow" aria-hidden="true">→</span></a>
   </div>
-  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 23,61</div></div></div><p class="research-note">Spot do fechamento anterior (04/09/2026) · sem preço-alvo publicado para este ticker · atualizado às 18h30 · fonte Research BTG.</p>
+  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 23,66</div></div></div><p class="research-note">Spot do fechamento anterior (04/09/2026) · sem preço-alvo publicado para este ticker · atualizado às 18h30 · fonte Research BTG.</p>
 </section>
 
 <div class="main">
@@ -266,12 +266,12 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
     }
     if (typeof H === 'number') {
       var cL=document.getElementById('callKoGap'), cT=document.getElementById('callKoLabel');
-      var peakY = 2 * (H - 0.01);
+      var peakY = (typeof CAP === 'number') ? CAP : (2 * H);
       cL.setAttribute('x1', xToSvg(H)); cL.setAttribute('x2', xToSvg(H));
       cL.setAttribute('y1', yToSvg(peakY)); cL.setAttribute('y2', yToSvg(0));
       cL.setAttribute('opacity', '1');
       cT.setAttribute('x', Math.max(48, xToSvg(H) - 72)); cT.setAttribute('y', yToSvg(peakY) - 8);
-      cT.textContent = 'Call vendida / KO';
+      cT.textContent = 'Call vanilla · teto 2×';
       cT.setAttribute('opacity', '1');
     }
   }
