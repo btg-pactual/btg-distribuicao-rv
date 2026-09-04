@@ -121,24 +121,24 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
       <span class="logo-co"><span class="dot">AC</span> BBAS3</span>
     </div>
     <h1>Aceleradora Dinâmica <span>BBAS3</span></h1>
-    <p class="subtitle">Ganho dobrado (2×) na alta enquanto não atingir a call vendida (120%). Ao atingir esse strike, a call KO (mesmo nível) nocauteia e vira pó — retorno 0%. Proteção parcial na queda até a barreira 90%.</p>
+    <p class="subtitle">Ganho dobrado (2×) na alta enquanto não atingir a call vanilla vendida (stk 120%). Ao atingir esse strike, a Call KO (stk 100%, barreira 120%) nocauteia e vira pó — retorno 0%. Proteção parcial na queda até a barreira 90%.</p>
   </div>
-  <div class="meta-pills"><div class="pill"><strong>Ativo</strong> BBAS3</div><div class="pill"><strong>Prazo</strong> 4 meses</div><div class="pill"><strong>Alta</strong> 2×</div><div class="pill"><strong>Call vendida</strong> 120%</div><div class="pill"><strong>KO baixa</strong> 90%</div></div>
+  <div class="meta-pills"><div class="pill"><strong>Ativo</strong> BBAS3</div><div class="pill"><strong>Prazo</strong> 4 meses</div><div class="pill"><strong>Alta</strong> 2×</div><div class="pill"><strong>Call vendida</strong> 120% vanilla</div><div class="pill"><strong>KO baixa</strong> 90%</div></div>
 </header>
-<section class="highlights"><div class="hi"><h3>Prazo</h3><p>4 meses<span></span></p></div><div class="hi"><h3>Alta</h3><p>2×<span>Enquanto não atingir call vendida 120%</span></p></div><div class="hi"><h3>Se atingir</h3><p>0%<span>Call KO no strike 120% vira pó</span></p></div><div class="hi"><h3>Proteção</h3><p>Parcial<span>Piso 0% até KO 90%; abaixo acompanha</span></p></div></section>
+<section class="highlights"><div class="hi"><h3>Prazo</h3><p>4 meses<span></span></p></div><div class="hi"><h3>Alta</h3><p>2×<span>Até a call vanilla stk 120%</span></p></div><div class="hi"><h3>Se atingir</h3><p>0%<span>Call KO (stk 100%) nocauteia na barreira 120%</span></p></div><div class="hi"><h3>Proteção</h3><p>Parcial<span>Piso 0% até KO 90%; abaixo acompanha</span></p></div></section>
 
 <section class="research">
   <div class="research-head">
     <h2>Research BTG</h2>
     <a class="research-link" href="https://content.btgpactual.com/research/ativo/BBAS3" target="_blank" rel="noopener">Abrir BBAS3 no Research <span class="arrow" aria-hidden="true">→</span></a>
   </div>
-  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 22,62</div></div><div><div class="lbl">Recomendação</div><div class="val hold">Neutro</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 19,00</div></div><div><div class="lbl">Potencial</div><div class="val sell">-16,00%</div></div></div><p class="research-note">Spot do fechamento anterior (04/09/2026) · alvo em 17/08/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
+  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 22,61</div></div><div><div class="lbl">Recomendação</div><div class="val hold">Neutro</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 19,00</div></div><div><div class="lbl">Potencial</div><div class="val sell">-15,97%</div></div></div><p class="research-note">Spot do fechamento anterior (04/09/2026) · alvo em 17/08/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
 </section>
 
 <div class="main">
 <aside class="panel">
   <h2>Estrutura</h2>
-  <table class="struct-table"><thead><tr><th>Perna</th><th>Nível</th></tr></thead><tbody><tr><td><span class="tag b">B</span> Call KO</td><td>100% · barreira 120%</td></tr><tr><td><span class="tag s">S</span> Call</td><td>120%</td></tr><tr><td><span class="tag b">B</span> Put KO</td><td>100% · barreira 90%</td></tr></tbody></table>
+  <table class="struct-table"><thead><tr><th>Perna</th><th>Nível</th></tr></thead><tbody><tr><td><span class="tag b">B</span> Call KO</td><td>stk 100% · barreira 120%</td></tr><tr><td><span class="tag s">S</span> Call vanilla</td><td>stk 120%</td></tr><tr><td><span class="tag b">B</span> Put KO</td><td>stk 100% · barreira 90%</td></tr></tbody></table>
   <p class="legend-note">Payoff ilustrativo no vencimento. Condições oficiais no DIE.</p>
 </aside>
 <section class="panel chart-panel">
@@ -172,7 +172,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
     <div class="sim-label"><span>Spot final</span><output id="spotOutMobile">0%</output></div>
     <input type="range" id="spotSliderMobile" min="-50" max="80" step="0.5" value="0"/>
   </div>
-  <div class="zones"><div class="zone"><strong>≤ -10%</strong><p>Put KO nocauteada — acompanha o ativo.</p></div><div class="zone"><strong>-10% → 0%</strong><p>Proteção parcial: retorno 0%.</p></div><div class="zone"><strong>0% → +20,00%</strong><p>Ganho dobrado: retorno = 2× a alta (ainda não atingiu a call vendida).</p></div><div class="zone"><strong>≥ +20,00%</strong><p>Atingiu call vendida 120%: call KO vira pó → retorno 0%.</p></div></div>
+  <div class="zones"><div class="zone"><strong>≤ -10%</strong><p>Put KO nocauteada — acompanha o ativo.</p></div><div class="zone"><strong>-10% → 0%</strong><p>Proteção parcial: retorno 0%.</p></div><div class="zone"><strong>0% → +20%</strong><p>Ganho dobrado: 2× a alta (ainda abaixo da call vanilla 120%).</p></div><div class="zone"><strong>≥ +20%</strong><p>Atingiu call vanilla 120%: Call KO (barreira 120%) vira pó → retorno 0%.</p></div></div>
 </section>
 <aside class="panel panel-sim">
   <h2>Simulador</h2>
@@ -183,13 +183,13 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
     <div class="sim-card"><div class="lbl">Estrutura</div><div class="val" id="structVal">0,0%</div></div>
     
   </div>
-  <div class="regime" id="regimeText">Na alta até +20,00%: 2×, Se atingir a call vendida: call KO vira pó (0%),</div>
+  <div class="regime" id="regimeText">Na alta até +20%: 2×. Se atingir a call vanilla 120%: Call KO vira pó (0%).</div>
   
 </aside>
 </div>
 <section class="speech-box">
   <h2>Speech comercial</h2>
-  <p class="speech-label">Para quem</p><p>Cliente tático em BBAS3 (4 meses) que quer ganho dobrado na alta com proteção parcial na queda.</p><p class="speech-label">Como encaixa</p><p>Aceleradora Dinâmica: 2× enquanto não atingir a call vendida 120%. Ao atingir esse nível, a call KO no mesmo strike nocauteia e vira pó (retorno 0%). Put KO 90%: piso 0% na queda moderada; abaixo do KO, acompanha o ativo.</p><p class="speech-label">Fechamento</p><p>Material de uso interno — condições no DIE.</p>
+  <p class="speech-label">Para quem</p><p>Cliente tático em BBAS3 (4 meses) que quer ganho dobrado na alta com proteção parcial na queda.</p><p class="speech-label">Como encaixa</p><p>Aceleradora Dinâmica: compra Call KO stk 100% com barreira 120% + venda de Call vanilla stk 120% + Put KO stk 100% barreira 90%. 2× na alta enquanto o spot não atinge a call vendida; ao atingir, a Call KO nocauteia (pó → 0%).</p><p class="speech-label">Fechamento</p><p>Material de uso interno — condições no DIE.</p>
 </section>
 
 <section class="speech-box insights-box">
@@ -206,10 +206,10 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
   var X_MIN=-50,X_MAX=80,Y_MIN=-50,Y_MAX=80;
   var PAD={l:48,t:24,r:48,b:24},VW=600,VH=400;
   var PLOT_W=VW-PAD.l-PAD.r,PLOT_H=VH-PAD.t-PAD.b;
-  var RESEARCH_X=-16.0035;
+  var RESEARCH_X=-15.9664;
   var L=-10.0, H=20.0;
   function structureReturn(x){ if (x <= L) return x; if (x < 0) return 0; if (x < H) return 2*x; return 0; }
-  function regimeFor(x){ if (x <= L) return 'Put KO atingida: perde a proteção e acompanha o ativo.'; if (x < 0) return 'Put KO viva: proteção até a barreira — piso 0%.'; if (x < H) return 'Alta acelerada: 2× (ainda não atingiu a call vendida).'; return 'Atingiu call vendida: call KO vira pó → 0%.'; }
+  function regimeFor(x){ if (x <= L) return 'Put KO atingida: perde a proteção e acompanha o ativo.'; if (x < 0) return 'Put KO viva: proteção até a barreira — piso 0%.'; if (x < H) return 'Alta acelerada: 2× (ainda abaixo da call vanilla vendida).'; return 'Atingiu call vanilla: Call KO nocauteia → pó (0%).'; }
   function fmtPct(v,d){ d=d==null?1:d; var s=v.toFixed(d).replace('.',','); return (v>0?'+':'')+s+'%'; }
   function xToSvg(x){ return PAD.l+((x-X_MIN)/(X_MAX-X_MIN))*PLOT_W; }
   function yToSvg(y){ return PAD.t+((Y_MAX-y)/(Y_MAX-Y_MIN))*PLOT_H; }
@@ -285,7 +285,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
       cL.setAttribute('y1', yToSvg(peakY)); cL.setAttribute('y2', yToSvg(0));
       cL.setAttribute('opacity', '1');
       cT.setAttribute('x', Math.max(48, xToSvg(H) - 72)); cT.setAttribute('y', yToSvg(peakY) - 8);
-      cT.textContent = 'Call vendida / KO';
+      cT.textContent = 'Call vanilla / barreira KO';
       cT.setAttribute('opacity', '1');
     }
   }

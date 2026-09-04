@@ -692,7 +692,7 @@ def op_page(cfg: dict) -> str:
       cL.setAttribute('y1', yToSvg(peakY)); cL.setAttribute('y2', yToSvg(0));
       cL.setAttribute('opacity', '1');
       cT.setAttribute('x', Math.max(48, xToSvg(H) - 72)); cT.setAttribute('y', yToSvg(peakY) - 8);
-      cT.textContent = 'Call vendida / KO';
+      cT.textContent = 'Call vanilla / barreira KO';
       cT.setAttribute('opacity', '1');
     }}
   }}
@@ -872,6 +872,7 @@ def make_acel(t, fixing, ko_h, ko_l, bid):
     peak = 2 * H  # pico 2× logo antes de atingir a call vendida
     slug = slugify("aceleradora", t, prazo.replace(" ", ""))
     kh, kl = fmt_lvl(ko_h), fmt_lvl(ko_l)
+    h_lbl = f"+{H:.2f}".rstrip("0").rstrip(".").replace(".", ",") + "%"
     return slug, {
         "title": f"Aceleradora {t}",
         "h1": "Aceleradora Dinâmica",
@@ -879,42 +880,42 @@ def make_acel(t, fixing, ko_h, ko_l, bid):
         "dot": "AC",
         "brand": "#5a4a8a",
         "subtitle": (
-            f"Ganho dobrado (2×) na alta enquanto não atingir a call vendida ({kh}). "
-            f"Ao atingir esse strike, a call KO (mesmo nível) nocauteia e vira pó — retorno 0%. "
+            f"Ganho dobrado (2×) na alta enquanto não atingir a call vanilla vendida (stk {kh}). "
+            f"Ao atingir esse strike, a Call KO (stk 100%, barreira {kh}) nocauteia e vira pó — retorno 0%. "
             f"Proteção parcial na queda até a barreira {kl}."
         ),
         "pills": [
             ("Ativo", t),
             ("Prazo", prazo),
             ("Alta", "2×"),
-            ("Call vendida", kh),
+            ("Call vendida", f"{kh} vanilla"),
             ("KO baixa", kl),
         ],
         "highlights": [
             ("Prazo", prazo, ""),
-            ("Alta", "2×", f"Enquanto não atingir call vendida {kh}"),
-            ("Se atingir", "0%", f"Call KO no strike {kh} vira pó"),
+            ("Alta", "2×", f"Até a call vanilla stk {kh}"),
+            ("Se atingir", "0%", f"Call KO (stk 100%) nocauteia na barreira {kh}"),
             ("Proteção", "Parcial", f"Piso 0% até KO {kl}; abaixo acompanha"),
         ],
         "struct": [
-            ('<span class="tag b">B</span> Call KO', f"100% · barreira {kh}"),
-            ('<span class="tag s">S</span> Call', kh),
-            ('<span class="tag b">B</span> Put KO', f"100% · barreira {kl}"),
+            ('<span class="tag b">B</span> Call KO', f"stk 100% · barreira {kh}"),
+            ('<span class="tag s">S</span> Call vanilla', f"stk {kh}"),
+            ('<span class="tag b">B</span> Put KO', f"stk 100% · barreira {kl}"),
         ],
         "zones": [
             (f"≤ {L:.0f}%", "Put KO nocauteada — acompanha o ativo."),
             (f"{L:.0f}% → 0%", "Proteção parcial: retorno 0%."),
-            (f"0% → +{H:.2f}%".replace(".", ","), "Ganho dobrado: retorno = 2× a alta (ainda não atingiu a call vendida)."),
-            (f"≥ +{H:.2f}%".replace(".", ","), f"Atingiu call vendida {kh}: call KO vira pó → retorno 0%."),
+            (f"0% → {h_lbl}", f"Ganho dobrado: 2× a alta (ainda abaixo da call vanilla {kh})."),
+            (f"≥ {h_lbl}", f"Atingiu call vanilla {kh}: Call KO (barreira {kh}) vira pó → retorno 0%."),
         ],
-        "regime0": f"Na alta até +{H:.2f}%: 2×. Se atingir a call vendida: call KO vira pó (0%).".replace(".", ","),
+        "regime0": f"Na alta até {h_lbl}: 2×. Se atingir a call vanilla {kh}: Call KO vira pó (0%).",
         "speech": [
             ("Para quem", f"Cliente tático em {t} ({prazo}) que quer ganho dobrado na alta com proteção parcial na queda."),
             (
                 "Como encaixa",
-                f"Aceleradora Dinâmica: 2× enquanto não atingir a call vendida {kh}. "
-                f"Ao atingir esse nível, a call KO no mesmo strike nocauteia e vira pó (retorno 0%). "
-                f"Put KO {kl}: piso 0% na queda moderada; abaixo do KO, acompanha o ativo.",
+                f"Aceleradora Dinâmica: compra Call KO stk 100% com barreira {kh} + "
+                f"venda de Call vanilla stk {kh} + Put KO stk 100% barreira {kl}. "
+                f"2× na alta enquanto o spot não atinge a call vendida; ao atingir, a Call KO nocauteia (pó → 0%).",
             ),
             ("Fechamento", "Material de uso interno — condições no DIE."),
         ],
@@ -925,13 +926,13 @@ def make_acel(t, fixing, ko_h, ko_l, bid):
         "ko_markers": True,
         "js_const": f"var L={L}, H={H};",
         # Put KO viva (x > L): piso 0% na queda. Atingiu KO (x <= L): acompanha.
-        # Alta 2× enquanto x < H; ao atingir call vendida: 0%.
+        # Alta 2× enquanto x < H; ao atingir call vanilla vendida (= barreira da Call KO): 0%.
         "js_fn": "if (x <= L) return x; if (x < 0) return 0; if (x < H) return 2*x; return 0;",
         "js_regime": (
             "if (x <= L) return 'Put KO atingida: perde a proteção e acompanha o ativo.'; "
             "if (x < 0) return 'Put KO viva: proteção até a barreira — piso 0%.'; "
-            "if (x < H) return 'Alta acelerada: 2× (ainda não atingiu a call vendida).'; "
-            "return 'Atingiu call vendida: call KO vira pó → 0%.';"
+            "if (x < H) return 'Alta acelerada: 2× (ainda abaixo da call vanilla vendida).'; "
+            "return 'Atingiu call vanilla: Call KO nocauteia → pó (0%).';"
         ),
         # Path com cliffs explícitos na Put KO e na call vendida
         "js_build": """
