@@ -16,7 +16,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent
 REPO = ROOT.parent
 OPS = ROOT / "ops"
-REF = date(2026, 9, 1)
+REF = date(2026, 9, 8)  # semana 07.09.26
 PDF_NAME = "Material-Prateleira-Tatica-31082026.pdf"
 RESEARCH_REC = "https://content.btgpactual.com/api/research/content-hub/recommendations/ticker/{ticker}?includeInstitutionalData=true"
 RESEARCH_QUOTES = "https://content.btgpactual.com/api/research/research/public/asset/quotes"
@@ -71,6 +71,17 @@ def fmt_brl(n: float) -> str:
 def fmt_pct(n: float) -> str:
     s = f"{n:.2f}".replace(".", ",")
     return f"+{s}%" if n > 0 else f"{s}%"
+
+
+def fmt_lvl(n: float) -> str:
+    """Strike/barreira: 110% ou 114,45%."""
+    if abs(n - round(n)) < 0.005:
+        return f"{round(n)}%"
+    return f"{n:.2f}".replace(".", ",") + "%"
+
+
+def fmt_money_pct(n: float) -> str:
+    return f"{n:.2f}".replace(".", ",") + "%"
 
 
 def rec_label(raw: str | None) -> str:
@@ -324,55 +335,68 @@ def research_insights_html(cfg: dict) -> str:
 """
 
 
-# ---- data ----
+# ---- data (fonte: prateleira/operacoes/operacoes.xlsx · aba 07.09.26) ----
 # (ticker, fixing, strike, ko, bid/cupom, backtest_barreira%)
 # backtest = % histórico de toque da barreira no material; None = sem janelas (*).
 SOC = [
-    ("NVDC34", date(2026, 9, 30), 103.14, 90.0, 0.80, 15.0),
-    ("TEND3", date(2026, 9, 18), 104.0, 90.0, 1.00, 27.0),
-    ("RDOR3", date(2026, 9, 30), 103.42, 90.0, 0.80, None),
-    ("AXIA3", date(2026, 10, 14), 104.33, 90.0, 1.00, 25.0),
-    ("WEGE3", date(2026, 9, 30), 103.31, 92.0, 0.70, 25.0),
-    ("PRIO3", date(2026, 10, 15), 105.87, 90.0, 0.70, 42.0),
-    ("SPCX34", date(2026, 9, 18), 104.75, 87.0, 0.80, None),
-    ("TOTS3", date(2026, 9, 29), 104.72, 90.0, 1.20, 42.0),
-    ("B3SA3", date(2026, 9, 29), 105.43, 90.0, 1.00, 27.0),
-    ("MRVE3", date(2026, 10, 14), 109.99, 88.0, 1.00, 58.0),
+    ("NVDC34", date(2026, 10, 7), 103.14, 90.0, 0.80, 15.0),
+    ("TEND3", date(2026, 9, 25), 104.0, 90.0, 1.00, 27.0),
+    ("AXIA3", date(2026, 10, 21), 106.96, 90.0, 1.50, 25.0),
+    ("WEGE3", date(2026, 10, 7), 103.31, 92.0, 0.80, 25.0),
+    ("PRIO3", date(2026, 10, 22), 105.87, 90.0, 1.70, 42.0),
+    ("SPCX34", date(2026, 9, 25), 103.0, 87.0, 0.98, None),
+    ("TOTS3", date(2026, 10, 6), 104.72, 90.0, 1.40, 42.0),
+    ("B3SA3", date(2026, 10, 6), 105.07, 90.0, 1.90, 27.0),
+    ("TSLA34", date(2026, 10, 5), 103.50, 90.0, 1.50, 46.0),
 ]
 
+# (ticker, fixing, put, call, ki, bid)
 SMART = [
-    ("ITUB4", date(2027, 8, 27), 90.0, 110.0, 144.32, 4.60),
-    ("AXIA3", date(2027, 8, 27), 90.0, 110.0, 151.78, 4.00),
-    ("PETR4", date(2027, 8, 27), 90.0, 110.0, 151.08, 3.40),
-    ("BBSE3", date(2027, 8, 31), 100.0, 110.0, 136.83, 3.00),
-    ("SPCX34", date(2027, 8, 30), 90.0, 114.0, 190.0, 5.00),
-    ("SPCX34", date(2028, 8, 30), 100.0, 130.0, 280.0, 4.72),
-    ("PETR4", date(2027, 8, 31), 100.0, 110.0, 134.70, 5.00),
-    ("VALE3", date(2028, 8, 31), 110.0, 110.0, 174.35, 7.00),
-    ("AXIA3", date(2028, 8, 31), 110.0, 110.0, 177.35, 7.00),
-    ("ITUB4", date(2028, 8, 28), 90.0, 130.0, 166.0, 6.00),
-    ("EMBJ3", date(2027, 8, 27), 100.0, 110.0, 145.96, 4.10),
-    ("PETR4", date(2028, 8, 30), 110.0, 110.0, 158.28, 7.00),
+    ("ITUB4", date(2027, 9, 3), 90.0, 110.0, 144.32, 5.00),
+    ("AXIA3", date(2027, 9, 3), 90.0, 110.0, 151.78, 4.30),
+    ("PETR4", date(2027, 9, 3), 90.0, 110.0, 151.08, 4.60),
+    ("SPCX34", date(2027, 9, 6), 90.0, 114.0, 190.0, 5.00),
+    ("SPCX34", date(2028, 9, 6), 100.0, 130.0, 280.0, 3.66),
+    ("PETR4", date(2027, 9, 8), 100.0, 110.0, 134.70, 5.00),
+    ("VALE3", date(2028, 9, 8), 110.0, 110.0, 174.35, 7.00),
+    ("AXIA3", date(2028, 9, 8), 110.0, 110.0, 177.35, 7.00),
+    ("ITUB4", date(2028, 9, 4), 90.0, 130.0, 166.0, 6.00),
+    ("EMBJ3", date(2027, 9, 3), 100.0, 110.0, 145.96, 4.20),
 ]
 
+# (ticker, fixing, ko_alta, ko_baixa, bid)
 ACEL = [
-    ("ITLC34", date(2028, 1, 26), 170.0, 40.0, 9.50),
-    ("TSMC34", date(2026, 11, 27), 114.0, 90.0, 2.50),
-    ("SPCX34", date(2027, 3, 2), 145.0, 80.0, 3.20),
-    ("LILY34", date(2027, 8, 30), 135.0, 85.0, 4.50),
-    ("HASH11", date(2027, 8, 31), 144.0, 80.0, 4.00),
+    ("ITLC34", date(2028, 2, 2), 170.0, 40.0, 9.50),
+    ("TSMC34", date(2026, 12, 4), 114.0, 90.0, 1.50),
+    ("BBAS3", date(2027, 1, 5), 120.0, 90.0, 2.70),
+    ("ITUB4", date(2027, 1, 5), 114.45, 90.0, 2.00),
 ]
 
+# (ticker, fixing, sold_call_ki, ko_alta, ko_baixa, bid)
 TRIPLO = [
-    ("ROXO34", date(2027, 8, 30), 115.0, 150.0, 80.0, 4.50),
-    ("ROXO34", date(2027, 3, 1), 106.0, 134.0, 80.0, 2.50),
-    ("NVDC34", date(2027, 8, 30), 115.0, 154.0, 80.0, 4.50),
-    ("GOGL34", date(2027, 8, 30), 115.0, 145.0, 80.0, 4.50),
-    ("LILY34", date(2027, 8, 30), 115.0, 150.0, 80.0, 4.50),
-    ("B3SA3", date(2027, 8, 30), 115.0, 142.0, 80.0, 4.50),
-    ("SMFT3", date(2027, 8, 30), 115.0, 149.0, 80.0, 4.50),
-    ("CYRE3", date(2027, 8, 30), 115.0, 148.0, 80.0, 4.50),
-    ("RENT3", date(2027, 8, 30), 115.0, 142.0, 80.0, 4.50),
+    ("ROXO34", date(2027, 9, 6), 115.0, 150.0, 80.0, 4.50),
+    ("ROXO34", date(2027, 3, 8), 106.0, 134.0, 80.0, 2.50),
+    ("NVDC34", date(2027, 9, 6), 115.0, 154.0, 80.0, 4.50),
+    ("GOGL34", date(2027, 9, 6), 115.0, 145.0, 80.0, 4.50),
+    ("LILY34", date(2027, 9, 6), 115.0, 150.0, 80.0, 4.50),
+    ("B3SA3", date(2027, 9, 6), 115.0, 142.0, 80.0, 4.50),
+    ("SMFT3", date(2027, 9, 6), 115.0, 149.0, 80.0, 4.50),
+    ("CYRE3", date(2027, 9, 6), 115.0, 148.0, 80.0, 4.50),
+    ("RENT3", date(2027, 9, 6), 115.0, 142.0, 80.0, 4.50),
+]
+
+# (ticker, fixing, ko_pct, rebate, cost/offer abs)
+CALL_KO = ("PRIO3", date(2026, 11, 9), 121.0, 5.50, 3.70)
+PUT_KO = ("EMBJ3", date(2026, 12, 4), 80.0, 5.50, 2.95)
+# (ticker, fixing, put, call_ki_strike, ki, put_ko, put_ko_barrier, bid)
+TWIP = ("GOLD11", date(2027, 9, 6), 100.0, 100.0, 140.0, 100.0, 80.0, 4.51)
+# (ticker, fixing, barrier_pct, rebate, cost)
+ONE_TOUCH = [
+    ("BOVA11", date(2026, 11, 10), 120.0, 5.0, 0.75),
+    ("TEND3", date(2026, 10, 5), 114.94, 10.0, 3.50),
+    ("AXIA3", date(2026, 10, 5), 113.23, 10.0, 3.50),
+    ("WEGE3", date(2026, 10, 5), 111.06, 10.0, 3.50),
+    ("PRIO3", date(2026, 10, 5), 113.61, 10.0, 3.50),
 ]
 
 CSS = """
@@ -847,6 +871,7 @@ def make_acel(t, fixing, ko_h, ko_l, bid):
     H, L = ko_h - 100, ko_l - 100
     peak = 2 * H  # pico 2× logo antes de atingir a call vendida
     slug = slugify("aceleradora", t, prazo.replace(" ", ""))
+    kh, kl = fmt_lvl(ko_h), fmt_lvl(ko_l)
     return slug, {
         "title": f"Aceleradora {t}",
         "h1": "Aceleradora Dinâmica",
@@ -854,42 +879,42 @@ def make_acel(t, fixing, ko_h, ko_l, bid):
         "dot": "AC",
         "brand": "#5a4a8a",
         "subtitle": (
-            f"Ganho dobrado (2×) na alta enquanto não atingir a call vendida ({ko_h:.0f}%). "
+            f"Ganho dobrado (2×) na alta enquanto não atingir a call vendida ({kh}). "
             f"Ao atingir esse strike, a call KO (mesmo nível) nocauteia e vira pó — retorno 0%. "
-            f"Proteção parcial na queda até a barreira {ko_l:.0f}%."
+            f"Proteção parcial na queda até a barreira {kl}."
         ),
         "pills": [
             ("Ativo", t),
             ("Prazo", prazo),
             ("Alta", "2×"),
-            ("Call vendida", f"{ko_h:.0f}%"),
-            ("KO baixa", f"{ko_l:.0f}%"),
+            ("Call vendida", kh),
+            ("KO baixa", kl),
         ],
         "highlights": [
             ("Prazo", prazo, ""),
-            ("Alta", "2×", f"Enquanto não atingir call vendida {ko_h:.0f}%"),
-            ("Se atingir", "0%", f"Call KO no strike {ko_h:.0f}% vira pó"),
-            ("Proteção", "Parcial", f"Piso 0% até KO {ko_l:.0f}%; abaixo acompanha"),
+            ("Alta", "2×", f"Enquanto não atingir call vendida {kh}"),
+            ("Se atingir", "0%", f"Call KO no strike {kh} vira pó"),
+            ("Proteção", "Parcial", f"Piso 0% até KO {kl}; abaixo acompanha"),
         ],
         "struct": [
-            ('<span class="tag b">B</span> Call KO', f"100% · barreira {ko_h:.0f}%"),
-            ('<span class="tag s">S</span> Call', f"{ko_h:.0f}%"),
-            ('<span class="tag b">B</span> Put KO', f"100% · barreira {ko_l:.0f}%"),
+            ('<span class="tag b">B</span> Call KO', f"100% · barreira {kh}"),
+            ('<span class="tag s">S</span> Call', kh),
+            ('<span class="tag b">B</span> Put KO', f"100% · barreira {kl}"),
         ],
         "zones": [
             (f"≤ {L:.0f}%", "Put KO nocauteada — acompanha o ativo."),
             (f"{L:.0f}% → 0%", "Proteção parcial: retorno 0%."),
-            (f"0% → +{H:.0f}%", "Ganho dobrado: retorno = 2× a alta (ainda não atingiu a call vendida)."),
-            (f"≥ +{H:.0f}%", f"Atingiu call vendida {ko_h:.0f}%: call KO vira pó → retorno 0%."),
+            (f"0% → +{H:.2f}%".replace(".", ","), "Ganho dobrado: retorno = 2× a alta (ainda não atingiu a call vendida)."),
+            (f"≥ +{H:.2f}%".replace(".", ","), f"Atingiu call vendida {kh}: call KO vira pó → retorno 0%."),
         ],
-        "regime0": f"Na alta até +{H:.0f}%: 2×. Se atingir a call vendida: call KO vira pó (0%).",
+        "regime0": f"Na alta até +{H:.2f}%: 2×. Se atingir a call vendida: call KO vira pó (0%).".replace(".", ","),
         "speech": [
             ("Para quem", f"Cliente tático em {t} ({prazo}) que quer ganho dobrado na alta com proteção parcial na queda."),
             (
                 "Como encaixa",
-                f"Aceleradora Dinâmica: 2× enquanto não atingir a call vendida {ko_h:.0f}%. "
+                f"Aceleradora Dinâmica: 2× enquanto não atingir a call vendida {kh}. "
                 f"Ao atingir esse nível, a call KO no mesmo strike nocauteia e vira pó (retorno 0%). "
-                f"Put KO {ko_l:.0f}%: piso 0% na queda moderada; abaixo do KO, acompanha o ativo.",
+                f"Put KO {kl}: piso 0% na queda moderada; abaixo do KO, acompanha o ativo.",
             ),
             ("Fechamento", "Material de uso interno — condições no DIE."),
         ],
@@ -966,11 +991,13 @@ def make_triplo(t, fixing, sold, ko_h, ko_l, bid):
     }
 
 
-def make_call_ko():
-    t, fixing = "PRIO3", date(2026, 10, 30)
+def make_call_ko(t, fixing, ko_pct, rebate, cost):
     prazo = months_label(fixing)
-    cost, rebate, ko = 3.80, 5.50, 21.0
+    ko = ko_pct - 100
     slug = slugify("call-ko-rebate", t, prazo.replace(" ", ""))
+    cost_s = fmt_money_pct(cost).rstrip("%")
+    reb_s = fmt_money_pct(rebate)
+    ko_lbl = fmt_lvl(ko_pct)
 
     def net_at(x: float) -> float:
         if x >= ko:
@@ -980,7 +1007,7 @@ def make_call_ko():
     def prem_at(x: float) -> float:
         return (net_at(x) / cost) * 100.0
 
-    spots = [-10.0, 0.0, 5.0, 10.0, 15.0, 20.0, 21.0, 30.0, 40.0]
+    spots = sorted({-10.0, 0.0, 5.0, 10.0, 15.0, max(0.0, ko - 1), ko, 30.0, 40.0})
     matrix_rows = []
     for s in spots:
         n, p = net_at(s), prem_at(s)
@@ -994,7 +1021,6 @@ def make_call_ko():
     ko_net = rebate - cost
     ko_prem = (ko_net / cost) * 100
     ko_net_s = f"{ko_net:.2f}".replace(".", ",")
-    cost_s = f"{cost:.2f}".replace(".", ",")
 
     matrix_html = f"""
   <div class="matrix-wrap">
@@ -1023,7 +1049,7 @@ def make_call_ko():
             f"Call up-and-out {t}: participa da alta até a barreira; no KO recebe rebate. "
             f"Matriz também em retorno % só sobre o prêmio ({cost_s}%)."
         ),
-        "pills": [("Ativo", t), ("Prazo", prazo), ("KO", "121%"), ("Rebate", "5,50%"), ("Preço", f"{cost_s}%")],
+        "pills": [("Ativo", t), ("Prazo", prazo), ("KO", ko_lbl), ("Rebate", reb_s), ("Preço", f"{cost_s}%")],
         "highlights": [
             ("Prazo", prazo, ""),
             ("Sem KO", f"Alta − {cost_s}%", "Call ATM no nocional"),
@@ -1031,13 +1057,13 @@ def make_call_ko():
             ("Risco", "−100%", "Sobre o prêmio (OTM)"),
         ],
         "struct": [
-            ('<span class="tag b">B</span> Call KO', "100% · barreira 121%"),
-            ("Rebate", "5,50%"),
+            ('<span class="tag b">B</span> Call KO', f"100% · barreira {ko_lbl}"),
+            ("Rebate", reb_s),
             ("Preço (offer)", f"{cost_s}%"),
         ],
         "zones": [
-            ("< +21%", f"Call ITM: (alta − {cost_s}%) no nocional; ÷{cost_s}% = ganho sobre o prêmio."),
-            ("≥ +21%", f"Rebate líquido +{ko_net_s}% no nocional → +{ko_prem:.0f}% sobre o prêmio."),
+            (f"< +{ko:.0f}%", f"Call ITM: (alta − {cost_s}%) no nocional; ÷{cost_s}% = ganho sobre o prêmio."),
+            (f"≥ +{ko:.0f}%", f"Rebate líquido +{ko_net_s}% no nocional → +{ko_prem:.0f}% sobre o prêmio."),
             ("Queda / 0%", f"OTM: −{cost_s}% nocional = −100% sobre o prêmio."),
         ],
         "regime0": "Sem KO: participa da alta menos o preço. Veja também o ganho % só sobre o prêmio.",
@@ -1045,7 +1071,7 @@ def make_call_ko():
             ("Para quem", f"Cliente construtivo em {t} no curto prazo ({prazo}) que quer call com rebate se KO."),
             (
                 "Como encaixa",
-                f"Call KO 121% · rebate 5,50% · preço {cost_s}%. "
+                f"Call KO {ko_lbl} · rebate {reb_s} · preço {cost_s}%. "
                 f"No KO: +{ko_net_s}% no nocional = +{ko_prem:.0f}% sobre o prêmio. "
                 f"Na queda, perda limitada a −100% do prêmio.",
             ),
@@ -1070,11 +1096,13 @@ def make_call_ko():
     }
 
 
-def make_put_ko():
-    t, fixing = "EMBJ3", date(2026, 11, 27)
+def make_put_ko(t, fixing, ko_pct, rebate, cost):
     prazo = months_label(fixing)
-    cost, rebate, ko = 2.0, 5.50, -20.0
+    ko = ko_pct - 100
     slug = slugify("put-ko-rebate", t, prazo.replace(" ", ""))
+    cost_s = fmt_money_pct(cost).rstrip("%")
+    reb_s = fmt_money_pct(rebate)
+    ko_lbl = fmt_lvl(ko_pct)
 
     def net_at(x: float) -> float:
         if x <= ko:
@@ -1084,7 +1112,7 @@ def make_put_ko():
     def prem_at(x: float) -> float:
         return (net_at(x) / cost) * 100.0
 
-    spots = [10.0, 0.0, -5.0, -10.0, -15.0, -19.0, -20.0, -30.0, -40.0]
+    spots = sorted({10.0, 0.0, -5.0, -10.0, -15.0, min(-1.0, ko + 1), ko, -30.0, -40.0}, reverse=True)
     matrix_rows = []
     for s in spots:
         n, p = net_at(s), prem_at(s)
@@ -1103,8 +1131,8 @@ def make_put_ko():
   <div class="matrix-wrap">
     <h2>Matriz de ganho (só prêmio)</h2>
     <p class="matrix-note">
-      Retorno <strong>sobre o prêmio pago (2,00%)</strong> =
-      (resultado no nocional ÷ 2,00%) × 100.
+      Retorno <strong>sobre o prêmio pago ({cost_s}%)</strong> =
+      (resultado no nocional ÷ {cost_s}%) × 100.
       No KO: líquido +{ko_net_s}% no nocional → <strong>+{ko_prem:.0f}%</strong> sobre o prêmio.
     </p>
     <table class="struct-table">
@@ -1123,42 +1151,42 @@ def make_put_ko():
         "dot": "PK",
         "brand": "#2f6b5a",
         "subtitle": (
-            f"Put down-and-out EMBJ3: ganha na queda até a barreira; no KO recebe rebate. "
-            f"Matriz também em retorno % só sobre o prêmio (2,00%)."
+            f"Put down-and-out {t}: ganha na queda até a barreira; no KO recebe rebate. "
+            f"Matriz também em retorno % só sobre o prêmio ({cost_s}%)."
         ),
-        "pills": [("Ativo", t), ("Prazo", prazo), ("KO", "80%"), ("Rebate", "5,50%"), ("Preço", "2,00%")],
+        "pills": [("Ativo", t), ("Prazo", prazo), ("KO", ko_lbl), ("Rebate", reb_s), ("Preço", f"{cost_s}%")],
         "highlights": [
             ("Prazo", prazo, ""),
-            ("Sem KO", "|queda| − 2%", "Put ATM no nocional"),
-            ("No KO", f"+{ko_net:.2f}%".replace(".", ","), f"+{ko_prem:.0f}% sobre o prêmio"),
+            ("Sem KO", f"|queda| − {cost_s}%", "Put ATM no nocional"),
+            ("No KO", f"+{ko_net_s}%", f"+{ko_prem:.0f}% sobre o prêmio"),
             ("Risco", "−100%", "Sobre o prêmio (OTM)"),
         ],
         "struct": [
-            ('<span class="tag b">B</span> Put KO', "100% · barreira 80%"),
-            ("Rebate", "5,50%"),
-            ("Preço (offer)", "2,00%"),
+            ('<span class="tag b">B</span> Put KO', f"100% · barreira {ko_lbl}"),
+            ("Rebate", reb_s),
+            ("Preço (offer)", f"{cost_s}%"),
         ],
         "zones": [
-            ("> −20%", "Put ITM: (|queda| − 2%) no nocional; ÷2% = ganho sobre o prêmio."),
-            ("≤ −20%", f"Rebate líquido +{ko_net:.2f}% no nocional → +{ko_prem:.0f}% sobre o prêmio.".replace(".", ",")),
-            ("Alta / 0%", "OTM: −2% nocional = −100% sobre o prêmio."),
+            (f"> {ko:.0f}%", f"Put ITM: (|queda| − {cost_s}%) no nocional; ÷{cost_s}% = ganho sobre o prêmio."),
+            (f"≤ {ko:.0f}%", f"Rebate líquido +{ko_net_s}% no nocional → +{ko_prem:.0f}% sobre o prêmio."),
+            ("Alta / 0%", f"OTM: −{cost_s}% nocional = −100% sobre o prêmio."),
         ],
         "regime0": "Sem KO: participa da queda menos o preço. Veja também o ganho % só sobre o prêmio.",
         "speech": [
             ("Para quem", f"Cliente tático em queda de {t} ({prazo}) — put com rebate se KO."),
             (
                 "Como encaixa",
-                f"Put KO 80% · rebate 5,50% · preço 2,00%. "
+                f"Put KO {ko_lbl} · rebate {reb_s} · preço {cost_s}%. "
                 f"No KO: +{ko_net_s}% no nocional = +{ko_prem:.0f}% sobre o prêmio. "
                 f"Na alta, perda limitada a −100% do prêmio.",
             ),
             ("Fechamento", "Material de uso interno — condições no DIE."),
         ],
         "sim_extra_html": (
-            '<div class="sim-card wide">'
-            '<div class="lbl">Retorno sobre o prêmio (2,00%)</div>'
-            '<div class="val" id="premVal">−100%</div>'
-            "</div>"
+            f'<div class="sim-card wide">'
+            f'<div class="lbl">Retorno sobre o prêmio ({cost_s}%)</div>'
+            f'<div class="val" id="premVal">−100%</div>'
+            f"</div>"
         ),
         "matrix_html": matrix_html,
         "struct_lbl": "Put (nocional)",
@@ -1168,15 +1196,16 @@ def make_put_ko():
             "var rp=(structureReturn(x)/COST)*100; "
             "if (x <= KO) return 'KO: rebate líquido +'+(REB-COST).toFixed(2).replace('.',',')+'% no nocional · '+rp.toFixed(0)+'% sobre o prêmio.'; "
             "if (x < 0) return 'Put ITM: '+structureReturn(x).toFixed(1).replace('.',',')+'% nocional · '+rp.toFixed(0)+'% sobre o prêmio.'; "
-            "return 'OTM: −2% nocional · −100% sobre o prêmio.';"
+            "return 'OTM: −'+COST.toFixed(2).replace('.',',')+'% nocional · −100% sobre o prêmio.';"
         ),
     }
 
 
-def make_twip():
-    t, fixing = "GOLD11", date(2027, 8, 30)
+def make_twip(t, fixing, put, call_ki, ki, put_ko, put_ko_b, bid):
     prazo = months_label(fixing)
     slug = slugify("twip", t, prazo.replace(" ", ""))
+    L = put_ko_b - 100
+    H = ki - 100
     return slug, {
         "title": f"TWIP {t}",
         "h1": "TWIP",
@@ -1184,40 +1213,45 @@ def make_twip():
         "dot": "TW",
         "brand": "#b8860b",
         "subtitle": "Twin Win Protected: ganha na alta e na queda moderada; fora das barreiras retorno 0% (capital protegido).",
-        "pills": [("Ativo", t), ("Prazo", prazo), ("Put", "100%"), ("KI", "140%"), ("Put KO", "80%")],
+        "pills": [("Ativo", t), ("Prazo", prazo), ("Put", fmt_lvl(put)), ("KI", fmt_lvl(ki)), ("Put KO", fmt_lvl(put_ko_b))],
         "highlights": [
             ("Prazo", prazo, ""),
-            ("Faixa", "|x|", "Entre −20% e +40%"),
+            ("Faixa", "|x|", f"Entre {L:.0f}% e +{H:.0f}%"),
             ("Fora", "0%", "Capital protegido"),
             ("Ideia", "Twin Win", "Ganha na alta e na queda"),
         ],
         "struct": [
-            ('<span class="tag b">B</span> Put', "100%"),
-            ('<span class="tag s">S</span> Call KI', "100% · barreira 140%"),
-            ('<span class="tag b">B</span> Put KO', "100% · barreira 80%"),
+            ('<span class="tag b">B</span> Put', fmt_lvl(put)),
+            ('<span class="tag s">S</span> Call KI', f"{fmt_lvl(call_ki)} · barreira {fmt_lvl(ki)}"),
+            ('<span class="tag b">B</span> Put KO', f"{fmt_lvl(put_ko)} · barreira {fmt_lvl(put_ko_b)}"),
         ],
         "zones": [
-            ("< −20%", "Retorno 0% (proteção)."),
-            ("−20% → +40%", "Retorno = |variação|."),
-            ("> +40%", "Retorno 0% (KI)."),
+            (f"< {L:.0f}%", "Retorno 0% (proteção)."),
+            (f"{L:.0f}% → +{H:.0f}%", "Retorno = |variação|."),
+            (f"> +{H:.0f}%", "Retorno 0% (KI)."),
         ],
         "regime0": "Entre barreiras: retorno absoluto |x|.",
         "speech": [
             ("Para quem", f"Cliente construtivo em ouro via {t} ({prazo}) que quer payoff bidirecional com proteção."),
-            ("Como encaixa", "TWIP · put KO 80% · call KI 140%."),
+            ("Como encaixa", f"TWIP · put KO {fmt_lvl(put_ko_b)} · call KI {fmt_lvl(ki)}."),
             ("Fechamento", "Material de uso interno — condições no DIE."),
         ],
-        "js_const": "var L=-20, H=40;",
+        "js_const": f"var L={L}, H={H};",
         "js_fn": "if (x < L || x > H) return 0; return Math.abs(x);",
         "js_regime": "if (x < L || x > H) return 'Fora da faixa: 0%.'; return 'Twin: |x|.';",
     }
 
 
-def make_ot():
-    t, fixing = "BOVA11", date(2026, 11, 3)
+def make_ot(t, fixing, barrier_pct, rebate, cost):
     prazo = months_label(fixing)
-    cost, rebate, barrier = 0.75, 5.0, 20.0
+    barrier = barrier_pct - 100
     slug = slugify("one-touch", t, prazo.replace(" ", ""))
+    b_lbl = fmt_lvl(barrier_pct)
+    reb_s = fmt_money_pct(rebate)
+    cost_s = fmt_money_pct(cost)
+    net = rebate - cost
+    net_s = f"{net:.2f}".replace(".", ",")
+    bvar = f"{barrier:.2f}".rstrip("0").rstrip(".").replace(".", ",")
     return slug, {
         "title": f"One Touch Alta {t}",
         "h1": "One Touch de Alta",
@@ -1225,27 +1259,27 @@ def make_ot():
         "dot": "OT",
         "brand": "#1e4d7b",
         "subtitle": "Paga rebate se o ativo atingir a barreira de alta; caso contrário, perde só o preço.",
-        "pills": [("Ativo", t), ("Prazo", prazo), ("Barreira", "120%"), ("Rebate", "5,00%"), ("Preço", "0,75%")],
+        "pills": [("Ativo", t), ("Prazo", prazo), ("Barreira", b_lbl), ("Rebate", reb_s), ("Preço", cost_s)],
         "highlights": [
             ("Prazo", prazo, ""),
-            ("Se tocar +20%", f"+{rebate-cost:.2f}%".replace(".", ","), "Rebate − preço"),
-            ("Se não tocar", "−0,75%", "Preço"),
-            ("Barreira", "120%", "One touch"),
+            (f"Se tocar +{bvar}%", f"+{net_s}%", "Rebate − preço"),
+            ("Se não tocar", f"−{cost_s}", "Preço"),
+            ("Barreira", b_lbl, "One touch"),
         ],
         "struct": [
-            ('<span class="tag b">B</span> Call KO', "120% · barreira 120%"),
-            ("Rebate", "5,00%"),
-            ("Preço (offer)", "0,75%"),
+            ('<span class="tag b">B</span> Call KO', f"{b_lbl} · barreira {b_lbl}"),
+            ("Rebate", reb_s),
+            ("Preço (offer)", cost_s),
         ],
         "zones": [
-            ("< +20%", "Não tocou: −0,75%."),
-            ("≥ +20%", f"One touch: +{rebate-cost:.2f}%."),
+            (f"< +{bvar}%", f"Não tocou: −{cost_s}."),
+            (f"≥ +{bvar}%", f"One touch: +{net_s}%."),
             ("Ideia", "Aposta tática de alta com custo baixo."),
         ],
         "regime0": "Abaixo da barreira: −preço.",
         "speech": [
-            ("Para quem", f"Cliente tático em {t} ({prazo}) que espera alta suficiente para tocar +20%."),
-            ("Como encaixa", "One touch 120% · rebate 5% · preço 0,75%."),
+            ("Para quem", f"Cliente tático em {t} ({prazo}) que espera alta suficiente para tocar +{bvar}%."),
+            ("Como encaixa", f"One touch {b_lbl} · rebate {reb_s} · preço {cost_s}."),
             ("Fechamento", "Material de uso interno — condições no DIE."),
         ],
         "struct_lbl": "One Touch (nocional)",
@@ -1526,21 +1560,21 @@ def main():
     sections.append(("Triplo Retorno KO", tri_items))
     all_ops.extend(tri_items)
 
-    ck = make_call_ko()
+    ck = make_call_ko(*CALL_KO)
     sections.append(("Call KO com Rebate", [ck]))
     all_ops.append(ck)
 
-    pk = make_put_ko()
+    pk = make_put_ko(*PUT_KO)
     sections.append(("Put KO com Rebate", [pk]))
     all_ops.append(pk)
 
-    tw = make_twip()
+    tw = make_twip(*TWIP)
     sections.append(("TWIP", [tw]))
     all_ops.append(tw)
 
-    ot = make_ot()
-    sections.append(("One Touch de Alta", [ot]))
-    all_ops.append(ot)
+    ot_items = [make_ot(*r) for r in ONE_TOUCH]
+    sections.append(("One Touch de Alta", ot_items))
+    all_ops.extend(ot_items)
 
     tickers = [cfg["ticker"] for _, cfg in all_ops]
     try:

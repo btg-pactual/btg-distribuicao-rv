@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>SOC RDOR3 | BTG Pactual</title>
+<title>Aceleradora ITUB4 | BTG Pactual</title>
 <style>
 :root {
   --ink:#0b1f3a; --muted:#5c6b7a; --line:#d0d8e2; --bg:#eef2f6; --card:#ffffff;
-  --brand:#0d6e6e; --btg:#0b1f3a; --success:#0f7a4a; --danger:#c0392b; --dash:#8b83a0;
+  --brand:#5a4a8a; --btg:#0b1f3a; --success:#0f7a4a; --danger:#c0392b; --dash:#8b83a0;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:Segoe UI,-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);min-height:100vh;line-height:1.45}
@@ -118,27 +118,27 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
   <div class="brand-block">
     <div class="logos">
       <span class="logo-btg">BTG PACTUAL</span>
-      <span class="logo-co"><span class="dot">SOC</span> RDOR3</span>
+      <span class="logo-co"><span class="dot">AC</span> ITUB4</span>
     </div>
-    <h1>SOC <span>RDOR3</span></h1>
-    <p class="subtitle">Stock or Coupon sobre RDOR3: cupom se a barreira de queda não for atingida; se KO, acompanha o ativo.</p>
+    <h1>Aceleradora Dinâmica <span>ITUB4</span></h1>
+    <p class="subtitle">Ganho dobrado (2×) na alta enquanto não atingir a call vendida (114,45%). Ao atingir esse strike, a call KO (mesmo nível) nocauteia e vira pó — retorno 0%. Proteção parcial na queda até a barreira 90%.</p>
   </div>
-  <div class="meta-pills"><div class="pill"><strong>Ativo</strong> RDOR3</div><div class="pill"><strong>Prazo</strong> 1 mês</div><div class="pill"><strong>Strike</strong> 103.42%</div><div class="pill"><strong>KO</strong> 90%</div><div class="pill"><strong>Cupom</strong> 0.80%</div><div class="pill"><strong>Backtest (barreira)</strong> —</div></div>
+  <div class="meta-pills"><div class="pill"><strong>Ativo</strong> ITUB4</div><div class="pill"><strong>Prazo</strong> 4 meses</div><div class="pill"><strong>Alta</strong> 2×</div><div class="pill"><strong>Call vendida</strong> 114,45%</div><div class="pill"><strong>KO baixa</strong> 90%</div></div>
 </header>
-<section class="highlights"><div class="hi"><h3>Prazo</h3><p>1 mês<span>Horizonte em meses</span></p></div><div class="hi"><h3>Cupom</h3><p>+0.80%<span>Se barreira não for atingida</span></p></div><div class="hi"><h3>KO</h3><p>90%<span>Abaixo de -10%: acompanha o ativo</span></p></div><div class="hi"><h3>Strike</h3><p>103.42%<span>Put KO / Call KO</span></p></div><div class="hi"><h3>Backtest (barreira)</h3><p>—<span>Não publicado no material desta semana</span></p></div></section>
+<section class="highlights"><div class="hi"><h3>Prazo</h3><p>4 meses<span></span></p></div><div class="hi"><h3>Alta</h3><p>2×<span>Enquanto não atingir call vendida 114,45%</span></p></div><div class="hi"><h3>Se atingir</h3><p>0%<span>Call KO no strike 114,45% vira pó</span></p></div><div class="hi"><h3>Proteção</h3><p>Parcial<span>Piso 0% até KO 90%; abaixo acompanha</span></p></div></section>
 
 <section class="research">
   <div class="research-head">
     <h2>Research BTG</h2>
-    <a class="research-link" href="https://content.btgpactual.com/research/ativo/RDOR3" target="_blank" rel="noopener">Abrir RDOR3 no Research <span class="arrow" aria-hidden="true">→</span></a>
+    <a class="research-link" href="https://content.btgpactual.com/research/ativo/ITUB4" target="_blank" rel="noopener">Abrir ITUB4 no Research <span class="arrow" aria-hidden="true">→</span></a>
   </div>
-  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 37,39</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 58,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+55,12%</div></div></div><p class="research-note">Spot do fechamento anterior (03/09/2026) · alvo em 18/08/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
+  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 42,15</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 54,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+28,11%</div></div></div><p class="research-note">Spot do fechamento anterior (04/09/2026) · alvo em 06/08/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
 </section>
 
 <div class="main">
 <aside class="panel">
   <h2>Estrutura</h2>
-  <table class="struct-table"><thead><tr><th>Perna</th><th>Nível</th></tr></thead><tbody><tr><td><span class="tag b">B</span> Put KO</td><td>103.42% · barreira 90%</td></tr><tr><td><span class="tag s">S</span> Call KO</td><td>103.42% · barreira 90%</td></tr></tbody></table>
+  <table class="struct-table"><thead><tr><th>Perna</th><th>Nível</th></tr></thead><tbody><tr><td><span class="tag b">B</span> Call KO</td><td>100% · barreira 114,45%</td></tr><tr><td><span class="tag s">S</span> Call</td><td>114,45%</td></tr><tr><td><span class="tag b">B</span> Put KO</td><td>100% · barreira 90%</td></tr></tbody></table>
   <p class="legend-note">Payoff ilustrativo no vencimento. Condições oficiais no DIE.</p>
 </aside>
 <section class="panel chart-panel">
@@ -154,16 +154,16 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
       <line id="axisZeroX" x1="0" y1="0" x2="0" y2="400" stroke="#c5ced8" stroke-width="1"/>
       <line id="axisZeroY" x1="48" y1="0" x2="552" y2="0" stroke="#c5ced8" stroke-width="1"/>
       <polyline id="assetPath" fill="none" stroke="#8b83a0" stroke-width="2" stroke-dasharray="6 5"/>
-      <path id="structPath" fill="none" stroke="#0d6e6e" stroke-width="2.5"/>
+      <path id="structPath" fill="none" stroke="#5a4a8a" stroke-width="2.5"/>
       <line id="putKoGap" x1="0" y1="0" x2="0" y2="0" stroke="#0f7a4a" stroke-width="2" stroke-dasharray="4 3" opacity="0"/>
-      <line id="callKoGap" x1="0" y1="0" x2="0" y2="0" stroke="#0d6e6e" stroke-width="2" stroke-dasharray="4 3" opacity="0"/>
+      <line id="callKoGap" x1="0" y1="0" x2="0" y2="0" stroke="#5a4a8a" stroke-width="2" stroke-dasharray="4 3" opacity="0"/>
       <text id="putKoLabel" font-size="11" fill="#0f7a4a" font-weight="700" opacity="0">Put KO</text>
-      <text id="callKoLabel" font-size="11" fill="#0d6e6e" font-weight="700" opacity="0">Call vendida</text>
+      <text id="callKoLabel" font-size="11" fill="#5a4a8a" font-weight="700" opacity="0">Call vendida</text>
       <line id="researchTargetLine" x1="0" y1="24" x2="0" y2="376" stroke="#1a66b3" stroke-width="1.5" stroke-dasharray="5 4" opacity="0"/>
       <text id="researchTargetLabel" font-size="11" fill="#1a66b3" font-weight="700" opacity="0">PA Research</text>
       <g id="xLabels"></g><g id="yLabels"></g>
-      <line id="hoverLine" x1="0" y1="24" x2="0" y2="376" stroke="#0d6e6e" stroke-width="1" opacity="0"/>
-      <circle id="hoverStruct" r="5" fill="#0d6e6e" opacity="0"/>
+      <line id="hoverLine" x1="0" y1="24" x2="0" y2="376" stroke="#5a4a8a" stroke-width="1" opacity="0"/>
+      <circle id="hoverStruct" r="5" fill="#5a4a8a" opacity="0"/>
       <circle id="hoverAsset" r="4" fill="#8b83a0" opacity="0"/>
     </svg>
   </div>
@@ -172,7 +172,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
     <div class="sim-label"><span>Spot final</span><output id="spotOutMobile">0%</output></div>
     <input type="range" id="spotSliderMobile" min="-50" max="80" step="0.5" value="0"/>
   </div>
-  <div class="zones"><div class="zone"><strong>≤ -10%</strong><p>Put/Call KO nocauteados — acompanha o ativo 1:1.</p></div><div class="zone"><strong>> -10%</strong><p>Cupom fixo +0.80% (SOC).</p></div><div class="zone"><strong>Ideia</strong><p>Fluxo de cupom com risco de conversão se cair forte.</p></div></div>
+  <div class="zones"><div class="zone"><strong>≤ -10%</strong><p>Put KO nocauteada — acompanha o ativo.</p></div><div class="zone"><strong>-10% → 0%</strong><p>Proteção parcial: retorno 0%.</p></div><div class="zone"><strong>0% → +14,45%</strong><p>Ganho dobrado: retorno = 2× a alta (ainda não atingiu a call vendida).</p></div><div class="zone"><strong>≥ +14,45%</strong><p>Atingiu call vendida 114,45%: call KO vira pó → retorno 0%.</p></div></div>
 </section>
 <aside class="panel panel-sim">
   <h2>Simulador</h2>
@@ -183,19 +183,19 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
     <div class="sim-card"><div class="lbl">Estrutura</div><div class="val" id="structVal">0,0%</div></div>
     
   </div>
-  <div class="regime" id="regimeText">Acima da barreira: cupom +0.80%.</div>
+  <div class="regime" id="regimeText">Na alta até +14,45%: 2×, Se atingir a call vendida: call KO vira pó (0%),</div>
   
 </aside>
 </div>
 <section class="speech-box">
   <h2>Speech comercial</h2>
-  <p class="speech-label">Para quem</p><p>Cliente que quer cupom curto em RDOR3, aceitando risco de exposição se o papel cair além da barreira.</p><p class="speech-label">Como encaixa</p><p>SOC · prazo 1 mês. Sem KO: cupom +0.80%. Com KO (90%): acompanha o ativo. Backtest (barreira) não publicado no material desta semana.</p><p class="speech-label">Fechamento</p><p>Material de uso interno — condições no DIE.</p>
+  <p class="speech-label">Para quem</p><p>Cliente tático em ITUB4 (4 meses) que quer ganho dobrado na alta com proteção parcial na queda.</p><p class="speech-label">Como encaixa</p><p>Aceleradora Dinâmica: 2× enquanto não atingir a call vendida 114,45%. Ao atingir esse nível, a call KO no mesmo strike nocauteia e vira pó (retorno 0%). Put KO 90%: piso 0% na queda moderada; abaixo do KO, acompanha o ativo.</p><p class="speech-label">Fechamento</p><p>Material de uso interno — condições no DIE.</p>
 </section>
 
 <section class="speech-box insights-box">
   <h2>Insights Research BTG</h2>
-  <ul class="research-bullets"><li>A Rede D’Or entregou 2T26 acima do esperado, com receita líquida de R$14,9 bi, EBITDA ajustado de R$3,4 bi, alta de 24% a/a e 8% acima das estimativas, além de lucro líquido de R$1,16 bi, 12% acima do esperado. No hospitalar, a receita…</li><li>A ocupação ficou em 80,2%, os dias de internação caíram 1%, mas o ticket médio subiu 11%, enquanto a oncologia seguiu forte, com receita de R$1,15 bi (+22%). Na SulAmérica, a receita líquida cresceu 7% para R$8,7 bi, a sinistralidade…</li><li>O realizado veio melhor, reforçando ganhos de eficiência e execução. Entre os KPIs, a alavancagem caiu para ~1,7x, mesmo com dívida líquida de R$22,8 bi e R$620 mi em recompras no trimestre, enquanto o FCFE foi de R$303 mi. Para 2026, o…</li></ul>
-  <p class="research-note">Insights BTG · 18/08/2026 · fonte Research BTG.</p>
+  <ul class="research-bullets"><li>O Itaú Unibanco reportou 2T26 sólido em balanço e qualidade de ativos, ainda que com operação um pouco mais fraca que o padrão histórico: o lucro líquido recorrente foi de R$12,4 bi, +1% t/t e +8% a/a, com ROE de 24,5%, ligeiramente…</li><li>Na prévia operacional, a carteira de crédito cresceu 3% t/t e 10% a/a, puxada por corporate, imobiliário e consignado, enquanto o NII com clientes somou R$31,4 bi, +2,8% t/t e +6,1% a/a, e o NII total chegou a R$32,3 bi.</li><li>Entre os KPIs, a inadimplência acima de 90 dias ficou em 1,9%, o custo de crédito líquido de recuperações em R$9 bi, as provisões brutas em R$10,5 bi, as recuperações em R$1,5 bi, o índice de cobertura em 53,8% e o CET1 em 12,3%.</li></ul>
+  <p class="research-note">Insights BTG · 12/08/2026 · fonte Research BTG.</p>
 </section>
 
 <p class="footer">Material ilustrativo para uso interno. Não constitui oferta, recomendação ou garantia de rentabilidade.</p>
@@ -206,10 +206,10 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
   var X_MIN=-50,X_MAX=80,Y_MIN=-50,Y_MAX=80;
   var PAD={l:48,t:24,r:48,b:24},VW=600,VH=400;
   var PLOT_W=VW-PAD.l-PAD.r,PLOT_H=VH-PAD.t-PAD.b;
-  var RESEARCH_X=55.1217;
-  var KO_VAR=-10.0, CUPON=0.8;
-  function structureReturn(x){ if (x <= KO_VAR) return x; return CUPON; }
-  function regimeFor(x){ if (x <= KO_VAR) return 'KO: acompanha o ativo.'; return 'Cupom SOC +0.80%.'; }
+  var RESEARCH_X=28.1139;
+  var L=-10.0, H=14.450000000000003;
+  function structureReturn(x){ if (x <= L) return x; if (x < 0) return 0; if (x < H) return 2*x; return 0; }
+  function regimeFor(x){ if (x <= L) return 'Put KO atingida: perde a proteção e acompanha o ativo.'; if (x < 0) return 'Put KO viva: proteção até a barreira — piso 0%.'; if (x < H) return 'Alta acelerada: 2× (ainda não atingiu a call vendida).'; return 'Atingiu call vendida: call KO vira pó → 0%.'; }
   function fmtPct(v,d){ d=d==null?1:d; var s=v.toFixed(d).replace('.',','); return (v>0?'+':'')+s+'%'; }
   function xToSvg(x){ return PAD.l+((x-X_MIN)/(X_MAX-X_MIN))*PLOT_W; }
   function yToSvg(y){ return PAD.t+((Y_MAX-y)/(Y_MAX-Y_MIN))*PLOT_H; }
@@ -230,7 +230,15 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
     var d='',first=true;
     function add(x,y){ var c=first?'M':'L'; first=false; d+=c+' '+xToSvg(x).toFixed(2)+' '+yToSvg(y).toFixed(2)+' '; }
     function move(x,y){ first=true; add(x,y); }
-    for(var x=X_MIN;x<=X_MAX;x+=0.5) add(x, structureReturn(x));
+    
+    for (var x = X_MIN; x <= L; x += 0.5) add(x, x);
+    add(L, 0);
+    for (var x2 = L + 0.5; x2 <= 0; x2 += 0.5) add(x2, 0);
+    for (var x3 = 0.5; x3 < H; x3 += 0.5) add(x3, 2 * x3);
+    add(H - 0.01, 2 * (H - 0.01));
+    move(H, 0);
+    for (var x4 = H + 0.5; x4 <= X_MAX; x4 += 0.5) add(x4, 0);
+
     return d.trim();
   }
   function buildAsset(){
@@ -260,7 +268,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
   document.getElementById('axisZeroY').setAttribute('y2',yToSvg(0));
   document.getElementById('structPath').setAttribute('d',buildStructD());
   document.getElementById('assetPath').setAttribute('points',buildAsset());
-  if (false) {
+  if (true) {
     if (typeof L === 'number') {
       var pL=document.getElementById('putKoGap'), pT=document.getElementById('putKoLabel');
       pL.setAttribute('x1', xToSvg(L)); pL.setAttribute('x2', xToSvg(L));

@@ -132,7 +132,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
     <h2>Research BTG</h2>
     <a class="research-link" href="https://content.btgpactual.com/research/ativo/PETR4" target="_blank" rel="noopener">Abrir PETR4 no Research <span class="arrow" aria-hidden="true">→</span></a>
   </div>
-  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 47,56</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 56,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+17,75%</div></div></div><p class="research-note">Spot do fechamento anterior (03/09/2026) · alvo em 24/08/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
+  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 47,16</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 62,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+31,47%</div></div></div><p class="research-note">Spot do fechamento anterior (04/09/2026) · alvo em 04/09/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
 </section>
 
 <div class="main">
@@ -194,8 +194,8 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
 
 <section class="speech-box insights-box">
   <h2>Insights Research BTG</h2>
-  <ul class="research-bullets"><li>No 2T26, a Petrobras entregou EBITDA de US$18,9 bi, ~5% acima do consenso, com produção de petróleo ~4% t/t maior, lifting cost de US$6,3/boe e refino ainda resiliente apesar de perdas de estoque de ~US$1,7 bi.</li><li>O fluxo de caixa pela fórmula da companhia foi de US$7,7 bi, com capital de giro pressionado por ~US$3,2 bi, incluindo ~US$1,9 bi ligados ao atraso no ressarcimento de subsídios, enquanto a dívida líquida caiu para US$60,4 bi, o caixa…</li><li>No refino, a utilização média foi de 101%, com processamento de 1,83 mi bpd e recordes em diesel, gasolina e QAV. Em julho, a produção de petróleo ficou em 2,77 mi bpd, levando a média do ano a 2,66 mi bpd, acima do guidance de 2,4–2,6…</li></ul>
-  <p class="research-note">Insights BTG · 24/08/2026 · fonte Research BTG.</p>
+  <ul class="research-bullets"><li>A Petrobras reportou 2T26 forte, com EBITDA de US$18,9 bi, ~5% acima do consenso, apoiado por preços mais altos de petróleo e derivados e por alta de ~4% t/t na produção.</li><li>No E&amp;P, o lifting cost caiu para US$6,3/boe, enquanto a alavancagem recuou para ~1,1x, com dívida líquida de US$60,4 bi, caixa de US$10,4 bi e dividendos de US$3,4 bi no trimestre. Na prévia operacional, a produção de petróleo atingiu…</li><li>Em julho, a produção ficou em 2,77 mi bpd, acima de 2,76 mi em junho, levando a média do ano a 2,66 mi bpd, acima do guidance de 2,4–2,6 mi bpd e reforçando chance de revisão para cima. No refino, a utilização média foi de 101%, com…</li></ul>
+  <p class="research-note">Insights BTG · 04/09/2026 · fonte Research BTG.</p>
 </section>
 
 <p class="footer">Material ilustrativo para uso interno. Não constitui oferta, recomendação ou garantia de rentabilidade.</p>
@@ -206,7 +206,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
   var X_MIN=-50,X_MAX=80,Y_MIN=-50,Y_MAX=80;
   var PAD={l:48,t:24,r:48,b:24},VW=600,VH=400;
   var PLOT_W=VW-PAD.l-PAD.r,PLOT_H=VH-PAD.t-PAD.b;
-  var RESEARCH_X=17.7460;
+  var RESEARCH_X=31.4673;
   var PUT=90.0, CALL=110.0, KI=151.08;
   function structureReturn(x){ var st=100+x; var r=st+Math.max(PUT-st,0)-(st>=KI?Math.max(st-CALL,0):0)-100; return r; }
   function regimeFor(x){ var st=100+x; if(st>=KI) return 'KI: teto +10%.'; if(x<=(PUT-100)) return 'Piso da put.'; return 'Participa 1:1.'; }

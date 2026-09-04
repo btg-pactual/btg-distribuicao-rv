@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Smart Hedge PETR4 | BTG Pactual</title>
+<title>SOC TSLA34 | BTG Pactual</title>
 <style>
 :root {
   --ink:#0b1f3a; --muted:#5c6b7a; --line:#d0d8e2; --bg:#eef2f6; --card:#ffffff;
-  --brand:#007e33; --btg:#0b1f3a; --success:#0f7a4a; --danger:#c0392b; --dash:#8b83a0;
+  --brand:#0d6e6e; --btg:#0b1f3a; --success:#0f7a4a; --danger:#c0392b; --dash:#8b83a0;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:Segoe UI,-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);min-height:100vh;line-height:1.45}
@@ -118,27 +118,27 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
   <div class="brand-block">
     <div class="logos">
       <span class="logo-btg">BTG PACTUAL</span>
-      <span class="logo-co"><span class="dot">SH</span> PETR4</span>
+      <span class="logo-co"><span class="dot">SOC</span> TSLA34</span>
     </div>
-    <h1>Smart Hedge <span>PETR4</span></h1>
-    <p class="subtitle">Smart Hedge sobre PETR4: piso na queda, participação 1:1 até a barreira KI; se KI, retorno limitado ao strike da call.</p>
+    <h1>SOC <span>TSLA34</span></h1>
+    <p class="subtitle">Stock or Coupon sobre TSLA34: cupom se a barreira de queda não for atingida; se KO, acompanha o ativo.</p>
   </div>
-  <div class="meta-pills"><div class="pill"><strong>Ativo</strong> PETR4</div><div class="pill"><strong>Prazo</strong> 24 meses</div><div class="pill"><strong>Put</strong> 110%</div><div class="pill"><strong>Call</strong> 110%</div><div class="pill"><strong>KI</strong> 158.28%</div></div>
+  <div class="meta-pills"><div class="pill"><strong>Ativo</strong> TSLA34</div><div class="pill"><strong>Prazo</strong> 1 mês</div><div class="pill"><strong>Strike</strong> 103.50%</div><div class="pill"><strong>KO</strong> 90%</div><div class="pill"><strong>Cupom</strong> 1.50%</div><div class="pill"><strong>Backtest (barreira)</strong> 46%</div></div>
 </header>
-<section class="highlights"><div class="hi"><h3>Prazo</h3><p>24 meses<span></span></p></div><div class="hi"><h3>Piso</h3><p>+10%<span>Put 110%</span></p></div><div class="hi"><h3>Barreira KI</h3><p>158.28%<span>+58.3%</span></p></div><div class="hi"><h3>Teto se KI</h3><p>+10%<span>Call 110%</span></p></div></section>
+<section class="highlights"><div class="hi"><h3>Prazo</h3><p>1 mês<span>Horizonte em meses</span></p></div><div class="hi"><h3>Cupom</h3><p>+1.50%<span>Se barreira não for atingida</span></p></div><div class="hi"><h3>KO</h3><p>90%<span>Abaixo de -10%: acompanha o ativo</span></p></div><div class="hi"><h3>Strike</h3><p>103.50%<span>Put KO / Call KO</span></p></div><div class="hi"><h3>Backtest (barreira)</h3><p>46%<span>Histórico de toque da barreira</span></p></div></section>
 
 <section class="research">
   <div class="research-head">
     <h2>Research BTG</h2>
-    <a class="research-link" href="https://content.btgpactual.com/research/ativo/PETR4" target="_blank" rel="noopener">Abrir PETR4 no Research <span class="arrow" aria-hidden="true">→</span></a>
+    <a class="research-link" href="https://content.btgpactual.com/research/ativo/TSLA34" target="_blank" rel="noopener">Abrir TSLA34 no Research <span class="arrow" aria-hidden="true">→</span></a>
   </div>
-  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 47,56</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 56,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+17,75%</div></div></div><p class="research-note">Spot do fechamento anterior (03/09/2026) · alvo em 24/08/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
+  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 56,32</div></div></div><p class="research-note">Spot do fechamento anterior (04/09/2026) · sem preço-alvo publicado para este ticker · atualizado às 18h30 · fonte Research BTG.</p>
 </section>
 
 <div class="main">
 <aside class="panel">
   <h2>Estrutura</h2>
-  <table class="struct-table"><thead><tr><th>Perna</th><th>Nível</th></tr></thead><tbody><tr><td><span class="tag b">B</span> Put</td><td>110.00%</td></tr><tr><td><span class="tag s">S</span> Call KI</td><td>110.00% · barreira 158.28%</td></tr></tbody></table>
+  <table class="struct-table"><thead><tr><th>Perna</th><th>Nível</th></tr></thead><tbody><tr><td><span class="tag b">B</span> Put KO</td><td>103.50% · barreira 90%</td></tr><tr><td><span class="tag s">S</span> Call KO</td><td>103.50% · barreira 90%</td></tr></tbody></table>
   <p class="legend-note">Payoff ilustrativo no vencimento. Condições oficiais no DIE.</p>
 </aside>
 <section class="panel chart-panel">
@@ -154,48 +154,42 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
       <line id="axisZeroX" x1="0" y1="0" x2="0" y2="400" stroke="#c5ced8" stroke-width="1"/>
       <line id="axisZeroY" x1="48" y1="0" x2="552" y2="0" stroke="#c5ced8" stroke-width="1"/>
       <polyline id="assetPath" fill="none" stroke="#8b83a0" stroke-width="2" stroke-dasharray="6 5"/>
-      <path id="structPath" fill="none" stroke="#007e33" stroke-width="2.5"/>
+      <path id="structPath" fill="none" stroke="#0d6e6e" stroke-width="2.5"/>
       <line id="putKoGap" x1="0" y1="0" x2="0" y2="0" stroke="#0f7a4a" stroke-width="2" stroke-dasharray="4 3" opacity="0"/>
-      <line id="callKoGap" x1="0" y1="0" x2="0" y2="0" stroke="#007e33" stroke-width="2" stroke-dasharray="4 3" opacity="0"/>
+      <line id="callKoGap" x1="0" y1="0" x2="0" y2="0" stroke="#0d6e6e" stroke-width="2" stroke-dasharray="4 3" opacity="0"/>
       <text id="putKoLabel" font-size="11" fill="#0f7a4a" font-weight="700" opacity="0">Put KO</text>
-      <text id="callKoLabel" font-size="11" fill="#007e33" font-weight="700" opacity="0">Call vendida</text>
+      <text id="callKoLabel" font-size="11" fill="#0d6e6e" font-weight="700" opacity="0">Call vendida</text>
       <line id="researchTargetLine" x1="0" y1="24" x2="0" y2="376" stroke="#1a66b3" stroke-width="1.5" stroke-dasharray="5 4" opacity="0"/>
       <text id="researchTargetLabel" font-size="11" fill="#1a66b3" font-weight="700" opacity="0">PA Research</text>
       <g id="xLabels"></g><g id="yLabels"></g>
-      <line id="hoverLine" x1="0" y1="24" x2="0" y2="376" stroke="#007e33" stroke-width="1" opacity="0"/>
-      <circle id="hoverStruct" r="5" fill="#007e33" opacity="0"/>
+      <line id="hoverLine" x1="0" y1="24" x2="0" y2="376" stroke="#0d6e6e" stroke-width="1" opacity="0"/>
+      <circle id="hoverStruct" r="5" fill="#0d6e6e" opacity="0"/>
       <circle id="hoverAsset" r="4" fill="#8b83a0" opacity="0"/>
     </svg>
   </div>
   <p class="chart-touch-hint">Arraste no gráfico para simular</p>
       <div class="mobile-sim">
     <div class="sim-label"><span>Spot final</span><output id="spotOutMobile">0%</output></div>
-    <input type="range" id="spotSliderMobile" min="-50" max="83" step="0.5" value="0"/>
+    <input type="range" id="spotSliderMobile" min="-50" max="80" step="0.5" value="0"/>
   </div>
-  <div class="zones"><div class="zone"><strong>Queda</strong><p>Piso +10% (put).</p></div><div class="zone"><strong>Até +58%</strong><p>Acompanha o ativo 1:1.</p></div><div class="zone"><strong>≥ +58%</strong><p>KI: retorno limitado a +10%.</p></div></div>
+  <div class="zones"><div class="zone"><strong>≤ -10%</strong><p>Put/Call KO nocauteados — acompanha o ativo 1:1.</p></div><div class="zone"><strong>> -10%</strong><p>Cupom fixo +1.50% (SOC).</p></div><div class="zone"><strong>Ideia</strong><p>Fluxo de cupom com risco de conversão se cair forte.</p></div></div>
 </section>
 <aside class="panel panel-sim">
   <h2>Simulador</h2>
   <div class="sim-label"><span>Variação do ativo</span><output id="spotOut">0%</output></div>
-  <input type="range" id="spotSlider" min="-50" max="83" step="0.5" value="0"/>
+  <input type="range" id="spotSlider" min="-50" max="80" step="0.5" value="0"/>
   <div class="sim-cards">
     <div class="sim-card"><div class="lbl">Ativo</div><div class="val" id="assetVal">0,0%</div></div>
     <div class="sim-card"><div class="lbl">Estrutura</div><div class="val" id="structVal">0,0%</div></div>
     
   </div>
-  <div class="regime" id="regimeText">Entre o piso e a barreira: participa 1:1.</div>
+  <div class="regime" id="regimeText">Acima da barreira: cupom +1.50%.</div>
   
 </aside>
 </div>
 <section class="speech-box">
   <h2>Speech comercial</h2>
-  <p class="speech-label">Para quem</p><p>Cliente construtivo em PETR4 no horizonte de 24 meses, com proteção na queda.</p><p class="speech-label">Como encaixa</p><p>Put 110% · call 110% KI em 158.28% · prazo 24 meses.</p><p class="speech-label">Fechamento</p><p>Material de uso interno — condições no DIE.</p>
-</section>
-
-<section class="speech-box insights-box">
-  <h2>Insights Research BTG</h2>
-  <ul class="research-bullets"><li>No 2T26, a Petrobras entregou EBITDA de US$18,9 bi, ~5% acima do consenso, com produção de petróleo ~4% t/t maior, lifting cost de US$6,3/boe e refino ainda resiliente apesar de perdas de estoque de ~US$1,7 bi.</li><li>O fluxo de caixa pela fórmula da companhia foi de US$7,7 bi, com capital de giro pressionado por ~US$3,2 bi, incluindo ~US$1,9 bi ligados ao atraso no ressarcimento de subsídios, enquanto a dívida líquida caiu para US$60,4 bi, o caixa…</li><li>No refino, a utilização média foi de 101%, com processamento de 1,83 mi bpd e recordes em diesel, gasolina e QAV. Em julho, a produção de petróleo ficou em 2,77 mi bpd, levando a média do ano a 2,66 mi bpd, acima do guidance de 2,4–2,6…</li></ul>
-  <p class="research-note">Insights BTG · 24/08/2026 · fonte Research BTG.</p>
+  <p class="speech-label">Para quem</p><p>Cliente que quer cupom curto em TSLA34, aceitando risco de exposição se o papel cair além da barreira.</p><p class="speech-label">Como encaixa</p><p>SOC · prazo 1 mês. Sem KO: cupom +1.50%. Com KO (90%): acompanha o ativo. Backtest (barreira): 46% das janelas históricas tocaram a barreira 90% (material da prateleira).</p><p class="speech-label">Fechamento</p><p>Material de uso interno — condições no DIE.</p>
 </section>
 
 <p class="footer">Material ilustrativo para uso interno. Não constitui oferta, recomendação ou garantia de rentabilidade.</p>
@@ -203,13 +197,13 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
 </div>
 <script>
 (function(){
-  var X_MIN=-50,X_MAX=83,Y_MIN=-50,Y_MAX=83;
+  var X_MIN=-50,X_MAX=80,Y_MIN=-50,Y_MAX=80;
   var PAD={l:48,t:24,r:48,b:24},VW=600,VH=400;
   var PLOT_W=VW-PAD.l-PAD.r,PLOT_H=VH-PAD.t-PAD.b;
-  var RESEARCH_X=17.7460;
-  var PUT=110.0, CALL=110.0, KI=158.28;
-  function structureReturn(x){ var st=100+x; var r=st+Math.max(PUT-st,0)-(st>=KI?Math.max(st-CALL,0):0)-100; return r; }
-  function regimeFor(x){ var st=100+x; if(st>=KI) return 'KI: teto +10%.'; if(x<=(PUT-100)) return 'Piso da put.'; return 'Participa 1:1.'; }
+  var RESEARCH_X=null;
+  var KO_VAR=-10.0, CUPON=1.5;
+  function structureReturn(x){ if (x <= KO_VAR) return x; return CUPON; }
+  function regimeFor(x){ if (x <= KO_VAR) return 'KO: acompanha o ativo.'; return 'Cupom SOC +1.50%.'; }
   function fmtPct(v,d){ d=d==null?1:d; var s=v.toFixed(d).replace('.',','); return (v>0?'+':'')+s+'%'; }
   function xToSvg(x){ return PAD.l+((x-X_MIN)/(X_MAX-X_MIN))*PLOT_W; }
   function yToSvg(y){ return PAD.t+((Y_MAX-y)/(Y_MAX-Y_MIN))*PLOT_H; }

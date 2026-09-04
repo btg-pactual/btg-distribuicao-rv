@@ -125,14 +125,14 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
   </div>
   <div class="meta-pills"><div class="pill"><strong>Ativo</strong> GOLD11</div><div class="pill"><strong>Prazo</strong> 12 meses</div><div class="pill"><strong>Put</strong> 100%</div><div class="pill"><strong>KI</strong> 140%</div><div class="pill"><strong>Put KO</strong> 80%</div></div>
 </header>
-<section class="highlights"><div class="hi"><h3>Prazo</h3><p>12 meses<span></span></p></div><div class="hi"><h3>Faixa</h3><p>|x|<span>Entre −20% e +40%</span></p></div><div class="hi"><h3>Fora</h3><p>0%<span>Capital protegido</span></p></div><div class="hi"><h3>Ideia</h3><p>Twin Win<span>Ganha na alta e na queda</span></p></div></section>
+<section class="highlights"><div class="hi"><h3>Prazo</h3><p>12 meses<span></span></p></div><div class="hi"><h3>Faixa</h3><p>|x|<span>Entre -20% e +40%</span></p></div><div class="hi"><h3>Fora</h3><p>0%<span>Capital protegido</span></p></div><div class="hi"><h3>Ideia</h3><p>Twin Win<span>Ganha na alta e na queda</span></p></div></section>
 
 <section class="research">
   <div class="research-head">
     <h2>Research BTG</h2>
     <a class="research-link" href="https://content.btgpactual.com/research/ativo/GOLD11" target="_blank" rel="noopener">Abrir GOLD11 no Research <span class="arrow" aria-hidden="true">→</span></a>
   </div>
-  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 23,68</div></div></div><p class="research-note">Spot do fechamento anterior (03/09/2026) · sem preço-alvo publicado para este ticker · atualizado às 18h30 · fonte Research BTG.</p>
+  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 23,61</div></div></div><p class="research-note">Spot do fechamento anterior (04/09/2026) · sem preço-alvo publicado para este ticker · atualizado às 18h30 · fonte Research BTG.</p>
 </section>
 
 <div class="main">
@@ -172,7 +172,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
     <div class="sim-label"><span>Spot final</span><output id="spotOutMobile">0%</output></div>
     <input type="range" id="spotSliderMobile" min="-50" max="80" step="0.5" value="0"/>
   </div>
-  <div class="zones"><div class="zone"><strong>< −20%</strong><p>Retorno 0% (proteção).</p></div><div class="zone"><strong>−20% → +40%</strong><p>Retorno = |variação|.</p></div><div class="zone"><strong>> +40%</strong><p>Retorno 0% (KI).</p></div></div>
+  <div class="zones"><div class="zone"><strong>< -20%</strong><p>Retorno 0% (proteção).</p></div><div class="zone"><strong>-20% → +40%</strong><p>Retorno = |variação|.</p></div><div class="zone"><strong>> +40%</strong><p>Retorno 0% (KI).</p></div></div>
 </section>
 <aside class="panel panel-sim">
   <h2>Simulador</h2>
@@ -201,7 +201,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
   var PAD={l:48,t:24,r:48,b:24},VW=600,VH=400;
   var PLOT_W=VW-PAD.l-PAD.r,PLOT_H=VH-PAD.t-PAD.b;
   var RESEARCH_X=null;
-  var L=-20, H=40;
+  var L=-20.0, H=40.0;
   function structureReturn(x){ if (x < L || x > H) return 0; return Math.abs(x); }
   function regimeFor(x){ if (x < L || x > H) return 'Fora da faixa: 0%.'; return 'Twin: |x|.'; }
   function fmtPct(v,d){ d=d==null?1:d; var s=v.toFixed(d).replace('.',','); return (v>0?'+':'')+s+'%'; }
