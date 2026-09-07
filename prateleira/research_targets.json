@@ -3,13 +3,13 @@
     "ticker": "NVDC34",
     "url": "https://content.btgpactual.com/research/ativo/NVDC34",
     "price": 24.46,
-    "last_trade": "2026-09-04T21:35:05"
+    "last_trade": "0001-01-01T00:00:00"
   },
   "TEND3": {
     "ticker": "TEND3",
     "url": "https://content.btgpactual.com/research/ativo/TEND3",
     "price": 34.63,
-    "last_trade": "2026-09-04T21:39:26",
+    "last_trade": "0001-01-01T00:00:00",
     "rec": "COMPRA",
     "rec_lbl": "Compra",
     "rec_cls": "buy",
@@ -28,7 +28,7 @@
     "ticker": "AXIA3",
     "url": "https://content.btgpactual.com/research/ativo/AXIA3",
     "price": 55.28,
-    "last_trade": "2026-09-04T21:33:47",
+    "last_trade": "0001-01-01T00:00:00",
     "rec": "COMPRA",
     "rec_lbl": "Compra",
     "rec_cls": "buy",
@@ -47,7 +47,7 @@
     "ticker": "WEGE3",
     "url": "https://content.btgpactual.com/research/ativo/WEGE3",
     "price": 51.74,
-    "last_trade": "2026-09-04T21:38:13",
+    "last_trade": "0001-01-01T00:00:00",
     "rec": "COMPRA",
     "rec_lbl": "Compra",
     "rec_cls": "buy",
@@ -66,7 +66,7 @@
     "ticker": "PRIO3",
     "url": "https://content.btgpactual.com/research/ativo/PRIO3",
     "price": 60.19,
-    "last_trade": "2026-09-04T21:39:10",
+    "last_trade": "0001-01-01T00:00:00",
     "rec": "COMPRA",
     "rec_lbl": "Compra",
     "rec_cls": "buy",
@@ -85,7 +85,7 @@
     "ticker": "SPCX34",
     "url": "https://content.btgpactual.com/research/ativo/SPCX34",
     "price": 50.63,
-    "last_trade": "2026-09-04T21:39:46",
+    "last_trade": "0001-01-01T00:00:00",
     "rec": "COMPRA",
     "rec_lbl": "Compra",
     "rec_cls": "buy",
@@ -104,7 +104,7 @@
     "ticker": "TOTS3",
     "url": "https://content.btgpactual.com/research/ativo/TOTS3",
     "price": 34.5,
-    "last_trade": "2026-09-04T20:05:51",
+    "last_trade": "0001-01-01T00:00:00",
     "rec": "COMPRA",
     "rec_lbl": "Compra",
     "rec_cls": "buy",
@@ -123,7 +123,7 @@
     "ticker": "B3SA3",
     "url": "https://content.btgpactual.com/research/ativo/B3SA3",
     "price": 17.37,
-    "last_trade": "2026-09-04T21:36:59",
+    "last_trade": "0001-01-01T00:00:00",
     "rec": "NEUTRO",
     "rec_lbl": "Neutro",
     "rec_cls": "hold",
@@ -142,13 +142,13 @@
     "ticker": "TSLA34",
     "url": "https://content.btgpactual.com/research/ativo/TSLA34",
     "price": 56.4,
-    "last_trade": "2026-09-04T21:37:42"
+    "last_trade": "0001-01-01T00:00:00"
   },
   "ITUB4": {
     "ticker": "ITUB4",
     "url": "https://content.btgpactual.com/research/ativo/ITUB4",
     "price": 41.92,
-    "last_trade": "2026-09-04T21:39:53",
+    "last_trade": "0001-01-01T00:00:00",
     "rec": "COMPRA",
     "rec_lbl": "Compra",
     "rec_cls": "buy",
@@ -167,7 +167,7 @@
     "ticker": "PETR4",
     "url": "https://content.btgpactual.com/research/ativo/PETR4",
     "price": 47.11,
-    "last_trade": "2026-09-04T21:39:38",
+    "last_trade": "0001-01-01T00:00:00",
     "rec": "COMPRA",
     "rec_lbl": "Compra",
     "rec_cls": "buy",
@@ -186,7 +186,7 @@
     "ticker": "VALE3",
     "url": "https://content.btgpactual.com/research/ativo/VALE3",
     "price": 78.62,
-    "last_trade": "2026-09-04T21:39:57",
+    "last_trade": "0001-01-01T00:00:00",
     "rec": "COMPRA",
     "rec_lbl": "Compra",
     "rec_cls": "buy",
@@ -205,7 +205,7 @@
     "ticker": "EMBJ3",
     "url": "https://content.btgpactual.com/research/ativo/EMBJ3",
     "price": 94.98,
-    "last_trade": "2026-09-04T21:39:18",
+    "last_trade": "0001-01-01T00:00:00",
     "rec": "COMPRA",
     "rec_lbl": "Compra",
     "rec_cls": "buy",
@@ -224,19 +224,19 @@
     "ticker": "ITLC34",
     "url": "https://content.btgpactual.com/research/ativo/ITLC34",
     "price": 81.55,
-    "last_trade": "2026-09-04T21:37:46"
+    "last_trade": "0001-01-01T00:00:00"
   },
   "TSMC34": {
     "ticker": "TSMC34",
     "url": "https://content.btgpactual.com/research/ativo/TSMC34",
     "price": 274.65,
-    "last_trade": "2026-09-04T21:25:18"
+    "last_trade": "0001-01-01T00:00:00"
   },
   "BBAS3": {
     "ticker": "BBAS3",
     "url": "https://content.btgpactual.com/research/ativo/BBAS3",
     "price": 22.52,
-    "last_trade": "2026-09-04T21:39:10",
+    "last_trade": "0001-01-01T00:00:00",
     "rec": "NEUTRO",
     "rec_lbl": "Neutro",
     "rec_cls": "hold",
@@ -255,7 +255,7 @@
     "ticker": "ROXO34",
     "url": "https://content.btgpactual.com/research/ativo/ROXO34",
     "price": 13.22,
-    "last_trade": "2026-09-04T21:39:52",
+    "last_trade": "0001-01-01T00:00:00",
     "rec": "COMPRA",
     "rec_lbl": "Compra",
     "rec_cls": "buy",
@@ -274,19 +274,19 @@
     "ticker": "GOGL34",
     "url": "https://content.btgpactual.com/research/ativo/GOGL34",
     "price": 145.1,
-    "last_trade": "2026-09-04T21:25:07"
+    "last_trade": "0001-01-01T00:00:00"
   },
   "LILY34": {
     "ticker": "LILY34",
     "url": "https://content.btgpactual.com/research/ativo/LILY34",
     "price": 196.36,
-    "last_trade": "2026-09-04T21:32:04"
+    "last_trade": "0001-01-01T00:00:00"
   },
   "SMFT3": {
     "ticker": "SMFT3",
     "url": "https://content.btgpactual.com/research/ativo/SMFT3",
     "price": 17.97,
-    "last_trade": "2026-09-04T21:39:41",
+    "last_trade": "0001-01-01T00:00:00",
     "rec": "COMPRA",
     "rec_lbl": "Compra",
     "rec_cls": "buy",
@@ -305,7 +305,7 @@
     "ticker": "CYRE3",
     "url": "https://content.btgpactual.com/research/ativo/CYRE3",
     "price": 25.6,
-    "last_trade": "2026-09-04T21:36:46",
+    "last_trade": "0001-01-01T00:00:00",
     "rec": "COMPRA",
     "rec_lbl": "Compra",
     "rec_cls": "buy",
@@ -324,7 +324,7 @@
     "ticker": "RENT3",
     "url": "https://content.btgpactual.com/research/ativo/RENT3",
     "price": 36.64,
-    "last_trade": "2026-09-04T21:37:30",
+    "last_trade": "0001-01-01T00:00:00",
     "rec": "COMPRA",
     "rec_lbl": "Compra",
     "rec_cls": "buy",
@@ -343,12 +343,12 @@
     "ticker": "GOLD11",
     "url": "https://content.btgpactual.com/research/ativo/GOLD11",
     "price": 23.66,
-    "last_trade": "2026-09-04T21:25:23"
+    "last_trade": "0001-01-01T00:00:00"
   },
   "BOVA11": {
     "ticker": "BOVA11",
     "url": "https://content.btgpactual.com/research/ativo/BOVA11",
     "price": 181.94,
-    "last_trade": "2026-09-04T21:39:44"
+    "last_trade": "0001-01-01T00:00:00"
   }
 }
