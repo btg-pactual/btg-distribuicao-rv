@@ -102,9 +102,22 @@ def fmt_date(raw) -> str:
         return ""
     try:
         dt = datetime.fromisoformat(str(raw).replace("Z", "+00:00"))
+        # API Research às vezes devolve sentinel 0001-01-01 → vira "01/01/1"
+        if dt.year < 2000:
+            return ""
         return dt.strftime("%d/%m/%Y")
-    except ValueError:
+    except (ValueError, TypeError, OverflowError):
         return ""
+
+
+def valid_trade_date(raw) -> bool:
+    if not raw:
+        return False
+    try:
+        dt = datetime.fromisoformat(str(raw).replace("Z", "+00:00"))
+        return dt.year >= 2000
+    except (ValueError, TypeError, OverflowError):
+        return False
 
 
 def html_esc(s: str) -> str:
@@ -222,7 +235,9 @@ def fetch_research(tickers: list[str]) -> dict[str, dict]:
             md = (info or {}).get("marketData") or {}
             if item.get("price") is None and md.get("price") is not None:
                 item["price"] = float(md["price"])
-                item["last_trade"] = md.get("consolidationDate") or item.get("last_trade")
+            cons = md.get("consolidationDate")
+            if cons and valid_trade_date(cons) and not valid_trade_date(item.get("last_trade")):
+                item["last_trade"] = cons
 
         if rec and rec.get("recommendation"):
             item["rec"] = rec.get("recommendation")
@@ -245,9 +260,14 @@ def fetch_research(tickers: list[str]) -> dict[str, dict]:
 
         # Se a API falhar pontualmente, preserva PA/rec/bullets do snapshot anterior.
         old = prev.get(t) or {}
-        for key in ("rec", "rec_lbl", "rec_cls", "date", "company", "target", "bullets", "summary_date"):
+        for key in ("rec", "rec_lbl", "rec_cls", "date", "company", "target", "bullets", "summary_date", "last_trade", "price"):
             if item.get(key) in (None, "", []) and old.get(key) not in (None, "", []):
                 item[key] = old[key]
+        if not valid_trade_date(item.get("last_trade")):
+            if valid_trade_date(old.get("last_trade")):
+                item["last_trade"] = old["last_trade"]
+            else:
+                item.pop("last_trade", None)
 
         price = item.get("price")
         target = item.get("target")
