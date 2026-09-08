@@ -1439,6 +1439,7 @@ body{{font-family:Segoe UI,-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans
 .hero-row{{display:flex;justify-content:space-between;align-items:flex-end;gap:24px}}
 h1{{font-size:clamp(28px,4.5vw,40px);font-weight:700;letter-spacing:-.02em;line-height:1.15}}
 .lede{{margin-top:12px;font-size:15px;color:rgba(255,255,255,.82);max-width:40em}}
+.lede-strong{{display:inline;font-size:18px;font-weight:700;color:#fff}}
 .badge{{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border:1px solid rgba(255,255,255,.35);padding:8px 12px;border-radius:2px;white-space:nowrap}}
 .page{{max-width:960px;margin:0 auto;padding:28px 24px 56px}}
 .pdf-box{{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;background:linear-gradient(90deg,#e8f1fb 0%,#ffffff 42%);border:2px solid #1a66b3;border-radius:6px;padding:18px 20px;margin-bottom:22px;box-shadow:0 4px 14px rgba(26,102,179,.12)}}
@@ -1489,7 +1490,7 @@ h1{{font-size:clamp(28px,4.5vw,40px);font-weight:700;letter-spacing:-.02em;line-
     <div class="hero-row">
       <div>
         <h1>Prateleira Tática</h1>
-        <p class="lede">Distribuição Renda Variável · escolha um card para ver as operações</p>
+        <p class="lede"><span class="lede-strong">Distribuição Renda Variável</span> · escolha um card para ver as operações</p>
       </div>
       <div class="badge">Uso interno</div>
     </div>
@@ -1500,7 +1501,7 @@ h1{{font-size:clamp(28px,4.5vw,40px);font-weight:700;letter-spacing:-.02em;line-
     <div class="pdf-box-copy">
       <span class="pdf-box-kicker">Material PDF</span>
       <span class="pdf-box-title">Prateleira Tática · {REF.strftime('%d/%m/%Y')}</span>
-      <span class="pdf-box-meta">Atualização semanal — abra o deck completo da semana</span>
+      <span class="pdf-box-meta">Atualização semanal — abra o PDF</span>
     </div>
     <a class="pdf-box-cta" href="./{PDF_NAME}" target="_blank" rel="noopener noreferrer">Abrir PDF ↗</a>
   </div>
