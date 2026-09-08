@@ -315,7 +315,7 @@ def research_html(cfg: dict) -> str:
         if not rs.get("target"):
             bits.append("sem preço-alvo publicado para este ticker")
         elif alvo_d:
-            bits.append(f"alvo em {alvo_d}")
+            bits.append(f"preço-alvo atualizado em {alvo_d}")
         bits.append("atualizado às 18h30 · fonte Research BTG")
         note = f'<p class="research-note">{ " · ".join(bits) }.</p>'
         btn = ""
