@@ -1441,10 +1441,15 @@ h1{{font-size:clamp(28px,4.5vw,40px);font-weight:700;letter-spacing:-.02em;line-
 .lede{{margin-top:12px;font-size:15px;color:rgba(255,255,255,.82);max-width:40em}}
 .badge{{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border:1px solid rgba(255,255,255,.35);padding:8px 12px;border-radius:2px;white-space:nowrap}}
 .page{{max-width:960px;margin:0 auto;padding:28px 24px 56px}}
-.pdf-box{{background:var(--card);border:1px solid var(--line);border-radius:4px;padding:16px 18px;margin-bottom:22px}}
-.pdf-box a{{color:var(--link);font-weight:700;text-decoration:none}}
-.pdf-box a:hover{{text-decoration:underline}}
-.pdf-box p{{font-size:13px;color:var(--muted);margin-top:6px}}
+.pdf-box{{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;background:linear-gradient(90deg,#e8f1fb 0%,#ffffff 42%);border:2px solid #1a66b3;border-radius:6px;padding:18px 20px;margin-bottom:22px;box-shadow:0 4px 14px rgba(26,102,179,.12)}}
+.pdf-box-copy{{display:flex;flex-direction:column;gap:6px;min-width:min(100%,280px)}}
+.pdf-box-kicker{{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#1a66b3}}
+.pdf-box-title{{font-size:18px;font-weight:700;color:var(--btg);line-height:1.25}}
+.pdf-box-meta{{font-size:13px;color:var(--muted)}}
+.pdf-box-cta{{display:inline-flex;align-items:center;gap:8px;background:#1a66b3;color:#fff !important;font-size:14px;font-weight:700;text-decoration:none;padding:12px 16px;border-radius:4px;white-space:nowrap}}
+.pdf-box-cta:hover{{background:#15569a;text-decoration:none}}
+.pdf-box-cta span{{font-size:16px;line-height:1}}
+@media (max-width:640px){{.pdf-box{{padding:16px}}.pdf-box-cta{{width:100%;justify-content:center}}}}
 .cat-grid{{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-bottom:8px}}
 .cat-card{{appearance:none;border:1px solid var(--line);background:var(--card);border-radius:6px;overflow:hidden;text-align:left;cursor:pointer;padding:0;display:flex;flex-direction:column;transition:transform .12s ease,box-shadow .12s ease,border-color .12s}}
 .cat-card:hover,.cat-card:focus-visible{{transform:translateY(-2px);box-shadow:0 8px 20px rgba(11,31,58,.08);border-color:#b8c6d6;outline:none}}
@@ -1492,8 +1497,12 @@ h1{{font-size:clamp(28px,4.5vw,40px);font-weight:700;letter-spacing:-.02em;line-
 </header>
 <main class="page">
   <div class="pdf-box">
-    <a href="./{PDF_NAME}" target="_blank" rel="noopener noreferrer">Abrir material PDF da prateleira ↗</a>
-    <p>Atualização semanal</p>
+    <div class="pdf-box-copy">
+      <span class="pdf-box-kicker">Material PDF</span>
+      <span class="pdf-box-title">Prateleira Tática · {REF.strftime('%d/%m/%Y')}</span>
+      <span class="pdf-box-meta">Atualização semanal — abra o deck completo da semana</span>
+    </div>
+    <a class="pdf-box-cta" href="./{PDF_NAME}" target="_blank" rel="noopener noreferrer">Abrir PDF ↗</a>
   </div>
   <div class="cat-grid" id="catGrid">{cats}</div>
   {body}
