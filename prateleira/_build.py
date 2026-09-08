@@ -17,7 +17,7 @@ ROOT = Path(__file__).resolve().parent
 REPO = ROOT.parent
 OPS = ROOT / "ops"
 REF = date(2026, 9, 8)  # semana 07.09.26
-PDF_NAME = "Material-Prateleira-Tatica-31082026.pdf"
+PDF_NAME = "Material-Prateleira-Tatica-08092026.pdf"
 RESEARCH_REC = "https://content.btgpactual.com/api/research/content-hub/recommendations/ticker/{ticker}?includeInstitutionalData=true"
 RESEARCH_QUOTES = "https://content.btgpactual.com/api/research/research/public/asset/quotes"
 RESEARCH_SUMMARY = "https://content.btgpactual.com/api/research/content-hub-assets/v1/asset/summary/{ticker}"
@@ -53,7 +53,7 @@ def slugify(*parts: str) -> str:
 
 def copy_pdf() -> bool:
     downloads = Path(r"C:\Users\PIMENTPA\Downloads")
-    cands = [p for p in downloads.glob("Material Prateleira*.pdf") if "31082026" in p.name]
+    cands = [p for p in downloads.glob("Material Prateleira*.pdf") if "08092026" in p.name]
     if not cands:
         cands = list(downloads.glob("Material Prateleira*.pdf"))
     if not cands:
