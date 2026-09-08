@@ -356,19 +356,20 @@ def research_insights_html(cfg: dict) -> str:
 
 
 # ---- data (fonte: prateleira/operacoes/operacoes.xlsx · aba 07.09.26) ----
-# (ticker, fixing, strike, ko, bid, backtest_barreira%)
+# (ticker, fixing, strike, ko, bid, backtest_barreira%, prazo_dc)
 # Cupom comercial/gráfico = strike − 100 (lock do SOC); bid = preço da book, não o cupom.
+# prazo_dc = dias corridos do material PDF (20/30/45 dc); fixing = vencimento na book.
 # backtest = % histórico de toque da barreira no material; None = sem janelas (*).
 SOC = [
-    ("NVDC34", date(2026, 10, 7), 103.14, 90.0, 0.80, 15.0),
-    ("TEND3", date(2026, 9, 25), 104.0, 90.0, 1.00, 27.0),
-    ("AXIA3", date(2026, 10, 21), 106.96, 90.0, 1.50, 25.0),
-    ("WEGE3", date(2026, 10, 7), 103.31, 92.0, 0.80, 25.0),
-    ("PRIO3", date(2026, 10, 22), 105.87, 90.0, 1.70, 42.0),
-    ("SPCX34", date(2026, 9, 25), 103.0, 87.0, 0.98, None),
-    ("TOTS3", date(2026, 10, 6), 104.72, 90.0, 1.40, 42.0),
-    ("B3SA3", date(2026, 10, 6), 105.07, 90.0, 1.90, 27.0),
-    ("TSLA34", date(2026, 10, 5), 103.50, 90.0, 1.50, 46.0),
+    ("NVDC34", date(2026, 10, 7), 103.14, 90.0, 0.80, 15.0, 30),
+    ("TEND3", date(2026, 9, 25), 104.0, 90.0, 1.00, 27.0, 20),
+    ("AXIA3", date(2026, 10, 21), 106.96, 90.0, 1.50, 25.0, 45),
+    ("WEGE3", date(2026, 10, 7), 103.31, 92.0, 0.80, 25.0, 30),
+    ("PRIO3", date(2026, 10, 22), 105.87, 90.0, 1.70, 42.0, 45),
+    ("SPCX34", date(2026, 9, 25), 103.0, 87.0, 0.98, None, 20),
+    ("TOTS3", date(2026, 10, 6), 104.72, 90.0, 1.40, 42.0, 30),
+    ("B3SA3", date(2026, 10, 6), 105.07, 90.0, 1.90, 27.0, 30),
+    ("TSLA34", date(2026, 10, 5), 103.50, 90.0, 1.50, 46.0, 30),
 ]
 
 # (ticker, fixing, put, call, ki, bid)
@@ -777,12 +778,15 @@ def op_page(cfg: dict) -> str:
 """
 
 
-def make_soc(t, fixing, strike, ko, bid, backtest=None):
-    prazo = months_label(fixing)
+def make_soc(t, fixing, strike, ko, bid, backtest=None, prazo_dc=None):
+    if prazo_dc is None:
+        prazo_dc = max(1, (fixing - REF).days)
+    prazo = f"{prazo_dc}dc"
+    venc = fixing.strftime("%d/%m/%Y")
     ko_var = ko - 100
     # Cupom = lock strike−100 (PDF); bid da book não entra no payoff.
     cupom = round(strike - 100, 2)
-    slug = slugify("soc", t, prazo.replace(" ", ""))
+    slug = slugify("soc", t, prazo)
     # No PDF: SPCX34 marca —* (sem janelas). Demais sem número = não publicado.
     no_windows = {"SPCX34"}
     if backtest is None and t in no_windows:
@@ -803,6 +807,7 @@ def make_soc(t, fixing, strike, ko, bid, backtest=None):
     pills = [
         ("Ativo", t),
         ("Prazo", prazo),
+        ("Vencimento", venc),
         ("Strike", f"{strike:.2f}%"),
         ("KO", f"{ko:.0f}%"),
         ("Cupom", f"{cupom:.2f}%"),
@@ -818,7 +823,7 @@ def make_soc(t, fixing, strike, ko, bid, backtest=None):
         "subtitle": f"Stock or Coupon sobre {t}: cupom se a barreira de queda não for atingida; se KO, acompanha o ativo.",
         "pills": pills,
         "highlights": [
-            ("Prazo", prazo, "Horizonte em meses"),
+            ("Prazo", prazo, f"Vencimento {venc}"),
             ("Cupom", f"+{cupom:.2f}%", "Se barreira não for atingida"),
             ("KO", f"{ko:.0f}%", f"Abaixo de {ko_var:.0f}%: acompanha o ativo"),
             ("Strike", f"{strike:.2f}%", "Put KO / Call KO"),
@@ -836,7 +841,7 @@ def make_soc(t, fixing, strike, ko, bid, backtest=None):
         "regime0": f"Acima da barreira: cupom +{cupom:.2f}%.",
         "speech": [
             ("Para quem", f"Cliente que quer cupom curto em {t}, aceitando risco de exposição se o papel cair além da barreira."),
-            ("Como encaixa", f"SOC · prazo {prazo}. Sem KO: cupom +{cupom:.2f}%. Com KO ({ko:.0f}%): acompanha o ativo. {bt_speech}"),
+            ("Como encaixa", f"SOC · {prazo} (venc. {venc}). Sem KO: cupom +{cupom:.2f}%. Com KO ({ko:.0f}%): acompanha o ativo. {bt_speech}"),
             ("Fechamento", speech_close),
         ],
         "x_min": min(-30, int(ko_var) - 10),

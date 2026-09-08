@@ -123,16 +123,16 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
     <h1>SOC <span>B3SA3</span></h1>
     <p class="subtitle">Stock or Coupon sobre B3SA3: cupom se a barreira de queda não for atingida; se KO, acompanha o ativo.</p>
   </div>
-  <div class="meta-pills"><div class="pill"><strong>Ativo</strong> B3SA3</div><div class="pill"><strong>Prazo</strong> 1 mês</div><div class="pill"><strong>Strike</strong> 105.07%</div><div class="pill"><strong>KO</strong> 90%</div><div class="pill"><strong>Cupom</strong> 5.07%</div><div class="pill"><strong>Backtest (barreira)</strong> 27%</div></div>
+  <div class="meta-pills"><div class="pill"><strong>Ativo</strong> B3SA3</div><div class="pill"><strong>Prazo</strong> 30dc</div><div class="pill"><strong>Vencimento</strong> 06/10/2026</div><div class="pill"><strong>Strike</strong> 105.07%</div><div class="pill"><strong>KO</strong> 90%</div><div class="pill"><strong>Cupom</strong> 5.07%</div><div class="pill"><strong>Backtest (barreira)</strong> 27%</div></div>
 </header>
-<section class="highlights"><div class="hi"><h3>Prazo</h3><p>1 mês<span>Horizonte em meses</span></p></div><div class="hi"><h3>Cupom</h3><p>+5.07%<span>Se barreira não for atingida</span></p></div><div class="hi"><h3>KO</h3><p>90%<span>Abaixo de -10%: acompanha o ativo</span></p></div><div class="hi"><h3>Strike</h3><p>105.07%<span>Put KO / Call KO</span></p></div><div class="hi"><h3>Backtest (barreira)</h3><p>27%<span>Histórico de toque da barreira</span></p></div></section>
+<section class="highlights"><div class="hi"><h3>Prazo</h3><p>30dc<span>Vencimento 06/10/2026</span></p></div><div class="hi"><h3>Cupom</h3><p>+5.07%<span>Se barreira não for atingida</span></p></div><div class="hi"><h3>KO</h3><p>90%<span>Abaixo de -10%: acompanha o ativo</span></p></div><div class="hi"><h3>Strike</h3><p>105.07%<span>Put KO / Call KO</span></p></div><div class="hi"><h3>Backtest (barreira)</h3><p>27%<span>Histórico de toque da barreira</span></p></div></section>
 
 <section class="research">
   <div class="research-head">
     <h2>Research BTG</h2>
     <a class="research-link" href="https://content.btgpactual.com/research/ativo/B3SA3" target="_blank" rel="noopener">Abrir B3SA3 no Research <span class="arrow" aria-hidden="true">→</span></a>
   </div>
-  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 17,76</div></div><div><div class="lbl">Recomendação</div><div class="val hold">Neutro</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 19,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+6,98%</div></div></div><p class="research-note">Spot do fechamento anterior (08/09/2026) · preço-alvo atualizado em 18/08/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
+  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 17,56</div></div><div><div class="lbl">Recomendação</div><div class="val hold">Neutro</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 19,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+8,20%</div></div></div><p class="research-note">Spot do fechamento anterior (08/09/2026) · preço-alvo atualizado em 18/08/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
 </section>
 
 <div class="main">
@@ -189,7 +189,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
 </div>
 <section class="speech-box">
   <h2>Speech comercial</h2>
-  <p class="speech-label">Para quem</p><p>Cliente que quer cupom curto em B3SA3, aceitando risco de exposição se o papel cair além da barreira.</p><p class="speech-label">Como encaixa</p><p>SOC · prazo 1 mês. Sem KO: cupom +5.07%. Com KO (90%): acompanha o ativo. Backtest (barreira): 27% das janelas históricas tocaram a barreira 90% (material da prateleira).</p><p class="speech-label">Fechamento</p><p>Material de uso interno — condições no DIE.</p>
+  <p class="speech-label">Para quem</p><p>Cliente que quer cupom curto em B3SA3, aceitando risco de exposição se o papel cair além da barreira.</p><p class="speech-label">Como encaixa</p><p>SOC · 30dc (venc. 06/10/2026). Sem KO: cupom +5.07%. Com KO (90%): acompanha o ativo. Backtest (barreira): 27% das janelas históricas tocaram a barreira 90% (material da prateleira).</p><p class="speech-label">Fechamento</p><p>Material de uso interno — condições no DIE.</p>
 </section>
 
 <section class="speech-box insights-box">
@@ -206,7 +206,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
   var X_MIN=-30,X_MAX=40,Y_MIN=-30,Y_MAX=15;
   var PAD={l:48,t:24,r:48,b:24},VW=600,VH=400;
   var PLOT_W=VW-PAD.l-PAD.r,PLOT_H=VH-PAD.t-PAD.b;
-  var RESEARCH_X=6.9820;
+  var RESEARCH_X=8.2005;
   var KO_VAR=-10.0, CUPON=5.07;
   function structureReturn(x){ if (x <= KO_VAR) return x; return CUPON; }
   function regimeFor(x){ if (x <= KO_VAR) return 'KO: acompanha o ativo.'; return 'Cupom SOC +5.07%.'; }
