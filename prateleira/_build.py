@@ -356,7 +356,8 @@ def research_insights_html(cfg: dict) -> str:
 
 
 # ---- data (fonte: prateleira/operacoes/operacoes.xlsx · aba 07.09.26) ----
-# (ticker, fixing, strike, ko, bid/cupom, backtest_barreira%)
+# (ticker, fixing, strike, ko, bid, backtest_barreira%)
+# Cupom comercial/gráfico = strike − 100 (lock do SOC); bid = preço da book, não o cupom.
 # backtest = % histórico de toque da barreira no material; None = sem janelas (*).
 SOC = [
     ("NVDC34", date(2026, 10, 7), 103.14, 90.0, 0.80, 15.0),
@@ -779,6 +780,8 @@ def op_page(cfg: dict) -> str:
 def make_soc(t, fixing, strike, ko, bid, backtest=None):
     prazo = months_label(fixing)
     ko_var = ko - 100
+    # Cupom = lock strike−100 (PDF); bid da book não entra no payoff.
+    cupom = round(strike - 100, 2)
     slug = slugify("soc", t, prazo.replace(" ", ""))
     # No PDF: SPCX34 marca —* (sem janelas). Demais sem número = não publicado.
     no_windows = {"SPCX34"}
@@ -802,9 +805,10 @@ def make_soc(t, fixing, strike, ko, bid, backtest=None):
         ("Prazo", prazo),
         ("Strike", f"{strike:.2f}%"),
         ("KO", f"{ko:.0f}%"),
-        ("Cupom", f"{bid:.2f}%"),
+        ("Cupom", f"{cupom:.2f}%"),
         ("Backtest (barreira)", bt_lbl),
     ]
+    y_pad = max(8, int(math.ceil(cupom / 5.0) * 5) + 5)
     return slug, {
         "title": f"SOC {t}",
         "h1": "SOC",
@@ -815,7 +819,7 @@ def make_soc(t, fixing, strike, ko, bid, backtest=None):
         "pills": pills,
         "highlights": [
             ("Prazo", prazo, "Horizonte em meses"),
-            ("Cupom", f"+{bid:.2f}%", "Se barreira não for atingida"),
+            ("Cupom", f"+{cupom:.2f}%", "Se barreira não for atingida"),
             ("KO", f"{ko:.0f}%", f"Abaixo de {ko_var:.0f}%: acompanha o ativo"),
             ("Strike", f"{strike:.2f}%", "Put KO / Call KO"),
             ("Backtest (barreira)", bt_lbl, bt_note),
@@ -826,18 +830,22 @@ def make_soc(t, fixing, strike, ko, bid, backtest=None):
         ],
         "zones": [
             (f"≤ {ko_var:.0f}%", "Put/Call KO nocauteados — acompanha o ativo 1:1."),
-            (f"> {ko_var:.0f}%", f"Cupom fixo +{bid:.2f}% (SOC)."),
+            (f"> {ko_var:.0f}%", f"Cupom fixo +{cupom:.2f}% (SOC)."),
             ("Ideia", "Fluxo de cupom com risco de conversão se cair forte."),
         ],
-        "regime0": f"Acima da barreira: cupom +{bid:.2f}%.",
+        "regime0": f"Acima da barreira: cupom +{cupom:.2f}%.",
         "speech": [
             ("Para quem", f"Cliente que quer cupom curto em {t}, aceitando risco de exposição se o papel cair além da barreira."),
-            ("Como encaixa", f"SOC · prazo {prazo}. Sem KO: cupom +{bid:.2f}%. Com KO ({ko:.0f}%): acompanha o ativo. {bt_speech}"),
+            ("Como encaixa", f"SOC · prazo {prazo}. Sem KO: cupom +{cupom:.2f}%. Com KO ({ko:.0f}%): acompanha o ativo. {bt_speech}"),
             ("Fechamento", speech_close),
         ],
-        "js_const": f"var KO_VAR={ko_var}, CUPON={bid};",
+        "x_min": min(-30, int(ko_var) - 10),
+        "x_max": 40,
+        "y_min": min(-30, int(ko_var) - 10),
+        "y_max": y_pad,
+        "js_const": f"var KO_VAR={ko_var}, CUPON={cupom};",
         "js_fn": "if (x <= KO_VAR) return x; return CUPON;",
-        "js_regime": f"if (x <= KO_VAR) return 'KO: acompanha o ativo.'; return 'Cupom SOC +{bid:.2f}%.';",
+        "js_regime": f"if (x <= KO_VAR) return 'KO: acompanha o ativo.'; return 'Cupom SOC +{cupom:.2f}%.';",
     }
 
 
@@ -1612,17 +1620,13 @@ def main():
         if up is not None:
             xmax = cfg.get("x_max", 80)
             xmin = cfg.get("x_min", -50)
-            ymax = cfg.get("y_max", 80)
-            ymin = cfg.get("y_min", -50)
             if up > xmax - 8:
                 xmax = int(math.ceil((up + 10) / 10.0) * 10)
             if up < xmin + 8:
                 xmin = int(math.floor((up - 10) / 10.0) * 10)
-            # Expande só o eixo do ativo p/ caber o PA; não achata o Y do payoff (ex.: Triplo 3×).
+            # Expande só o eixo X p/ caber o PA; não achata o Y do payoff (ex.: SOC cupom ~3–7%).
             cfg["x_max"] = xmax
             cfg["x_min"] = xmin
-            cfg["y_max"] = max(ymax, int(math.ceil(abs(up) / 10.0) * 10) + 10)
-            cfg["y_min"] = min(ymin, xmin)
         cfg["research_html"] = research_html(cfg)
         cfg["research_insights_html"] = research_insights_html(cfg)
 

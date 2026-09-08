@@ -123,16 +123,16 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
     <h1>SOC <span>TSLA34</span></h1>
     <p class="subtitle">Stock or Coupon sobre TSLA34: cupom se a barreira de queda não for atingida; se KO, acompanha o ativo.</p>
   </div>
-  <div class="meta-pills"><div class="pill"><strong>Ativo</strong> TSLA34</div><div class="pill"><strong>Prazo</strong> 1 mês</div><div class="pill"><strong>Strike</strong> 103.50%</div><div class="pill"><strong>KO</strong> 90%</div><div class="pill"><strong>Cupom</strong> 1.50%</div><div class="pill"><strong>Backtest (barreira)</strong> 46%</div></div>
+  <div class="meta-pills"><div class="pill"><strong>Ativo</strong> TSLA34</div><div class="pill"><strong>Prazo</strong> 1 mês</div><div class="pill"><strong>Strike</strong> 103.50%</div><div class="pill"><strong>KO</strong> 90%</div><div class="pill"><strong>Cupom</strong> 3.50%</div><div class="pill"><strong>Backtest (barreira)</strong> 46%</div></div>
 </header>
-<section class="highlights"><div class="hi"><h3>Prazo</h3><p>1 mês<span>Horizonte em meses</span></p></div><div class="hi"><h3>Cupom</h3><p>+1.50%<span>Se barreira não for atingida</span></p></div><div class="hi"><h3>KO</h3><p>90%<span>Abaixo de -10%: acompanha o ativo</span></p></div><div class="hi"><h3>Strike</h3><p>103.50%<span>Put KO / Call KO</span></p></div><div class="hi"><h3>Backtest (barreira)</h3><p>46%<span>Histórico de toque da barreira</span></p></div></section>
+<section class="highlights"><div class="hi"><h3>Prazo</h3><p>1 mês<span>Horizonte em meses</span></p></div><div class="hi"><h3>Cupom</h3><p>+3.50%<span>Se barreira não for atingida</span></p></div><div class="hi"><h3>KO</h3><p>90%<span>Abaixo de -10%: acompanha o ativo</span></p></div><div class="hi"><h3>Strike</h3><p>103.50%<span>Put KO / Call KO</span></p></div><div class="hi"><h3>Backtest (barreira)</h3><p>46%<span>Histórico de toque da barreira</span></p></div></section>
 
 <section class="research">
   <div class="research-head">
     <h2>Research BTG</h2>
     <a class="research-link" href="https://content.btgpactual.com/research/ativo/TSLA34" target="_blank" rel="noopener">Abrir TSLA34 no Research <span class="arrow" aria-hidden="true">→</span></a>
   </div>
-  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 56,74</div></div></div><p class="research-note">Spot do fechamento anterior (08/09/2026) · sem preço-alvo publicado para este ticker · atualizado às 18h30 · fonte Research BTG.</p>
+  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 57,85</div></div></div><p class="research-note">Spot do fechamento anterior (08/09/2026) · sem preço-alvo publicado para este ticker · atualizado às 18h30 · fonte Research BTG.</p>
 </section>
 
 <div class="main">
@@ -170,26 +170,26 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
   <p class="chart-touch-hint">Arraste no gráfico para simular</p>
       <div class="mobile-sim">
     <div class="sim-label"><span>Spot final</span><output id="spotOutMobile">0%</output></div>
-    <input type="range" id="spotSliderMobile" min="-50" max="80" step="0.5" value="0"/>
+    <input type="range" id="spotSliderMobile" min="-30" max="40" step="0.5" value="0"/>
   </div>
-  <div class="zones"><div class="zone"><strong>≤ -10%</strong><p>Put/Call KO nocauteados — acompanha o ativo 1:1.</p></div><div class="zone"><strong>> -10%</strong><p>Cupom fixo +1.50% (SOC).</p></div><div class="zone"><strong>Ideia</strong><p>Fluxo de cupom com risco de conversão se cair forte.</p></div></div>
+  <div class="zones"><div class="zone"><strong>≤ -10%</strong><p>Put/Call KO nocauteados — acompanha o ativo 1:1.</p></div><div class="zone"><strong>> -10%</strong><p>Cupom fixo +3.50% (SOC).</p></div><div class="zone"><strong>Ideia</strong><p>Fluxo de cupom com risco de conversão se cair forte.</p></div></div>
 </section>
 <aside class="panel panel-sim">
   <h2>Simulador</h2>
   <div class="sim-label"><span>Variação do ativo</span><output id="spotOut">0%</output></div>
-  <input type="range" id="spotSlider" min="-50" max="80" step="0.5" value="0"/>
+  <input type="range" id="spotSlider" min="-30" max="40" step="0.5" value="0"/>
   <div class="sim-cards">
     <div class="sim-card"><div class="lbl">Ativo</div><div class="val" id="assetVal">0,0%</div></div>
     <div class="sim-card"><div class="lbl">Estrutura</div><div class="val" id="structVal">0,0%</div></div>
     
   </div>
-  <div class="regime" id="regimeText">Acima da barreira: cupom +1.50%.</div>
+  <div class="regime" id="regimeText">Acima da barreira: cupom +3.50%.</div>
   
 </aside>
 </div>
 <section class="speech-box">
   <h2>Speech comercial</h2>
-  <p class="speech-label">Para quem</p><p>Cliente que quer cupom curto em TSLA34, aceitando risco de exposição se o papel cair além da barreira.</p><p class="speech-label">Como encaixa</p><p>SOC · prazo 1 mês. Sem KO: cupom +1.50%. Com KO (90%): acompanha o ativo. Backtest (barreira): 46% das janelas históricas tocaram a barreira 90% (material da prateleira).</p><p class="speech-label">Fechamento</p><p>Material de uso interno — condições no DIE.</p>
+  <p class="speech-label">Para quem</p><p>Cliente que quer cupom curto em TSLA34, aceitando risco de exposição se o papel cair além da barreira.</p><p class="speech-label">Como encaixa</p><p>SOC · prazo 1 mês. Sem KO: cupom +3.50%. Com KO (90%): acompanha o ativo. Backtest (barreira): 46% das janelas históricas tocaram a barreira 90% (material da prateleira).</p><p class="speech-label">Fechamento</p><p>Material de uso interno — condições no DIE.</p>
 </section>
 
 <p class="footer">Material ilustrativo para uso interno. Não constitui oferta, recomendação ou garantia de rentabilidade.</p>
@@ -197,13 +197,13 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
 </div>
 <script>
 (function(){
-  var X_MIN=-50,X_MAX=80,Y_MIN=-50,Y_MAX=80;
+  var X_MIN=-30,X_MAX=40,Y_MIN=-30,Y_MAX=10;
   var PAD={l:48,t:24,r:48,b:24},VW=600,VH=400;
   var PLOT_W=VW-PAD.l-PAD.r,PLOT_H=VH-PAD.t-PAD.b;
   var RESEARCH_X=null;
-  var KO_VAR=-10.0, CUPON=1.5;
+  var KO_VAR=-10.0, CUPON=3.5;
   function structureReturn(x){ if (x <= KO_VAR) return x; return CUPON; }
-  function regimeFor(x){ if (x <= KO_VAR) return 'KO: acompanha o ativo.'; return 'Cupom SOC +1.50%.'; }
+  function regimeFor(x){ if (x <= KO_VAR) return 'KO: acompanha o ativo.'; return 'Cupom SOC +3.50%.'; }
   function fmtPct(v,d){ d=d==null?1:d; var s=v.toFixed(d).replace('.',','); return (v>0?'+':'')+s+'%'; }
   function xToSvg(x){ return PAD.l+((x-X_MIN)/(X_MAX-X_MIN))*PLOT_W; }
   function yToSvg(y){ return PAD.t+((Y_MAX-y)/(Y_MAX-Y_MIN))*PLOT_H; }
