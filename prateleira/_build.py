@@ -714,7 +714,7 @@ def op_page(cfg: dict) -> str:
       cL.setAttribute('y1', yToSvg(peakY)); cL.setAttribute('y2', yToSvg(0));
       cL.setAttribute('opacity', '1');
       cT.setAttribute('x', Math.max(48, xToSvg(H) - 72)); cT.setAttribute('y', yToSvg(peakY) - 8);
-      cT.textContent = 'Call vanilla · teto 2×';
+      cT.textContent = {json.dumps(cfg.get("ko_call_label") or "Call vanilla · teto")};
       cT.setAttribute('opacity', '1');
     }}
   }}
@@ -901,12 +901,15 @@ def make_sh(t, fixing, put, call, ki, bid):
 
 def make_acel(t, fixing, ko_h, ko_l, bid):
     prazo = months_label(fixing)
-    H, L = ko_h - 100, ko_l - 100
-    peak = 2 * H  # teto: 2× no strike da call vanilla (limitado ao KO)
+    H, L = round(ko_h - 100, 2), round(ko_l - 100, 2)
+    # Teto = distância até o KO (call vendida), NÃO 2×H. 2× só acelera até esse teto.
+    peak = H
     slug = slugify("aceleradora", t, prazo.replace(" ", ""))
     kh, kl = fmt_lvl(ko_h), fmt_lvl(ko_l)
     h_lbl = f"+{H:.2f}".rstrip("0").rstrip(".").replace(".", ",") + "%"
     peak_lbl = f"+{peak:.2f}".rstrip("0").rstrip(".").replace(".", ",") + "%"
+    half = round(H / 2, 2)
+    half_lbl = f"+{half:.2f}".rstrip("0").rstrip(".").replace(".", ",") + "%"
     return slug, {
         "title": f"Aceleradora {t}",
         "h1": "Aceleradora Dinâmica",
@@ -914,8 +917,8 @@ def make_acel(t, fixing, ko_h, ko_l, bid):
         "dot": "AC",
         "brand": "#5a4a8a",
         "subtitle": (
-            f"Ganho dobrado (2×) na alta enquanto não atingir a call vanilla vendida (stk {kh}). "
-            f"Se bater a barreira {kh}, o ganho fica limitado ao KO — teto {peak_lbl} (não zera). "
+            f"Ganho dobrado (2×) na alta até atingir o teto {peak_lbl} (em {half_lbl} de alta). "
+            f"Na call vanilla / KO {kh}, o ganho fica limitado ao KO — teto {peak_lbl} (não dobra de novo). "
             f"Proteção parcial na queda até a barreira {kl}."
         ),
         "pills": [
@@ -923,11 +926,12 @@ def make_acel(t, fixing, ko_h, ko_l, bid):
             ("Prazo", prazo),
             ("Alta", "2×"),
             ("Call vendida", f"{kh} vanilla"),
+            ("Teto", peak_lbl),
             ("KO baixa", kl),
         ],
         "highlights": [
             ("Prazo", prazo, ""),
-            ("Alta", "2×", f"Enquanto spot < call vanilla {kh}"),
+            ("Alta", "2×", f"Até o teto {peak_lbl} (a partir de {half_lbl})"),
             ("Se bater KO", peak_lbl, f"Ganho limitado ao KO (stk vanilla {kh})"),
             ("Proteção", "Parcial", f"Piso 0% até KO {kl}; abaixo acompanha"),
         ],
@@ -939,40 +943,41 @@ def make_acel(t, fixing, ko_h, ko_l, bid):
         "zones": [
             (f"≤ {L:.0f}%", "Put KO nocauteada — acompanha o ativo."),
             (f"{L:.0f}% → 0%", "Proteção parcial: retorno 0%."),
-            (f"0% → {h_lbl}", f"Ganho dobrado: retorno = 2× a alta."),
-            (f"≥ {h_lbl}", f"Bateu call vanilla {kh}: ganho limitado ao KO → teto {peak_lbl}."),
+            (f"0% → {half_lbl}", f"Ganho dobrado: retorno = 2× a alta."),
+            (f"≥ {half_lbl}", f"Teto {peak_lbl} — limitado ao KO {kh} (call vendida)."),
         ],
-        "regime0": f"Na alta até {h_lbl}: 2×. Se bater a call vanilla {kh}: teto {peak_lbl}.",
+        "regime0": f"Na alta: 2× até o teto {peak_lbl}. Call vanilla / KO {kh}: permanece em {peak_lbl}.",
         "speech": [
             ("Para quem", f"Cliente tático em {t} ({prazo}) que quer ganho dobrado na alta com proteção parcial na queda."),
             (
                 "Como encaixa",
                 f"Aceleradora Dinâmica: Call KO stk 100% (barreira {kh}) + Call vanilla vendida stk {kh} + "
                 f"Put KO stk 100% (barreira {kl}). "
-                f"2× na alta até a call vendida; ao atingir, o ganho fica limitado ao KO ({peak_lbl}) — "
-                f"não volta para 0%/100% do nocional.",
+                f"2× na alta até o teto {peak_lbl} (limitado ao KO) — na call vendida não dobra de novo.",
             ),
             ("Fechamento", "Material de uso interno — condições no DIE."),
         ],
         "x_min": min(-50, int(L) - 10),
         "x_max": max(80, int(H) + 30),
         "y_min": min(-50, int(L) - 10),
-        "y_max": max(80, int(peak) + 20),
+        "y_max": max(40, int(math.ceil(peak / 5.0) * 5) + 10),
         "ko_markers": True,
+        "ko_call_label": f"Call vanilla · teto {peak_lbl}",
         "js_const": f"var L={L}, H={H}, CAP={peak};",
-        # 2× até a call vanilla; ao atingir/ultrapassar: teto CAP=2*H (limitado ao KO), NÃO 0%.
-        "js_fn": "if (x <= L) return x; if (x < 0) return 0; if (x < H) return 2*x; return CAP;",
+        # 2× até CAP=H (KO); na call vendida o teto é H, não 2×H.
+        "js_fn": "if (x <= L) return x; if (x < 0) return 0; if (x < H) return Math.min(2*x, CAP); return CAP;",
         "js_regime": (
             "if (x <= L) return 'Put KO atingida: perde a proteção e acompanha o ativo.'; "
             "if (x < 0) return 'Put KO viva: proteção até a barreira — piso 0%.'; "
-            "if (x < H) return 'Alta acelerada: 2× (ainda abaixo da call vanilla).'; "
-            "return 'Bateu call vanilla: ganho limitado ao KO — teto '+CAP.toFixed(1).replace('.',',')+'%.';"
+            "if (2*x < CAP) return 'Alta acelerada: 2× (ainda abaixo do teto).'; "
+            "if (x < H) return 'Teto do KO atingido — ganho limitado a '+CAP.toFixed(1).replace('.',',')+'%.'; "
+            "return 'Call vanilla / KO: teto '+CAP.toFixed(1).replace('.',',')+'% (limitado ao KO).';"
         ),
         "js_build": """
     for (var x = X_MIN; x <= L; x += 0.5) add(x, x);
     add(L, 0);
     for (var x2 = L + 0.5; x2 <= 0; x2 += 0.5) add(x2, 0);
-    for (var x3 = 0.5; x3 < H; x3 += 0.5) add(x3, 2 * x3);
+    for (var x3 = 0.5; x3 < H; x3 += 0.5) add(x3, Math.min(2 * x3, CAP));
     add(H, CAP);
     for (var x4 = H + 0.5; x4 <= X_MAX; x4 += 0.5) add(x4, CAP);
 """,
