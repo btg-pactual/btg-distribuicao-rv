@@ -132,7 +132,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
     <h2>Research BTG</h2>
     <a class="research-link" href="https://content.btgpactual.com/research/ativo/RENT3" target="_blank" rel="noopener">Abrir RENT3 no Research <span class="arrow" aria-hidden="true">→</span></a>
   </div>
-  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 35,72</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 65,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+81,97%</div></div></div><p class="research-note">Spot do fechamento anterior (09/09/2026) · preço-alvo atualizado em 07/08/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
+  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 36,81</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 65,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+76,58%</div></div></div><p class="research-note">Spot do fechamento anterior (10/09/2026) · preço-alvo atualizado em 07/08/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
 </section>
 
 <div class="main">
@@ -170,14 +170,14 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
   <p class="chart-touch-hint">Arraste no gráfico para simular</p>
       <div class="mobile-sim">
     <div class="sim-label"><span>Spot final</span><output id="spotOutMobile">0%</output></div>
-    <input type="range" id="spotSliderMobile" min="-50" max="100" step="0.5" value="0"/>
+    <input type="range" id="spotSliderMobile" min="-50" max="90" step="0.5" value="0"/>
   </div>
   <div class="zones"><div class="zone"><strong>< -20%</strong><p>Acompanha o ativo.</p></div><div class="zone"><strong>-20% → 0%</strong><p>Ganho ≈ |queda|.</p></div><div class="zone"><strong>0% → +42%</strong><p>3× a alta; acima: teto.</p></div></div>
 </section>
 <aside class="panel panel-sim">
   <h2>Simulador</h2>
   <div class="sim-label"><span>Variação do ativo</span><output id="spotOut">0%</output></div>
-  <input type="range" id="spotSlider" min="-50" max="100" step="0.5" value="0"/>
+  <input type="range" id="spotSlider" min="-50" max="90" step="0.5" value="0"/>
   <div class="sim-cards">
     <div class="sim-card"><div class="lbl">Ativo</div><div class="val" id="assetVal">0,0%</div></div>
     <div class="sim-card"><div class="lbl">Estrutura</div><div class="val" id="structVal">0,0%</div></div>
@@ -203,10 +203,10 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
 </div>
 <script>
 (function(){
-  var X_MIN=-50,X_MAX=100,Y_MIN=-50,Y_MAX=150;
+  var X_MIN=-50,X_MAX=90,Y_MIN=-50,Y_MAX=150;
   var PAD={l:48,t:24,r:48,b:24},VW=600,VH=400;
   var PLOT_W=VW-PAD.l-PAD.r,PLOT_H=VH-PAD.t-PAD.b;
-  var RESEARCH_X=81.9709;
+  var RESEARCH_X=76.5825;
   var L=-20.0, H=42.0, CAP=15.0;
   function structureReturn(x){ if (x < L) return x; if (x < 0) return -x; if (x < H) return 3*x; return CAP; }
   function regimeFor(x){ if (x < L) return 'Abaixo do put KO: acompanha.'; if (x < 0) return 'Queda moderada: |x|.'; if (x < H) return 'Alta: 3×.'; return 'KO alta: teto.'; }
@@ -277,7 +277,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
       cL.setAttribute('y1', yToSvg(peakY)); cL.setAttribute('y2', yToSvg(0));
       cL.setAttribute('opacity', '1');
       cT.setAttribute('x', Math.max(48, xToSvg(H) - 72)); cT.setAttribute('y', yToSvg(peakY) - 8);
-      cT.textContent = 'Call vanilla · teto 2×';
+      cT.textContent = "Call vanilla \u00b7 teto";
       cT.setAttribute('opacity', '1');
     }
   }
