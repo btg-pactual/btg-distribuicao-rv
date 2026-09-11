@@ -546,7 +546,12 @@ def smart_hedge_html(cfg: dict, prat=None) -> str:
 
 
 def twin_coupon_html(prat=None, research=None) -> str:
-    """Twin Coupon ITUB4 — approximation for illustration."""
+    """Twip Coupon ITUB4 — payoff alinhado ao DIE (ex.: DIE-15984858 AXIA3).
+
+    Pernas: long + put vanilla S + put down-and-out S/KO + short call up-and-in S/KI.
+    Cupom = S − 100. Sem barreira na queda: long + 2×put; na alta: max(x, cupom).
+    Com KO ou KI (aprox. no vencimento pelo spot): só o cupom.
+    """
     rs = research or {}
     research_block = ""
     insights_block = ""
@@ -556,24 +561,22 @@ def twin_coupon_html(prat=None, research=None) -> str:
     brand = "#ec7000"
     brand_soft = "rgba(236,112,0,0.12)"
     ticker = "ITUB4"
-    down_barrier = 70.0  # -30%
-    up_barrier = 153.0  # +53%
-    put = 110.0
-    strike = 110.0
-    floor = 10.0
-    cap = 10.0
+    down_barrier = 70.0  # KO
+    up_barrier = 153.0  # KI
+    strike = 110.0  # put / call strike
+    cupom = strike - 100.0  # +10%
     down_var = down_barrier - 100  # -30
-    up_var = up_barrier - 100  # 53
+    up_var = up_barrier - 100  # +53
 
     def struct_ret(x: float) -> float:
-        # Below down barrier: lose enhanced protection → follow asset
-        if x <= down_var:
-            return x
-        # Up barrier hit: strike 110% → cap +10%
-        if x >= up_var:
-            return cap
-        # Between barriers: twin-style with floor related to 110%
-        return max(abs(x), floor)
+        st = 100.0 + x
+        put = max(strike - st, 0.0)
+        # Aprox. no vencimento: barreira tocada se spot ≤ KO ou ≥ KI.
+        if x <= down_var or x >= up_var:
+            return st + put - 100.0  # put vanilla permanece → cupom
+        if x < 0:
+            return x + 2.0 * put  # twin: long + 2 puts
+        return max(x, cupom)
 
     spots = [-50, -40, -30, -20, -10, 0, 10, 20, 40, 53, 60, 80]
     rows = []
@@ -583,8 +586,10 @@ def twin_coupon_html(prat=None, research=None) -> str:
         ys = ("+" if y > 0 else "") + fmt_br(y, 1) + "%"
         rows.append(f"<tr><td>{xs}</td><td>{xs}</td><td><strong>{ys}</strong></td></tr>")
 
+    # Pico twin logo acima do KO: x=-29.5 → ~49.5%
+    twin_peak = struct_ret(down_var + 0.5)
     x_min, x_max = -50, 80
-    y_min, y_max = -45, 60
+    y_min, y_max = -5, max(55, int(math.ceil(twin_peak / 5.0) * 5) + 5)
     up = rs.get("upside")
     if up is not None and up > x_max - 8:
         x_max = int(math.ceil((up + 10) / 10.0) * 10)
@@ -598,7 +603,7 @@ def twin_coupon_html(prat=None, research=None) -> str:
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Twin Coupon Itaú — ITUB4 | BTG Pactual</title>
+  <title>Twip Coupon Itaú — ITUB4 | BTG Pactual</title>
   <style>
     :root {{
       --ink: #0b1f3a; --muted: #5c6b7a; --line: #d0d8e2; --bg: #eef2f6; --card: #ffffff;
@@ -710,25 +715,25 @@ def twin_coupon_html(prat=None, research=None) -> str:
           <span class="logo-btg">BTG PACTUAL</span>
           <span class="logo-co"><span class="dot">IT</span> Itaú</span>
         </div>
-        <h1>Twin Coupon <span>ITUB4</span></h1>
+        <h1>Twip Coupon <span>ITUB4</span></h1>
         <p class="subtitle">
-          Estrutura sobre ITUB4 com proteção 110%, barreira de queda 70%, strike 110% e barreira alta 153%.
-          Payoff ilustrativo (twin + proteção); cupons conforme DIE.
+          Twip Coupon sobre ITUB4: cupom +10% (put 110%), participa da alta e da queda
+          enquanto não tocar KO 70% nem KI 153%.
         </p>
       </div>
       <div class="meta-pills">
         <div class="pill"><strong>Ativo</strong> ITUB4</div>
         <div class="pill"><strong>Prazo</strong> 2 anos</div>
-        <div class="pill"><strong>Moeda</strong> BRL</div>
-        <div class="pill"><strong>Cupons</strong> ver DIE</div>
+        <div class="pill"><strong>Cupom</strong> +10%</div>
+        <div class="pill"><strong>KO / KI</strong> 70% / 153%</div>
       </div>
     </header>
 
     <section class="highlights">
-      <div class="hi"><h3>Proteção</h3><p>110%<span>Piso +10% se barreira de queda não for atingida</span></p></div>
-      <div class="hi"><h3>Barreira de queda</h3><p>70%<span>−30% — perde proteção reforçada</span></p></div>
-      <div class="hi"><h3>Strike / barreira alta</h3><p>110% / 153%<span>Se barreira alta: teto +10%</span></p></div>
-      <div class="hi"><h3>Prazo</h3><p>2 anos<span>Cupons: detalhes no DIE</span></p></div>
+      <div class="hi"><h3>Cupom</h3><p>+10%<span>Strike put/call 110%</span></p></div>
+      <div class="hi"><h3>Barreira de queda (KO)</h3><p>70%<span>Se tocar: só o cupom</span></p></div>
+      <div class="hi"><h3>Barreira de alta (KI)</h3><p>153%<span>Se tocar: só o cupom</span></p></div>
+      <div class="hi"><h3>Prazo</h3><p>2 anos</p></div>
     </section>
     {research_block}
 
@@ -736,25 +741,25 @@ def twin_coupon_html(prat=None, research=None) -> str:
       <aside class="panel">
         <h2>Estrutura da operação</h2>
         <table class="struct-table">
-          <thead><tr><th>Perna / parâmetro</th><th>Nível</th></tr></thead>
+          <thead><tr><th>Perna</th><th>Strike</th><th>Barreira</th></tr></thead>
           <tbody>
-            <tr><td><span class="tag b">B</span> Proteção (put)</td><td class="strike-green">110,00%</td></tr>
-            <tr><td>Barreira de queda</td><td>70,00%</td></tr>
-            <tr><td><span class="tag s">S</span> Strike (call)</td><td>110,00%</td></tr>
-            <tr><td>Barreira alta</td><td>153,00%</td></tr>
+            <tr><td>ITUB4 Compra</td><td>100%</td><td>—</td></tr>
+            <tr><td><span class="tag b">B</span> Put</td><td class="strike-green">110%</td><td>—</td></tr>
+            <tr><td><span class="tag s">S</span> Call Up and In</td><td>110%</td><td>KI 153%</td></tr>
+            <tr><td><span class="tag b">B</span> Put Down and Out</td><td>110%</td><td>KO 70%</td></tr>
           </tbody>
         </table>
         <p class="legend-note">
           <strong>B</strong> = Compra · <strong>S</strong> = Venda<br />
-          Gráfico aproxima o payoff no vencimento. Cupons periódicos: consultar DIE.
+          Cupom = strike − 100 = +10%. Payoff no vencimento (barreiras discretas diárias no DIE).
         </p>
       </aside>
 
       <section class="panel chart-panel">
         <div class="chart-head">
           <div>
-            <h2>Payoff ilustrativo</h2>
-            <p class="chart-caption">Retorno no vencimento vs. variação do ITUB4 (aprox.)</p>
+            <h2>Payoff da estrutura</h2>
+            <p class="chart-caption">Retorno no vencimento vs. variação do ITUB4</p>
           </div>
           <div class="chart-legend">
             <span><i class="swatch"></i> Estrutura</span>
@@ -764,7 +769,7 @@ def twin_coupon_html(prat=None, research=None) -> str:
         </div>
         <div class="chart-box" id="chartBox">
           <div class="tooltip" id="tooltip"></div>
-          <svg id="payoffSvg" viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Payoff Twin Coupon ITUB4">
+          <svg id="payoffSvg" viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Payoff Twip Coupon ITUB4">
             <rect x="48" y="24" width="504" height="352" fill="#f8fafc" />
             <g id="gridLines" stroke="#e2e8f0" stroke-width="1"></g>
             <line id="axisZeroX" x1="154" y1="24" x2="154" y2="376" stroke="#c5d0dc" stroke-width="1.25"/>
@@ -778,11 +783,11 @@ def twin_coupon_html(prat=None, research=None) -> str:
             <line id="upGap" x1="0" y1="0" x2="0" y2="0" stroke="#c0392b" stroke-width="1.25" stroke-dasharray="3 3" opacity="0.75"/>
             <path id="structPath" d="" fill="none" stroke="{brand}" stroke-width="2.75" stroke-linejoin="round" stroke-linecap="round"/>
             <circle id="downDot" cx="0" cy="0" r="5" fill="#c0392b"/>
-            <text id="downLabel" x="0" y="0" fill="#c0392b" font-size="11" font-weight="600" font-family="Segoe UI, Arial, sans-serif">Queda 70%</text>
+            <text id="downLabel" x="0" y="0" fill="#c0392b" font-size="11" font-weight="600" font-family="Segoe UI, Arial, sans-serif">KO 70%</text>
             <circle id="floorDot" cx="0" cy="0" r="5" fill="#0f7a4a"/>
-            <text id="floorLabel" x="0" y="0" fill="#0f7a4a" font-size="11" font-weight="600" font-family="Segoe UI, Arial, sans-serif">Piso +10%</text>
+            <text id="floorLabel" x="0" y="0" fill="#0f7a4a" font-size="11" font-weight="600" font-family="Segoe UI, Arial, sans-serif">Cupom +10%</text>
             <circle id="upDot" cx="0" cy="0" r="5" fill="#c0392b"/>
-            <text id="upLabel" x="0" y="0" fill="#c0392b" font-size="11" font-weight="600" font-family="Segoe UI, Arial, sans-serif">Alta 153%</text>
+            <text id="upLabel" x="0" y="0" fill="#c0392b" font-size="11" font-weight="600" font-family="Segoe UI, Arial, sans-serif">KI 153%</text>
             <line id="hoverLine" x1="0" y1="24" x2="0" y2="376" stroke="rgba(236,112,0,0.4)" stroke-width="1.25" stroke-dasharray="4 4" visibility="hidden"/>
             <circle id="hoverStruct" r="5.5" fill="{brand}" visibility="hidden"/>
             <circle id="hoverAsset" r="4" fill="#8b83a0" visibility="hidden"/>
@@ -795,9 +800,9 @@ def twin_coupon_html(prat=None, research=None) -> str:
           <input type="range" id="spotSliderMobile" min="{x_min}" max="{x_max}" step="0.5" value="20" />
         </div>
         <div class="zones">
-          <div class="zone"><strong>≤ −30% (70%)</strong><p>Barreira de queda: perde a proteção reforçada — acompanha o ativo.</p></div>
-          <div class="zone"><strong>−30% → +53%</strong><p>Twin / proteção: piso +10% (110%); na alta/queda moderada, estilo twin com |variação|.</p></div>
-          <div class="zone"><strong>≥ +53% (153%)</strong><p>Barreira alta: aplica strike 110% — teto +10%.</p></div>
+          <div class="zone"><strong>≤ −30% (KO 70%)</strong><p>Barreira de queda: put DO some — fica só o cupom +10%.</p></div>
+          <div class="zone"><strong>−30% → +53%</strong><p>Queda: twin (long + 2 puts). Alta: maior entre variação e cupom +10%.</p></div>
+          <div class="zone"><strong>≥ +53% (KI 153%)</strong><p>Barreira de alta: call KI entra — só o cupom +10%.</p></div>
         </div>
       </section>
 
@@ -809,7 +814,7 @@ def twin_coupon_html(prat=None, research=None) -> str:
           <div class="sim-card"><div class="lbl">Retorno do ativo</div><div class="val" id="assetVal">+20,0%</div></div>
           <div class="sim-card"><div class="lbl">Retorno da estrutura</div><div class="val" id="structVal">+20,0%</div></div>
         </div>
-        <div class="regime" id="regimeText">Entre as barreiras: twin com piso +10%.</div>
+        <div class="regime" id="regimeText">Entre as barreiras: twin na queda · max(alta, cupom) na alta.</div>
         <div style="margin-top:18px">
           <h2>Pontos-chave</h2>
           <table class="struct-table">
@@ -826,23 +831,21 @@ def twin_coupon_html(prat=None, research=None) -> str:
       <h2>Speech comercial</h2>
       <p class="speech-label">Parâmetros</p>
       <p>
-        <strong>Proteção 110%</strong> (piso +10% enquanto a barreira de queda não for atingida),
-        <strong>barreira de queda 70%</strong> (−30%),
-        <strong>strike 110%</strong> e <strong>barreira alta 153%</strong> (+53%),
-        prazo <strong>2 anos</strong>.
+        <strong>Twip Coupon</strong> · put/call <strong>110%</strong> (cupom <strong>+10%</strong>),
+        put KO <strong>70%</strong>, call KI <strong>153%</strong>, prazo <strong>2 anos</strong>.
       </p>
-      <p class="speech-label">Zonas de payoff (ilustrativo)</p>
+      <p class="speech-label">Zonas de payoff</p>
       <p>
-        Abaixo de −30%: perde a proteção reforçada e passa a acompanhar o ativo.
-        Entre −30% e +53%: caminho twin / protegido com piso ligado à proteção 110%.
-        Se a barreira alta for atingida: aplica o strike 110% (teto +10%).
+        Sem tocar barreiras: na queda, twin (variação negativa + 2× put);
+        na alta, o maior entre a valorização e o cupom +10%.
+        Se tocar KO ou KI: investidor fica com o cupom +10%.
       </p>
       <p class="speech-label">Fechamento</p>
-      <p>Material de uso interno. Payoff aproximado para conversa comercial — condições oficiais no DIE.</p>
+      <p>Material de uso interno. Payoff no vencimento alinhado ao DIE Twip Coupon — condições oficiais no Admin BTG.</p>
     </section>
     {insights_block}
 
-    <p class="footer">Material ilustrativo. Payoff aproximado no vencimento, sem carrego/juros/cupons. Não constitui oferta, recomendação ou garantia de rentabilidade.</p>
+    <p class="footer">Material ilustrativo. Payoff no vencimento (aprox. de barreiras discretas pelo spot). Não constitui oferta, recomendação ou garantia de rentabilidade.</p>
     <p class="footer-alert"><strong>MATERIAL DE USO INTERNO, NÃO ENVIAR AOS CLIENTES</strong><br /><strong>PARA INFORMAÇÕES OFICIAIS, ACESSAR O DIE DA OPERAÇÃO DISPONIBILIZADO NO ADMIN BTG</strong></p>
   </div>
 
@@ -854,18 +857,21 @@ def twin_coupon_html(prat=None, research=None) -> str:
       var VW = 600, VH = 400;
       var PLOT_W = VW - PAD.l - PAD.r;
       var PLOT_H = VH - PAD.t - PAD.b;
-      var DOWN_VAR = {down_var}, UP_VAR = {up_var}, FLOOR = {floor}, CAP = {cap};
+      var DOWN_VAR = {down_var}, UP_VAR = {up_var}, STRIKE = {strike}, CUPOM = {cupom};
       {js_research}
 
       function structureReturn(x) {{
-        if (x <= DOWN_VAR) return x;
-        if (x >= UP_VAR) return CAP;
-        return Math.max(Math.abs(x), FLOOR);
+        var st = 100 + x;
+        var put = Math.max(STRIKE - st, 0);
+        if (x <= DOWN_VAR || x >= UP_VAR) return st + put - 100;
+        if (x < 0) return x + 2 * put;
+        return Math.max(x, CUPOM);
       }}
       function regimeFor(x) {{
-        if (x <= DOWN_VAR) return "Barreira de queda (≤ −30% / spot 70%): perde proteção reforçada — acompanha o ativo.";
-        if (x >= UP_VAR) return "Barreira alta (≥ +53% / spot 153%): aplica strike 110% — retorno limitado a +10%.";
-        return "Entre as barreiras: twin com piso +10% (proteção 110%).";
+        if (x <= DOWN_VAR) return "KO 70% atingido: put DO some — retorno = cupom +10%.";
+        if (x >= UP_VAR) return "KI 153% atingido: call KI entra — retorno = cupom +10%.";
+        if (x < 0) return "Sem barreira na queda: twin (long + 2 puts).";
+        return "Sem barreira na alta: maior entre variação do ativo e cupom +10%.";
       }}
       function fmtPct(n, digits) {{
         if (digits == null) digits = 1;
@@ -900,15 +906,12 @@ def twin_coupon_html(prat=None, research=None) -> str:
           var cmd = first ? "M" : "L"; first = false;
           d += cmd + " " + xToSvg(x).toFixed(3) + " " + yToSvg(y).toFixed(3) + " ";
         }}
-        // Follow asset below down barrier
-        for (var x = X_MIN; x <= DOWN_VAR; x += 0.5) add(x, x);
-        // Cliff into protected/twin zone
+        for (var x = X_MIN; x <= DOWN_VAR; x += 0.5) add(x, structureReturn(x));
         move(DOWN_VAR + 0.01, structureReturn(DOWN_VAR + 0.01));
         for (var x2 = DOWN_VAR + 0.5; x2 < UP_VAR; x2 += 0.5) add(x2, structureReturn(x2));
         add(UP_VAR - 0.01, structureReturn(UP_VAR - 0.01));
-        // Cap at up barrier
-        move(UP_VAR, CAP);
-        for (var x3 = UP_VAR + 0.5; x3 <= X_MAX; x3 += 0.5) add(x3, CAP);
+        move(UP_VAR, structureReturn(UP_VAR));
+        for (var x3 = UP_VAR + 0.5; x3 <= X_MAX; x3 += 0.5) add(x3, structureReturn(x3));
         return d.trim();
       }}
       function buildAssetPoints() {{
@@ -925,12 +928,12 @@ def twin_coupon_html(prat=None, research=None) -> str:
       var xLabels = document.getElementById("xLabels");
       if (grid && yLabels && xLabels) {{
         grid.innerHTML = ""; yLabels.innerHTML = ""; xLabels.innerHTML = "";
-        for (var y = -40; y <= 60; y += 10) {{
+        for (var y = Math.ceil(Y_MIN / 10) * 10; y <= Y_MAX; y += 10) {{
           var py = yToSvg(y);
           grid.innerHTML += '<line x1="48" y1="' + py + '" x2="552" y2="' + py + '"/>';
           yLabels.innerHTML += '<text x="42" y="' + (py + 3) + '">' + y + "%</text>";
         }}
-        for (var x = -40; x <= 80; x += 20) {{
+        for (var x = Math.ceil(X_MIN / 20) * 20; x <= X_MAX; x += 20) {{
           var px = xToSvg(x);
           grid.innerHTML += '<line x1="' + px + '" y1="24" x2="' + px + '" y2="376"/>';
           xLabels.innerHTML += '<text x="' + px + '" y="392">' + x + "%</text>";
@@ -947,24 +950,24 @@ def twin_coupon_html(prat=None, research=None) -> str:
       var dX = xToSvg(DOWN_VAR), uX = xToSvg(UP_VAR);
       document.getElementById("downGap").setAttribute("x1", dX);
       document.getElementById("downGap").setAttribute("x2", dX);
-      document.getElementById("downGap").setAttribute("y1", yToSvg(DOWN_VAR));
-      document.getElementById("downGap").setAttribute("y2", yToSvg(FLOOR));
+      document.getElementById("downGap").setAttribute("y1", yToSvg(structureReturn(DOWN_VAR)));
+      document.getElementById("downGap").setAttribute("y2", yToSvg(structureReturn(DOWN_VAR + 0.01)));
       document.getElementById("upGap").setAttribute("x1", uX);
       document.getElementById("upGap").setAttribute("x2", uX);
-      document.getElementById("upGap").setAttribute("y1", yToSvg(UP_VAR));
-      document.getElementById("upGap").setAttribute("y2", yToSvg(CAP));
+      document.getElementById("upGap").setAttribute("y1", yToSvg(structureReturn(UP_VAR - 0.01)));
+      document.getElementById("upGap").setAttribute("y2", yToSvg(structureReturn(UP_VAR)));
       document.getElementById("downDot").setAttribute("cx", dX);
-      document.getElementById("downDot").setAttribute("cy", yToSvg(FLOOR));
+      document.getElementById("downDot").setAttribute("cy", yToSvg(CUPOM));
       document.getElementById("downLabel").setAttribute("x", dX + 8);
-      document.getElementById("downLabel").setAttribute("y", yToSvg(FLOOR) - 8);
+      document.getElementById("downLabel").setAttribute("y", yToSvg(CUPOM) - 8);
       document.getElementById("floorDot").setAttribute("cx", xToSvg(0));
-      document.getElementById("floorDot").setAttribute("cy", yToSvg(FLOOR));
+      document.getElementById("floorDot").setAttribute("cy", yToSvg(CUPOM));
       document.getElementById("floorLabel").setAttribute("x", xToSvg(0) + 8);
-      document.getElementById("floorLabel").setAttribute("y", yToSvg(FLOOR) - 8);
+      document.getElementById("floorLabel").setAttribute("y", yToSvg(CUPOM) - 8);
       document.getElementById("upDot").setAttribute("cx", uX);
-      document.getElementById("upDot").setAttribute("cy", yToSvg(CAP));
-      document.getElementById("upLabel").setAttribute("x", Math.max(48, uX - 80));
-      document.getElementById("upLabel").setAttribute("y", yToSvg(CAP) - 10);
+      document.getElementById("upDot").setAttribute("cy", yToSvg(CUPOM));
+      document.getElementById("upLabel").setAttribute("x", Math.max(48, uX - 70));
+      document.getElementById("upLabel").setAttribute("y", yToSvg(CUPOM) - 10);
 
       var hoverLine = document.getElementById("hoverLine");
       var hoverStruct = document.getElementById("hoverStruct");
@@ -1113,18 +1116,18 @@ def hub_html(research: dict, prat) -> str:
             ],
         ),
         (
-            "Twin Coupon",
+            "Twip Coupon",
             "twin-coupon",
             "#ec7000",
-            "Twin com proteção reforçada e barreiras",
+            "Cupom + twin entre KO e KI",
             [
                 {
                     "href": "../ops/twin-coupon-itub4/index.html",
-                    "title": "Twin Coupon Itaú",
+                    "title": "Twip Coupon Itaú",
                     "ticker": "ITUB4",
                     "brand": "#ec7000",
-                    "blurb": "Proteção 110% · barreira de queda 70% · strike 110% · barreira 153% · prazo 2 anos.",
-                    "pills": ["Equity", "2 anos", "Prot. 110%", "Down 70% · Up 153%"],
+                    "blurb": "Cupom +10% · put/call 110% · KO 70% · KI 153% · prazo 2 anos.",
+                    "pills": ["Equity", "2 anos", "Cupom +10%", "KO 70% · KI 153%"],
                     "research": research.get("ITUB4") or {},
                 },
             ],
