@@ -481,7 +481,7 @@ HUB = r'''<!DOCTYPE html>
     :root {
       --btg: #0b1f3a; --btg-mid: #163a5f; --btg-blue: #1e4d7b; --link: #1a66b3;
       --ink: #0b1f3a; --muted: #5c6b7a; --line: #d0d8e2; --bg: #eef2f6; --card: #ffffff;
-      --ptax: #0d6e6e; --pacb: #2f6b5a; --vale: #007e33; --petr: #00665b; --axia: #5a4a8a; --itub: #ec7000;
+      --ptax: #0d6e6e; --pacb: #2f6b5a; --vale: #007e33; --petr: #00665b; --axia: #5a4a8a; --roxo: #820ad1; --itub: #ec7000;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: Segoe UI, -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif; color: var(--ink); background: var(--bg); min-height: 100vh; line-height: 1.45; }
@@ -563,8 +563,8 @@ HUB = r'''<!DOCTYPE html>
         <div class="op-bar" style="background:var(--petr)"></div>
         <a class="op" href="../ops/smart-hedge-petr4/index.html">
           <div class="op-top"><span class="op-title">Smart Hedge Petrobras</span><span class="op-ticker">PETR4</span></div>
-          <p class="op-blurb">Proteção 100% · strike 110% · barreira 134,80% · prazo 1 ano. Piso 0%; teto +10% se atingir a barreira.</p>
-          <div class="op-meta"><span class="pill">Equity</span><span class="pill">1 ano</span><span class="pill">Prot. 100%</span><span class="pill">Barreira 134,80%</span></div>
+          <p class="op-blurb">Proteção 100% · strike 110% · barreira 134% · prazo 1 ano. Piso 0%; teto +10% se atingir a barreira.</p>
+          <div class="op-meta"><span class="pill">Equity</span><span class="pill">1 ano</span><span class="pill">Prot. 100%</span><span class="pill">Barreira 134%</span></div>
           <div class="op-cta">Abrir material →</div>
         </a>
       </li>
@@ -572,8 +572,26 @@ HUB = r'''<!DOCTYPE html>
         <div class="op-bar" style="background:var(--axia)"></div>
         <a class="op" href="../ops/smart-hedge-axia3/index.html">
           <div class="op-top"><span class="op-title">Smart Hedge Axia</span><span class="op-ticker">AXIA3</span></div>
-          <p class="op-blurb">Proteção 100% · strike 110% · barreira 135,44% · prazo 1 ano. Piso 0%; teto +10% se atingir a barreira.</p>
-          <div class="op-meta"><span class="pill">Equity</span><span class="pill">1 ano</span><span class="pill">Prot. 100%</span><span class="pill">Barreira 135,44%</span></div>
+          <p class="op-blurb">Proteção 100% · strike 110% · barreira 135% · prazo 1 ano. Piso 0%; teto +10% se atingir a barreira.</p>
+          <div class="op-meta"><span class="pill">Equity</span><span class="pill">1 ano</span><span class="pill">Prot. 100%</span><span class="pill">Barreira 135%</span></div>
+          <div class="op-cta">Abrir material →</div>
+        </a>
+      </li>
+      <li class="op-block">
+        <div class="op-bar" style="background:var(--roxo)"></div>
+        <a class="op" href="../ops/smart-hedge-roxo34/index.html">
+          <div class="op-top"><span class="op-title">Smart Hedge Nubank</span><span class="op-ticker">ROXO34</span></div>
+          <p class="op-blurb">Proteção 90% · strike 104% · barreira 137,50% · prazo 6 meses. Piso −10%; teto +4% se atingir a barreira.</p>
+          <div class="op-meta"><span class="pill">Equity</span><span class="pill">6 meses</span><span class="pill">Prot. 90%</span><span class="pill">Barreira 137,50%</span></div>
+          <div class="op-cta">Abrir material →</div>
+        </a>
+      </li>
+      <li class="op-block">
+        <div class="op-bar" style="background:var(--itub)"></div>
+        <a class="op" href="../ops/smart-hedge-itub4/index.html">
+          <div class="op-top"><span class="op-title">Smart Hedge Itaú</span><span class="op-ticker">ITUB4</span></div>
+          <p class="op-blurb">Proteção 90% · strike 104% · barreira 128% · prazo 6 meses. Piso −10%; teto +4% se atingir a barreira.</p>
+          <div class="op-meta"><span class="pill">Equity</span><span class="pill">6 meses</span><span class="pill">Prot. 90%</span><span class="pill">Barreira 128%</span></div>
           <div class="op-cta">Abrir material →</div>
         </a>
       </li>

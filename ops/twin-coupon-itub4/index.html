@@ -45,12 +45,6 @@
     .tag.b { background: #e8f8ef; color: var(--success); }
     .strike-green { color: var(--success); font-weight: 700; }
     .legend-note { margin-top: 14px; font-size: 11px; color: var(--muted); line-height: 1.5; }
-    .thesis { margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--line); }
-    .thesis p { font-size: 13px; color: var(--ink); margin-bottom: 10px; }
-    .thesis ul { padding-left: 18px; font-size: 13px; color: var(--ink); }
-    .thesis li { margin-bottom: 6px; }
-    .thesis a { color: #1a66b3; font-weight: 600; text-decoration: none; }
-    .thesis a:hover { text-decoration: underline; }
     .chart-panel { padding: 16px; }
     .chart-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 10px; }
     .chart-caption { font-size: 12px; color: var(--muted); }
@@ -95,7 +89,7 @@
 </head>
 <body>
   <div class="page">
-    <p class="back-link"><a href="../../prateleira-tatica/index.html">← Operações Dia D</a></p>
+    <p class="back-link"><a href="../../prateleira-tatica/index.html">← Prateleira tática</a></p>
     <header class="topbar">
       <div class="brand-block">
         <div class="logos">
@@ -104,7 +98,8 @@
         </div>
         <h1>Twin Coupon <span>ITUB4</span></h1>
         <p class="subtitle">
-          Put 110% sempre (piso +10%); put KO ATM 100% / barreira 70% só soma na queda de fato (até −30%); call 110% KI 153%.
+          Estrutura sobre ITUB4 com proteção 110%, barreira de queda 70%, strike 110% e barreira alta 153%.
+          Payoff ilustrativo (twin + proteção); cupons conforme DIE.
         </p>
       </div>
       <div class="meta-pills">
@@ -116,9 +111,9 @@
     </header>
 
     <section class="highlights">
-      <div class="hi"><h3>Proteção</h3><p>Put 110% sempre<span>Piso +10% em qualquer cenário (incl. após KO)</span></p></div>
-      <div class="hi"><h3>Put KO ATM</h3><p>100% / barreira 70%<span>Só soma na queda de fato (até −30%)</span></p></div>
-      <div class="hi"><h3>Strike / barreira alta</h3><p>110% / 153%<span>Call 110% com KI em +53%</span></p></div>
+      <div class="hi"><h3>Proteção</h3><p>110%<span>Piso +10% se barreira de queda não for atingida</span></p></div>
+      <div class="hi"><h3>Barreira de queda</h3><p>70%<span>−30% — perde proteção reforçada</span></p></div>
+      <div class="hi"><h3>Strike / barreira alta</h3><p>110% / 153%<span>Se barreira alta: teto +10%</span></p></div>
       <div class="hi"><h3>Prazo</h3><p>2 anos<span>Cupons: detalhes no DIE</span></p></div>
     </section>
 
@@ -128,28 +123,16 @@
         <table class="struct-table">
           <thead><tr><th>Perna / parâmetro</th><th>Nível</th></tr></thead>
           <tbody>
-            <tr><td><span class="tag b">B</span> Put 110,00%</td><td class="strike-green">110,00%</td></tr>
-            <tr><td><span class="tag b">B</span> Put KO ATM · barreira 70%</td><td>70,00% (strike 100%)</td></tr>
-            <tr><td><span class="tag s">S</span> Call 110% · KI/barreira 153%</td><td>110,00% / 153,00%</td></tr>
+            <tr><td><span class="tag b">B</span> Proteção (put)</td><td class="strike-green">110,00%</td></tr>
+            <tr><td>Barreira de queda</td><td>70,00%</td></tr>
+            <tr><td><span class="tag s">S</span> Strike (call)</td><td>110,00%</td></tr>
+            <tr><td>Barreira alta</td><td>153,00%</td></tr>
           </tbody>
         </table>
         <p class="legend-note">
           <strong>B</strong> = Compra · <strong>S</strong> = Venda<br />
           Gráfico aproxima o payoff no vencimento. Cupons periódicos: consultar DIE.
         </p>
-        <div class="thesis">
-          <h2>Leitura do research</h2>
-          <p><em>Itaú (ITUB4) — Resultado 2T26</em></p>
-          <ul>
-            <li>Lucro gerencial ~R$ 12,4 bi no 2T26 (+7,8% a/a); ROAE ~24,3%</li>
-            <li>Qualidade de crédito sob controle; BTG reitera compra — incumbente mais bem posicionado</li>
-            <li>2026 visto como ano de transição (crescimento mais moderado; guidance de serviços revisado)</li>
-            <li>Valuation ainda atrativo na leitura do research</li>
-          </ul>
-          <p style="margin-top:14px">
-            <a href="https://content.btgpactual.com/research/home/relatorio/6a7342413a9c00135edfaa7f/Itau-ITUB4-Resultado-2T26" target="_blank" rel="noopener noreferrer">Abrir report de research ↗</a>
-          </p>
-        </div>
       </aside>
 
       <section class="panel chart-panel">
@@ -196,9 +179,9 @@
           <input type="range" id="spotSliderMobile" min="-50" max="80" step="0.5" value="20" />
         </div>
         <div class="zones">
-          <div class="zone"><strong>≤ −30% (70%)</strong><p>Só put 110% → <strong>+10%</strong> (put KO nocauteada).</p></div>
-          <div class="zone"><strong>−30% → +10%</strong><p>Na queda (x &lt; 0): put 110% + put KO ATM → <strong>10% − x</strong> (ex.: −20% → +30%). Em 0 a +10%: só put 110% → +10%. De +10% a +53%: acompanha 1:1.</p></div>
-          <div class="zone"><strong>≥ +53% (153%)</strong><p>Call KI → retorno limitado a <strong>+10%</strong>.</p></div>
+          <div class="zone"><strong>≤ −30% (70%)</strong><p>Barreira de queda: perde a proteção reforçada — acompanha o ativo.</p></div>
+          <div class="zone"><strong>−30% → +53%</strong><p>Twin / proteção: piso +10% (110%); na alta/queda moderada, estilo twin com |variação|.</p></div>
+          <div class="zone"><strong>≥ +53% (153%)</strong><p>Barreira alta: aplica strike 110% — teto +10%.</p></div>
         </div>
       </section>
 
@@ -210,23 +193,13 @@
           <div class="sim-card"><div class="lbl">Retorno do ativo</div><div class="val" id="assetVal">+20,0%</div></div>
           <div class="sim-card"><div class="lbl">Retorno da estrutura</div><div class="val" id="structVal">+20,0%</div></div>
         </div>
-        <div class="regime" id="regimeText">Puts OTM, call ainda não KI: acompanha o ativo 1:1.</div>
+        <div class="regime" id="regimeText">Entre as barreiras: twin com piso +10%.</div>
         <div style="margin-top:18px">
           <h2>Pontos-chave</h2>
           <table class="struct-table">
             <thead><tr><th>Spot</th><th>Ativo</th><th>Estrutura</th></tr></thead>
             <tbody>
-              <tr><td>−50%</td><td>−50%</td><td><strong>+10,0%</strong></td></tr>
-              <tr><td>−40%</td><td>−40%</td><td><strong>+10,0%</strong></td></tr>
-              <tr><td>−30%</td><td>−30%</td><td><strong>+10,0%</strong></td></tr>
-              <tr><td>−20%</td><td>−20%</td><td><strong>+30,0%</strong></td></tr>
-              <tr><td>−10%</td><td>−10%</td><td><strong>+20,0%</strong></td></tr>
-              <tr><td>0%</td><td>0%</td><td><strong>+10,0%</strong></td></tr>
-              <tr><td>+10%</td><td>+10%</td><td><strong>+10,0%</strong></td></tr>
-              <tr><td>+20%</td><td>+20%</td><td><strong>+20,0%</strong></td></tr>
-              <tr><td>+40%</td><td>+40%</td><td><strong>+40,0%</strong></td></tr>
-              <tr><td>+53%</td><td>+53%</td><td><strong>+10,0%</strong></td></tr>
-              <tr><td>+60%</td><td>+60%</td><td><strong>+10,0%</strong></td></tr>
+              <tr><td>-50%</td><td>-50%</td><td><strong>-50,0%</strong></td></tr><tr><td>-40%</td><td>-40%</td><td><strong>-40,0%</strong></td></tr><tr><td>-30%</td><td>-30%</td><td><strong>-30,0%</strong></td></tr><tr><td>-20%</td><td>-20%</td><td><strong>+20,0%</strong></td></tr><tr><td>-10%</td><td>-10%</td><td><strong>+10,0%</strong></td></tr><tr><td>0%</td><td>0%</td><td><strong>+10,0%</strong></td></tr><tr><td>+10%</td><td>+10%</td><td><strong>+10,0%</strong></td></tr><tr><td>+20%</td><td>+20%</td><td><strong>+20,0%</strong></td></tr><tr><td>+40%</td><td>+40%</td><td><strong>+40,0%</strong></td></tr><tr><td>+53%</td><td>+53%</td><td><strong>+10,0%</strong></td></tr><tr><td>+60%</td><td>+60%</td><td><strong>+10,0%</strong></td></tr><tr><td>+80%</td><td>+80%</td><td><strong>+10,0%</strong></td></tr>
             </tbody>
           </table>
         </div>
@@ -235,41 +208,26 @@
 
     <section class="speech-box">
       <h2>Speech comercial</h2>
-      <p class="speech-label">Para quem</p>
+      <p class="speech-label">Parâmetros</p>
       <p>
-        Cliente construtivo em Itaú (ITUB4) no horizonte de 2 anos, que busca exposição com piso na queda
-        e potencial de cupom — encaixa no Twin Coupon (put 110% + put KO ATM + call KI).
-      </p>
-      <p class="speech-label">Por que agora</p>
-      <p>
-        Resultado 2T26 sólido: lucro gerencial ~R$ 12,4 bi (+7,8% a/a) e ROAE ~24,3%, com qualidade de crédito sob controle.
-        O research reitera compra e vê o Itaú como o incumbente mais bem posicionado.
-        2026 é lido como ano de transição — crescimento mais moderado e guidance de serviços revisado —
-        com valuation ainda atrativo na leitura do BTG.
-      </p>
-      <p class="speech-label">Como encaixa a estrutura</p>
-      <p>
-        <strong>Put 110%</strong> sempre (piso +10%, incl. após KO),
-        <strong>Put KO ATM</strong> strike 100% / barreira 70% (só soma na <strong>queda de fato</strong> do ativo, até −30%),
-        <strong>Call 110%</strong> com <strong>KI/barreira 153%</strong> (+53%),
+        <strong>Proteção 110%</strong> (piso +10% enquanto a barreira de queda não for atingida),
+        <strong>barreira de queda 70%</strong> (−30%),
+        <strong>strike 110%</strong> e <strong>barreira alta 153%</strong> (+53%),
         prazo <strong>2 anos</strong>.
       </p>
+      <p class="speech-label">Zonas de payoff (ilustrativo)</p>
       <p>
-        Em ≤ −30%: só put 110% → <strong>+10%</strong> (put KO nocauteada).
-        Na queda viva (−30% &lt; x &lt; 0): put 110% + put KO ATM → <strong>10% − x</strong> (ex.: −20% → +30%).
-        Em 0 a +10%: só put 110% → <strong>+10%</strong> (put ATM sem valor).
-        De +10% a +53%: acompanha o ativo <strong>1:1</strong>.
-        Em ≥ +53%: call KI → <strong>+10%</strong>.
+        Abaixo de −30%: perde a proteção reforçada e passa a acompanhar o ativo.
+        Entre −30% e +53%: caminho twin / protegido com piso ligado à proteção 110%.
+        Se a barreira alta for atingida: aplica o strike 110% (teto +10%).
       </p>
+      <p class="speech-label">Cupons</p>
       <p>
         Detalhes de cupom (frequência, taxa, condições de pagamento) conforme o <strong>DIE</strong> da operação no Admin BTG —
         este material não fixa cupom quando o documento oficial não estiver confirmado.
       </p>
       <p class="speech-label">Fechamento</p>
-      <p>
-        Tese de ITUB4 respaldada pelo report <em>Resultado 2T26</em> + payoff Twin Coupon fácil de explicar.
-        Material de uso interno — para condições oficiais, acessar o DIE no Admin BTG.
-      </p>
+      <p>Material de uso interno. Payoff aproximado para conversa comercial — condições oficiais no DIE.</p>
     </section>
 
     <p class="footer">Material ilustrativo. Payoff aproximado no vencimento, sem carrego/juros/cupons. Não constitui oferta, recomendação ou garantia de rentabilidade.</p>
@@ -279,7 +237,7 @@
   <script>
     (function () {
       var X_MIN = -50, X_MAX = 80;
-      var Y_MIN = -50, Y_MAX = 55;
+      var Y_MIN = -45, Y_MAX = 60;
       var PAD = { l: 48, t: 24, r: 48, b: 24 };
       var VW = 600, VH = 400;
       var PLOT_W = VW - PAD.l - PAD.r;
@@ -287,24 +245,14 @@
       var DOWN_VAR = -30.0, UP_VAR = 53.0, FLOOR = 10.0, CAP = 10.0;
 
       function structureReturn(x) {
-        // Put KO out: only Put 110%
-        if (x <= DOWN_VAR) return FLOOR;
-        // Put KO ATM alive + Put 110%: stock + put110 + put100
-        // When x < 0: return = 10 - x  (= 10% + |queda|)
-        if (x < 0) return FLOOR - x;
-        // 0 <= x < 10: Put ATM worthless; only Put 110% → +10%
-        if (x < FLOOR) return FLOOR;
-        // puts OTM, call not KI → 1:1
-        if (x < UP_VAR) return x;
-        // call KI → +10%
-        return CAP;
+        if (x <= DOWN_VAR) return x;
+        if (x >= UP_VAR) return CAP;
+        return Math.max(Math.abs(x), FLOOR);
       }
       function regimeFor(x) {
-        if (x <= DOWN_VAR) return "Put KO nocauteada (≤ −30% / spot ≤70%): só put 110% → piso +10%.";
-        if (x < 0) return "Queda de fato: put 110% + put KO ATM → retorno = 10% − variação (ex.: −20% → +30%).";
-        if (x < FLOOR) return "Put ATM sem valor; só put 110% → piso +10%.";
-        if (x < UP_VAR) return "Puts OTM, call ainda não KI: acompanha o ativo 1:1.";
-        return "Call KI (≥ +53% / spot 153%): retorno limitado a +10%.";
+        if (x <= DOWN_VAR) return "Barreira de queda (≤ −30% / spot 70%): perde proteção reforçada — acompanha o ativo.";
+        if (x >= UP_VAR) return "Barreira alta (≥ +53% / spot 153%): aplica strike 110% — retorno limitado a +10%.";
+        return "Entre as barreiras: twin com piso +10% (proteção 110%).";
       }
       function fmtPct(n, digits) {
         if (digits == null) digits = 1;
@@ -325,22 +273,15 @@
           var cmd = first ? "M" : "L"; first = false;
           d += cmd + " " + xToSvg(x).toFixed(3) + " " + yToSvg(y).toFixed(3) + " ";
         }
-        // Flat +10% from X_MIN to DOWN_VAR (put KO out)
-        for (var x = X_MIN; x <= DOWN_VAR; x += 0.5) add(x, FLOOR);
-        // Cliff at DOWN_VAR: from y=10 up to y=10-DOWN_VAR=40
-        move(DOWN_VAR + 0.01, FLOOR - (DOWN_VAR + 0.01));
-        // y = 10 - x from just above DOWN_VAR to x=0
-        for (var x2 = DOWN_VAR + 0.5; x2 < 0; x2 += 0.5) add(x2, FLOOR - x2);
-        add(0, FLOOR);
-        // Flat +10% from 0 to FLOOR
-        for (var xFlat = 0.5; xFlat < FLOOR; xFlat += 0.5) add(xFlat, FLOOR);
-        add(FLOOR, FLOOR);
-        // y = x from FLOOR to UP_VAR
-        for (var x3 = FLOOR + 0.5; x3 < UP_VAR; x3 += 0.5) add(x3, x3);
-        add(UP_VAR - 0.01, UP_VAR - 0.01);
-        // Drop at UP_VAR from 53 to 10; flat 10 after
+        // Follow asset below down barrier
+        for (var x = X_MIN; x <= DOWN_VAR; x += 0.5) add(x, x);
+        // Cliff into protected/twin zone
+        move(DOWN_VAR + 0.01, structureReturn(DOWN_VAR + 0.01));
+        for (var x2 = DOWN_VAR + 0.5; x2 < UP_VAR; x2 += 0.5) add(x2, structureReturn(x2));
+        add(UP_VAR - 0.01, structureReturn(UP_VAR - 0.01));
+        // Cap at up barrier
         move(UP_VAR, CAP);
-        for (var x4 = UP_VAR + 0.5; x4 <= X_MAX; x4 += 0.5) add(x4, CAP);
+        for (var x3 = UP_VAR + 0.5; x3 <= X_MAX; x3 += 0.5) add(x3, CAP);
         return d.trim();
       }
       function buildAssetPoints() {
@@ -357,7 +298,7 @@
       var xLabels = document.getElementById("xLabels");
       if (grid && yLabels && xLabels) {
         grid.innerHTML = ""; yLabels.innerHTML = ""; xLabels.innerHTML = "";
-        for (var y = -50; y <= 50; y += 10) {
+        for (var y = -40; y <= 60; y += 10) {
           var py = yToSvg(y);
           grid.innerHTML += '<line x1="48" y1="' + py + '" x2="552" y2="' + py + '"/>';
           yLabels.innerHTML += '<text x="42" y="' + (py + 3) + '">' + y + "%</text>";
@@ -376,27 +317,26 @@
       document.getElementById("assetPath").setAttribute("points", buildAssetPoints());
 
       var dX = xToSvg(DOWN_VAR), uX = xToSvg(UP_VAR);
-      var peakAtBarrier = FLOOR - DOWN_VAR; // 40
       document.getElementById("downGap").setAttribute("x1", dX);
       document.getElementById("downGap").setAttribute("x2", dX);
-      document.getElementById("downGap").setAttribute("y1", yToSvg(FLOOR));
-      document.getElementById("downGap").setAttribute("y2", yToSvg(peakAtBarrier));
+      document.getElementById("downGap").setAttribute("y1", yToSvg(DOWN_VAR));
+      document.getElementById("downGap").setAttribute("y2", yToSvg(FLOOR));
       document.getElementById("upGap").setAttribute("x1", uX);
       document.getElementById("upGap").setAttribute("x2", uX);
       document.getElementById("upGap").setAttribute("y1", yToSvg(UP_VAR));
       document.getElementById("upGap").setAttribute("y2", yToSvg(CAP));
       document.getElementById("downDot").setAttribute("cx", dX);
-      document.getElementById("downDot").setAttribute("cy", yToSvg(peakAtBarrier));
+      document.getElementById("downDot").setAttribute("cy", yToSvg(FLOOR));
       document.getElementById("downLabel").setAttribute("x", dX + 8);
-      document.getElementById("downLabel").setAttribute("y", yToSvg(peakAtBarrier) - 8);
+      document.getElementById("downLabel").setAttribute("y", yToSvg(FLOOR) - 8);
       document.getElementById("floorDot").setAttribute("cx", xToSvg(0));
       document.getElementById("floorDot").setAttribute("cy", yToSvg(FLOOR));
       document.getElementById("floorLabel").setAttribute("x", xToSvg(0) + 8);
       document.getElementById("floorLabel").setAttribute("y", yToSvg(FLOOR) - 8);
       document.getElementById("upDot").setAttribute("cx", uX);
-      document.getElementById("upDot").setAttribute("cy", yToSvg(FLOOR));
+      document.getElementById("upDot").setAttribute("cy", yToSvg(CAP));
       document.getElementById("upLabel").setAttribute("x", Math.max(48, uX - 80));
-      document.getElementById("upLabel").setAttribute("y", yToSvg(FLOOR) - 10);
+      document.getElementById("upLabel").setAttribute("y", yToSvg(CAP) - 10);
 
       var hoverLine = document.getElementById("hoverLine");
       var hoverStruct = document.getElementById("hoverStruct");

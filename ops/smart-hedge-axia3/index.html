@@ -45,12 +45,6 @@
     .tag.b { background: #e8f8ef; color: var(--success); }
     .strike-green { color: var(--success); font-weight: 700; }
     .legend-note { margin-top: 14px; font-size: 11px; color: var(--muted); line-height: 1.5; }
-    .thesis { margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--line); }
-    .thesis p { font-size: 13px; color: var(--ink); margin-bottom: 10px; }
-    .thesis ul { padding-left: 18px; font-size: 13px; color: var(--ink); }
-    .thesis li { margin-bottom: 6px; }
-    .thesis a { color: #1a66b3; font-weight: 600; text-decoration: none; }
-    .thesis a:hover { text-decoration: underline; }
     .chart-panel { padding: 16px; }
     .chart-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 10px; }
     .chart-caption { font-size: 12px; color: var(--muted); }
@@ -96,7 +90,7 @@
 </head>
 <body>
   <div class="page">
-    <p class="back-link"><a href="../../prateleira-tatica/index.html">← Operações Dia D</a></p>
+    <p class="back-link"><a href="../../prateleira-tatica/index.html">← Prateleira tática</a></p>
     <header class="topbar">
       <div class="brand-block">
         <div class="logos">
@@ -115,7 +109,7 @@
     </header>
 
     <section class="highlights">
-      <div class="hi"><h3>Retorno potencial</h3><p>Acompanha o ativo<span>1:1 até a barreira 135,44%</span></p></div>
+      <div class="hi"><h3>Retorno potencial</h3><p>Acompanha o ativo<span>1:1 até a barreira 135,00%</span></p></div>
       <div class="hi"><h3>Proteção</h3><p>Piso 0%<span>Put strike 100,00%</span></p></div>
       <div class="hi"><h3>Se atingir a barreira</h3><p>Teto +10%<span>Call vendida 110,00%</span></p></div>
       <div class="hi"><h3>Prazo</h3><p>1 ano</p></div>
@@ -128,23 +122,10 @@
           <thead><tr><th>Perna</th><th>Strike</th><th>Barreira</th></tr></thead>
           <tbody>
             <tr><td><span class="tag b">B</span> Put 100,00%</td><td class="strike-green">100,00%</td><td>—</td></tr>
-            <tr><td><span class="tag s">S</span> Call 110,00%</td><td>110,00%</td><td>135,44%</td></tr>
+            <tr><td><span class="tag s">S</span> Call 110,00%</td><td>110,00%</td><td>135,00%</td></tr>
           </tbody>
         </table>
         <p class="legend-note"><strong>B</strong> = Compra · <strong>S</strong> = Venda<br />Payoff = long + put 100,00% + short call 110,00% se spot ≥ barreira.</p>
-        <div class="thesis">
-          <h2>Leitura do research</h2>
-          <p><em>Axia Energia (AXIA3) — A distribuição de caixa continua</em></p>
-          <ul>
-            <li>Distribuição de caixa segue como eixo da tese (dividendos mínimos + resgates PNC)</li>
-            <li>Até ~R$ 7,7 bi reservados no 1S26 para remuneração via resgate</li>
-            <li>Baixa alavancagem + yield elevado; research reitera visão construtiva</li>
-            <li>Bom veículo para atravessar volatilidade com caixa e balanço</li>
-          </ul>
-          <p style="margin-top:14px">
-            <a href="https://content.btgpactual.com/research/home/relatorio/6a74d334b621633e56136ad6/Axia-Energia-AXIA3-A-distribuicao-de-caixa-continua" target="_blank" rel="noopener noreferrer">Abrir report de research ↗</a>
-          </p>
-        </div>
       </aside>
 
       <section class="panel chart-panel">
@@ -175,7 +156,7 @@
             <circle id="floorDot" cx="0" cy="0" r="5" fill="#0f7a4a"/>
             <text id="floorLabel" x="0" y="0" fill="#0f7a4a" font-size="11" font-weight="600" font-family="Segoe UI, Arial, sans-serif">Piso 0%</text>
             <circle id="kiDot" cx="0" cy="0" r="5" fill="#c0392b"/>
-            <text id="kiLabel" x="0" y="0" fill="#c0392b" font-size="11" font-weight="600" font-family="Segoe UI, Arial, sans-serif">Barreira 135,44%</text>
+            <text id="kiLabel" x="0" y="0" fill="#c0392b" font-size="11" font-weight="600" font-family="Segoe UI, Arial, sans-serif">Barreira 135,00%</text>
             <circle id="capDot" cx="0" cy="0" r="4" fill="#5a4a8a"/>
             <text id="capLabel" x="0" y="0" fill="#5a4a8a" font-size="11" font-weight="600" font-family="Segoe UI, Arial, sans-serif">Teto +10%</text>
             <line id="hoverLine" x1="0" y1="24" x2="0" y2="376" stroke="rgba(0,0,0,0.25)" stroke-width="1.25" stroke-dasharray="4 4" visibility="hidden"/>
@@ -210,7 +191,7 @@
           <table class="struct-table">
             <thead><tr><th>Spot</th><th>Ativo</th><th>Estrutura</th></tr></thead>
             <tbody>
-              <tr><td>-40%</td><td>-40%</td><td><strong>0,0%</strong></td></tr><tr><td>-20%</td><td>-20%</td><td><strong>0,0%</strong></td></tr><tr><td>0%</td><td>0%</td><td><strong>0,0%</strong></td></tr><tr><td>+20%</td><td>+20%</td><td><strong>+20,0%</strong></td></tr><tr><td>+35,44%</td><td>+35,44%</td><td><strong>+10,0%</strong></td></tr><tr><td>+40%</td><td>+40%</td><td><strong>+10,0%</strong></td></tr><tr><td>+55,44%</td><td>+55,44%</td><td><strong>+10,0%</strong></td></tr><tr><td>+90%</td><td>+90%</td><td><strong>+10,0%</strong></td></tr>
+              <tr><td>-40%</td><td>-40%</td><td><strong>0,0%</strong></td></tr><tr><td>-20%</td><td>-20%</td><td><strong>0,0%</strong></td></tr><tr><td>0%</td><td>0%</td><td><strong>0,0%</strong></td></tr><tr><td>+20%</td><td>+20%</td><td><strong>+20,0%</strong></td></tr><tr><td>+35%</td><td>+35%</td><td><strong>+10,0%</strong></td></tr><tr><td>+40%</td><td>+40%</td><td><strong>+10,0%</strong></td></tr><tr><td>+55%</td><td>+55%</td><td><strong>+10,0%</strong></td></tr><tr><td>+90%</td><td>+90%</td><td><strong>+10,0%</strong></td></tr>
             </tbody>
           </table>
         </div>
@@ -220,27 +201,16 @@
     <section class="speech-box">
       <h2>Speech comercial</h2>
       <p class="speech-label">Para quem</p>
-      <p>Cliente construtivo em Axia (AXIA3) no horizonte de 1 ano, que quer exposição com proteção na queda.</p>
-      <p class="speech-label">Por que agora</p>
-      <p>
-        O report <em>A distribuição de caixa continua</em> coloca a remuneração ao acionista no centro da tese —
-        dividendos mínimos e resgates PNC —, com até ~R$ 7,7 bi reservados no 1S26 para remuneração via resgate.
-        Baixa alavancagem e yield elevado sustentam a visão construtiva do research:
-        AXIA3 como veículo para atravessar volatilidade com caixa e balanço.
-      </p>
+      <p>Cliente construtivo em Axia (AXIA3) no horizonte de 1 ano, que quer exposição com colchão na queda.</p>
       <p class="speech-label">Como encaixa a estrutura</p>
       <p>
         Custo inicial <strong>zero</strong>.
-        Até a barreira (135,44%), participa <strong>1:1</strong> da variação do AXIA3.
+        Até a barreira (135,00%), participa <strong>1:1</strong> da variação do AXIA3.
         Na queda, o piso fica em <strong>0%</strong> (put 100,00%).
         Se o ativo atingir a barreira, o retorno fica limitado a <strong>+10%</strong> (call vendida 110,00%).
-        Prazo <strong>1 ano</strong>.
       </p>
       <p class="speech-label">Fechamento</p>
-      <p>
-        Tese de AXIA3 respaldada pelo report de distribuição de caixa + Smart Hedge fácil de explicar no vencimento.
-        Material de uso interno — para condições oficiais, acessar o DIE no Admin BTG.
-      </p>
+      <p>Payoff fácil de explicar no vencimento. Material de uso interno — condições oficiais no DIE (Admin BTG).</p>
     </section>
 
     <p class="footer">Material ilustrativo. Payoff intrínseco no vencimento. Não constitui oferta, recomendação ou garantia de rentabilidade. Produto estruturado envolve risco de perda de capital.</p>
@@ -255,8 +225,8 @@
       var VW = 600, VH = 400;
       var PLOT_W = VW - PAD.l - PAD.r;
       var PLOT_H = VH - PAD.t - PAD.b;
-      var PUT = 100.0, CALL = 110.0, BARRIER = 135.44;
-      var FLOOR = 0.0, CAP = 10.0, KI_VAR = 35.44;
+      var PUT = 100.0, CALL = 110.0, BARRIER = 135.0;
+      var FLOOR = 0.0, CAP = 10.0, KI_VAR = 35.0;
 
       function structureReturn(x) {
         var st = 100 + x;

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Gera factsheets Smart Hedge (VALE3/PETR4/AXIA3) e Twin Coupon ITUB4."""
+"""Gera factsheets Smart Hedge (VALE3/PETR4/AXIA3/ROXO34/ITUB4) e Twin Coupon ITUB4."""
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
@@ -30,7 +30,12 @@ def smart_hedge_html(cfg: dict) -> str:
     floor = put - 100
     cap = call - 100
     ki_var = barrier - 100
-    floor_label = f"+{floor:.0f}%" if floor > 0 else "0%"
+    if floor > 0:
+        floor_label = f"+{floor:.0f}%"
+    elif floor == 0:
+        floor_label = "0%"
+    else:
+        floor_label = f"{floor:.0f}%"
     floor_put_label = f"{fmt_br(put)}%"
     barrier_label = f"{fmt_br(barrier)}%"
 
@@ -63,14 +68,9 @@ def smart_hedge_html(cfg: dict) -> str:
     x_min = -40
     x_max = max(90, int(ki_var + 30))
 
-    if floor > 0:
-        prot_blurb = f"Piso {floor_label}<span>Put strike {floor_put_label}</span>"
-        zone_low = f"Proteção: retorno limitado a {floor_label}."
-        regime_low = f"Em/abaixo de {floor_label}: proteção — retorno limitado a {floor_label}."
-    else:
-        prot_blurb = f"Piso 0%<span>Put strike {floor_put_label}</span>"
-        zone_low = "Proteção: retorno limitado a 0%."
-        regime_low = "Em/abaixo de 0%: proteção — retorno limitado a 0%."
+    prot_blurb = f"Piso {floor_label}<span>Put strike {floor_put_label}</span>"
+    zone_low = f"Proteção: retorno limitado a {floor_label}."
+    regime_low = f"Em/abaixo de {floor_label}: proteção — retorno limitado a {floor_label}."
 
     subtitle = (
         f"Estrutura sobre {ticker} com participação 1:1 até a barreira, "
@@ -942,7 +942,7 @@ OPS = [
         "brand_soft": "rgba(0,102,91,0.12)",
         "put": 100.0,
         "call": 110.0,
-        "barrier": 134.80,
+        "barrier": 134.0,
         "prazo": "1 ano",
         "initials": "PE",
     },
@@ -954,9 +954,33 @@ OPS = [
         "brand_soft": "rgba(90,74,138,0.12)",
         "put": 100.0,
         "call": 110.0,
-        "barrier": 135.44,
+        "barrier": 135.0,
         "prazo": "1 ano",
         "initials": "AX",
+    },
+    {
+        "slug": "smart-hedge-roxo34",
+        "ticker": "ROXO34",
+        "name": "Nubank",
+        "brand": "#820ad1",
+        "brand_soft": "rgba(130,10,209,0.12)",
+        "put": 90.0,
+        "call": 104.0,
+        "barrier": 137.5,
+        "prazo": "6 meses",
+        "initials": "NU",
+    },
+    {
+        "slug": "smart-hedge-itub4",
+        "ticker": "ITUB4",
+        "name": "Itaú",
+        "brand": "#ec7000",
+        "brand_soft": "rgba(236,112,0,0.12)",
+        "put": 90.0,
+        "call": 104.0,
+        "barrier": 128.0,
+        "prazo": "6 meses",
+        "initials": "IT",
     },
 ]
 

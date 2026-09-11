@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Smart Hedge Vale — VALE3 | BTG Pactual</title>
+  <title>Smart Hedge Itaú — ITUB4 | BTG Pactual</title>
   <style>
     :root {
       --ink: #0b1f3a; --muted: #5c6b7a; --line: #d0d8e2; --bg: #eef2f6; --card: #ffffff;
-      --brand: #007e33; --brand-soft: rgba(0,126,51,0.12); --btg: #0b1f3a; --accent: #007e33;
+      --brand: #ec7000; --brand-soft: rgba(236,112,0,0.12); --btg: #0b1f3a; --accent: #ec7000;
       --success: #0f7a4a; --danger: #c0392b; --dash: #8b83a0;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -95,24 +95,24 @@
       <div class="brand-block">
         <div class="logos">
           <span class="logo-btg">BTG PACTUAL</span>
-          <span class="logo-co"><span class="dot">VA</span> Vale</span>
+          <span class="logo-co"><span class="dot">IT</span> Itaú</span>
         </div>
-        <h1>Smart Hedge <span>VALE3</span></h1>
-        <p class="subtitle">Estrutura sobre VALE3 com participação 1:1 até a barreira, proteção com piso em +10%, e teto de +10% se o ativo atingir a barreira.</p>
+        <h1>Smart Hedge <span>ITUB4</span></h1>
+        <p class="subtitle">Estrutura sobre ITUB4 com participação 1:1 até a barreira, proteção com piso em -10%, e teto de +4% se o ativo atingir a barreira.</p>
       </div>
       <div class="meta-pills">
-        <div class="pill"><strong>Ativo</strong> VALE3</div>
-        <div class="pill"><strong>Prazo</strong> 2 anos</div>
+        <div class="pill"><strong>Ativo</strong> ITUB4</div>
+        <div class="pill"><strong>Prazo</strong> 6 meses</div>
         <div class="pill"><strong>Moeda</strong> BRL</div>
         <div class="pill"><strong>Custo inicial</strong> 0%</div>
       </div>
     </header>
 
     <section class="highlights">
-      <div class="hi"><h3>Retorno potencial</h3><p>Acompanha o ativo<span>1:1 até a barreira 174,35%</span></p></div>
-      <div class="hi"><h3>Proteção</h3><p>Piso +10%<span>Put strike 110,00%</span></p></div>
-      <div class="hi"><h3>Se atingir a barreira</h3><p>Teto +10%<span>Call vendida 110,00%</span></p></div>
-      <div class="hi"><h3>Prazo</h3><p>2 anos</p></div>
+      <div class="hi"><h3>Retorno potencial</h3><p>Acompanha o ativo<span>1:1 até a barreira 128,00%</span></p></div>
+      <div class="hi"><h3>Proteção</h3><p>Piso -10%<span>Put strike 90,00%</span></p></div>
+      <div class="hi"><h3>Se atingir a barreira</h3><p>Teto +4%<span>Call vendida 104,00%</span></p></div>
+      <div class="hi"><h3>Prazo</h3><p>6 meses</p></div>
     </section>
 
     <div class="main">
@@ -121,18 +121,18 @@
         <table class="struct-table">
           <thead><tr><th>Perna</th><th>Strike</th><th>Barreira</th></tr></thead>
           <tbody>
-            <tr><td><span class="tag b">B</span> Put 110,00%</td><td class="strike-green">110,00%</td><td>—</td></tr>
-            <tr><td><span class="tag s">S</span> Call 110,00%</td><td>110,00%</td><td>174,35%</td></tr>
+            <tr><td><span class="tag b">B</span> Put 90,00%</td><td class="strike-green">90,00%</td><td>—</td></tr>
+            <tr><td><span class="tag s">S</span> Call 104,00%</td><td>104,00%</td><td>128,00%</td></tr>
           </tbody>
         </table>
-        <p class="legend-note"><strong>B</strong> = Compra · <strong>S</strong> = Venda<br />Payoff = long + put 110,00% + short call 110,00% se spot ≥ barreira.</p>
+        <p class="legend-note"><strong>B</strong> = Compra · <strong>S</strong> = Venda<br />Payoff = long + put 90,00% + short call 104,00% se spot ≥ barreira.</p>
       </aside>
 
       <section class="panel chart-panel">
         <div class="chart-head">
           <div>
             <h2>Payoff da estrutura</h2>
-            <p class="chart-caption">Retorno no vencimento vs. variação do VALE3</p>
+            <p class="chart-caption">Retorno no vencimento vs. variação do ITUB4</p>
           </div>
           <div class="chart-legend">
             <span><i class="swatch"></i> Estrutura</span>
@@ -141,46 +141,46 @@
         </div>
         <div class="chart-box" id="chartBox">
           <div class="tooltip" id="tooltip"></div>
-          <svg id="payoffSvg" viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Payoff VALE3">
+          <svg id="payoffSvg" viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Payoff ITUB4">
             <rect x="48" y="24" width="504" height="352" fill="#f8fafc" />
             <g id="gridLines" stroke="#e2e8f0" stroke-width="1"></g>
             <line id="axisZeroX" x1="154" y1="24" x2="154" y2="376" stroke="#c5d0dc" stroke-width="1.25"/>
             <line id="axisZeroY" x1="48" y1="300" x2="552" y2="300" stroke="#c5d0dc" stroke-width="1.25"/>
             <g id="yLabels" fill="#8b83a0" font-size="11" font-family="Segoe UI, Arial, sans-serif" text-anchor="end"></g>
             <g id="xLabels" fill="#8b83a0" font-size="11" font-family="Segoe UI, Arial, sans-serif" text-anchor="middle"></g>
-            <text x="300" y="16" fill="#5c6b7a" font-size="11" font-family="Segoe UI, Arial, sans-serif" text-anchor="middle">Variação do VALE3 no vencimento (%)</text>
+            <text x="300" y="16" fill="#5c6b7a" font-size="11" font-family="Segoe UI, Arial, sans-serif" text-anchor="middle">Variação do ITUB4 no vencimento (%)</text>
             <text x="14" y="200" fill="#5c6b7a" font-size="11" font-family="Segoe UI, Arial, sans-serif" text-anchor="middle" transform="rotate(-90 14 200)">Retorno da estrutura (%)</text>
             <polyline id="assetPath" fill="none" stroke="#8b83a0" stroke-width="1.75" stroke-dasharray="6 5" points="" />
             <line id="koGap" x1="0" y1="0" x2="0" y2="0" stroke="#c0392b" stroke-width="1.25" stroke-dasharray="3 3" opacity="0.75"/>
-            <path id="structPath" d="" fill="none" stroke="#007e33" stroke-width="2.75" stroke-linejoin="round" stroke-linecap="round"/>
+            <path id="structPath" d="" fill="none" stroke="#ec7000" stroke-width="2.75" stroke-linejoin="round" stroke-linecap="round"/>
             <circle id="floorDot" cx="0" cy="0" r="5" fill="#0f7a4a"/>
-            <text id="floorLabel" x="0" y="0" fill="#0f7a4a" font-size="11" font-weight="600" font-family="Segoe UI, Arial, sans-serif">Piso +10%</text>
+            <text id="floorLabel" x="0" y="0" fill="#0f7a4a" font-size="11" font-weight="600" font-family="Segoe UI, Arial, sans-serif">Piso -10%</text>
             <circle id="kiDot" cx="0" cy="0" r="5" fill="#c0392b"/>
-            <text id="kiLabel" x="0" y="0" fill="#c0392b" font-size="11" font-weight="600" font-family="Segoe UI, Arial, sans-serif">Barreira 174,35%</text>
-            <circle id="capDot" cx="0" cy="0" r="4" fill="#007e33"/>
-            <text id="capLabel" x="0" y="0" fill="#007e33" font-size="11" font-weight="600" font-family="Segoe UI, Arial, sans-serif">Teto +10%</text>
+            <text id="kiLabel" x="0" y="0" fill="#c0392b" font-size="11" font-weight="600" font-family="Segoe UI, Arial, sans-serif">Barreira 128,00%</text>
+            <circle id="capDot" cx="0" cy="0" r="4" fill="#ec7000"/>
+            <text id="capLabel" x="0" y="0" fill="#ec7000" font-size="11" font-weight="600" font-family="Segoe UI, Arial, sans-serif">Teto +4%</text>
             <line id="hoverLine" x1="0" y1="24" x2="0" y2="376" stroke="rgba(0,0,0,0.25)" stroke-width="1.25" stroke-dasharray="4 4" visibility="hidden"/>
-            <circle id="hoverStruct" r="5.5" fill="#007e33" visibility="hidden"/>
+            <circle id="hoverStruct" r="5.5" fill="#ec7000" visibility="hidden"/>
             <circle id="hoverAsset" r="4" fill="#8b83a0" visibility="hidden"/>
           </svg>
           <div class="chart-overlay" id="chartOverlay"></div>
         </div>
         <p class="chart-touch-hint">Toque e arraste no gráfico · ou use o controle abaixo</p>
         <div class="mobile-sim">
-          <div class="sim-label"><span>Variação do VALE3</span><output id="spotOutMobile">+20%</output></div>
-          <input type="range" id="spotSliderMobile" min="-40" max="104" step="0.5" value="20" />
+          <div class="sim-label"><span>Variação do ITUB4</span><output id="spotOutMobile">+20%</output></div>
+          <input type="range" id="spotSliderMobile" min="-40" max="90" step="0.5" value="20" />
         </div>
         <div class="zones">
-          <div class="zone"><strong>≤ +10%</strong><p>Proteção: retorno limitado a +10%.</p></div>
-          <div class="zone"><strong>+10% → barreira</strong><p>Acompanha o ativo 1:1.</p></div>
-          <div class="zone"><strong>≥ barreira</strong><p>Retorno limitado a +10%.</p></div>
+          <div class="zone"><strong>≤ -10%</strong><p>Proteção: retorno limitado a -10%.</p></div>
+          <div class="zone"><strong>-10% → barreira</strong><p>Acompanha o ativo 1:1.</p></div>
+          <div class="zone"><strong>≥ barreira</strong><p>Retorno limitado a +4%.</p></div>
         </div>
       </section>
 
       <aside class="panel">
         <h2>Simulador no vencimento</h2>
-        <div class="sim-label"><span>Variação do VALE3</span><output id="spotOut">+20%</output></div>
-        <input type="range" id="spotSlider" min="-40" max="104" step="0.5" value="20" />
+        <div class="sim-label"><span>Variação do ITUB4</span><output id="spotOut">+20%</output></div>
+        <input type="range" id="spotSlider" min="-40" max="90" step="0.5" value="20" />
         <div class="sim-cards">
           <div class="sim-card"><div class="lbl">Retorno do ativo</div><div class="val" id="assetVal">+20,0%</div></div>
           <div class="sim-card"><div class="lbl">Retorno da estrutura</div><div class="val" id="structVal">+20,0%</div></div>
@@ -191,7 +191,7 @@
           <table class="struct-table">
             <thead><tr><th>Spot</th><th>Ativo</th><th>Estrutura</th></tr></thead>
             <tbody>
-              <tr><td>-40%</td><td>-40%</td><td><strong>+10,0%</strong></td></tr><tr><td>-20%</td><td>-20%</td><td><strong>+10,0%</strong></td></tr><tr><td>0%</td><td>0%</td><td><strong>+10,0%</strong></td></tr><tr><td>+10%</td><td>+10%</td><td><strong>+10,0%</strong></td></tr><tr><td>+20%</td><td>+20%</td><td><strong>+20,0%</strong></td></tr><tr><td>+40%</td><td>+40%</td><td><strong>+40,0%</strong></td></tr><tr><td>+74,35%</td><td>+74,35%</td><td><strong>+10,0%</strong></td></tr><tr><td>+90%</td><td>+90%</td><td><strong>+10,0%</strong></td></tr><tr><td>+94,35%</td><td>+94,35%</td><td><strong>+10,0%</strong></td></tr>
+              <tr><td>-40%</td><td>-40%</td><td><strong>-10,0%</strong></td></tr><tr><td>-20%</td><td>-20%</td><td><strong>-10,0%</strong></td></tr><tr><td>-10%</td><td>-10%</td><td><strong>-10,0%</strong></td></tr><tr><td>0%</td><td>0%</td><td><strong>0,0%</strong></td></tr><tr><td>+20%</td><td>+20%</td><td><strong>+20,0%</strong></td></tr><tr><td>+28%</td><td>+28%</td><td><strong>+4,0%</strong></td></tr><tr><td>+40%</td><td>+40%</td><td><strong>+4,0%</strong></td></tr><tr><td>+48%</td><td>+48%</td><td><strong>+4,0%</strong></td></tr><tr><td>+90%</td><td>+90%</td><td><strong>+4,0%</strong></td></tr>
             </tbody>
           </table>
         </div>
@@ -201,13 +201,13 @@
     <section class="speech-box">
       <h2>Speech comercial</h2>
       <p class="speech-label">Para quem</p>
-      <p>Cliente construtivo em Vale (VALE3) no horizonte de 2 anos, que quer exposição com colchão na queda.</p>
+      <p>Cliente construtivo em Itaú (ITUB4) no horizonte de 6 meses, que quer exposição com colchão na queda.</p>
       <p class="speech-label">Como encaixa a estrutura</p>
       <p>
         Custo inicial <strong>zero</strong>.
-        Até a barreira (174,35%), participa <strong>1:1</strong> da variação do VALE3.
-        Na queda, o piso fica em <strong>+10%</strong> (put 110,00%).
-        Se o ativo atingir a barreira, o retorno fica limitado a <strong>+10%</strong> (call vendida 110,00%).
+        Até a barreira (128,00%), participa <strong>1:1</strong> da variação do ITUB4.
+        Na queda, o piso fica em <strong>-10%</strong> (put 90,00%).
+        Se o ativo atingir a barreira, o retorno fica limitado a <strong>+4%</strong> (call vendida 104,00%).
       </p>
       <p class="speech-label">Fechamento</p>
       <p>Payoff fácil de explicar no vencimento. Material de uso interno — condições oficiais no DIE (Admin BTG).</p>
@@ -219,14 +219,14 @@
 
   <script>
     (function () {
-      var X_MIN = -40, X_MAX = 104;
-      var Y_MIN = -5, Y_MAX = 84;
+      var X_MIN = -40, X_MAX = 90;
+      var Y_MIN = -25.0, Y_MAX = 55;
       var PAD = { l: 48, t: 24, r: 48, b: 24 };
       var VW = 600, VH = 400;
       var PLOT_W = VW - PAD.l - PAD.r;
       var PLOT_H = VH - PAD.t - PAD.b;
-      var PUT = 110.0, CALL = 110.0, BARRIER = 174.35;
-      var FLOOR = 10.0, CAP = 10.0, KI_VAR = 74.35;
+      var PUT = 90.0, CALL = 104.0, BARRIER = 128.0;
+      var FLOOR = -10.0, CAP = 4.0, KI_VAR = 28.0;
 
       function structureReturn(x) {
         var st = 100 + x;
@@ -235,7 +235,7 @@
         return st + put - call - 100;
       }
       function regimeFor(x) {
-        if (x <= FLOOR) return "Em/abaixo de +10%: proteção — retorno limitado a +10%.";
+        if (x <= FLOOR) return "Em/abaixo de -10%: proteção — retorno limitado a -10%.";
         if (x < KI_VAR) return "Entre o piso e a barreira: acompanha o ativo 1:1.";
         return "Ativo atingiu a barreira (spot ≥ " + BARRIER.toFixed(2).replace(".", ",") + "%): retorno limitado a +" + CAP + "%.";
       }
@@ -339,7 +339,7 @@
         hoverStruct.setAttribute("cx", sx); hoverStruct.setAttribute("cy", sy); hoverStruct.setAttribute("visibility", "visible");
         hoverAsset.setAttribute("cx", sx); hoverAsset.setAttribute("cy", ay); hoverAsset.setAttribute("visibility", "visible");
         tooltip.innerHTML = '<div class="t-title">Spot final ' + fmtPct(x) + "</div>" +
-          '<div class="row"><span>VALE3</span><strong>' + fmtPct(x) + "</strong></div>" +
+          '<div class="row"><span>ITUB4</span><strong>' + fmtPct(x) + "</strong></div>" +
           '<div class="row"><span>Estrutura</span><strong>' + fmtPct(ys) + "</strong></div>";
         tooltip.classList.add("on");
         var svgRect = svg.getBoundingClientRect();
