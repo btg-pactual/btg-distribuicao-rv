@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Prateleira tática | BTG Pactual</title>
+  <title>Operações dia D — Distribuição Renda Variável | BTG Pactual</title>
   <style>
     :root {
       --btg: #0b1f3a; --btg-mid: #163a5f; --btg-blue: #1e4d7b; --link: #1a66b3;
@@ -17,25 +17,26 @@
     .logo-btg { display: inline-block; font-weight: 700; font-size: 12px; letter-spacing: 0.1em; border: 1px solid rgba(255,255,255,0.35); padding: 7px 12px; border-radius: 2px; margin-bottom: 22px; }
     .hero-row { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; }
     h1 { font-size: clamp(28px, 4.5vw, 40px); font-weight: 700; letter-spacing: -0.02em; line-height: 1.15; }
-    .lede { margin-top: 12px; font-size: 15px; color: rgba(255,255,255,0.82); max-width: 40em; }
+    .lede { margin-top: 12px; font-size: 18px; font-weight: 700; color: #fff; max-width: 40em; }
     .badge { font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; border: 1px solid rgba(255,255,255,0.35); padding: 8px 12px; border-radius: 2px; white-space: nowrap; }
     .page { max-width: 960px; margin: 0 auto; padding: 28px 24px 56px; }
     h2 { font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--btg-blue); margin: 28px 0 14px; }
     h2:first-of-type { margin-top: 0; }
-    .ops { list-style: none; display: flex; flex-direction: column; gap: 16px; }
-    .op-block { background: var(--card); border: 1px solid var(--line); border-radius: 4px; overflow: hidden; }
+    .ops { list-style: none; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+    .op-block { background: var(--card); border: 1px solid var(--line); border-radius: 6px; overflow: hidden; display: flex; flex-direction: column; transition: transform .12s ease, box-shadow .12s ease, border-color .12s; }
+    .op-block:hover, .op-block:focus-within { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(11,31,58,.08); border-color: #b8c6d6; }
     .op-bar { height: 6px; }
-    .op { display: block; text-decoration: none; color: inherit; padding: 20px 22px 18px; transition: background 0.12s ease; }
-    .op:hover, .op:focus-visible { background: #f5f8fc; outline: none; }
+    .op { display: flex; flex-direction: column; flex: 1; text-decoration: none; color: inherit; padding: 18px 18px 16px; outline: none; }
     .op-top { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 8px; }
-    .op-title { font-size: 18px; font-weight: 700; color: var(--btg); }
+    .op-title { font-size: 17px; font-weight: 700; color: var(--btg); }
     .op-ticker { font-size: 12px; font-weight: 700; color: var(--link); letter-spacing: 0.04em; }
-    .op-blurb { font-size: 14px; color: var(--muted); max-width: 48em; }
+    .op-blurb { font-size: 13px; color: var(--muted); line-height: 1.4; flex: 1; }
     .op-meta { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 8px; }
     .pill { background: #eef2f6; border: 1px solid var(--line); border-radius: 2px; padding: 4px 10px; color: var(--btg-mid); font-size: 11px; font-weight: 600; }
     .op-cta { margin-top: 12px; font-size: 12px; font-weight: 700; color: var(--link); }
     .footer { margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--line); font-size: 11px; color: var(--muted); text-align: center; line-height: 1.55; }
     .footer strong { display: block; margin-top: 10px; color: var(--btg); }
+    @media (max-width: 720px) { .ops { grid-template-columns: 1fr; } }
     @media (max-width: 640px) { .hero { padding: 28px 16px 32px; } .page { padding: 20px 16px 48px; } .hero-row { flex-direction: column; align-items: flex-start; } }
   </style>
 </head>
@@ -45,8 +46,8 @@
       <div class="logo-btg">BTG PACTUAL</div>
       <div class="hero-row">
         <div>
-          <h1>Prateleira tática</h1>
-          <p class="lede">Operações estruturadas selecionadas — câmbio, hedge de duration e Smart Hedge / Twin Coupon.</p>
+          <h1>Operações dia D</h1>
+          <p class="lede">Distribuição Renda Variável</p>
         </div>
         <div class="badge">Uso interno</div>
       </div>
