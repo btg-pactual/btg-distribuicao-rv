@@ -1126,7 +1126,7 @@ def hub_html(research: dict, prat) -> str:
             "Twip Coupon",
             "twin-coupon",
             "#ec7000",
-            "Cupom + twin entre KO e KI",
+            "Cupom mais participação na baixa e na alta nos intervalos definidos",
             [
                 {
                     "href": "../ops/twin-coupon-itub4/index.html",
