@@ -569,18 +569,20 @@ def twin_coupon_html(prat=None, research=None) -> str:
     up_var = up_barrier - 100  # +53
 
     def struct_ret(x: float) -> float:
-        st = 100.0 + x
-        put = max(strike - st, 0.0)
-        # Aprox. no vencimento: barreira tocada se spot ≤ KO ou ≥ KI.
+        # Twip Coupon (ITUB4): put ITM 110% + put KO 70% + call KI 153%.
+        # Sem KO na queda: |x| + cupom (pico ~+39,99% logo acima de −30%).
+        # KO atingido: put DO vira pó → só cupom +10%.
+        # KI atingido: só cupom +10%.
+        # Alta sem KI: max(x, cupom).
         if x <= down_var:
-            return st + put - 100.0  # KO: put DO some → long + put vanilla = cupom
+            return cupom
         if x >= up_var:
-            return cupom  # KI: call UI ativa → collar no strike = cupom
+            return cupom
         if x < 0:
-            return x + 2.0 * put  # twin: long + 2 puts
+            return -x + cupom
         return max(x, cupom)
 
-    spots = [-50, -40, -30, -20, -10, 0, 10, 20, 40, 53, 60, 80]
+    spots = [-50, -40, -30, -29.99, -20, -10, 0, 10, 20, 40, 53, 60, 80]
     rows = []
     for x in spots:
         y = struct_ret(float(x))
@@ -588,10 +590,10 @@ def twin_coupon_html(prat=None, research=None) -> str:
         ys = ("+" if y > 0 else "") + fmt_br(y, 1) + "%"
         rows.append(f"<tr><td>{xs}</td><td>{xs}</td><td><strong>{ys}</strong></td></tr>")
 
-    # Pico twin logo acima do KO: x=-29.5 → ~49.5%
-    twin_peak = struct_ret(down_var + 0.5)
+    # Pico twin logo acima do KO: |−29,99| + 10 ≈ 39,99%
+    twin_peak = 39.99
     x_min, x_max = -50, 80
-    y_min, y_max = -5, max(55, int(math.ceil(twin_peak / 5.0) * 5) + 5)
+    y_min, y_max = -5, 55
     up = rs.get("upside")
     if up is not None and up > x_max - 8:
         x_max = int(math.ceil((up + 10) / 10.0) * 10)
@@ -719,8 +721,8 @@ def twin_coupon_html(prat=None, research=None) -> str:
         </div>
         <h1>Twip Coupon <span>ITUB4</span></h1>
         <p class="subtitle">
-          Twip Coupon sobre ITUB4: cupom +10% (put 110%), participa da alta e da queda
-          enquanto não tocar KO 70% nem KI 153%.
+          Put ITM 110% (cupom +10%) + put KO 70%: na queda sem KO, ganha |variação| + 10%
+          (máx. ~+39,99%); se tocar o KO, a put DO vira pó e sobra só +10%.
         </p>
       </div>
       <div class="meta-pills">
@@ -732,10 +734,10 @@ def twin_coupon_html(prat=None, research=None) -> str:
     </header>
 
     <section class="highlights">
-      <div class="hi"><h3>Cupom</h3><p>+10%<span>Strike put/call 110%</span></p></div>
-      <div class="hi"><h3>Barreira de queda (KO)</h3><p>70%<span>Se tocar: só o cupom</span></p></div>
-      <div class="hi"><h3>Barreira de alta (KI)</h3><p>153%<span>Se tocar: só o cupom</span></p></div>
-      <div class="hi"><h3>Prazo</h3><p>2 anos</p></div>
+      <div class="hi"><h3>Cupom</h3><p>+10%<span>Put ITM 110%</span></p></div>
+      <div class="hi"><h3>Na queda (sem KO)</h3><p>|x| + 10%<span>Máx. ~+39,99% antes do KO</span></p></div>
+      <div class="hi"><h3>KO 70%</h3><p>Put KO vira pó<span>Fica só cupom +10%</span></p></div>
+      <div class="hi"><h3>KI 153%</h3><p>Só cupom +10%<span>Call KI ativa</span></p></div>
     </section>
     {research_block}
 
@@ -802,9 +804,9 @@ def twin_coupon_html(prat=None, research=None) -> str:
           <input type="range" id="spotSliderMobile" min="{x_min}" max="{x_max}" step="0.5" value="20" />
         </div>
         <div class="zones">
-          <div class="zone"><strong>≤ −30% (KO 70%)</strong><p>Barreira de queda: put DO some — fica só o cupom +10%.</p></div>
-          <div class="zone"><strong>−30% → +53%</strong><p>Queda: twin (long + 2 puts). Alta: maior entre variação e cupom +10%.</p></div>
-          <div class="zone"><strong>≥ +53% (KI 153%)</strong><p>Barreira de alta: call KI entra — só o cupom +10%.</p></div>
+          <div class="zone"><strong>≤ −30% (KO 70%)</strong><p>Put KO vira pó — fica só o cupom +10% (put 110%).</p></div>
+          <div class="zone"><strong>−30% → 0%</strong><p>Ganho com a queda + cupom: |variação| + 10% (máx. ~+39,99%).</p></div>
+          <div class="zone"><strong>0% → +53%</strong><p>Maior entre a alta do ativo e o cupom +10%. No KI 153%: só +10%.</p></div>
         </div>
       </section>
 
@@ -816,7 +818,7 @@ def twin_coupon_html(prat=None, research=None) -> str:
           <div class="sim-card"><div class="lbl">Retorno do ativo</div><div class="val" id="assetVal">+20,0%</div></div>
           <div class="sim-card"><div class="lbl">Retorno da estrutura</div><div class="val" id="structVal">+20,0%</div></div>
         </div>
-        <div class="regime" id="regimeText">Entre as barreiras: twin na queda · max(alta, cupom) na alta.</div>
+        <div class="regime" id="regimeText">Na queda sem KO: |variação| + 10%.</div>
         <div style="margin-top:18px">
           <h2>Pontos-chave</h2>
           <table class="struct-table">
@@ -833,17 +835,19 @@ def twin_coupon_html(prat=None, research=None) -> str:
       <h2>Speech comercial</h2>
       <p class="speech-label">Parâmetros</p>
       <p>
-        <strong>Twip Coupon</strong> · put/call <strong>110%</strong> (cupom <strong>+10%</strong>),
-        put KO <strong>70%</strong>, call KI <strong>153%</strong>, prazo <strong>2 anos</strong>.
+        <strong>Put ITM 110%</strong> (cupom <strong>+10%</strong>) +
+        <strong>put KO down-and-out 70%</strong> +
+        <strong>call KI 153%</strong>, prazo <strong>2 anos</strong>.
       </p>
       <p class="speech-label">Zonas de payoff</p>
       <p>
-        Sem tocar barreiras: na queda, twin (variação negativa + 2× put);
-        na alta, o maior entre a valorização e o cupom +10%.
-        Se tocar KO ou KI: investidor fica com o cupom +10%.
+        Sem tocar o KO: na queda, o cliente ganha a variação negativa <strong>mais</strong> +10%
+        (máximo ~+39,99% logo antes de −30%).
+        Se a put KO vira pó (≤ 70%), sobra só o cupom +10% da put no dinheiro.
+        Na alta, o maior entre a valorização e +10%; no KI, só o cupom.
       </p>
       <p class="speech-label">Fechamento</p>
-      <p>Material de uso interno. Payoff no vencimento alinhado ao DIE Twip Coupon — condições oficiais no Admin BTG.</p>
+      <p>Material de uso interno. Condições oficiais no DIE (Admin BTG).</p>
     </section>
     {insights_block}
 
@@ -863,18 +867,16 @@ def twin_coupon_html(prat=None, research=None) -> str:
       {js_research}
 
       function structureReturn(x) {{
-        var st = 100 + x;
-        var put = Math.max(STRIKE - st, 0);
-        if (x <= DOWN_VAR) return st + put - 100;
+        if (x <= DOWN_VAR) return CUPOM;
         if (x >= UP_VAR) return CUPOM;
-        if (x < 0) return x + 2 * put;
+        if (x < 0) return -x + CUPOM;
         return Math.max(x, CUPOM);
       }}
       function regimeFor(x) {{
-        if (x <= DOWN_VAR) return "KO 70% atingido: put DO some — retorno = cupom +10%.";
-        if (x >= UP_VAR) return "KI 153% atingido: call KI entra — retorno = cupom +10%.";
-        if (x < 0) return "Sem barreira na queda: twin (long + 2 puts).";
-        return "Sem barreira na alta: maior entre variação do ativo e cupom +10%.";
+        if (x <= DOWN_VAR) return "KO 70%: put DO vira pó — só cupom +10% (put 110%).";
+        if (x >= UP_VAR) return "KI 153%: só cupom +10%.";
+        if (x < 0) return "Queda sem KO: ganho |variação| + 10% (máx. ~+39,99% antes do KO).";
+        return "Alta sem KI: maior entre variação do ativo e cupom +10%.";
       }}
       function fmtPct(n, digits) {{
         if (digits == null) digits = 1;
@@ -1129,8 +1131,8 @@ def hub_html(research: dict, prat) -> str:
                     "title": "Twip Coupon Itaú",
                     "ticker": "ITUB4",
                     "brand": "#ec7000",
-                    "blurb": "Cupom +10% · put/call 110% · KO 70% · KI 153% · prazo 2 anos.",
-                    "pills": ["Equity", "2 anos", "Cupom +10%", "KO 70% · KI 153%"],
+                    "blurb": "Put ITM 110% + put KO 70%: na queda |x|+10% (máx. ~+39,99%); no KO só +10%.",
+                    "pills": ["Equity", "2 anos", "Cupom +10%", "Máx. ~+39,99%"],
                     "research": research.get("ITUB4") or {},
                 },
             ],

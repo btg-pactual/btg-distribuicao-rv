@@ -117,8 +117,8 @@
         </div>
         <h1>Twip Coupon <span>ITUB4</span></h1>
         <p class="subtitle">
-          Twip Coupon sobre ITUB4: cupom +10% (put 110%), participa da alta e da queda
-          enquanto não tocar KO 70% nem KI 153%.
+          Put ITM 110% (cupom +10%) + put KO 70%: na queda sem KO, ganha |variação| + 10%
+          (máx. ~+39,99%); se tocar o KO, a put DO vira pó e sobra só +10%.
         </p>
       </div>
       <div class="meta-pills">
@@ -130,10 +130,10 @@
     </header>
 
     <section class="highlights">
-      <div class="hi"><h3>Cupom</h3><p>+10%<span>Strike put/call 110%</span></p></div>
-      <div class="hi"><h3>Barreira de queda (KO)</h3><p>70%<span>Se tocar: só o cupom</span></p></div>
-      <div class="hi"><h3>Barreira de alta (KI)</h3><p>153%<span>Se tocar: só o cupom</span></p></div>
-      <div class="hi"><h3>Prazo</h3><p>2 anos</p></div>
+      <div class="hi"><h3>Cupom</h3><p>+10%<span>Put ITM 110%</span></p></div>
+      <div class="hi"><h3>Na queda (sem KO)</h3><p>|x| + 10%<span>Máx. ~+39,99% antes do KO</span></p></div>
+      <div class="hi"><h3>KO 70%</h3><p>Put KO vira pó<span>Fica só cupom +10%</span></p></div>
+      <div class="hi"><h3>KI 153%</h3><p>Só cupom +10%<span>Call KI ativa</span></p></div>
     </section>
     
 <section class="research">
@@ -141,7 +141,7 @@
     <h2>Research BTG</h2>
     <a class="research-link" href="https://content.btgpactual.com/research/ativo/ITUB4" target="_blank" rel="noopener">Abrir ITUB4 no Research <span class="arrow" aria-hidden="true">→</span></a>
   </div>
-  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 42,57</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 54,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+26,85%</div></div></div><p class="research-note">Spot do fechamento anterior (11/09/2026) · preço-alvo atualizado em 06/08/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
+  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 42,60</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 54,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+26,76%</div></div></div><p class="research-note">Spot do fechamento anterior (11/09/2026) · preço-alvo atualizado em 06/08/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
 </section>
 
 
@@ -208,9 +208,9 @@
           <input type="range" id="spotSliderMobile" min="-50" max="80" step="0.5" value="20" />
         </div>
         <div class="zones">
-          <div class="zone"><strong>≤ −30% (KO 70%)</strong><p>Barreira de queda: put DO some — fica só o cupom +10%.</p></div>
-          <div class="zone"><strong>−30% → +53%</strong><p>Queda: twin (long + 2 puts). Alta: maior entre variação e cupom +10%.</p></div>
-          <div class="zone"><strong>≥ +53% (KI 153%)</strong><p>Barreira de alta: call KI entra — só o cupom +10%.</p></div>
+          <div class="zone"><strong>≤ −30% (KO 70%)</strong><p>Put KO vira pó — fica só o cupom +10% (put 110%).</p></div>
+          <div class="zone"><strong>−30% → 0%</strong><p>Ganho com a queda + cupom: |variação| + 10% (máx. ~+39,99%).</p></div>
+          <div class="zone"><strong>0% → +53%</strong><p>Maior entre a alta do ativo e o cupom +10%. No KI 153%: só +10%.</p></div>
         </div>
       </section>
 
@@ -222,13 +222,13 @@
           <div class="sim-card"><div class="lbl">Retorno do ativo</div><div class="val" id="assetVal">+20,0%</div></div>
           <div class="sim-card"><div class="lbl">Retorno da estrutura</div><div class="val" id="structVal">+20,0%</div></div>
         </div>
-        <div class="regime" id="regimeText">Entre as barreiras: twin na queda · max(alta, cupom) na alta.</div>
+        <div class="regime" id="regimeText">Na queda sem KO: |variação| + 10%.</div>
         <div style="margin-top:18px">
           <h2>Pontos-chave</h2>
           <table class="struct-table">
             <thead><tr><th>Spot</th><th>Ativo</th><th>Estrutura</th></tr></thead>
             <tbody>
-              <tr><td>-50%</td><td>-50%</td><td><strong>+10,0%</strong></td></tr><tr><td>-40%</td><td>-40%</td><td><strong>+10,0%</strong></td></tr><tr><td>-30%</td><td>-30%</td><td><strong>+10,0%</strong></td></tr><tr><td>-20%</td><td>-20%</td><td><strong>+40,0%</strong></td></tr><tr><td>-10%</td><td>-10%</td><td><strong>+30,0%</strong></td></tr><tr><td>0%</td><td>0%</td><td><strong>+10,0%</strong></td></tr><tr><td>+10%</td><td>+10%</td><td><strong>+10,0%</strong></td></tr><tr><td>+20%</td><td>+20%</td><td><strong>+20,0%</strong></td></tr><tr><td>+40%</td><td>+40%</td><td><strong>+40,0%</strong></td></tr><tr><td>+53%</td><td>+53%</td><td><strong>+10,0%</strong></td></tr><tr><td>+60%</td><td>+60%</td><td><strong>+10,0%</strong></td></tr><tr><td>+80%</td><td>+80%</td><td><strong>+10,0%</strong></td></tr>
+              <tr><td>-50%</td><td>-50%</td><td><strong>+10,0%</strong></td></tr><tr><td>-40%</td><td>-40%</td><td><strong>+10,0%</strong></td></tr><tr><td>-30%</td><td>-30%</td><td><strong>+10,0%</strong></td></tr><tr><td>-30%</td><td>-30%</td><td><strong>+40,0%</strong></td></tr><tr><td>-20%</td><td>-20%</td><td><strong>+30,0%</strong></td></tr><tr><td>-10%</td><td>-10%</td><td><strong>+20,0%</strong></td></tr><tr><td>0%</td><td>0%</td><td><strong>+10,0%</strong></td></tr><tr><td>+10%</td><td>+10%</td><td><strong>+10,0%</strong></td></tr><tr><td>+20%</td><td>+20%</td><td><strong>+20,0%</strong></td></tr><tr><td>+40%</td><td>+40%</td><td><strong>+40,0%</strong></td></tr><tr><td>+53%</td><td>+53%</td><td><strong>+10,0%</strong></td></tr><tr><td>+60%</td><td>+60%</td><td><strong>+10,0%</strong></td></tr><tr><td>+80%</td><td>+80%</td><td><strong>+10,0%</strong></td></tr>
             </tbody>
           </table>
         </div>
@@ -239,17 +239,19 @@
       <h2>Speech comercial</h2>
       <p class="speech-label">Parâmetros</p>
       <p>
-        <strong>Twip Coupon</strong> · put/call <strong>110%</strong> (cupom <strong>+10%</strong>),
-        put KO <strong>70%</strong>, call KI <strong>153%</strong>, prazo <strong>2 anos</strong>.
+        <strong>Put ITM 110%</strong> (cupom <strong>+10%</strong>) +
+        <strong>put KO down-and-out 70%</strong> +
+        <strong>call KI 153%</strong>, prazo <strong>2 anos</strong>.
       </p>
       <p class="speech-label">Zonas de payoff</p>
       <p>
-        Sem tocar barreiras: na queda, twin (variação negativa + 2× put);
-        na alta, o maior entre a valorização e o cupom +10%.
-        Se tocar KO ou KI: investidor fica com o cupom +10%.
+        Sem tocar o KO: na queda, o cliente ganha a variação negativa <strong>mais</strong> +10%
+        (máximo ~+39,99% logo antes de −30%).
+        Se a put KO vira pó (≤ 70%), sobra só o cupom +10% da put no dinheiro.
+        Na alta, o maior entre a valorização e +10%; no KI, só o cupom.
       </p>
       <p class="speech-label">Fechamento</p>
-      <p>Material de uso interno. Payoff no vencimento alinhado ao DIE Twip Coupon — condições oficiais no Admin BTG.</p>
+      <p>Material de uso interno. Condições oficiais no DIE (Admin BTG).</p>
     </section>
     
 <section class="speech-box insights-box">
@@ -272,21 +274,19 @@
       var PLOT_W = VW - PAD.l - PAD.r;
       var PLOT_H = VH - PAD.t - PAD.b;
       var DOWN_VAR = -30.0, UP_VAR = 53.0, STRIKE = 110.0, CUPOM = 10.0;
-      var RESEARCH_X=26.8499;
+      var RESEARCH_X=26.7606;
 
       function structureReturn(x) {
-        var st = 100 + x;
-        var put = Math.max(STRIKE - st, 0);
-        if (x <= DOWN_VAR) return st + put - 100;
+        if (x <= DOWN_VAR) return CUPOM;
         if (x >= UP_VAR) return CUPOM;
-        if (x < 0) return x + 2 * put;
+        if (x < 0) return -x + CUPOM;
         return Math.max(x, CUPOM);
       }
       function regimeFor(x) {
-        if (x <= DOWN_VAR) return "KO 70% atingido: put DO some — retorno = cupom +10%.";
-        if (x >= UP_VAR) return "KI 153% atingido: call KI entra — retorno = cupom +10%.";
-        if (x < 0) return "Sem barreira na queda: twin (long + 2 puts).";
-        return "Sem barreira na alta: maior entre variação do ativo e cupom +10%.";
+        if (x <= DOWN_VAR) return "KO 70%: put DO vira pó — só cupom +10% (put 110%).";
+        if (x >= UP_VAR) return "KI 153%: só cupom +10%.";
+        if (x < 0) return "Queda sem KO: ganho |variação| + 10% (máx. ~+39,99% antes do KO).";
+        return "Alta sem KI: maior entre variação do ativo e cupom +10%.";
       }
       function fmtPct(n, digits) {
         if (digits == null) digits = 1;
