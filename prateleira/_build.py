@@ -275,7 +275,10 @@ def fetch_research(tickers: list[str]) -> dict[str, dict]:
             item["upside"] = (target / price - 1.0) * 100.0
         out[t] = item
 
-    RESEARCH_SNAP.write_text(json.dumps(out, ensure_ascii=False, indent=2), encoding="utf-8")
+    # Preserva tickers de outros hubs (ex.: Dia D ↔ semanal) no snapshot compartilhado.
+    merged = dict(prev)
+    merged.update(out)
+    RESEARCH_SNAP.write_text(json.dumps(merged, ensure_ascii=False, indent=2), encoding="utf-8")
     n_ok = sum(1 for v in out.values() if v.get("target"))
     n_bullets = sum(1 for v in out.values() if v.get("bullets"))
     print("research", n_ok, "/", len(uniq), "bullets", n_bullets)

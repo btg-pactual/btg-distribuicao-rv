@@ -27,8 +27,8 @@
   "AXIA3": {
     "ticker": "AXIA3",
     "url": "https://content.btgpactual.com/research/ativo/AXIA3",
-    "price": 55.7,
-    "last_trade": "2026-09-10T20:47:51",
+    "price": 54.89,
+    "last_trade": "2026-09-11T18:07:56",
     "rec": "COMPRA",
     "rec_lbl": "Compra",
     "rec_cls": "buy",
@@ -41,7 +41,7 @@
       "Essa estratégia acumulava alpha de 5,1% desde 24 de julho de 2026. O caso de investimento segue apoiado em baixa alavancagem, forte capacidade de distribuição de caixa e execução do mecanismo de resgate, ainda em fase inicial por se…"
     ],
     "summary_date": "2026-09-09 19:39:10.617079+00:00",
-    "upside": 32.85457809694794
+    "upside": 34.81508471488431
   },
   "WEGE3": {
     "ticker": "WEGE3",
@@ -147,8 +147,8 @@
   "ITUB4": {
     "ticker": "ITUB4",
     "url": "https://content.btgpactual.com/research/ativo/ITUB4",
-    "price": 42.35,
-    "last_trade": "2026-09-10T20:59:45",
+    "price": 42.49,
+    "last_trade": "2026-09-11T18:07:53",
     "rec": "COMPRA",
     "rec_lbl": "Compra",
     "rec_cls": "buy",
@@ -161,32 +161,32 @@
       "Entre os KPIs, a inadimplência acima de 90 dias ficou em 1,9%, o custo de crédito líquido de recuperações em R$9 bi, as provisões brutas em R$10,5 bi, as recuperações em R$1,5 bi, o índice de cobertura em 53,8% e o CET1 em 12,3%."
     ],
     "summary_date": "2026-08-12 23:32:45.794653+00:00",
-    "upside": 27.50885478158205
+    "upside": 27.08872675923746
   },
   "PETR4": {
     "ticker": "PETR4",
     "url": "https://content.btgpactual.com/research/ativo/PETR4",
-    "price": 49.12,
-    "last_trade": "2026-09-10T20:59:44",
+    "price": 48.67,
+    "last_trade": "2026-09-11T18:07:58",
     "rec": "COMPRA",
     "rec_lbl": "Compra",
     "rec_cls": "buy",
-    "date": "2026-09-10T11:04:51.283Z",
+    "date": "2026-09-11T09:26:08.927Z",
     "company": "Petrobras",
-    "target": 56.0,
+    "target": 65.0,
     "bullets": [
-      "A Petrobras reportou 2T26 forte, com EBITDA de US$18,9 bi, ~5% acima do consenso, apoiado por preços mais altos de petróleo e derivados e por produção ~4% t/t maior.",
-      "No E&P, o lifting cost caiu para US$6,3/boe, enquanto a alavancagem recuou para ~1,1x, com dívida líquida de US$60,4 bi e caixa de US$10,4 bi. Na prévia, a companhia já indicava produção recorde de 2,69 mi bpd no trimestre, ante 2,58 mi…",
-      "A companhia também manteve capex caixa de US$16,9 bi e segue mirando dívida bruta perto de US$65 bi. No downstream, a tese ganhou suporte adicional com combustíveis ainda abaixo da paridade, mas com captura parcial via subvenções: na…"
+      "No 2T26, a Petrobras entregou EBITDA de US$18,9 bi, ~5% acima do consenso, com suporte de preços mais altos de petróleo e derivados e produção ~4% t/t maior.",
+      "A alavancagem caiu para ~1,1x, de ~1,4x no 1T26, com dívida líquida de US$60,4 bi e caixa de US$10,4 bi, enquanto o FCFE recorrente ficou em US$6,4 bi e os dividendos somaram US$3,4 bi. Na prévia do trimestre, a produção de petróleo…",
+      "No refino, a utilização média foi de 101%, com produção recorde de diesel e gasolina. Os dados operacionais mais recentes reforçam esse quadro: a produção de petróleo ficou em ~2,77 mi bpd em julho e ~2,66–2,68 mi bpd no acumulado de…"
     ],
-    "summary_date": "2026-09-10 11:05:59.407589+00:00",
-    "upside": 14.006514657980462
+    "summary_date": "2026-09-11 09:27:37.051808+00:00",
+    "upside": 33.55249640435587
   },
   "VALE3": {
     "ticker": "VALE3",
     "url": "https://content.btgpactual.com/research/ativo/VALE3",
-    "price": 78.23,
-    "last_trade": "2026-09-10T20:59:54",
+    "price": 77.69,
+    "last_trade": "2026-09-11T18:07:57",
     "rec": "COMPRA",
     "rec_lbl": "Compra",
     "rec_cls": "buy",
@@ -199,7 +199,7 @@
       "O guidance de 2026 foi ajustado para C1 do minério em ~US$23/t no ponto médio e custo total em ~US$60/t, mas com corte relevante de custos na VBM, de ~US$1.000/t no cobre e ~US$2.000/t no níquel, além de piso maior de volumes."
     ],
     "summary_date": "2026-08-18 11:18:39.660716+00:00",
-    "upside": 15.04537901060974
+    "upside": 15.84502509975545
   },
   "EMBJ3": {
     "ticker": "EMBJ3",
@@ -254,21 +254,21 @@
   "ROXO34": {
     "ticker": "ROXO34",
     "url": "https://content.btgpactual.com/research/ativo/ROXO34",
-    "price": 12.7,
-    "last_trade": "2026-09-10T20:59:30",
+    "price": 12.38,
+    "last_trade": "2026-09-11T18:07:57",
     "rec": "COMPRA",
     "rec_lbl": "Compra",
     "rec_cls": "buy",
-    "date": "2026-08-14T10:09:46.000Z",
+    "date": "2026-09-10T03:00:00.000Z",
     "company": "Nubank",
     "target": 20.0,
     "bullets": [
-      "No 2T26, o Nubank entregou lucro líquido GAAP de US$1,06 bi, +22% t/t e +67% a/a, com ROE de 33% e resultado ~10% acima do consenso, sustentado por forte expansão do NII e provisões menores.",
-      "A carteira de crédito chegou a US$39,4 bi, +5% t/t e +37% a/a em base neutra de câmbio, enquanto os depósitos somaram US$45,3 bi, +6% t/t e +18% a/a, com custo de funding estável em 88% do CDI.",
-      "O NIM avançou 80 bps no trimestre, favorecido por maior mix de cartões e crédito sem garantia, e o NIM ajustado ao risco subiu para 12,4%, +190 bps t/t, após provisões de US$1,48 bi, -14% t/t e 12% abaixo do esperado; mesmo excluindo o…"
+      "No 2T26, o Nubank entregou lucro líquido GAAP de US$1,06 bi, ROE de 33% e alta de 22% t/t e 67% a/a, com resultado cerca de 10% acima do consenso.",
+      "O principal destaque foi a queda de 14% t/t nas provisões, para US$1,48 bi, que levou o NIM ajustado ao risco a 12,4% e o NII após provisões a US$1,72 bi, 34% acima do trimestre anterior. A carteira de crédito atingiu US$39,4 bi, +5%…",
+      "As receitas de tarifas chegaram a US$753 mi, +9% t/t, e o índice de eficiência permaneceu em 19,5%, em linha com o guidance de ~20% para 2026, apesar de pressão esperada por expansão internacional e remuneração em ações. Na qualidade…"
     ],
-    "summary_date": "2026-08-14 10:13:24.162483+00:00",
-    "upside": 57.48031496062993
+    "summary_date": "2026-09-11 09:57:52.821776+00:00",
+    "upside": 61.550888529886905
   },
   "GOGL34": {
     "ticker": "GOGL34",

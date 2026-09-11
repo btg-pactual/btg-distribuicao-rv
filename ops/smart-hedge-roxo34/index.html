@@ -33,6 +33,25 @@
     .hi h3 { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 6px; }
     .hi p { font-size: 15px; font-weight: 700; color: var(--ink); }
     .hi p span { display: block; font-weight: 400; color: var(--muted); font-size: 12px; margin-top: 3px; }
+
+    .research{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin-bottom:18px}
+    .research-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px;flex-wrap:wrap}
+    .research-head h2{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--brand);margin:0}
+    .research-link{display:inline-flex;align-items:center;gap:8px;background:var(--brand);color:#fff !important;text-decoration:none !important;font-weight:700;font-size:13px;padding:10px 14px;border-radius:8px}
+    .research-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+    .research-grid .lbl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);margin-bottom:4px}
+    .research-grid .val{font-size:18px;font-weight:700}
+    .research-grid .val.buy{color:var(--success)}
+    .research-grid .val.hold{color:#b8860b}
+    .research-grid .val.sell{color:var(--danger)}
+    .research-note{font-size:12px;color:var(--muted);margin-top:10px}
+    .research-actions{margin-top:12px}
+    .research-btn{appearance:none;border:1px solid var(--brand);background:#fff;color:var(--brand);font-size:12px;font-weight:700;padding:9px 14px;border-radius:8px;cursor:pointer}
+    .research-bullets{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+    .research-bullets li{position:relative;padding:10px 12px 10px 28px;background:var(--bg);border:1px solid var(--line);border-radius:8px;font-size:13px;line-height:1.45}
+    .research-bullets li::before{content:"";position:absolute;left:12px;top:16px;width:6px;height:6px;border-radius:50%;background:var(--brand)}
+    .insights-box .research-note{margin-top:12px}
+
     .main { display: grid; grid-template-columns: 280px 1fr 300px; gap: 18px; align-items: start; }
     .panel { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 18px; }
     .panel h2 { font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--brand); margin-bottom: 14px; }
@@ -84,13 +103,13 @@
     .footer { margin-top: 28px; font-size: 11px; color: var(--muted); text-align: center; line-height: 1.55; }
     .footer-alert { margin-top: 10px; text-align: center; font-size: 11px; color: var(--btg); font-weight: 700; line-height: 1.5; }
     .visit-pixel { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
-    @media (max-width: 1100px) { .main { grid-template-columns: 1fr; } .highlights { grid-template-columns: 1fr 1fr; } .zones { grid-template-columns: 1fr; } }
+    @media (max-width: 1100px) { .main { grid-template-columns: 1fr; } .highlights { grid-template-columns: 1fr 1fr; } .zones { grid-template-columns: 1fr; } .research-grid{grid-template-columns:1fr 1fr} }
     @media (max-width: 640px) { .page { padding: 16px 14px 40px; } .topbar { flex-direction: column; } .meta-pills { justify-content: flex-start; } .highlights { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
   <div class="page">
-    <p class="back-link"><a href="../../prateleira-tatica/index.html">← Prateleira tática</a></p>
+    <p class="back-link"><a href="../../prateleira-tatica/index.html">← Operações dia D</a></p>
     <header class="topbar">
       <div class="brand-block">
         <div class="logos">
@@ -114,6 +133,15 @@
       <div class="hi"><h3>Se atingir a barreira</h3><p>Teto +4%<span>Call vendida 104,00%</span></p></div>
       <div class="hi"><h3>Prazo</h3><p>6 meses</p></div>
     </section>
+    
+<section class="research">
+  <div class="research-head">
+    <h2>Research BTG</h2>
+    <a class="research-link" href="https://content.btgpactual.com/research/ativo/ROXO34" target="_blank" rel="noopener">Abrir ROXO34 no Research <span class="arrow" aria-hidden="true">→</span></a>
+  </div>
+  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 12,38</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 20,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+61,55%</div></div></div><p class="research-note">Spot do fechamento anterior (11/09/2026) · preço-alvo atualizado em 10/09/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
+</section>
+
 
     <div class="main">
       <aside class="panel">
@@ -137,6 +165,7 @@
           <div class="chart-legend">
             <span><i class="swatch"></i> Estrutura</span>
             <span><i class="swatch asset"></i> Ativo</span>
+            <span><i class="swatch" style="background:#1a66b3;border-top:none;height:2px;background:repeating-linear-gradient(90deg,#1a66b3 0 4px,transparent 4px 7px)"></i> PA Research</span>
           </div>
         </div>
         <div class="chart-box" id="chartBox">
@@ -159,6 +188,8 @@
             <text id="kiLabel" x="0" y="0" fill="#c0392b" font-size="11" font-weight="600" font-family="Segoe UI, Arial, sans-serif">Barreira 137,50%</text>
             <circle id="capDot" cx="0" cy="0" r="4" fill="#820ad1"/>
             <text id="capLabel" x="0" y="0" fill="#820ad1" font-size="11" font-weight="600" font-family="Segoe UI, Arial, sans-serif">Teto +4%</text>
+            <line id="researchTargetLine" x1="0" y1="24" x2="0" y2="376" stroke="#1a66b3" stroke-width="1.5" stroke-dasharray="5 4" opacity="0"/>
+            <text id="researchTargetLabel" font-size="11" fill="#1a66b3" font-weight="700" opacity="0">PA Research</text>
             <line id="hoverLine" x1="0" y1="24" x2="0" y2="376" stroke="rgba(0,0,0,0.25)" stroke-width="1.25" stroke-dasharray="4 4" visibility="hidden"/>
             <circle id="hoverStruct" r="5.5" fill="#820ad1" visibility="hidden"/>
             <circle id="hoverAsset" r="4" fill="#8b83a0" visibility="hidden"/>
@@ -212,6 +243,13 @@
       <p class="speech-label">Fechamento</p>
       <p>Payoff fácil de explicar no vencimento. Material de uso interno — condições oficiais no DIE (Admin BTG).</p>
     </section>
+    
+<section class="speech-box insights-box">
+  <h2>Insights Research BTG</h2>
+  <ul class="research-bullets"><li>No 2T26, o Nubank entregou lucro líquido GAAP de US$1,06 bi, ROE de 33% e alta de 22% t/t e 67% a/a, com resultado cerca de 10% acima do consenso.</li><li>O principal destaque foi a queda de 14% t/t nas provisões, para US$1,48 bi, que levou o NIM ajustado ao risco a 12,4% e o NII após provisões a US$1,72 bi, 34% acima do trimestre anterior. A carteira de crédito atingiu US$39,4 bi, +5%…</li><li>As receitas de tarifas chegaram a US$753 mi, +9% t/t, e o índice de eficiência permaneceu em 19,5%, em linha com o guidance de ~20% para 2026, apesar de pressão esperada por expansão internacional e remuneração em ações. Na qualidade…</li></ul>
+  <p class="research-note">Insights BTG · 11/09/2026 · fonte Research BTG.</p>
+</section>
+
 
     <p class="footer">Material ilustrativo. Payoff intrínseco no vencimento. Não constitui oferta, recomendação ou garantia de rentabilidade. Produto estruturado envolve risco de perda de capital.</p>
     <p class="footer-alert"><strong>MATERIAL DE USO INTERNO, NÃO ENVIAR AOS CLIENTES</strong><br /><strong>PARA INFORMAÇÕES OFICIAIS, ACESSAR O DIE DA OPERAÇÃO DISPONIBILIZADO NO ADMIN BTG</strong></p>
@@ -227,6 +265,7 @@
       var PLOT_H = VH - PAD.t - PAD.b;
       var PUT = 90.0, CALL = 104.0, BARRIER = 137.5;
       var FLOOR = -10.0, CAP = 4.0, KI_VAR = 37.5;
+      var RESEARCH_X=61.5509;
 
       function structureReturn(x) {
         var st = 100 + x;
@@ -250,6 +289,20 @@
         return PAD.t + (1 - (yy - Y_MIN) / (Y_MAX - Y_MIN)) * PLOT_H;
       }
       function svgToX(px) { return X_MIN + ((px - PAD.l) / PLOT_W) * (X_MAX - X_MIN); }
+
+      function placeResearchMarker() {
+        if (RESEARCH_X == null) return;
+        var x = Math.max(X_MIN, Math.min(X_MAX, RESEARCH_X));
+        var px = xToSvg(x);
+        var line = document.getElementById("researchTargetLine");
+        var lab = document.getElementById("researchTargetLabel");
+        if (!line || !lab) return;
+        line.setAttribute("x1", px); line.setAttribute("x2", px); line.setAttribute("opacity", "1");
+        lab.setAttribute("x", Math.min(VW - PAD.r - 8, px + 6));
+        lab.setAttribute("y", PAD.t + 14);
+        lab.textContent = "PA Research " + fmtPct(RESEARCH_X, 1);
+        lab.setAttribute("opacity", "1");
+      }
 
       function buildStructD() {
         var d = "", first = true;
@@ -297,6 +350,7 @@
       document.getElementById("axisZeroY").setAttribute("y2", yToSvg(0));
       document.getElementById("structPath").setAttribute("d", buildStructD());
       document.getElementById("assetPath").setAttribute("points", buildAssetPoints());
+      placeResearchMarker();
 
       var floorX = xToSvg(FLOOR), kiX = xToSvg(KI_VAR);
       document.getElementById("floorDot").setAttribute("cx", floorX);
@@ -383,6 +437,12 @@
       function onSliderInput(e) { showAt(Number(e.target.value)); }
       if (slider) slider.addEventListener("input", onSliderInput);
       if (sliderMobile) { sliderMobile.addEventListener("input", onSliderInput); sliderMobile.addEventListener("change", onSliderInput); }
+      var btnPa = document.getElementById("btnResearchTarget");
+      if (btnPa && RESEARCH_X != null) {
+        btnPa.addEventListener("click", function () { showAt(RESEARCH_X); });
+      } else if (btnPa) {
+        btnPa.disabled = true;
+      }
       showAt(20);
     })();
   </script>

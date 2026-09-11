@@ -1,8 +1,23 @@
 # -*- coding: utf-8 -*-
-"""Gera factsheets Smart Hedge (VALE3/PETR4/AXIA3/ROXO34/ITUB4) e Twin Coupon ITUB4."""
+"""Gera factsheets Smart Hedge / Twin Coupon e hub Operações dia D (Research Content API)."""
+from __future__ import annotations
+
+import importlib.util
+import json
+import math
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
+
+
+def load_prat():
+    """Reusa fetch/HTML de Research da prateleira semanal."""
+    path = ROOT / "prateleira" / "_build.py"
+    spec = importlib.util.spec_from_file_location("prat_build", path)
+    mod = importlib.util.module_from_spec(spec)
+    assert spec and spec.loader
+    spec.loader.exec_module(mod)
+    return mod
 
 
 def write(rel: str, content: str) -> None:
@@ -16,7 +31,7 @@ def fmt_br(n: float, digits: int = 2) -> str:
     return f"{n:.{digits}f}".replace(".", ",")
 
 
-def smart_hedge_html(cfg: dict) -> str:
+def smart_hedge_html(cfg: dict, prat=None) -> str:
     ticker = cfg["ticker"]
     name = cfg["name"]
     brand = cfg["brand"]
@@ -26,6 +41,12 @@ def smart_hedge_html(cfg: dict) -> str:
     barrier = cfg["barrier"]
     prazo = cfg["prazo"]
     initials = cfg.get("initials", ticker[:2])
+    rs = cfg.get("research") or {}
+    research_block = ""
+    insights_block = ""
+    if prat is not None:
+        research_block = prat.research_html({"ticker": ticker, "research": rs})
+        insights_block = prat.research_insights_html({"ticker": ticker, "research": rs})
 
     floor = put - 100
     cap = call - 100
@@ -67,6 +88,13 @@ def smart_hedge_html(cfg: dict) -> str:
     y_max = max(55, int(ki_var + 10))
     x_min = -40
     x_max = max(90, int(ki_var + 30))
+    up = rs.get("upside")
+    if up is not None and up > x_max - 8:
+        x_max = int(math.ceil((up + 10) / 10.0) * 10)
+    if up is not None:
+        js_research = f"var RESEARCH_X={float(up):.4f};"
+    else:
+        js_research = "var RESEARCH_X=null;"
 
     prot_blurb = f"Piso {floor_label}<span>Put strike {floor_put_label}</span>"
     zone_low = f"Proteção: retorno limitado a {floor_label}."
@@ -113,6 +141,25 @@ def smart_hedge_html(cfg: dict) -> str:
     .hi h3 {{ font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 6px; }}
     .hi p {{ font-size: 15px; font-weight: 700; color: var(--ink); }}
     .hi p span {{ display: block; font-weight: 400; color: var(--muted); font-size: 12px; margin-top: 3px; }}
+
+    .research{{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin-bottom:18px}}
+    .research-head{{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px;flex-wrap:wrap}}
+    .research-head h2{{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--brand);margin:0}}
+    .research-link{{display:inline-flex;align-items:center;gap:8px;background:var(--brand);color:#fff !important;text-decoration:none !important;font-weight:700;font-size:13px;padding:10px 14px;border-radius:8px}}
+    .research-grid{{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}}
+    .research-grid .lbl{{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);margin-bottom:4px}}
+    .research-grid .val{{font-size:18px;font-weight:700}}
+    .research-grid .val.buy{{color:var(--success)}}
+    .research-grid .val.hold{{color:#b8860b}}
+    .research-grid .val.sell{{color:var(--danger)}}
+    .research-note{{font-size:12px;color:var(--muted);margin-top:10px}}
+    .research-actions{{margin-top:12px}}
+    .research-btn{{appearance:none;border:1px solid var(--brand);background:#fff;color:var(--brand);font-size:12px;font-weight:700;padding:9px 14px;border-radius:8px;cursor:pointer}}
+    .research-bullets{{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}}
+    .research-bullets li{{position:relative;padding:10px 12px 10px 28px;background:var(--bg);border:1px solid var(--line);border-radius:8px;font-size:13px;line-height:1.45}}
+    .research-bullets li::before{{content:"";position:absolute;left:12px;top:16px;width:6px;height:6px;border-radius:50%;background:var(--brand)}}
+    .insights-box .research-note{{margin-top:12px}}
+
     .main {{ display: grid; grid-template-columns: 280px 1fr 300px; gap: 18px; align-items: start; }}
     .panel {{ background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 18px; }}
     .panel h2 {{ font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--brand); margin-bottom: 14px; }}
@@ -164,13 +211,13 @@ def smart_hedge_html(cfg: dict) -> str:
     .footer {{ margin-top: 28px; font-size: 11px; color: var(--muted); text-align: center; line-height: 1.55; }}
     .footer-alert {{ margin-top: 10px; text-align: center; font-size: 11px; color: var(--btg); font-weight: 700; line-height: 1.5; }}
     .visit-pixel {{ position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }}
-    @media (max-width: 1100px) {{ .main {{ grid-template-columns: 1fr; }} .highlights {{ grid-template-columns: 1fr 1fr; }} .zones {{ grid-template-columns: 1fr; }} }}
+    @media (max-width: 1100px) {{ .main {{ grid-template-columns: 1fr; }} .highlights {{ grid-template-columns: 1fr 1fr; }} .zones {{ grid-template-columns: 1fr; }} .research-grid{{grid-template-columns:1fr 1fr}} }}
     @media (max-width: 640px) {{ .page {{ padding: 16px 14px 40px; }} .topbar {{ flex-direction: column; }} .meta-pills {{ justify-content: flex-start; }} .highlights {{ grid-template-columns: 1fr; }} }}
   </style>
 </head>
 <body>
   <div class="page">
-    <p class="back-link"><a href="../../prateleira-tatica/index.html">← Prateleira tática</a></p>
+    <p class="back-link"><a href="../../prateleira-tatica/index.html">← Operações dia D</a></p>
     <header class="topbar">
       <div class="brand-block">
         <div class="logos">
@@ -194,6 +241,7 @@ def smart_hedge_html(cfg: dict) -> str:
       <div class="hi"><h3>Se atingir a barreira</h3><p>Teto +{cap:.0f}%<span>Call vendida {fmt_br(call)}%</span></p></div>
       <div class="hi"><h3>Prazo</h3><p>{prazo}</p></div>
     </section>
+    {research_block}
 
     <div class="main">
       <aside class="panel">
@@ -217,6 +265,7 @@ def smart_hedge_html(cfg: dict) -> str:
           <div class="chart-legend">
             <span><i class="swatch"></i> Estrutura</span>
             <span><i class="swatch asset"></i> Ativo</span>
+            <span><i class="swatch" style="background:#1a66b3;border-top:none;height:2px;background:repeating-linear-gradient(90deg,#1a66b3 0 4px,transparent 4px 7px)"></i> PA Research</span>
           </div>
         </div>
         <div class="chart-box" id="chartBox">
@@ -239,6 +288,8 @@ def smart_hedge_html(cfg: dict) -> str:
             <text id="kiLabel" x="0" y="0" fill="#c0392b" font-size="11" font-weight="600" font-family="Segoe UI, Arial, sans-serif">Barreira {barrier_label}</text>
             <circle id="capDot" cx="0" cy="0" r="4" fill="{brand}"/>
             <text id="capLabel" x="0" y="0" fill="{brand}" font-size="11" font-weight="600" font-family="Segoe UI, Arial, sans-serif">Teto +{cap:.0f}%</text>
+            <line id="researchTargetLine" x1="0" y1="24" x2="0" y2="376" stroke="#1a66b3" stroke-width="1.5" stroke-dasharray="5 4" opacity="0"/>
+            <text id="researchTargetLabel" font-size="11" fill="#1a66b3" font-weight="700" opacity="0">PA Research</text>
             <line id="hoverLine" x1="0" y1="24" x2="0" y2="376" stroke="rgba(0,0,0,0.25)" stroke-width="1.25" stroke-dasharray="4 4" visibility="hidden"/>
             <circle id="hoverStruct" r="5.5" fill="{brand}" visibility="hidden"/>
             <circle id="hoverAsset" r="4" fill="#8b83a0" visibility="hidden"/>
@@ -292,6 +343,7 @@ def smart_hedge_html(cfg: dict) -> str:
       <p class="speech-label">Fechamento</p>
       <p>Payoff fácil de explicar no vencimento. Material de uso interno — condições oficiais no DIE (Admin BTG).</p>
     </section>
+    {insights_block}
 
     <p class="footer">Material ilustrativo. Payoff intrínseco no vencimento. Não constitui oferta, recomendação ou garantia de rentabilidade. Produto estruturado envolve risco de perda de capital.</p>
     <p class="footer-alert"><strong>MATERIAL DE USO INTERNO, NÃO ENVIAR AOS CLIENTES</strong><br /><strong>PARA INFORMAÇÕES OFICIAIS, ACESSAR O DIE DA OPERAÇÃO DISPONIBILIZADO NO ADMIN BTG</strong></p>
@@ -307,6 +359,7 @@ def smart_hedge_html(cfg: dict) -> str:
       var PLOT_H = VH - PAD.t - PAD.b;
       var PUT = {put}, CALL = {call}, BARRIER = {barrier};
       var FLOOR = {floor}, CAP = {cap}, KI_VAR = {ki_var};
+      {js_research}
 
       function structureReturn(x) {{
         var st = 100 + x;
@@ -330,6 +383,20 @@ def smart_hedge_html(cfg: dict) -> str:
         return PAD.t + (1 - (yy - Y_MIN) / (Y_MAX - Y_MIN)) * PLOT_H;
       }}
       function svgToX(px) {{ return X_MIN + ((px - PAD.l) / PLOT_W) * (X_MAX - X_MIN); }}
+
+      function placeResearchMarker() {{
+        if (RESEARCH_X == null) return;
+        var x = Math.max(X_MIN, Math.min(X_MAX, RESEARCH_X));
+        var px = xToSvg(x);
+        var line = document.getElementById("researchTargetLine");
+        var lab = document.getElementById("researchTargetLabel");
+        if (!line || !lab) return;
+        line.setAttribute("x1", px); line.setAttribute("x2", px); line.setAttribute("opacity", "1");
+        lab.setAttribute("x", Math.min(VW - PAD.r - 8, px + 6));
+        lab.setAttribute("y", PAD.t + 14);
+        lab.textContent = "PA Research " + fmtPct(RESEARCH_X, 1);
+        lab.setAttribute("opacity", "1");
+      }}
 
       function buildStructD() {{
         var d = "", first = true;
@@ -377,6 +444,7 @@ def smart_hedge_html(cfg: dict) -> str:
       document.getElementById("axisZeroY").setAttribute("y2", yToSvg(0));
       document.getElementById("structPath").setAttribute("d", buildStructD());
       document.getElementById("assetPath").setAttribute("points", buildAssetPoints());
+      placeResearchMarker();
 
       var floorX = xToSvg(FLOOR), kiX = xToSvg(KI_VAR);
       document.getElementById("floorDot").setAttribute("cx", floorX);
@@ -463,6 +531,12 @@ def smart_hedge_html(cfg: dict) -> str:
       function onSliderInput(e) {{ showAt(Number(e.target.value)); }}
       if (slider) slider.addEventListener("input", onSliderInput);
       if (sliderMobile) {{ sliderMobile.addEventListener("input", onSliderInput); sliderMobile.addEventListener("change", onSliderInput); }}
+      var btnPa = document.getElementById("btnResearchTarget");
+      if (btnPa && RESEARCH_X != null) {{
+        btnPa.addEventListener("click", function () {{ showAt(RESEARCH_X); }});
+      }} else if (btnPa) {{
+        btnPa.disabled = true;
+      }}
       showAt(20);
     }})();
   </script>
@@ -471,8 +545,14 @@ def smart_hedge_html(cfg: dict) -> str:
 """
 
 
-def twin_coupon_html() -> str:
+def twin_coupon_html(prat=None, research=None) -> str:
     """Twin Coupon ITUB4 — approximation for illustration."""
+    rs = research or {}
+    research_block = ""
+    insights_block = ""
+    if prat is not None:
+        research_block = prat.research_html({"ticker": "ITUB4", "research": rs})
+        insights_block = prat.research_insights_html({"ticker": "ITUB4", "research": rs})
     brand = "#ec7000"
     brand_soft = "rgba(236,112,0,0.12)"
     ticker = "ITUB4"
@@ -505,6 +585,13 @@ def twin_coupon_html() -> str:
 
     x_min, x_max = -50, 80
     y_min, y_max = -45, 60
+    up = rs.get("upside")
+    if up is not None and up > x_max - 8:
+        x_max = int(math.ceil((up + 10) / 10.0) * 10)
+    if up is not None:
+        js_research = f"var RESEARCH_X={float(up):.4f};"
+    else:
+        js_research = "var RESEARCH_X=null;"
 
     return f"""<!DOCTYPE html>
 <html lang="pt-BR">
@@ -541,6 +628,25 @@ def twin_coupon_html() -> str:
     .hi h3 {{ font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 6px; }}
     .hi p {{ font-size: 15px; font-weight: 700; color: var(--ink); }}
     .hi p span {{ display: block; font-weight: 400; color: var(--muted); font-size: 12px; margin-top: 3px; }}
+
+    .research{{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin-bottom:18px}}
+    .research-head{{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px;flex-wrap:wrap}}
+    .research-head h2{{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--brand);margin:0}}
+    .research-link{{display:inline-flex;align-items:center;gap:8px;background:var(--brand);color:#fff !important;text-decoration:none !important;font-weight:700;font-size:13px;padding:10px 14px;border-radius:8px}}
+    .research-grid{{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}}
+    .research-grid .lbl{{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);margin-bottom:4px}}
+    .research-grid .val{{font-size:18px;font-weight:700}}
+    .research-grid .val.buy{{color:var(--success)}}
+    .research-grid .val.hold{{color:#b8860b}}
+    .research-grid .val.sell{{color:var(--danger)}}
+    .research-note{{font-size:12px;color:var(--muted);margin-top:10px}}
+    .research-actions{{margin-top:12px}}
+    .research-btn{{appearance:none;border:1px solid var(--brand);background:#fff;color:var(--brand);font-size:12px;font-weight:700;padding:9px 14px;border-radius:8px;cursor:pointer}}
+    .research-bullets{{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}}
+    .research-bullets li{{position:relative;padding:10px 12px 10px 28px;background:var(--bg);border:1px solid var(--line);border-radius:8px;font-size:13px;line-height:1.45}}
+    .research-bullets li::before{{content:"";position:absolute;left:12px;top:16px;width:6px;height:6px;border-radius:50%;background:var(--brand)}}
+    .insights-box .research-note{{margin-top:12px}}
+
     .main {{ display: grid; grid-template-columns: 280px 1fr 300px; gap: 18px; align-items: start; }}
     .panel {{ background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 18px; }}
     .panel h2 {{ font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--brand); margin-bottom: 14px; }}
@@ -597,7 +703,7 @@ def twin_coupon_html() -> str:
 </head>
 <body>
   <div class="page">
-    <p class="back-link"><a href="../../prateleira-tatica/index.html">← Prateleira tática</a></p>
+    <p class="back-link"><a href="../../prateleira-tatica/index.html">← Operações dia D</a></p>
     <header class="topbar">
       <div class="brand-block">
         <div class="logos">
@@ -624,6 +730,7 @@ def twin_coupon_html() -> str:
       <div class="hi"><h3>Strike / barreira alta</h3><p>110% / 153%<span>Se barreira alta: teto +10%</span></p></div>
       <div class="hi"><h3>Prazo</h3><p>2 anos<span>Cupons: detalhes no DIE</span></p></div>
     </section>
+    {research_block}
 
     <div class="main">
       <aside class="panel">
@@ -652,6 +759,7 @@ def twin_coupon_html() -> str:
           <div class="chart-legend">
             <span><i class="swatch"></i> Estrutura</span>
             <span><i class="swatch asset"></i> Ativo</span>
+            <span><i class="swatch" style="background:#1a66b3;border-top:none;height:2px;background:repeating-linear-gradient(90deg,#1a66b3 0 4px,transparent 4px 7px)"></i> PA Research</span>
           </div>
         </div>
         <div class="chart-box" id="chartBox">
@@ -737,6 +845,7 @@ def twin_coupon_html() -> str:
       <p class="speech-label">Fechamento</p>
       <p>Material de uso interno. Payoff aproximado para conversa comercial — condições oficiais no DIE.</p>
     </section>
+    {insights_block}
 
     <p class="footer">Material ilustrativo. Payoff aproximado no vencimento, sem carrego/juros/cupons. Não constitui oferta, recomendação ou garantia de rentabilidade.</p>
     <p class="footer-alert"><strong>MATERIAL DE USO INTERNO, NÃO ENVIAR AOS CLIENTES</strong><br /><strong>PARA INFORMAÇÕES OFICIAIS, ACESSAR O DIE DA OPERAÇÃO DISPONIBILIZADO NO ADMIN BTG</strong></p>
@@ -751,6 +860,7 @@ def twin_coupon_html() -> str:
       var PLOT_W = VW - PAD.l - PAD.r;
       var PLOT_H = VH - PAD.t - PAD.b;
       var DOWN_VAR = {down_var}, UP_VAR = {up_var}, FLOOR = {floor}, CAP = {cap};
+      {js_research}
 
       function structureReturn(x) {{
         if (x <= DOWN_VAR) return x;
@@ -773,6 +883,20 @@ def twin_coupon_html() -> str:
         return PAD.t + (1 - (yy - Y_MIN) / (Y_MAX - Y_MIN)) * PLOT_H;
       }}
       function svgToX(px) {{ return X_MIN + ((px - PAD.l) / PLOT_W) * (X_MAX - X_MIN); }}
+
+      function placeResearchMarker() {{
+        if (RESEARCH_X == null) return;
+        var x = Math.max(X_MIN, Math.min(X_MAX, RESEARCH_X));
+        var px = xToSvg(x);
+        var line = document.getElementById("researchTargetLine");
+        var lab = document.getElementById("researchTargetLabel");
+        if (!line || !lab) return;
+        line.setAttribute("x1", px); line.setAttribute("x2", px); line.setAttribute("opacity", "1");
+        lab.setAttribute("x", Math.min(VW - PAD.r - 8, px + 6));
+        lab.setAttribute("y", PAD.t + 14);
+        lab.textContent = "PA Research " + fmtPct(RESEARCH_X, 1);
+        lab.setAttribute("opacity", "1");
+      }}
 
       function buildStructD() {{
         var d = "", first = true;
@@ -823,6 +947,7 @@ def twin_coupon_html() -> str:
       document.getElementById("axisZeroY").setAttribute("y2", yToSvg(0));
       document.getElementById("structPath").setAttribute("d", buildStructD());
       document.getElementById("assetPath").setAttribute("points", buildAssetPoints());
+      placeResearchMarker();
 
       var dX = xToSvg(DOWN_VAR), uX = xToSvg(UP_VAR);
       document.getElementById("downGap").setAttribute("x1", dX);
@@ -913,12 +1038,259 @@ def twin_coupon_html() -> str:
       function onSliderInput(e) {{ showAt(Number(e.target.value)); }}
       if (slider) slider.addEventListener("input", onSliderInput);
       if (sliderMobile) {{ sliderMobile.addEventListener("input", onSliderInput); sliderMobile.addEventListener("change", onSliderInput); }}
+      var btnPa = document.getElementById("btnResearchTarget");
+      if (btnPa && RESEARCH_X != null) {{
+        btnPa.addEventListener("click", function () {{ showAt(RESEARCH_X); }});
+      }} else if (btnPa) {{
+        btnPa.disabled = true;
+      }}
       showAt(20);
     }})();
   </script>
 </body>
 </html>
 """
+
+
+
+def research_pills(rs: dict, prat) -> str:
+    extra = ""
+    if rs.get("rec_lbl"):
+        extra += f'<span class="pill">Research: {rs["rec_lbl"]}</span>'
+    if rs.get("target") is not None:
+        extra += f'<span class="pill">PA: {prat.fmt_brl(rs["target"])}</span>'
+    return extra
+
+
+def hub_html(research: dict, prat) -> str:
+    """Hub Operações dia D — mesma dinâmica da prateleira semanal (cards → seções)."""
+    sections = [
+        (
+            "Câmbio e renda fixa",
+            "cambio",
+            "#0d6e6e",
+            "FX e hedge de duration",
+            [
+                {
+                    "href": "../ops/ptax-call-up-out-ko/index.html",
+                    "title": "Call Up and Out PTAX",
+                    "ticker": "PTAX",
+                    "brand": "#0d6e6e",
+                    "blurb": "Call KO 110% · participa da alta até a barreira; no KO líquido +2% (rebate 5% − preço 3%).",
+                    "pills": ["Câmbio", "Fixing 26/10", "Preço 3%", "Rebate 5%"],
+                    "research": {},
+                },
+                {
+                    "href": "../ops/pacb11-put-hedge/index.html",
+                    "title": "Put ATM PACB11",
+                    "ticker": "PACB11",
+                    "brand": "#2f6b5a",
+                    "blurb": "Compra de put ATM para hedge de duration (NTN-Bs / PACB11). Prazo 1 ano · prêmio 2,9%.",
+                    "pills": ["Renda fixa / ETF", "1 ano", "Prêmio 2,9%", "ATM"],
+                    "research": {},
+                },
+            ],
+        ),
+        (
+            "Smart Hedge",
+            "smart-hedge",
+            "#1e4d7b",
+            "Participação 1:1 com piso e teto na barreira",
+            [
+                {
+                    "href": f"../ops/{cfg['slug']}/index.html",
+                    "title": f"Smart Hedge {cfg['name']}",
+                    "ticker": cfg["ticker"],
+                    "brand": cfg["brand"],
+                    "blurb": (
+                        f"Proteção {fmt_br(cfg['put'])}% · strike {fmt_br(cfg['call'])}% · "
+                        f"barreira {fmt_br(cfg['barrier'])}% · prazo {cfg['prazo']}."
+                    ),
+                    "pills": [
+                        "Equity",
+                        cfg["prazo"],
+                        f"Prot. {fmt_br(cfg['put'])}%",
+                        f"Barreira {fmt_br(cfg['barrier'])}%",
+                    ],
+                    "research": research.get(cfg["ticker"]) or {},
+                }
+                for cfg in OPS
+            ],
+        ),
+        (
+            "Twin Coupon",
+            "twin-coupon",
+            "#ec7000",
+            "Twin com proteção reforçada e barreiras",
+            [
+                {
+                    "href": "../ops/twin-coupon-itub4/index.html",
+                    "title": "Twin Coupon Itaú",
+                    "ticker": "ITUB4",
+                    "brand": "#ec7000",
+                    "blurb": "Proteção 110% · barreira de queda 70% · strike 110% · barreira 153% · prazo 2 anos.",
+                    "pills": ["Equity", "2 anos", "Prot. 110%", "Down 70% · Up 153%"],
+                    "research": research.get("ITUB4") or {},
+                },
+            ],
+        ),
+    ]
+
+    cat_cards = []
+    sections_html = []
+    for title, sid, color, blurb, items in sections:
+        tickers = ", ".join(dict.fromkeys(it["ticker"] for it in items))
+        n = len(items)
+        cat_cards.append(
+            f"""
+<button type="button" class="cat-card" data-target="{sid}" style="--cat:{color}">
+  <span class="cat-bar"></span>
+  <span class="cat-body">
+    <span class="cat-title">{title}</span>
+    <span class="cat-count">{n} operaç{"ão" if n == 1 else "ões"}</span>
+    <span class="cat-blurb">{blurb}</span>
+    <span class="cat-tickers">{tickers}</span>
+  </span>
+</button>"""
+        )
+        ops = []
+        for it in items:
+            pills = "".join(f'<span class="pill">{p}</span>' for p in it["pills"])
+            pills += research_pills(it.get("research") or {}, prat)
+            ops.append(
+                f"""
+<li class="op-block">
+  <div class="op-bar" style="background:{it['brand']}"></div>
+  <a class="op" href="{it['href']}">
+    <div class="op-top"><span class="op-title">{it['title']}</span><span class="op-ticker">{it['ticker']}</span></div>
+    <p class="op-blurb">{it['blurb']}</p>
+    <div class="op-meta">{pills}</div>
+    <div class="op-cta">Abrir material →</div>
+  </a>
+</li>"""
+            )
+        sections_html.append(
+            f"""
+<section class="cat-section" id="{sid}" hidden>
+  <div class="cat-section-head">
+    <h2>{title}</h2>
+    <button type="button" class="cat-back" data-back>← Voltar aos cards</button>
+  </div>
+  <ul class="ops">{''.join(ops)}</ul>
+</section>"""
+        )
+
+    return f"""<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Operações dia D — Distribuição Renda Variável | BTG Pactual</title>
+  <style>
+    :root {{
+      --btg: #0b1f3a; --btg-mid: #163a5f; --btg-blue: #1e4d7b; --link: #1a66b3;
+      --ink: #0b1f3a; --muted: #5c6b7a; --line: #d0d8e2; --bg: #eef2f6; --card: #ffffff;
+    }}
+    * {{ box-sizing: border-box; margin: 0; padding: 0; }}
+    body {{ font-family: Segoe UI, -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif; color: var(--ink); background: var(--bg); min-height: 100vh; line-height: 1.45; }}
+    .hero {{ background: linear-gradient(135deg, var(--btg) 0%, var(--btg-mid) 55%, var(--btg-blue) 100%); color: #fff; padding: 36px 24px 40px; }}
+    .hero-inner {{ max-width: 960px; margin: 0 auto; }}
+    .logo-btg {{ display: inline-block; font-weight: 700; font-size: 12px; letter-spacing: 0.1em; border: 1px solid rgba(255,255,255,0.35); padding: 7px 12px; border-radius: 2px; margin-bottom: 22px; }}
+    .hero-row {{ display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; }}
+    h1 {{ font-size: clamp(28px, 4.5vw, 40px); font-weight: 700; letter-spacing: -0.02em; line-height: 1.15; }}
+    .lede {{ margin-top: 12px; font-size: 15px; color: rgba(255,255,255,.82); max-width: 40em; }}
+    .lede-strong {{ display: inline; font-size: 18px; font-weight: 700; color: #fff; }}
+    .badge {{ font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; border: 1px solid rgba(255,255,255,0.35); padding: 8px 12px; border-radius: 2px; white-space: nowrap; }}
+    .page {{ max-width: 960px; margin: 0 auto; padding: 28px 24px 56px; }}
+    .cat-grid {{ display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-bottom: 8px; }}
+    .cat-card {{ appearance: none; border: 1px solid var(--line); background: var(--card); border-radius: 6px; overflow: hidden; text-align: left; cursor: pointer; padding: 0; display: flex; flex-direction: column; transition: transform .12s ease, box-shadow .12s ease, border-color .12s; }}
+    .cat-card:hover, .cat-card:focus-visible {{ transform: translateY(-2px); box-shadow: 0 8px 20px rgba(11,31,58,.08); border-color: #b8c6d6; outline: none; }}
+    .cat-card.active {{ border-color: var(--cat); box-shadow: 0 0 0 2px color-mix(in srgb, var(--cat) 28%, transparent); }}
+    .cat-bar {{ display: block; height: 6px; background: var(--cat); }}
+    .cat-body {{ display: flex; flex-direction: column; gap: 6px; padding: 16px 18px 18px; }}
+    .cat-title {{ font-size: 17px; font-weight: 700; color: var(--btg); }}
+    .cat-count {{ font-size: 11px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--cat); }}
+    .cat-blurb {{ font-size: 13px; color: var(--muted); line-height: 1.4; }}
+    .cat-tickers {{ font-size: 11px; color: #7a8796; line-height: 1.35; margin-top: 2px; }}
+    .cat-section-head {{ display: flex; justify-content: space-between; align-items: center; gap: 12px; margin: 8px 0 14px; }}
+    .cat-section h2 {{ font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--btg-blue); margin: 0; }}
+    .cat-back {{ appearance: none; border: 1px solid var(--line); background: #fff; color: var(--link); font-size: 12px; font-weight: 700; padding: 8px 12px; border-radius: 4px; cursor: pointer; }}
+    .cat-back:hover {{ background: #f5f8fc; }}
+    .ops {{ list-style: none; display: flex; flex-direction: column; gap: 16px; }}
+    .op-block {{ background: var(--card); border: 1px solid var(--line); border-radius: 4px; overflow: hidden; }}
+    .op-bar {{ height: 6px; }}
+    .op {{ display: block; text-decoration: none; color: inherit; padding: 20px 22px 18px; transition: background .12s; }}
+    .op:hover, .op:focus-visible {{ background: #f5f8fc; outline: none; }}
+    .op-top {{ display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 8px; }}
+    .op-title {{ font-size: 18px; font-weight: 700; color: var(--btg); }}
+    .op-ticker {{ font-size: 12px; font-weight: 700; color: var(--link); letter-spacing: 0.04em; }}
+    .op-blurb {{ font-size: 14px; color: var(--muted); max-width: 48em; }}
+    .op-meta {{ margin-top: 12px; display: flex; flex-wrap: wrap; gap: 8px; }}
+    .pill {{ background: #eef2f6; border: 1px solid var(--line); border-radius: 2px; padding: 4px 10px; color: var(--btg-mid); font-size: 11px; font-weight: 600; }}
+    .op-cta {{ margin-top: 12px; font-size: 12px; font-weight: 700; color: var(--link); }}
+    .footer {{ margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--line); font-size: 11px; color: var(--muted); text-align: center; line-height: 1.55; }}
+    .footer strong {{ display: block; margin-top: 10px; color: var(--btg); }}
+    @media (max-width: 720px) {{ .cat-grid {{ grid-template-columns: 1fr; }} }}
+    @media (max-width: 640px) {{ .hero {{ padding: 28px 16px 32px; }} .page {{ padding: 20px 16px 48px; }} .hero-row {{ flex-direction: column; align-items: flex-start; }} .cat-section-head {{ flex-direction: column; align-items: flex-start; }} }}
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="logo-btg">BTG PACTUAL</div>
+      <div class="hero-row">
+        <div>
+          <h1>Operações dia D</h1>
+          <p class="lede"><span class="lede-strong">Distribuição Renda Variável</span> · escolha um card para ver as operações</p>
+        </div>
+        <div class="badge">Uso interno</div>
+      </div>
+    </div>
+  </header>
+  <main class="page">
+    <div class="cat-grid" id="catGrid">{''.join(cat_cards)}</div>
+    {''.join(sections_html)}
+    <p class="footer">
+      Material ilustrativo para uso interno. Não constitui oferta, recomendação ou garantia de rentabilidade.
+      <strong>MATERIAL DE USO INTERNO, NÃO ENVIAR AOS CLIENTES</strong>
+    </p>
+  </main>
+<script>
+(function(){{
+  var grid=document.getElementById('catGrid');
+  var cards=[].slice.call(document.querySelectorAll('.cat-card'));
+  var sections=[].slice.call(document.querySelectorAll('.cat-section'));
+  function show(id){{
+    cards.forEach(function(c){{ c.classList.toggle('active', c.getAttribute('data-target')===id); }});
+    sections.forEach(function(s){{
+      var on=s.id===id;
+      if(on) s.removeAttribute('hidden'); else s.setAttribute('hidden','');
+    }});
+    if(id){{
+      grid.style.display='none';
+      var el=document.getElementById(id);
+      if(el) el.scrollIntoView({{behavior:'smooth',block:'start'}});
+      history.replaceState(null,'','#'+id);
+    }} else {{
+      grid.style.display='';
+      history.replaceState(null,'',location.pathname);
+      window.scrollTo({{top:0,behavior:'smooth'}});
+    }}
+  }}
+  cards.forEach(function(c){{
+    c.addEventListener('click',function(){{ show(c.getAttribute('data-target')); }});
+  }});
+  document.querySelectorAll('[data-back]').forEach(function(b){{
+    b.addEventListener('click',function(){{ show(null); }});
+  }});
+  var hash=(location.hash||'').replace('#','');
+  if(hash && document.getElementById(hash)) show(hash);
+}})();
+</script>
+</body>
+</html>
+"""
+
 
 
 OPS = [
@@ -986,7 +1358,21 @@ OPS = [
 
 
 if __name__ == "__main__":
+    prat = load_prat()
+    tickers = [cfg["ticker"] for cfg in OPS] + ["ITUB4"]
+    try:
+        research = prat.fetch_research(tickers)
+    except Exception as exc:
+        print("research_fail", exc)
+        snap = ROOT / "prateleira" / "research_targets.json"
+        research = json.loads(snap.read_text(encoding="utf-8")) if snap.exists() else {}
+
     for cfg in OPS:
-        write(f"ops/{cfg['slug']}/index.html", smart_hedge_html(cfg))
-    write("ops/twin-coupon-itub4/index.html", twin_coupon_html())
+        cfg = dict(cfg)
+        cfg["research"] = research.get(cfg["ticker"]) or {}
+        write(f"ops/{cfg['slug']}/index.html", smart_hedge_html(cfg, prat))
+
+    twin_rs = research.get("ITUB4") or {}
+    write("ops/twin-coupon-itub4/index.html", twin_coupon_html(prat, twin_rs))
+    write("prateleira-tatica/index.html", hub_html(research, prat))
     print("done")

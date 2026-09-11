@@ -8,7 +8,6 @@
     :root {
       --btg: #0b1f3a; --btg-mid: #163a5f; --btg-blue: #1e4d7b; --link: #1a66b3;
       --ink: #0b1f3a; --muted: #5c6b7a; --line: #d0d8e2; --bg: #eef2f6; --card: #ffffff;
-      --ptax: #0d6e6e; --pacb: #2f6b5a; --vale: #007e33; --petr: #00665b; --axia: #5a4a8a; --roxo: #820ad1; --itub: #ec7000;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: Segoe UI, -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif; color: var(--ink); background: var(--bg); min-height: 100vh; line-height: 1.45; }
@@ -17,27 +16,40 @@
     .logo-btg { display: inline-block; font-weight: 700; font-size: 12px; letter-spacing: 0.1em; border: 1px solid rgba(255,255,255,0.35); padding: 7px 12px; border-radius: 2px; margin-bottom: 22px; }
     .hero-row { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; }
     h1 { font-size: clamp(28px, 4.5vw, 40px); font-weight: 700; letter-spacing: -0.02em; line-height: 1.15; }
-    .lede { margin-top: 12px; font-size: 18px; font-weight: 700; color: #fff; max-width: 40em; }
+    .lede { margin-top: 12px; font-size: 15px; color: rgba(255,255,255,.82); max-width: 40em; }
+    .lede-strong { display: inline; font-size: 18px; font-weight: 700; color: #fff; }
     .badge { font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; border: 1px solid rgba(255,255,255,0.35); padding: 8px 12px; border-radius: 2px; white-space: nowrap; }
     .page { max-width: 960px; margin: 0 auto; padding: 28px 24px 56px; }
-    h2 { font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--btg-blue); margin: 28px 0 14px; }
-    h2:first-of-type { margin-top: 0; }
-    .ops { list-style: none; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
-    .op-block { background: var(--card); border: 1px solid var(--line); border-radius: 6px; overflow: hidden; display: flex; flex-direction: column; transition: transform .12s ease, box-shadow .12s ease, border-color .12s; }
-    .op-block:hover, .op-block:focus-within { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(11,31,58,.08); border-color: #b8c6d6; }
+    .cat-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-bottom: 8px; }
+    .cat-card { appearance: none; border: 1px solid var(--line); background: var(--card); border-radius: 6px; overflow: hidden; text-align: left; cursor: pointer; padding: 0; display: flex; flex-direction: column; transition: transform .12s ease, box-shadow .12s ease, border-color .12s; }
+    .cat-card:hover, .cat-card:focus-visible { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(11,31,58,.08); border-color: #b8c6d6; outline: none; }
+    .cat-card.active { border-color: var(--cat); box-shadow: 0 0 0 2px color-mix(in srgb, var(--cat) 28%, transparent); }
+    .cat-bar { display: block; height: 6px; background: var(--cat); }
+    .cat-body { display: flex; flex-direction: column; gap: 6px; padding: 16px 18px 18px; }
+    .cat-title { font-size: 17px; font-weight: 700; color: var(--btg); }
+    .cat-count { font-size: 11px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--cat); }
+    .cat-blurb { font-size: 13px; color: var(--muted); line-height: 1.4; }
+    .cat-tickers { font-size: 11px; color: #7a8796; line-height: 1.35; margin-top: 2px; }
+    .cat-section-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin: 8px 0 14px; }
+    .cat-section h2 { font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--btg-blue); margin: 0; }
+    .cat-back { appearance: none; border: 1px solid var(--line); background: #fff; color: var(--link); font-size: 12px; font-weight: 700; padding: 8px 12px; border-radius: 4px; cursor: pointer; }
+    .cat-back:hover { background: #f5f8fc; }
+    .ops { list-style: none; display: flex; flex-direction: column; gap: 16px; }
+    .op-block { background: var(--card); border: 1px solid var(--line); border-radius: 4px; overflow: hidden; }
     .op-bar { height: 6px; }
-    .op { display: flex; flex-direction: column; flex: 1; text-decoration: none; color: inherit; padding: 18px 18px 16px; outline: none; }
+    .op { display: block; text-decoration: none; color: inherit; padding: 20px 22px 18px; transition: background .12s; }
+    .op:hover, .op:focus-visible { background: #f5f8fc; outline: none; }
     .op-top { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 8px; }
-    .op-title { font-size: 17px; font-weight: 700; color: var(--btg); }
+    .op-title { font-size: 18px; font-weight: 700; color: var(--btg); }
     .op-ticker { font-size: 12px; font-weight: 700; color: var(--link); letter-spacing: 0.04em; }
-    .op-blurb { font-size: 13px; color: var(--muted); line-height: 1.4; flex: 1; }
+    .op-blurb { font-size: 14px; color: var(--muted); max-width: 48em; }
     .op-meta { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 8px; }
     .pill { background: #eef2f6; border: 1px solid var(--line); border-radius: 2px; padding: 4px 10px; color: var(--btg-mid); font-size: 11px; font-weight: 600; }
     .op-cta { margin-top: 12px; font-size: 12px; font-weight: 700; color: var(--link); }
     .footer { margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--line); font-size: 11px; color: var(--muted); text-align: center; line-height: 1.55; }
     .footer strong { display: block; margin-top: 10px; color: var(--btg); }
-    @media (max-width: 720px) { .ops { grid-template-columns: 1fr; } }
-    @media (max-width: 640px) { .hero { padding: 28px 16px 32px; } .page { padding: 20px 16px 48px; } .hero-row { flex-direction: column; align-items: flex-start; } }
+    @media (max-width: 720px) { .cat-grid { grid-template-columns: 1fr; } }
+    @media (max-width: 640px) { .hero { padding: 28px 16px 32px; } .page { padding: 20px 16px 48px; } .hero-row { flex-direction: column; align-items: flex-start; } .cat-section-head { flex-direction: column; align-items: flex-start; } }
   </style>
 </head>
 <body>
@@ -47,101 +59,171 @@
       <div class="hero-row">
         <div>
           <h1>Operações dia D</h1>
-          <p class="lede">Distribuição Renda Variável</p>
+          <p class="lede"><span class="lede-strong">Distribuição Renda Variável</span> · escolha um card para ver as operações</p>
         </div>
         <div class="badge">Uso interno</div>
       </div>
     </div>
   </header>
   <main class="page">
+    <div class="cat-grid" id="catGrid">
+<button type="button" class="cat-card" data-target="cambio" style="--cat:#0d6e6e">
+  <span class="cat-bar"></span>
+  <span class="cat-body">
+    <span class="cat-title">Câmbio e renda fixa</span>
+    <span class="cat-count">2 operações</span>
+    <span class="cat-blurb">FX e hedge de duration</span>
+    <span class="cat-tickers">PTAX, PACB11</span>
+  </span>
+</button>
+<button type="button" class="cat-card" data-target="smart-hedge" style="--cat:#1e4d7b">
+  <span class="cat-bar"></span>
+  <span class="cat-body">
+    <span class="cat-title">Smart Hedge</span>
+    <span class="cat-count">5 operações</span>
+    <span class="cat-blurb">Participação 1:1 com piso e teto na barreira</span>
+    <span class="cat-tickers">VALE3, PETR4, AXIA3, ROXO34, ITUB4</span>
+  </span>
+</button>
+<button type="button" class="cat-card" data-target="twin-coupon" style="--cat:#ec7000">
+  <span class="cat-bar"></span>
+  <span class="cat-body">
+    <span class="cat-title">Twin Coupon</span>
+    <span class="cat-count">1 operação</span>
+    <span class="cat-blurb">Twin com proteção reforçada e barreiras</span>
+    <span class="cat-tickers">ITUB4</span>
+  </span>
+</button></div>
+    
+<section class="cat-section" id="cambio" hidden>
+  <div class="cat-section-head">
     <h2>Câmbio e renda fixa</h2>
-    <ul class="ops">
-      <li class="op-block">
-        <div class="op-bar" style="background:var(--ptax)"></div>
-        <a class="op" href="../ops/ptax-call-up-out-ko/index.html">
-          <div class="op-top"><span class="op-title">Call Up and Out PTAX</span><span class="op-ticker">PTAX</span></div>
-          <p class="op-blurb">Call KO 110% · participa da alta até a barreira; no KO líquido +2% (rebate 5% − preço 3%).</p>
-          <div class="op-meta"><span class="pill">Câmbio</span><span class="pill">Fixing 26/10</span><span class="pill">Preço 3%</span><span class="pill">Rebate 5%</span></div>
-          <div class="op-cta">Abrir material →</div>
-        </a>
-      </li>
-      <li class="op-block">
-        <div class="op-bar" style="background:var(--pacb)"></div>
-        <a class="op" href="../ops/pacb11-put-hedge/index.html">
-          <div class="op-top"><span class="op-title">Put ATM PACB11</span><span class="op-ticker">PACB11</span></div>
-          <p class="op-blurb">Compra de put ATM para hedge de duration (NTN-Bs / PACB11). Prazo 1 ano · prêmio 2,9%.</p>
-          <div class="op-meta"><span class="pill">Renda fixa / ETF</span><span class="pill">1 ano</span><span class="pill">Prêmio 2,9%</span><span class="pill">ATM</span></div>
-          <div class="op-cta">Abrir material →</div>
-        </a>
-      </li>
-    </ul>
-
+    <button type="button" class="cat-back" data-back>← Voltar aos cards</button>
+  </div>
+  <ul class="ops">
+<li class="op-block">
+  <div class="op-bar" style="background:#0d6e6e"></div>
+  <a class="op" href="../ops/ptax-call-up-out-ko/index.html">
+    <div class="op-top"><span class="op-title">Call Up and Out PTAX</span><span class="op-ticker">PTAX</span></div>
+    <p class="op-blurb">Call KO 110% · participa da alta até a barreira; no KO líquido +2% (rebate 5% − preço 3%).</p>
+    <div class="op-meta"><span class="pill">Câmbio</span><span class="pill">Fixing 26/10</span><span class="pill">Preço 3%</span><span class="pill">Rebate 5%</span></div>
+    <div class="op-cta">Abrir material →</div>
+  </a>
+</li>
+<li class="op-block">
+  <div class="op-bar" style="background:#2f6b5a"></div>
+  <a class="op" href="../ops/pacb11-put-hedge/index.html">
+    <div class="op-top"><span class="op-title">Put ATM PACB11</span><span class="op-ticker">PACB11</span></div>
+    <p class="op-blurb">Compra de put ATM para hedge de duration (NTN-Bs / PACB11). Prazo 1 ano · prêmio 2,9%.</p>
+    <div class="op-meta"><span class="pill">Renda fixa / ETF</span><span class="pill">1 ano</span><span class="pill">Prêmio 2,9%</span><span class="pill">ATM</span></div>
+    <div class="op-cta">Abrir material →</div>
+  </a>
+</li></ul>
+</section>
+<section class="cat-section" id="smart-hedge" hidden>
+  <div class="cat-section-head">
     <h2>Smart Hedge</h2>
-    <ul class="ops">
-      <li class="op-block">
-        <div class="op-bar" style="background:var(--vale)"></div>
-        <a class="op" href="../ops/smart-hedge-vale3/index.html">
-          <div class="op-top"><span class="op-title">Smart Hedge Vale</span><span class="op-ticker">VALE3</span></div>
-          <p class="op-blurb">Proteção 110% · strike 110% · barreira 174,35% · prazo 2 anos. Piso +10%; teto +10% se atingir a barreira.</p>
-          <div class="op-meta"><span class="pill">Equity</span><span class="pill">2 anos</span><span class="pill">Prot. 110%</span><span class="pill">Barreira 174,35%</span></div>
-          <div class="op-cta">Abrir material →</div>
-        </a>
-      </li>
-      <li class="op-block">
-        <div class="op-bar" style="background:var(--petr)"></div>
-        <a class="op" href="../ops/smart-hedge-petr4/index.html">
-          <div class="op-top"><span class="op-title">Smart Hedge Petrobras</span><span class="op-ticker">PETR4</span></div>
-          <p class="op-blurb">Proteção 100% · strike 110% · barreira 134% · prazo 1 ano. Piso 0%; teto +10% se atingir a barreira.</p>
-          <div class="op-meta"><span class="pill">Equity</span><span class="pill">1 ano</span><span class="pill">Prot. 100%</span><span class="pill">Barreira 134%</span></div>
-          <div class="op-cta">Abrir material →</div>
-        </a>
-      </li>
-      <li class="op-block">
-        <div class="op-bar" style="background:var(--axia)"></div>
-        <a class="op" href="../ops/smart-hedge-axia3/index.html">
-          <div class="op-top"><span class="op-title">Smart Hedge Axia</span><span class="op-ticker">AXIA3</span></div>
-          <p class="op-blurb">Proteção 100% · strike 110% · barreira 135% · prazo 1 ano. Piso 0%; teto +10% se atingir a barreira.</p>
-          <div class="op-meta"><span class="pill">Equity</span><span class="pill">1 ano</span><span class="pill">Prot. 100%</span><span class="pill">Barreira 135%</span></div>
-          <div class="op-cta">Abrir material →</div>
-        </a>
-      </li>
-      <li class="op-block">
-        <div class="op-bar" style="background:var(--roxo)"></div>
-        <a class="op" href="../ops/smart-hedge-roxo34/index.html">
-          <div class="op-top"><span class="op-title">Smart Hedge Nubank</span><span class="op-ticker">ROXO34</span></div>
-          <p class="op-blurb">Proteção 90% · strike 104% · barreira 137,50% · prazo 6 meses. Piso −10%; teto +4% se atingir a barreira.</p>
-          <div class="op-meta"><span class="pill">Equity</span><span class="pill">6 meses</span><span class="pill">Prot. 90%</span><span class="pill">Barreira 137,50%</span></div>
-          <div class="op-cta">Abrir material →</div>
-        </a>
-      </li>
-      <li class="op-block">
-        <div class="op-bar" style="background:var(--itub)"></div>
-        <a class="op" href="../ops/smart-hedge-itub4/index.html">
-          <div class="op-top"><span class="op-title">Smart Hedge Itaú</span><span class="op-ticker">ITUB4</span></div>
-          <p class="op-blurb">Proteção 90% · strike 104% · barreira 128% · prazo 6 meses. Piso −10%; teto +4% se atingir a barreira.</p>
-          <div class="op-meta"><span class="pill">Equity</span><span class="pill">6 meses</span><span class="pill">Prot. 90%</span><span class="pill">Barreira 128%</span></div>
-          <div class="op-cta">Abrir material →</div>
-        </a>
-      </li>
-    </ul>
-
+    <button type="button" class="cat-back" data-back>← Voltar aos cards</button>
+  </div>
+  <ul class="ops">
+<li class="op-block">
+  <div class="op-bar" style="background:#007e33"></div>
+  <a class="op" href="../ops/smart-hedge-vale3/index.html">
+    <div class="op-top"><span class="op-title">Smart Hedge Vale</span><span class="op-ticker">VALE3</span></div>
+    <p class="op-blurb">Proteção 110,00% · strike 110,00% · barreira 174,35% · prazo 2 anos.</p>
+    <div class="op-meta"><span class="pill">Equity</span><span class="pill">2 anos</span><span class="pill">Prot. 110,00%</span><span class="pill">Barreira 174,35%</span><span class="pill">Research: Compra</span><span class="pill">PA: R$ 90,00</span></div>
+    <div class="op-cta">Abrir material →</div>
+  </a>
+</li>
+<li class="op-block">
+  <div class="op-bar" style="background:#00665b"></div>
+  <a class="op" href="../ops/smart-hedge-petr4/index.html">
+    <div class="op-top"><span class="op-title">Smart Hedge Petrobras</span><span class="op-ticker">PETR4</span></div>
+    <p class="op-blurb">Proteção 100,00% · strike 110,00% · barreira 134,00% · prazo 1 ano.</p>
+    <div class="op-meta"><span class="pill">Equity</span><span class="pill">1 ano</span><span class="pill">Prot. 100,00%</span><span class="pill">Barreira 134,00%</span><span class="pill">Research: Compra</span><span class="pill">PA: R$ 65,00</span></div>
+    <div class="op-cta">Abrir material →</div>
+  </a>
+</li>
+<li class="op-block">
+  <div class="op-bar" style="background:#5a4a8a"></div>
+  <a class="op" href="../ops/smart-hedge-axia3/index.html">
+    <div class="op-top"><span class="op-title">Smart Hedge Axia</span><span class="op-ticker">AXIA3</span></div>
+    <p class="op-blurb">Proteção 100,00% · strike 110,00% · barreira 135,00% · prazo 1 ano.</p>
+    <div class="op-meta"><span class="pill">Equity</span><span class="pill">1 ano</span><span class="pill">Prot. 100,00%</span><span class="pill">Barreira 135,00%</span><span class="pill">Research: Compra</span><span class="pill">PA: R$ 74,00</span></div>
+    <div class="op-cta">Abrir material →</div>
+  </a>
+</li>
+<li class="op-block">
+  <div class="op-bar" style="background:#820ad1"></div>
+  <a class="op" href="../ops/smart-hedge-roxo34/index.html">
+    <div class="op-top"><span class="op-title">Smart Hedge Nubank</span><span class="op-ticker">ROXO34</span></div>
+    <p class="op-blurb">Proteção 90,00% · strike 104,00% · barreira 137,50% · prazo 6 meses.</p>
+    <div class="op-meta"><span class="pill">Equity</span><span class="pill">6 meses</span><span class="pill">Prot. 90,00%</span><span class="pill">Barreira 137,50%</span><span class="pill">Research: Compra</span><span class="pill">PA: R$ 20,00</span></div>
+    <div class="op-cta">Abrir material →</div>
+  </a>
+</li>
+<li class="op-block">
+  <div class="op-bar" style="background:#ec7000"></div>
+  <a class="op" href="../ops/smart-hedge-itub4/index.html">
+    <div class="op-top"><span class="op-title">Smart Hedge Itaú</span><span class="op-ticker">ITUB4</span></div>
+    <p class="op-blurb">Proteção 90,00% · strike 104,00% · barreira 128,00% · prazo 6 meses.</p>
+    <div class="op-meta"><span class="pill">Equity</span><span class="pill">6 meses</span><span class="pill">Prot. 90,00%</span><span class="pill">Barreira 128,00%</span><span class="pill">Research: Compra</span><span class="pill">PA: R$ 54,00</span></div>
+    <div class="op-cta">Abrir material →</div>
+  </a>
+</li></ul>
+</section>
+<section class="cat-section" id="twin-coupon" hidden>
+  <div class="cat-section-head">
     <h2>Twin Coupon</h2>
-    <ul class="ops">
-      <li class="op-block">
-        <div class="op-bar" style="background:var(--itub)"></div>
-        <a class="op" href="../ops/twin-coupon-itub4/index.html">
-          <div class="op-top"><span class="op-title">Twin Coupon Itaú</span><span class="op-ticker">ITUB4</span></div>
-          <p class="op-blurb">Proteção 110% · barreira de queda 70% · strike 110% · barreira 153% · prazo 2 anos.</p>
-          <div class="op-meta"><span class="pill">Equity</span><span class="pill">2 anos</span><span class="pill">Prot. 110%</span><span class="pill">Down 70% · Up 153%</span></div>
-          <div class="op-cta">Abrir material →</div>
-        </a>
-      </li>
-    </ul>
-
+    <button type="button" class="cat-back" data-back>← Voltar aos cards</button>
+  </div>
+  <ul class="ops">
+<li class="op-block">
+  <div class="op-bar" style="background:#ec7000"></div>
+  <a class="op" href="../ops/twin-coupon-itub4/index.html">
+    <div class="op-top"><span class="op-title">Twin Coupon Itaú</span><span class="op-ticker">ITUB4</span></div>
+    <p class="op-blurb">Proteção 110% · barreira de queda 70% · strike 110% · barreira 153% · prazo 2 anos.</p>
+    <div class="op-meta"><span class="pill">Equity</span><span class="pill">2 anos</span><span class="pill">Prot. 110%</span><span class="pill">Down 70% · Up 153%</span><span class="pill">Research: Compra</span><span class="pill">PA: R$ 54,00</span></div>
+    <div class="op-cta">Abrir material →</div>
+  </a>
+</li></ul>
+</section>
     <p class="footer">
       Material ilustrativo para uso interno. Não constitui oferta, recomendação ou garantia de rentabilidade.
       <strong>MATERIAL DE USO INTERNO, NÃO ENVIAR AOS CLIENTES</strong>
     </p>
   </main>
+<script>
+(function(){
+  var grid=document.getElementById('catGrid');
+  var cards=[].slice.call(document.querySelectorAll('.cat-card'));
+  var sections=[].slice.call(document.querySelectorAll('.cat-section'));
+  function show(id){
+    cards.forEach(function(c){ c.classList.toggle('active', c.getAttribute('data-target')===id); });
+    sections.forEach(function(s){
+      var on=s.id===id;
+      if(on) s.removeAttribute('hidden'); else s.setAttribute('hidden','');
+    });
+    if(id){
+      grid.style.display='none';
+      var el=document.getElementById(id);
+      if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
+      history.replaceState(null,'','#'+id);
+    } else {
+      grid.style.display='';
+      history.replaceState(null,'',location.pathname);
+      window.scrollTo({top:0,behavior:'smooth'});
+    }
+  }
+  cards.forEach(function(c){
+    c.addEventListener('click',function(){ show(c.getAttribute('data-target')); });
+  });
+  document.querySelectorAll('[data-back]').forEach(function(b){
+    b.addEventListener('click',function(){ show(null); });
+  });
+  var hash=(location.hash||'').replace('#','');
+  if(hash && document.getElementById(hash)) show(hash);
+})();
+</script>
 </body>
 </html>

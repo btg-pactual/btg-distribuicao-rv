@@ -624,5 +624,6 @@ HUB = r'''<!DOCTYPE html>
 # For now write hub and twin coupon separately in this script's main
 
 if __name__ == "__main__":
-    write("prateleira-tatica/index.html", HUB)
-    print("hub done — run _build_hedges.py next")
+    # Hub com Research + cat-cards é gerado por _build_hedges.py
+    import runpy
+    runpy.run_path(str(ROOT / "_build_hedges.py"), run_name="__main__")

@@ -32,18 +32,22 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Rebuild Prateleira (spot + alvo)
+      - name: Rebuild Prateleira semanal (spot + alvo)
         run: python prateleira/_build.py
+
+      - name: Rebuild Operações dia D (spot + alvo)
+        run: python _build_hedges.py
 
       - name: Commit se houver mudança
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add prateleira/index.html prateleira/ops prateleira/research_targets.json
+          git add prateleira/index.html prateleira/ops prateleira/research_targets.json \
+                  ops/smart-hedge-* ops/twin-coupon-itub4 prateleira-tatica/index.html
           if git diff --staged --quiet; then
             echo "sem mudança de research/spot"
           else
-            git commit -m "Atualiza spot e preço-alvo da Prateleira Tática."
+            git commit -m "Atualiza spot e preço-alvo (prateleira semanal + dia D)."
             git push
           fi
 
