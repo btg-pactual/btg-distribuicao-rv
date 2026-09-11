@@ -586,8 +586,10 @@ def twin_coupon_html(prat=None, research=None) -> str:
     rows = []
     for x in spots:
         y = struct_ret(float(x))
-        xs = ("+" if x > 0 else "") + fmt_br(x, 0) + "%"
-        ys = ("+" if y > 0 else "") + fmt_br(y, 1) + "%"
+        xd = 2 if abs(x - round(x)) > 1e-9 else 0
+        yd = 2 if abs(y - round(y, 1)) > 1e-9 else 1
+        xs = ("+" if x > 0 else "") + fmt_br(x, xd) + "%"
+        ys = ("+" if y > 0 else "") + fmt_br(y, yd) + "%"
         rows.append(f"<tr><td>{xs}</td><td>{xs}</td><td><strong>{ys}</strong></td></tr>")
 
     # Pico twin logo acima do KO: |−29,99| + 10 ≈ 39,99%
