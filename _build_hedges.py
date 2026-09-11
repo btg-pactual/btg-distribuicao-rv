@@ -572,8 +572,10 @@ def twin_coupon_html(prat=None, research=None) -> str:
         st = 100.0 + x
         put = max(strike - st, 0.0)
         # Aprox. no vencimento: barreira tocada se spot ≤ KO ou ≥ KI.
-        if x <= down_var or x >= up_var:
-            return st + put - 100.0  # put vanilla permanece → cupom
+        if x <= down_var:
+            return st + put - 100.0  # KO: put DO some → long + put vanilla = cupom
+        if x >= up_var:
+            return cupom  # KI: call UI ativa → collar no strike = cupom
         if x < 0:
             return x + 2.0 * put  # twin: long + 2 puts
         return max(x, cupom)
@@ -863,7 +865,8 @@ def twin_coupon_html(prat=None, research=None) -> str:
       function structureReturn(x) {{
         var st = 100 + x;
         var put = Math.max(STRIKE - st, 0);
-        if (x <= DOWN_VAR || x >= UP_VAR) return st + put - 100;
+        if (x <= DOWN_VAR) return st + put - 100;
+        if (x >= UP_VAR) return CUPOM;
         if (x < 0) return x + 2 * put;
         return Math.max(x, CUPOM);
       }}

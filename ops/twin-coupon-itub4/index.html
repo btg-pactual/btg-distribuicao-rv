@@ -141,7 +141,7 @@
     <h2>Research BTG</h2>
     <a class="research-link" href="https://content.btgpactual.com/research/ativo/ITUB4" target="_blank" rel="noopener">Abrir ITUB4 no Research <span class="arrow" aria-hidden="true">→</span></a>
   </div>
-  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 42,54</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 54,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+26,94%</div></div></div><p class="research-note">Spot do fechamento anterior (11/09/2026) · preço-alvo atualizado em 06/08/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
+  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 42,57</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 54,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+26,85%</div></div></div><p class="research-note">Spot do fechamento anterior (11/09/2026) · preço-alvo atualizado em 06/08/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
 </section>
 
 
@@ -228,7 +228,7 @@
           <table class="struct-table">
             <thead><tr><th>Spot</th><th>Ativo</th><th>Estrutura</th></tr></thead>
             <tbody>
-              <tr><td>-50%</td><td>-50%</td><td><strong>+10,0%</strong></td></tr><tr><td>-40%</td><td>-40%</td><td><strong>+10,0%</strong></td></tr><tr><td>-30%</td><td>-30%</td><td><strong>+10,0%</strong></td></tr><tr><td>-20%</td><td>-20%</td><td><strong>+40,0%</strong></td></tr><tr><td>-10%</td><td>-10%</td><td><strong>+30,0%</strong></td></tr><tr><td>0%</td><td>0%</td><td><strong>+10,0%</strong></td></tr><tr><td>+10%</td><td>+10%</td><td><strong>+10,0%</strong></td></tr><tr><td>+20%</td><td>+20%</td><td><strong>+20,0%</strong></td></tr><tr><td>+40%</td><td>+40%</td><td><strong>+40,0%</strong></td></tr><tr><td>+53%</td><td>+53%</td><td><strong>+53,0%</strong></td></tr><tr><td>+60%</td><td>+60%</td><td><strong>+60,0%</strong></td></tr><tr><td>+80%</td><td>+80%</td><td><strong>+80,0%</strong></td></tr>
+              <tr><td>-50%</td><td>-50%</td><td><strong>+10,0%</strong></td></tr><tr><td>-40%</td><td>-40%</td><td><strong>+10,0%</strong></td></tr><tr><td>-30%</td><td>-30%</td><td><strong>+10,0%</strong></td></tr><tr><td>-20%</td><td>-20%</td><td><strong>+40,0%</strong></td></tr><tr><td>-10%</td><td>-10%</td><td><strong>+30,0%</strong></td></tr><tr><td>0%</td><td>0%</td><td><strong>+10,0%</strong></td></tr><tr><td>+10%</td><td>+10%</td><td><strong>+10,0%</strong></td></tr><tr><td>+20%</td><td>+20%</td><td><strong>+20,0%</strong></td></tr><tr><td>+40%</td><td>+40%</td><td><strong>+40,0%</strong></td></tr><tr><td>+53%</td><td>+53%</td><td><strong>+10,0%</strong></td></tr><tr><td>+60%</td><td>+60%</td><td><strong>+10,0%</strong></td></tr><tr><td>+80%</td><td>+80%</td><td><strong>+10,0%</strong></td></tr>
             </tbody>
           </table>
         </div>
@@ -272,12 +272,13 @@
       var PLOT_W = VW - PAD.l - PAD.r;
       var PLOT_H = VH - PAD.t - PAD.b;
       var DOWN_VAR = -30.0, UP_VAR = 53.0, STRIKE = 110.0, CUPOM = 10.0;
-      var RESEARCH_X=26.9394;
+      var RESEARCH_X=26.8499;
 
       function structureReturn(x) {
         var st = 100 + x;
         var put = Math.max(STRIKE - st, 0);
-        if (x <= DOWN_VAR || x >= UP_VAR) return st + put - 100;
+        if (x <= DOWN_VAR) return st + put - 100;
+        if (x >= UP_VAR) return CUPOM;
         if (x < 0) return x + 2 * put;
         return Math.max(x, CUPOM);
       }
