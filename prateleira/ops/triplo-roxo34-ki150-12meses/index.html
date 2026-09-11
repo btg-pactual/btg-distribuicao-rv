@@ -132,7 +132,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
     <h2>Research BTG</h2>
     <a class="research-link" href="https://content.btgpactual.com/research/ativo/ROXO34" target="_blank" rel="noopener">Abrir ROXO34 no Research <span class="arrow" aria-hidden="true">→</span></a>
   </div>
-  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 12,70</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 20,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+57,48%</div></div></div><p class="research-note">Spot do fechamento anterior (10/09/2026) · preço-alvo atualizado em 14/08/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
+  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 12,45</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 20,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+60,64%</div></div></div><p class="research-note">Spot do fechamento anterior (11/09/2026) · preço-alvo atualizado em 10/09/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
 </section>
 
 <div class="main">
@@ -194,8 +194,8 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
 
 <section class="speech-box insights-box">
   <h2>Insights Research BTG</h2>
-  <ul class="research-bullets"><li>No 2T26, o Nubank entregou lucro líquido GAAP de US$1,06 bi, +22% t/t e +67% a/a, com ROE de 33% e resultado ~10% acima do consenso, sustentado por forte expansão do NII e provisões menores.</li><li>A carteira de crédito chegou a US$39,4 bi, +5% t/t e +37% a/a em base neutra de câmbio, enquanto os depósitos somaram US$45,3 bi, +6% t/t e +18% a/a, com custo de funding estável em 88% do CDI.</li><li>O NIM avançou 80 bps no trimestre, favorecido por maior mix de cartões e crédito sem garantia, e o NIM ajustado ao risco subiu para 12,4%, +190 bps t/t, após provisões de US$1,48 bi, -14% t/t e 12% abaixo do esperado; mesmo excluindo o…</li></ul>
-  <p class="research-note">Insights BTG · 14/08/2026 · fonte Research BTG.</p>
+  <ul class="research-bullets"><li>No 2T26, o Nubank entregou lucro líquido GAAP de US$1,06 bi, ROE de 33% e alta de 22% t/t e 67% a/a, com resultado cerca de 10% acima do consenso.</li><li>O principal destaque foi a queda de 14% t/t nas provisões, para US$1,48 bi, que levou o NIM ajustado ao risco a 12,4% e o NII após provisões a US$1,72 bi, 34% acima do trimestre anterior. A carteira de crédito atingiu US$39,4 bi, +5%…</li><li>As receitas de tarifas chegaram a US$753 mi, +9% t/t, e o índice de eficiência permaneceu em 19,5%, em linha com o guidance de ~20% para 2026, apesar de pressão esperada por expansão internacional e remuneração em ações. Na qualidade…</li></ul>
+  <p class="research-note">Insights BTG · 11/09/2026 · fonte Research BTG.</p>
 </section>
 
 <p class="footer">Material ilustrativo para uso interno. Não constitui oferta, recomendação ou garantia de rentabilidade.</p>
@@ -206,7 +206,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
   var X_MIN=-50,X_MAX=80,Y_MIN=-50,Y_MAX=170;
   var PAD={l:48,t:24,r:48,b:24},VW=600,VH=400;
   var PLOT_W=VW-PAD.l-PAD.r,PLOT_H=VH-PAD.t-PAD.b;
-  var RESEARCH_X=57.4803;
+  var RESEARCH_X=60.6426;
   var L=-20.0, H=50.0, CAP=15.0;
   function structureReturn(x){ if (x < L) return x; if (x < 0) return -x; if (x < H) return 3*x; return CAP; }
   function regimeFor(x){ if (x < L) return 'Abaixo do put KO: acompanha.'; if (x < 0) return 'Queda moderada: |x|.'; if (x < H) return 'Alta: 3×.'; return 'KO alta: teto.'; }
