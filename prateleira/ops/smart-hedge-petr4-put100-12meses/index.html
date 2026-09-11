@@ -132,7 +132,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
     <h2>Research BTG</h2>
     <a class="research-link" href="https://content.btgpactual.com/research/ativo/PETR4" target="_blank" rel="noopener">Abrir PETR4 no Research <span class="arrow" aria-hidden="true">→</span></a>
   </div>
-  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 48,42</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 62,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+28,05%</div></div></div><p class="research-note">Spot do fechamento anterior (09/09/2026) · preço-alvo atualizado em 04/09/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
+  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 49,12</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 56,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+14,01%</div></div></div><p class="research-note">Spot do fechamento anterior (10/09/2026) · preço-alvo atualizado em 10/09/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
 </section>
 
 <div class="main">
@@ -194,8 +194,8 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
 
 <section class="speech-box insights-box">
   <h2>Insights Research BTG</h2>
-  <ul class="research-bullets"><li>A Petrobras reportou 2T26 forte, com EBITDA de US$18,9 bi, ~5% acima do consenso, apoiado por preços mais altos de petróleo e derivados e por alta de ~4% t/t na produção.</li><li>No E&amp;P, o lifting cost caiu para US$6,3/boe, enquanto a alavancagem recuou para ~1,1x, com dívida líquida de US$60,4 bi, caixa de US$10,4 bi e dividendos de US$3,4 bi no trimestre. Na prévia operacional, a produção de petróleo atingiu…</li><li>Em julho, a produção ficou em 2,77 mi bpd, acima de 2,76 mi em junho, levando a média do ano a 2,66 mi bpd, acima do guidance de 2,4–2,6 mi bpd e reforçando chance de revisão para cima. No refino, a utilização média foi de 101%, com…</li></ul>
-  <p class="research-note">Insights BTG · 04/09/2026 · fonte Research BTG.</p>
+  <ul class="research-bullets"><li>A Petrobras reportou 2T26 forte, com EBITDA de US$18,9 bi, ~5% acima do consenso, apoiado por preços mais altos de petróleo e derivados e por produção ~4% t/t maior.</li><li>No E&amp;P, o lifting cost caiu para US$6,3/boe, enquanto a alavancagem recuou para ~1,1x, com dívida líquida de US$60,4 bi e caixa de US$10,4 bi. Na prévia, a companhia já indicava produção recorde de 2,69 mi bpd no trimestre, ante 2,58 mi…</li><li>A companhia também manteve capex caixa de US$16,9 bi e segue mirando dívida bruta perto de US$65 bi. No downstream, a tese ganhou suporte adicional com combustíveis ainda abaixo da paridade, mas com captura parcial via subvenções: na…</li></ul>
+  <p class="research-note">Insights BTG · 10/09/2026 · fonte Research BTG.</p>
 </section>
 
 <p class="footer">Material ilustrativo para uso interno. Não constitui oferta, recomendação ou garantia de rentabilidade.</p>
@@ -206,7 +206,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
   var X_MIN=-50,X_MAX=80,Y_MIN=-50,Y_MAX=80;
   var PAD={l:48,t:24,r:48,b:24},VW=600,VH=400;
   var PLOT_W=VW-PAD.l-PAD.r,PLOT_H=VH-PAD.t-PAD.b;
-  var RESEARCH_X=28.0463;
+  var RESEARCH_X=14.0065;
   var PUT=100.0, CALL=110.0, KI=134.7;
   function structureReturn(x){ var st=100+x; var r=st+Math.max(PUT-st,0)-(st>=KI?Math.max(st-CALL,0):0)-100; return r; }
   function regimeFor(x){ var st=100+x; if(st>=KI) return 'KI: teto +10%.'; if(x<=(PUT-100)) return 'Piso da put.'; return 'Participa 1:1.'; }
@@ -277,7 +277,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
       cL.setAttribute('y1', yToSvg(peakY)); cL.setAttribute('y2', yToSvg(0));
       cL.setAttribute('opacity', '1');
       cT.setAttribute('x', Math.max(48, xToSvg(H) - 72)); cT.setAttribute('y', yToSvg(peakY) - 8);
-      cT.textContent = 'Call vanilla · teto 2×';
+      cT.textContent = "Call vanilla \u00b7 teto";
       cT.setAttribute('opacity', '1');
     }
   }
