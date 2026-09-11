@@ -1071,7 +1071,7 @@ def hub_html(research: dict, prat) -> str:
     """Hub Operações dia D — mesma dinâmica da prateleira semanal (cards → seções)."""
     sections = [
         (
-            "Câmbio e renda fixa",
+            "Operações de prêmio",
             "cambio",
             "#0d6e6e",
             "FX e hedge de duration",
