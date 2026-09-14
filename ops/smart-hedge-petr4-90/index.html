@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Smart Hedge Axia — AXIA3 | BTG Pactual</title>
+  <title>Smart Hedge Petrobras — PETR4 | BTG Pactual</title>
   <style>
     :root {
       --ink: #0b1f3a; --muted: #5c6b7a; --line: #d0d8e2; --bg: #eef2f6; --card: #ffffff;
-      --brand: #5a4a8a; --brand-soft: rgba(90,74,138,0.12); --btg: #0b1f3a; --accent: #5a4a8a;
+      --brand: #00665b; --brand-soft: rgba(0,102,91,0.12); --btg: #0b1f3a; --accent: #00665b;
       --success: #0f7a4a; --danger: #c0392b; --dash: #8b83a0;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -114,13 +114,13 @@
       <div class="brand-block">
         <div class="logos">
           <span class="logo-btg">BTG PACTUAL</span>
-          <span class="logo-co"><span class="dot">AX</span> Axia</span>
+          <span class="logo-co"><span class="dot">PE</span> Petrobras</span>
         </div>
-        <h1>Smart Hedge <span>AXIA3</span></h1>
-        <p class="subtitle">Estrutura sobre AXIA3 com participação 1:1 até a barreira, proteção com piso em 0%, e teto de +10% se o ativo atingir a barreira.</p>
+        <h1>Smart Hedge <span>PETR4</span></h1>
+        <p class="subtitle">Estrutura sobre PETR4 com participação 1:1 até a barreira, proteção com piso em -10%, e teto de +10% se o ativo atingir a barreira.</p>
       </div>
       <div class="meta-pills">
-        <div class="pill"><strong>Ativo</strong> AXIA3</div>
+        <div class="pill"><strong>Ativo</strong> PETR4</div>
         <div class="pill"><strong>Prazo</strong> 1 ano</div>
         <div class="pill"><strong>Moeda</strong> BRL</div>
         <div class="pill"><strong>Custo inicial</strong> 0%</div>
@@ -128,8 +128,8 @@
     </header>
 
     <section class="highlights">
-      <div class="hi"><h3>Retorno potencial</h3><p>Acompanha o ativo<span>1:1 até a barreira 135,00%</span></p></div>
-      <div class="hi"><h3>Proteção</h3><p>Piso 0%<span>Put strike 100,00%</span></p></div>
+      <div class="hi"><h3>Retorno potencial</h3><p>Acompanha o ativo<span>1:1 até a barreira 151,00%</span></p></div>
+      <div class="hi"><h3>Proteção</h3><p>Piso -10%<span>Put strike 90,00%</span></p></div>
       <div class="hi"><h3>Se atingir a barreira</h3><p>Teto +10%<span>Call vendida 110,00%</span></p></div>
       <div class="hi"><h3>Prazo</h3><p>1 ano</p></div>
     </section>
@@ -137,9 +137,9 @@
 <section class="research">
   <div class="research-head">
     <h2>Research BTG</h2>
-    <a class="research-link" href="https://content.btgpactual.com/research/ativo/AXIA3" target="_blank" rel="noopener">Abrir AXIA3 no Research <span class="arrow" aria-hidden="true">→</span></a>
+    <a class="research-link" href="https://content.btgpactual.com/research/ativo/PETR4" target="_blank" rel="noopener">Abrir PETR4 no Research <span class="arrow" aria-hidden="true">→</span></a>
   </div>
-  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 54,93</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 74,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+34,72%</div></div></div><p class="research-note">Spot do fechamento anterior (14/09/2026) · preço-alvo atualizado em 09/09/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
+  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 49,03</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 65,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+32,57%</div></div></div><p class="research-note">Spot do fechamento anterior (14/09/2026) · preço-alvo atualizado em 11/09/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
 </section>
 
 
@@ -149,18 +149,18 @@
         <table class="struct-table">
           <thead><tr><th>Perna</th><th>Strike</th><th>Barreira</th></tr></thead>
           <tbody>
-            <tr><td><span class="tag b">B</span> Put 100,00%</td><td class="strike-green">100,00%</td><td>—</td></tr>
-            <tr><td><span class="tag s">S</span> Call 110,00%</td><td>110,00%</td><td>135,00%</td></tr>
+            <tr><td><span class="tag b">B</span> Put 90,00%</td><td class="strike-green">90,00%</td><td>—</td></tr>
+            <tr><td><span class="tag s">S</span> Call 110,00%</td><td>110,00%</td><td>151,00%</td></tr>
           </tbody>
         </table>
-        <p class="legend-note"><strong>B</strong> = Compra · <strong>S</strong> = Venda<br />Payoff = long + put 100,00% + short call 110,00% se spot ≥ barreira.</p>
+        <p class="legend-note"><strong>B</strong> = Compra · <strong>S</strong> = Venda<br />Payoff = long + put 90,00% + short call 110,00% se spot ≥ barreira.</p>
       </aside>
 
       <section class="panel chart-panel">
         <div class="chart-head">
           <div>
             <h2>Payoff da estrutura</h2>
-            <p class="chart-caption">Retorno no vencimento vs. variação do AXIA3</p>
+            <p class="chart-caption">Retorno no vencimento vs. variação do PETR4</p>
           </div>
           <div class="chart-legend">
             <span><i class="swatch"></i> Estrutura</span>
@@ -170,47 +170,47 @@
         </div>
         <div class="chart-box" id="chartBox">
           <div class="tooltip" id="tooltip"></div>
-          <svg id="payoffSvg" viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Payoff AXIA3">
+          <svg id="payoffSvg" viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Payoff PETR4">
             <rect x="48" y="24" width="504" height="352" fill="#f8fafc" />
             <g id="gridLines" stroke="#e2e8f0" stroke-width="1"></g>
             <line id="axisZeroX" x1="154" y1="24" x2="154" y2="376" stroke="#c5d0dc" stroke-width="1.25"/>
             <line id="axisZeroY" x1="48" y1="300" x2="552" y2="300" stroke="#c5d0dc" stroke-width="1.25"/>
             <g id="yLabels" fill="#8b83a0" font-size="11" font-family="Segoe UI, Arial, sans-serif" text-anchor="end"></g>
             <g id="xLabels" fill="#8b83a0" font-size="11" font-family="Segoe UI, Arial, sans-serif" text-anchor="middle"></g>
-            <text x="300" y="16" fill="#5c6b7a" font-size="11" font-family="Segoe UI, Arial, sans-serif" text-anchor="middle">Variação do AXIA3 no vencimento (%)</text>
+            <text x="300" y="16" fill="#5c6b7a" font-size="11" font-family="Segoe UI, Arial, sans-serif" text-anchor="middle">Variação do PETR4 no vencimento (%)</text>
             <text x="14" y="200" fill="#5c6b7a" font-size="11" font-family="Segoe UI, Arial, sans-serif" text-anchor="middle" transform="rotate(-90 14 200)">Retorno da estrutura (%)</text>
             <polyline id="assetPath" fill="none" stroke="#8b83a0" stroke-width="1.75" stroke-dasharray="6 5" points="" />
             <line id="koGap" x1="0" y1="0" x2="0" y2="0" stroke="#c0392b" stroke-width="1.25" stroke-dasharray="3 3" opacity="0.75"/>
-            <path id="structPath" d="" fill="none" stroke="#5a4a8a" stroke-width="2.75" stroke-linejoin="round" stroke-linecap="round"/>
+            <path id="structPath" d="" fill="none" stroke="#00665b" stroke-width="2.75" stroke-linejoin="round" stroke-linecap="round"/>
             <circle id="floorDot" cx="0" cy="0" r="5" fill="#0f7a4a"/>
-            <text id="floorLabel" x="0" y="0" fill="#0f7a4a" font-size="11" font-weight="600" font-family="Segoe UI, Arial, sans-serif">Piso 0%</text>
+            <text id="floorLabel" x="0" y="0" fill="#0f7a4a" font-size="11" font-weight="600" font-family="Segoe UI, Arial, sans-serif">Piso -10%</text>
             <circle id="kiDot" cx="0" cy="0" r="5" fill="#c0392b"/>
-            <text id="kiLabel" x="0" y="0" fill="#c0392b" font-size="11" font-weight="600" font-family="Segoe UI, Arial, sans-serif">Barreira 135,00%</text>
-            <circle id="capDot" cx="0" cy="0" r="4" fill="#5a4a8a"/>
-            <text id="capLabel" x="0" y="0" fill="#5a4a8a" font-size="11" font-weight="600" font-family="Segoe UI, Arial, sans-serif">Teto +10%</text>
+            <text id="kiLabel" x="0" y="0" fill="#c0392b" font-size="11" font-weight="600" font-family="Segoe UI, Arial, sans-serif">Barreira 151,00%</text>
+            <circle id="capDot" cx="0" cy="0" r="4" fill="#00665b"/>
+            <text id="capLabel" x="0" y="0" fill="#00665b" font-size="11" font-weight="600" font-family="Segoe UI, Arial, sans-serif">Teto +10%</text>
             <line id="researchTargetLine" x1="0" y1="24" x2="0" y2="376" stroke="#1a66b3" stroke-width="1.5" stroke-dasharray="5 4" opacity="0"/>
             <text id="researchTargetLabel" font-size="11" fill="#1a66b3" font-weight="700" opacity="0">PA Research</text>
             <line id="hoverLine" x1="0" y1="24" x2="0" y2="376" stroke="rgba(0,0,0,0.25)" stroke-width="1.25" stroke-dasharray="4 4" visibility="hidden"/>
-            <circle id="hoverStruct" r="5.5" fill="#5a4a8a" visibility="hidden"/>
+            <circle id="hoverStruct" r="5.5" fill="#00665b" visibility="hidden"/>
             <circle id="hoverAsset" r="4" fill="#8b83a0" visibility="hidden"/>
           </svg>
           <div class="chart-overlay" id="chartOverlay"></div>
         </div>
         <p class="chart-touch-hint">Toque e arraste no gráfico · ou use o controle abaixo</p>
         <div class="mobile-sim">
-          <div class="sim-label"><span>Variação do AXIA3</span><output id="spotOutMobile">+20%</output></div>
+          <div class="sim-label"><span>Variação do PETR4</span><output id="spotOutMobile">+20%</output></div>
           <input type="range" id="spotSliderMobile" min="-40" max="90" step="0.5" value="20" />
         </div>
         <div class="zones">
-          <div class="zone"><strong>≤ 0%</strong><p>Proteção: retorno limitado a 0%.</p></div>
-          <div class="zone"><strong>0% → barreira</strong><p>Acompanha o ativo 1:1.</p></div>
+          <div class="zone"><strong>≤ -10%</strong><p>Proteção: retorno limitado a -10%.</p></div>
+          <div class="zone"><strong>-10% → barreira</strong><p>Acompanha o ativo 1:1.</p></div>
           <div class="zone"><strong>≥ barreira</strong><p>Retorno limitado a +10%.</p></div>
         </div>
       </section>
 
       <aside class="panel">
         <h2>Simulador no vencimento</h2>
-        <div class="sim-label"><span>Variação do AXIA3</span><output id="spotOut">+20%</output></div>
+        <div class="sim-label"><span>Variação do PETR4</span><output id="spotOut">+20%</output></div>
         <input type="range" id="spotSlider" min="-40" max="90" step="0.5" value="20" />
         <div class="sim-cards">
           <div class="sim-card"><div class="lbl">Retorno do ativo</div><div class="val" id="assetVal">+20,0%</div></div>
@@ -222,7 +222,7 @@
           <table class="struct-table">
             <thead><tr><th>Spot</th><th>Ativo</th><th>Estrutura</th></tr></thead>
             <tbody>
-              <tr><td>-40%</td><td>-40%</td><td><strong>0,0%</strong></td></tr><tr><td>-20%</td><td>-20%</td><td><strong>0,0%</strong></td></tr><tr><td>0%</td><td>0%</td><td><strong>0,0%</strong></td></tr><tr><td>+20%</td><td>+20%</td><td><strong>+20,0%</strong></td></tr><tr><td>+35%</td><td>+35%</td><td><strong>+10,0%</strong></td></tr><tr><td>+40%</td><td>+40%</td><td><strong>+10,0%</strong></td></tr><tr><td>+55%</td><td>+55%</td><td><strong>+10,0%</strong></td></tr><tr><td>+90%</td><td>+90%</td><td><strong>+10,0%</strong></td></tr>
+              <tr><td>-40%</td><td>-40%</td><td><strong>-10,0%</strong></td></tr><tr><td>-20%</td><td>-20%</td><td><strong>-10,0%</strong></td></tr><tr><td>-10%</td><td>-10%</td><td><strong>-10,0%</strong></td></tr><tr><td>0%</td><td>0%</td><td><strong>0,0%</strong></td></tr><tr><td>+20%</td><td>+20%</td><td><strong>+20,0%</strong></td></tr><tr><td>+40%</td><td>+40%</td><td><strong>+40,0%</strong></td></tr><tr><td>+51%</td><td>+51%</td><td><strong>+10,0%</strong></td></tr><tr><td>+71%</td><td>+71%</td><td><strong>+10,0%</strong></td></tr><tr><td>+90%</td><td>+90%</td><td><strong>+10,0%</strong></td></tr>
             </tbody>
           </table>
         </div>
@@ -232,12 +232,12 @@
     <section class="speech-box">
       <h2>Speech comercial</h2>
       <p class="speech-label">Para quem</p>
-      <p>Cliente construtivo em Axia (AXIA3) no horizonte de 1 ano, que quer exposição com colchão na queda.</p>
+      <p>Cliente construtivo em Petrobras (PETR4) no horizonte de 1 ano, que quer exposição com colchão na queda.</p>
       <p class="speech-label">Como encaixa a estrutura</p>
       <p>
         Custo inicial <strong>zero</strong>.
-        Até a barreira (135,00%), participa <strong>1:1</strong> da variação do AXIA3.
-        Na queda, o piso fica em <strong>0%</strong> (put 100,00%).
+        Até a barreira (151,00%), participa <strong>1:1</strong> da variação do PETR4.
+        Na queda, o piso fica em <strong>-10%</strong> (put 90,00%).
         Se o ativo atingir a barreira, o retorno fica limitado a <strong>+10%</strong> (call vendida 110,00%).
       </p>
       <p class="speech-label">Fechamento</p>
@@ -246,8 +246,8 @@
     
 <section class="speech-box insights-box">
   <h2>Insights Research BTG</h2>
-  <ul class="research-bullets"><li>No 2T26, a Axia reportou EBITDA ajustado de R$6,4 bi, alta de 11,9% a/a, ligeiramente abaixo da estimativa de R$6,7 bi e em linha com o consenso de R$6,4–6,5 bi.</li><li>A receita líquida subiu 4,3%, para R$10,0 bi, e o lucro líquido ajustado avançou 34,9%, para R$1,7 bi. Entre os principais pontos do trimestre, a companhia anunciou mais R$3,7 bi em resgates de Axia7, somando R$7,7 bi no 1S26 após os…</li><li>Essa estratégia acumulava alpha de 5,1% desde 24 de julho de 2026. O caso de investimento segue apoiado em baixa alavancagem, forte capacidade de distribuição de caixa e execução do mecanismo de resgate, ainda em fase inicial por se…</li></ul>
-  <p class="research-note">Insights BTG · 09/09/2026 · fonte Research BTG.</p>
+  <ul class="research-bullets"><li>No 2T26, a Petrobras entregou EBITDA de US$18,9 bi, ~5% acima do consenso, com suporte de preços mais altos de petróleo e derivados e produção ~4% t/t maior.</li><li>A alavancagem caiu para ~1,1x, de ~1,4x no 1T26, com dívida líquida de US$60,4 bi e caixa de US$10,4 bi, enquanto o FCFE recorrente ficou em US$6,4 bi e os dividendos somaram US$3,4 bi. Na prévia do trimestre, a produção de petróleo…</li><li>No refino, a utilização média foi de 101%, com produção recorde de diesel e gasolina. Os dados operacionais mais recentes reforçam esse quadro: a produção de petróleo ficou em ~2,77 mi bpd em julho e ~2,66–2,68 mi bpd no acumulado de…</li></ul>
+  <p class="research-note">Insights BTG · 11/09/2026 · fonte Research BTG.</p>
 </section>
 
 
@@ -258,14 +258,14 @@
   <script>
     (function () {
       var X_MIN = -40, X_MAX = 90;
-      var Y_MIN = -15.0, Y_MAX = 55;
+      var Y_MIN = -25.0, Y_MAX = 61;
       var PAD = { l: 48, t: 24, r: 48, b: 24 };
       var VW = 600, VH = 400;
       var PLOT_W = VW - PAD.l - PAD.r;
       var PLOT_H = VH - PAD.t - PAD.b;
-      var PUT = 100.0, CALL = 110.0, BARRIER = 135.0;
-      var FLOOR = 0.0, CAP = 10.0, KI_VAR = 35.0;
-      var RESEARCH_X=34.7169;
+      var PUT = 90.0, CALL = 110.0, BARRIER = 151.0;
+      var FLOOR = -10.0, CAP = 10.0, KI_VAR = 51.0;
+      var RESEARCH_X=32.5719;
 
       function structureReturn(x) {
         var st = 100 + x;
@@ -274,7 +274,7 @@
         return st + put - call - 100;
       }
       function regimeFor(x) {
-        if (x <= FLOOR) return "Em/abaixo de 0%: proteção — retorno limitado a 0%.";
+        if (x <= FLOOR) return "Em/abaixo de -10%: proteção — retorno limitado a -10%.";
         if (x < KI_VAR) return "Entre o piso e a barreira: acompanha o ativo 1:1.";
         return "Ativo atingiu a barreira (spot ≥ " + BARRIER.toFixed(2).replace(".", ",") + "%): retorno limitado a +" + CAP + "%.";
       }
@@ -393,7 +393,7 @@
         hoverStruct.setAttribute("cx", sx); hoverStruct.setAttribute("cy", sy); hoverStruct.setAttribute("visibility", "visible");
         hoverAsset.setAttribute("cx", sx); hoverAsset.setAttribute("cy", ay); hoverAsset.setAttribute("visibility", "visible");
         tooltip.innerHTML = '<div class="t-title">Spot final ' + fmtPct(x) + "</div>" +
-          '<div class="row"><span>AXIA3</span><strong>' + fmtPct(x) + "</strong></div>" +
+          '<div class="row"><span>PETR4</span><strong>' + fmtPct(x) + "</strong></div>" +
           '<div class="row"><span>Estrutura</span><strong>' + fmtPct(ys) + "</strong></div>";
         tooltip.classList.add("on");
         var svgRect = svg.getBoundingClientRect();

@@ -1104,7 +1104,7 @@ def hub_html(research: dict, prat) -> str:
             [
                 {
                     "href": f"../ops/{cfg['slug']}/index.html",
-                    "title": f"Smart Hedge {cfg['name']}",
+                    "title": cfg.get("title") or f"Smart Hedge {cfg['name']}",
                     "ticker": cfg["ticker"],
                     "brand": cfg["brand"],
                     "blurb": (
@@ -1320,6 +1320,19 @@ OPS = [
         "put": 100.0,
         "call": 110.0,
         "barrier": 134.0,
+        "prazo": "1 ano",
+        "initials": "PE",
+    },
+    {
+        "slug": "smart-hedge-petr4-90",
+        "ticker": "PETR4",
+        "name": "Petrobras",
+        "title": "Smart Hedge Petrobras · Put 90%",
+        "brand": "#00665b",
+        "brand_soft": "rgba(0,102,91,0.12)",
+        "put": 90.0,
+        "call": 110.0,
+        "barrier": 151.0,
         "prazo": "1 ano",
         "initials": "PE",
     },
