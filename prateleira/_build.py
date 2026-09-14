@@ -16,8 +16,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent
 REPO = ROOT.parent
 OPS = ROOT / "ops"
-REF = date(2026, 9, 8)  # semana 07.09.26
-PDF_NAME = "Material-Prateleira-Tatica-08092026.pdf"
+REF = date(2026, 9, 14)  # semana 14.09.26
+PDF_NAME = "Material-Prateleira-Tatica-14092026.pdf"
 RESEARCH_REC = "https://content.btgpactual.com/api/research/content-hub/recommendations/ticker/{ticker}?includeInstitutionalData=true"
 RESEARCH_QUOTES = "https://content.btgpactual.com/api/research/research/public/asset/quotes"
 RESEARCH_SUMMARY = "https://content.btgpactual.com/api/research/content-hub-assets/v1/asset/summary/{ticker}"
@@ -52,14 +52,27 @@ def slugify(*parts: str) -> str:
 
 
 def copy_pdf() -> bool:
-    downloads = Path(r"C:\Users\PIMENTPA\Downloads")
-    cands = [p for p in downloads.glob("Material Prateleira*.pdf") if "08092026" in p.name]
+    """Copia o PDF da pasta operacoes/ (preferência) ou Downloads."""
+    ops_dir = ROOT / "operacoes"
+    week_tag = REF.strftime("%d%m%Y")  # 14092026
+    cands: list[Path] = []
+    if ops_dir.exists():
+        cands = [p for p in ops_dir.glob("Material Prateleira*.pdf") if week_tag in p.name]
+        if not cands:
+            cands = list(ops_dir.glob("Material Prateleira*.pdf"))
     if not cands:
-        cands = list(downloads.glob("Material Prateleira*.pdf"))
+        downloads = Path(r"C:\Users\PIMENTPA\Downloads")
+        cands = [p for p in downloads.glob("Material Prateleira*.pdf") if week_tag in p.name]
+        if not cands:
+            cands = list(downloads.glob("Material Prateleira*.pdf"))
     if not cands:
         return False
     dest = ROOT / PDF_NAME
-    shutil.copy2(cands[0], dest)
+    shutil.copy2(sorted(cands, key=lambda p: p.stat().st_mtime, reverse=True)[0], dest)
+    # Remove PDFs de semanas anteriores no hub
+    for old in ROOT.glob("Material-Prateleira-Tatica-*.pdf"):
+        if old.name != PDF_NAME:
+            old.unlink(missing_ok=True)
     return dest.exists()
 
 
@@ -358,71 +371,81 @@ def research_insights_html(cfg: dict) -> str:
 """
 
 
-# ---- data (fonte: prateleira/operacoes/operacoes.xlsx · aba 07.09.26) ----
+# ---- data (fonte: prateleira/operacoes/operacoes.xlsx · aba 14.09.26) ----
+# NUNCA exibir BID (fee) nem DELTA no HTML — só níveis estruturais / cupom / backtest / preço de compra.
 # (ticker, fixing, strike, ko, bid, backtest_barreira%, prazo_dc)
 # Cupom comercial/gráfico = strike − 100 (lock do SOC); bid = preço da book, não o cupom.
 # prazo_dc = dias corridos do material PDF (20/30/45 dc); fixing = vencimento na book.
 # backtest = % histórico de toque da barreira no material; None = sem janelas (*).
 SOC = [
-    ("NVDC34", date(2026, 10, 7), 103.14, 90.0, 0.80, 15.0, 30),
-    ("TEND3", date(2026, 9, 25), 104.0, 90.0, 1.00, 27.0, 20),
-    ("AXIA3", date(2026, 10, 21), 106.96, 90.0, 1.50, 25.0, 45),
-    ("WEGE3", date(2026, 10, 7), 103.31, 92.0, 0.80, 25.0, 30),
-    ("PRIO3", date(2026, 10, 22), 105.87, 90.0, 1.70, 42.0, 45),
-    ("SPCX34", date(2026, 9, 25), 103.0, 87.0, 0.98, None, 20),
-    ("TOTS3", date(2026, 10, 6), 104.72, 90.0, 1.40, 42.0, 30),
-    ("B3SA3", date(2026, 10, 6), 105.07, 90.0, 1.90, 27.0, 30),
-    ("TSLA34", date(2026, 10, 5), 103.50, 90.0, 1.50, 46.0, 30),
+    ("NVDC34", date(2026, 10, 14), 103.14, 90.0, 0.80, 15.0, 30),
+    ("TEND3", date(2026, 10, 1), 104.0, 90.0, 1.00, 29.0, 20),
+    ("AXIA3", date(2026, 10, 27), 106.96, 90.0, 1.30, 25.0, 45),
+    ("PRIO3", date(2026, 10, 28), 105.87, 90.0, 1.80, 38.0, 45),
+    ("SPCX34", date(2026, 10, 1), 103.0, 87.0, 0.98, None, 20),
+    ("TOTS3", date(2026, 10, 13), 104.72, 90.0, 1.50, 42.0, 30),
+    ("B3SA3", date(2026, 10, 13), 105.07, 90.0, 1.90, 23.0, 30),
+    ("TSLA34", date(2026, 10, 9), 103.50, 90.0, 1.50, 29.0, 20),
+    ("CYRE3", date(2026, 10, 14), 105.50, 88.0, 1.50, 30.0, 30),
+    ("BBDC4", date(2026, 10, 27), 105.40, 90.0, 1.00, 21.0, 45),
 ]
 
-# (ticker, fixing, put, call, ki, bid)
+# (ticker, fixing, put, call, ki, bid) — bid NÃO vai para a UI
 SMART = [
-    ("ITUB4", date(2027, 9, 3), 90.0, 110.0, 144.32, 5.00),
-    ("AXIA3", date(2027, 9, 3), 90.0, 110.0, 151.78, 4.30),
-    ("PETR4", date(2027, 9, 3), 90.0, 110.0, 151.08, 4.60),
-    ("SPCX34", date(2027, 9, 6), 90.0, 114.0, 190.0, 5.00),
-    ("SPCX34", date(2028, 9, 6), 100.0, 130.0, 280.0, 3.66),
-    ("PETR4", date(2027, 9, 8), 100.0, 110.0, 134.70, 5.00),
-    ("VALE3", date(2028, 9, 8), 110.0, 110.0, 174.35, 7.00),
-    ("AXIA3", date(2028, 9, 8), 110.0, 110.0, 177.35, 7.00),
-    ("ITUB4", date(2028, 9, 4), 90.0, 130.0, 166.0, 6.00),
-    ("EMBJ3", date(2027, 9, 3), 100.0, 110.0, 145.96, 4.20),
+    ("ITUB4", date(2027, 9, 10), 90.0, 110.0, 144.32, 5.00),
+    ("AXIA3", date(2027, 9, 10), 90.0, 110.0, 151.78, 4.30),
+    ("PETR4", date(2027, 9, 10), 90.0, 110.0, 151.08, 4.40),
+    ("SPCX34", date(2027, 9, 13), 90.0, 114.0, 190.0, 5.00),
+    ("SPCX34", date(2028, 9, 13), 100.0, 130.0, 261.90, 3.66),
+    ("PETR4", date(2027, 9, 14), 100.0, 110.0, 134.70, 5.00),
+    ("VALE3", date(2028, 9, 14), 110.0, 110.0, 174.35, 7.00),
+    ("AXIA3", date(2028, 9, 14), 110.0, 110.0, 177.35, 7.00),
+    ("ITUB4", date(2028, 9, 11), 90.0, 130.0, 166.0, 6.00),
+    ("SUZB3", date(2027, 1, 11), 90.0, 103.0, 126.17, 2.00),
+    ("PETR4", date(2027, 1, 11), 90.0, 103.0, 135.19, 2.00),
+    ("VALE3", date(2027, 1, 11), 90.0, 103.0, 126.43, 2.00),
+    ("ITUB4", date(2027, 1, 11), 90.0, 103.0, 128.79, 2.00),
 ]
 
 # (ticker, fixing, ko_alta, ko_baixa, bid)
 ACEL = [
-    ("ITLC34", date(2028, 2, 2), 170.0, 40.0, 9.50),
-    ("TSMC34", date(2026, 12, 4), 114.0, 90.0, 1.50),
-    ("BBAS3", date(2027, 1, 5), 120.0, 90.0, 2.70),
-    ("ITUB4", date(2027, 1, 5), 114.45, 90.0, 2.00),
+    ("ITLC34", date(2028, 2, 8), 170.0, 40.0, 9.50),
+    ("BBAS3", date(2027, 1, 11), 120.0, 90.0, 2.70),
+    ("SMAL11", date(2027, 1, 11), 116.0, 90.0, 2.00),
 ]
 
 # (ticker, fixing, sold_call_ki, ko_alta, ko_baixa, bid)
 TRIPLO = [
-    ("ROXO34", date(2027, 9, 6), 115.0, 150.0, 80.0, 4.50),
-    ("ROXO34", date(2027, 3, 8), 106.0, 134.0, 80.0, 2.50),
-    ("NVDC34", date(2027, 9, 6), 115.0, 154.0, 80.0, 4.50),
-    ("GOGL34", date(2027, 9, 6), 115.0, 145.0, 80.0, 4.50),
-    ("LILY34", date(2027, 9, 6), 115.0, 150.0, 80.0, 4.50),
-    ("B3SA3", date(2027, 9, 6), 115.0, 142.0, 80.0, 4.50),
-    ("SMFT3", date(2027, 9, 6), 115.0, 149.0, 80.0, 4.50),
-    ("CYRE3", date(2027, 9, 6), 115.0, 148.0, 80.0, 4.50),
-    ("RENT3", date(2027, 9, 6), 115.0, 142.0, 80.0, 4.50),
+    ("ROXO34", date(2027, 9, 13), 115.0, 150.0, 80.0, 4.50),
+    ("ROXO34", date(2027, 3, 12), 106.0, 134.0, 80.0, 2.50),
+    ("NVDC34", date(2027, 9, 13), 115.0, 154.0, 80.0, 4.50),
+    ("GOGL34", date(2027, 9, 13), 115.0, 145.0, 80.0, 4.50),
+    ("LILY34", date(2027, 9, 13), 115.0, 150.0, 80.0, 4.50),
+    ("B3SA3", date(2027, 9, 13), 115.0, 142.0, 80.0, 4.50),
+    ("SMFT3", date(2027, 9, 13), 115.0, 149.0, 80.0, 4.50),
+    ("CYRE3", date(2027, 9, 13), 115.0, 148.0, 80.0, 4.50),
+    ("RENT3", date(2027, 9, 13), 115.0, 142.0, 80.0, 4.50),
 ]
 
-# (ticker, fixing, ko_pct, rebate, cost/offer abs)
-CALL_KO = ("PRIO3", date(2026, 11, 9), 121.0, 5.50, 3.70)
-PUT_KO = ("EMBJ3", date(2026, 12, 4), 80.0, 5.50, 2.95)
+# (ticker, fixing, ko_pct, rebate, cost/offer abs) — preço de compra OK; sem bid/delta
+CALL_KO = [
+    ("PRIO3", date(2026, 11, 13), 121.0, 5.50, 3.60),
+    ("TEND3", date(2026, 11, 13), 129.28, 5.50, 4.00),
+    ("AXIA3", date(2026, 11, 13), 123.19, 5.50, 4.00),
+    ("WEGE3", date(2026, 11, 13), 119.90, 5.50, 4.00),
+]
+PUT_KO = ("EMBJ3", date(2026, 12, 10), 80.0, 5.50, 2.95)
 # (ticker, fixing, put, call_ki_strike, ki, put_ko, put_ko_barrier, bid)
-TWIP = ("GOLD11", date(2027, 9, 6), 100.0, 100.0, 140.0, 100.0, 80.0, 4.51)
+TWIP = ("GOLD11", date(2027, 9, 13), 100.0, 100.0, 140.0, 100.0, 80.0, 4.51)
 # (ticker, fixing, barrier_pct, rebate, cost)
 ONE_TOUCH = [
-    ("BOVA11", date(2026, 11, 10), 120.0, 5.0, 0.75),
-    ("TEND3", date(2026, 10, 5), 114.94, 10.0, 3.50),
-    ("AXIA3", date(2026, 10, 5), 113.23, 10.0, 3.50),
-    ("WEGE3", date(2026, 10, 5), 111.06, 10.0, 3.50),
-    ("PRIO3", date(2026, 10, 5), 113.61, 10.0, 3.50),
+    ("BOVA11", date(2026, 11, 16), 120.0, 5.0, 0.75),
 ]
+# POP: venda call 0.5x + put ATM · custo comercial 0% (PDF); bid da book NÃO entra na UI
+# (ticker, fixing, call_strike, put_strike)
+POP = ("BITC11", date(2028, 9, 20), 100.0, 100.0)
+# Compra de put: (ticker, fixing, put_strike, cost abs, prazo_pdf)
+PUT_BUY = ("BOVA11", date(2027, 1, 11), 95.0, 2.93, "6 meses")
 
 CSS = """
 :root {
@@ -781,13 +804,13 @@ def op_page(cfg: dict) -> str:
 """
 
 
-def make_soc(t, fixing, strike, ko, bid, backtest=None, prazo_dc=None):
+def make_soc(t, fixing, strike, ko, _bid, backtest=None, prazo_dc=None):
     if prazo_dc is None:
         prazo_dc = max(1, (fixing - REF).days)
     prazo = f"{prazo_dc}dc"
     venc = fixing.strftime("%d/%m/%Y")
     ko_var = ko - 100
-    # Cupom = lock strike−100 (PDF); bid da book não entra no payoff.
+    # Cupom = lock strike−100 (PDF); bid da book NÃO entra no payoff nem na UI.
     cupom = round(strike - 100, 2)
     slug = slugify("soc", t, prazo)
     # No PDF: SPCX34 marca —* (sem janelas). Demais sem número = não publicado.
@@ -857,11 +880,14 @@ def make_soc(t, fixing, strike, ko, bid, backtest=None, prazo_dc=None):
     }
 
 
-def make_sh(t, fixing, put, call, ki, bid):
+def make_sh(t, fixing, put, call, ki, _bid):
     prazo = months_label(fixing)
     floor = put - 100
     cap = call - 100
     ki_var = ki - 100
+    put_lbl = fmt_lvl(put)
+    call_lbl = fmt_lvl(call)
+    ki_lbl = fmt_lvl(ki)
     slug = slugify("smart-hedge", t, f"put{int(put)}", prazo.replace(" ", ""))
     return slug, {
         "title": f"Smart Hedge {t}",
@@ -870,16 +896,16 @@ def make_sh(t, fixing, put, call, ki, bid):
         "dot": "SH",
         "brand": "#007e33",
         "subtitle": f"Smart Hedge sobre {t}: piso na queda, participação 1:1 até a barreira KI; se KI, retorno limitado ao strike da call.",
-        "pills": [("Ativo", t), ("Prazo", prazo), ("Put", f"{put:.0f}%"), ("Call", f"{call:.0f}%"), ("KI", f"{ki:.2f}%")],
+        "pills": [("Ativo", t), ("Prazo", prazo), ("Put", put_lbl), ("Call", call_lbl), ("KI", ki_lbl)],
         "highlights": [
             ("Prazo", prazo, ""),
-            ("Piso", f"{floor:+.0f}%", f"Put {put:.0f}%"),
-            ("Barreira KI", f"{ki:.2f}%", f"+{ki_var:.1f}%"),
-            ("Teto se KI", f"{cap:+.0f}%", f"Call {call:.0f}%"),
+            ("Piso", f"{floor:+.0f}%", f"Put {put_lbl}"),
+            ("Barreira KI", ki_lbl, f"+{ki_var:.1f}%".replace(".", ",")),
+            ("Teto se KI", f"{cap:+.0f}%", f"Call {call_lbl}"),
         ],
         "struct": [
-            ('<span class="tag b">B</span> Put', f"{put:.2f}%"),
-            ('<span class="tag s">S</span> Call KI', f"{call:.2f}% · barreira {ki:.2f}%"),
+            ('<span class="tag b">B</span> Put', put_lbl),
+            ('<span class="tag s">S</span> Call KI', f"{call_lbl} · barreira {ki_lbl}"),
         ],
         "zones": [
             ("Queda", f"Piso {floor:+.0f}% (put)."),
@@ -889,7 +915,7 @@ def make_sh(t, fixing, put, call, ki, bid):
         "regime0": "Entre o piso e a barreira: participa 1:1.",
         "speech": [
             ("Para quem", f"Cliente construtivo em {t} no horizonte de {prazo}, com proteção na queda."),
-            ("Como encaixa", f"Put {put:.0f}% · call {call:.0f}% KI em {ki:.2f}% · prazo {prazo}."),
+            ("Como encaixa", f"Put {put_lbl} · call {call_lbl} KI em {ki_lbl} · prazo {prazo}."),
             ("Fechamento", "Material de uso interno — condições no DIE."),
         ],
         "x_min": min(-50, int(floor) - 15),
@@ -902,7 +928,7 @@ def make_sh(t, fixing, put, call, ki, bid):
     }
 
 
-def make_acel(t, fixing, ko_h, ko_l, bid):
+def make_acel(t, fixing, ko_h, ko_l, _bid):
     prazo = months_label(fixing)
     H, L = round(ko_h - 100, 2), round(ko_l - 100, 2)
     # Teto = distância até o KO (call vendida), NÃO 2×H. 2× só acelera até esse teto.
@@ -987,7 +1013,7 @@ def make_acel(t, fixing, ko_h, ko_l, bid):
     }
 
 
-def make_triplo(t, fixing, sold, ko_h, ko_l, bid):
+def make_triplo(t, fixing, sold, ko_h, ko_l, _bid):
     prazo = months_label(fixing)
     H, L, CAP = ko_h - 100, ko_l - 100, sold - 100
     peak = 3 * H
@@ -1242,7 +1268,7 @@ def make_put_ko(t, fixing, ko_pct, rebate, cost):
     }
 
 
-def make_twip(t, fixing, put, call_ki, ki, put_ko, put_ko_b, bid):
+def make_twip(t, fixing, put, call_ki, ki, put_ko, put_ko_b, _bid):
     prazo = months_label(fixing)
     slug = slugify("twip", t, prazo.replace(" ", ""))
     L = put_ko_b - 100
@@ -1273,13 +1299,173 @@ def make_twip(t, fixing, put, call_ki, ki, put_ko, put_ko_b, bid):
         ],
         "regime0": "Entre barreiras: retorno absoluto |x|.",
         "speech": [
-            ("Para quem", f"Cliente construtivo em ouro via {t} ({prazo}) que quer payoff bidirecional com proteção."),
+            ("Para quem", f"Cliente construtivo em ouro via {t} ({prazo}) que quer payoff na alta e na queda moderada, com proteção."),
             ("Como encaixa", f"TWIP · put KO {fmt_lvl(put_ko_b)} · call KI {fmt_lvl(ki)}."),
             ("Fechamento", "Material de uso interno — condições no DIE."),
         ],
         "js_const": f"var L={L}, H={H};",
         "js_fn": "if (x < L || x > H) return 0; return Math.abs(x);",
         "js_regime": "if (x < L || x > H) return 'Fora da faixa: 0%.'; return 'Twin: |x|.';",
+    }
+
+
+def make_pop(t, fixing, call_strike, put_strike):
+    """POP: put ATM + call vendida em metade da posição · participação 50% na alta, piso 0%."""
+    prazo = months_label(fixing)
+    slug = slugify("pop", t, prazo.replace(" ", ""))
+    call_lbl = fmt_lvl(call_strike)
+    put_lbl = fmt_lvl(put_strike)
+    return slug, {
+        "title": f"POP {t}",
+        "h1": "POP",
+        "ticker": t,
+        "dot": "POP",
+        "brand": "#0a6e8a",
+        "subtitle": (
+            f"Protected Ownership Participation sobre {t}: proteção total na queda (put {put_lbl}) "
+            f"e participação parcial na alta (call vendida {call_lbl} em metade da posição)."
+        ),
+        "pills": [
+            ("Ativo", t),
+            ("Prazo", prazo),
+            ("Put", put_lbl),
+            ("Call 0,5×", call_lbl),
+            ("Participação", "50%"),
+        ],
+        "highlights": [
+            ("Prazo", prazo, ""),
+            ("Queda", "0%", f"Put {put_lbl}"),
+            ("Alta", "50%", f"Call vendida {call_lbl} em 0,5×"),
+            ("Custo", "0%", "Estrutura financiada (PDF)"),
+        ],
+        "struct": [
+            ('<span class="tag b">B</span> Put', put_lbl),
+            ('<span class="tag s">S</span> Call 0,5×', call_lbl),
+        ],
+        "zones": [
+            ("Queda", "Put viva: piso 0% (proteção total)."),
+            ("Alta", "Participa de metade da valorização (0,5×)."),
+            ("Ideia", "Exposição construtiva com proteção, sem custo comercial."),
+        ],
+        "regime0": "Na alta: participa 50%. Na queda: piso 0%.",
+        "speech": [
+            ("Para quem", f"Cliente construtivo em {t} ({prazo}) que quer alta parcial com proteção total na queda."),
+            (
+                "Como encaixa",
+                f"POP: venda de call {call_lbl} em metade da posição + compra de put {put_lbl}. "
+                "Participação 50% na alta; piso 0% na queda. Custo comercial 0%.",
+            ),
+            ("Fechamento", "Material de uso interno — condições no DIE."),
+        ],
+        "x_min": -50,
+        "x_max": 80,
+        "y_min": -20,
+        "y_max": 50,
+        "js_const": "var PART=0.5;",
+        "js_fn": "if (x < 0) return 0; return PART * x;",
+        "js_regime": "if (x < 0) return 'Put: proteção — piso 0%.'; return 'Alta: participa 50%.';",
+    }
+
+
+def make_put_buy(t, fixing, put_strike, cost, prazo=None):
+    """Compra de put plain — preço (offer) OK; sem bid/delta."""
+    prazo = prazo or months_label(fixing)
+    slug = slugify("compra-put", t, prazo.replace(" ", ""))
+    put_lbl = fmt_lvl(put_strike)
+    cost_s = fmt_money_pct(cost).rstrip("%")
+    floor_var = put_strike - 100  # ex.: 95 → -5
+
+    def net_at(x: float) -> float:
+        return max(put_strike - (100.0 + x), 0.0) - cost
+
+    def prem_at(x: float) -> float:
+        return (net_at(x) / cost) * 100.0
+
+    spots = sorted({20.0, 10.0, 0.0, floor_var, floor_var - 5, -20.0, -30.0, -40.0}, reverse=True)
+    matrix_rows = []
+    for s in spots:
+        n, p = net_at(s), prem_at(s)
+        note = "OTM" if s >= floor_var else "ITM"
+        if abs(s - floor_var) < 1e-9:
+            note = "Strike"
+        ns = f"{n:+.1f}".replace(".", ",")
+        ps = f"{p:+.0f}"
+        ss = f"{s:+.0f}"
+        matrix_rows.append(
+            f"<tr><td>{ss}%</td><td>{ns}%</td><td><strong>{ps}%</strong></td><td>{note}</td></tr>"
+        )
+
+    matrix_html = f"""
+  <div class="matrix-wrap">
+    <h2>Matriz de ganho (só prêmio)</h2>
+    <p class="matrix-note">
+      Retorno <strong>sobre o prêmio pago ({cost_s}%)</strong> =
+      (resultado no nocional ÷ {cost_s}%) × 100.
+    </p>
+    <table class="struct-table">
+      <thead><tr><th>Spot</th><th>Nocional</th><th>Sobre prêmio</th><th></th></tr></thead>
+      <tbody>
+        {''.join(matrix_rows)}
+      </tbody>
+    </table>
+  </div>
+"""
+
+    return slug, {
+        "title": f"Compra de Put {t}",
+        "h1": "Compra de Put",
+        "ticker": t,
+        "dot": "CP",
+        "brand": "#2c5f7c",
+        "subtitle": (
+            f"Compra de put {t} strike {put_lbl}: proteção/tática de queda. "
+            f"Matriz também em retorno % só sobre o prêmio ({cost_s}%)."
+        ),
+        "pills": [("Ativo", t), ("Prazo", prazo), ("Strike", put_lbl), ("Preço", f"{cost_s}%")],
+        "highlights": [
+            ("Prazo", prazo, ""),
+            ("Strike", put_lbl, "Put comprada"),
+            ("Preço", f"{cost_s}%", "Prêmio pago"),
+            ("Risco", "−100%", "Sobre o prêmio (OTM)"),
+        ],
+        "struct": [
+            ('<span class="tag b">B</span> Put', put_lbl),
+            ("Preço (offer)", f"{cost_s}%"),
+        ],
+        "zones": [
+            (f"> {floor_var:.0f}%", f"OTM: −{cost_s}% no nocional = −100% sobre o prêmio."),
+            (f"≤ {floor_var:.0f}%", f"ITM: (|queda| além do strike) − {cost_s}% no nocional."),
+            ("Ideia", "Hedge ou tática de queda com perda limitada ao prêmio."),
+        ],
+        "regime0": "OTM: perde o prêmio. ITM: ganha com a queda além do strike.",
+        "speech": [
+            ("Para quem", f"Cliente que quer proteção ou tática de queda em {t} ({prazo})."),
+            (
+                "Como encaixa",
+                f"Compra de put {put_lbl} · preço {cost_s}%. "
+                f"Perda limitada a −100% do prêmio se o ativo não cair além do strike.",
+            ),
+            ("Fechamento", "Material de uso interno — condições no DIE."),
+        ],
+        "sim_extra_html": (
+            f'<div class="sim-card wide">'
+            f'<div class="lbl">Retorno sobre o prêmio ({cost_s}%)</div>'
+            f'<div class="val" id="premVal">−100%</div>'
+            f"</div>"
+        ),
+        "matrix_html": matrix_html,
+        "struct_lbl": "Put (nocional)",
+        "x_min": -50,
+        "x_max": 30,
+        "y_min": -20,
+        "y_max": 50,
+        "js_const": f"var PUT={put_strike}, COST={cost};",
+        "js_fn": "return Math.max(PUT-(100+x), 0) - COST;",
+        "js_regime": (
+            "var rp=(structureReturn(x)/COST)*100; "
+            "if (x < PUT-100) return 'Put ITM: '+structureReturn(x).toFixed(1).replace('.',',')+'% nocional · '+rp.toFixed(0)+'% sobre o prêmio.'; "
+            "return 'OTM: −'+COST.toFixed(2).replace('.',',')+'% nocional · −100% sobre o prêmio.';"
+        ),
     }
 
 
@@ -1370,6 +1556,16 @@ SECTION_META = {
         "id": "one-touch",
         "blurb": "Paga rebate se tocar a barreira de alta.",
         "color": "#1e4d7b",
+    },
+    "POP": {
+        "id": "pop",
+        "blurb": "Proteção na queda + participação parcial (50%) na alta.",
+        "color": "#0a6e8a",
+    },
+    "Compra de Put": {
+        "id": "compra-put",
+        "blurb": "Put comprada — proteção ou tática de queda.",
+        "color": "#2c5f7c",
     },
 }
 
@@ -1568,7 +1764,7 @@ def patch_root_index():
             <span class="op-title">Prateleira Tática</span>
             <span class="op-ticker">SEMANAL</span>
           </div>
-          <p class="op-blurb">Hub semanal de operações (SOC, Smart Hedge, Aceleradora, Triplo, KO, TWIP, One Touch) + PDF da prateleira.</p>
+          <p class="op-blurb">Hub semanal de operações (SOC, Smart Hedge, Aceleradora, Triplo, KO, TWIP, One Touch, POP, Compra de Put) + PDF da prateleira.</p>
           <div class="op-meta">
             <span class="pill">Atualização semanal</span>
             <span class="pill">PDF</span>
@@ -1611,9 +1807,9 @@ def main():
     sections.append(("Triplo Retorno KO", tri_items))
     all_ops.extend(tri_items)
 
-    ck = make_call_ko(*CALL_KO)
-    sections.append(("Call KO com Rebate", [ck]))
-    all_ops.append(ck)
+    ck_items = [make_call_ko(*r) for r in CALL_KO]
+    sections.append(("Call KO com Rebate", ck_items))
+    all_ops.extend(ck_items)
 
     pk = make_put_ko(*PUT_KO)
     sections.append(("Put KO com Rebate", [pk]))
@@ -1626,6 +1822,14 @@ def main():
     ot_items = [make_ot(*r) for r in ONE_TOUCH]
     sections.append(("One Touch de Alta", ot_items))
     all_ops.extend(ot_items)
+
+    pop = make_pop(*POP)
+    sections.append(("POP", [pop]))
+    all_ops.append(pop)
+
+    pb = make_put_buy(*PUT_BUY)
+    sections.append(("Compra de Put", [pb]))
+    all_ops.append(pb)
 
     tickers = [cfg["ticker"] for _, cfg in all_ops]
     try:

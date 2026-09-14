@@ -123,22 +123,22 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
     <h1>Smart Hedge <span>PETR4</span></h1>
     <p class="subtitle">Smart Hedge sobre PETR4: piso na queda, participação 1:1 até a barreira KI; se KI, retorno limitado ao strike da call.</p>
   </div>
-  <div class="meta-pills"><div class="pill"><strong>Ativo</strong> PETR4</div><div class="pill"><strong>Prazo</strong> 12 meses</div><div class="pill"><strong>Put</strong> 100%</div><div class="pill"><strong>Call</strong> 110%</div><div class="pill"><strong>KI</strong> 134.70%</div></div>
+  <div class="meta-pills"><div class="pill"><strong>Ativo</strong> PETR4</div><div class="pill"><strong>Prazo</strong> 12 meses</div><div class="pill"><strong>Put</strong> 100%</div><div class="pill"><strong>Call</strong> 110%</div><div class="pill"><strong>KI</strong> 134,70%</div></div>
 </header>
-<section class="highlights"><div class="hi"><h3>Prazo</h3><p>12 meses<span></span></p></div><div class="hi"><h3>Piso</h3><p>+0%<span>Put 100%</span></p></div><div class="hi"><h3>Barreira KI</h3><p>134.70%<span>+34.7%</span></p></div><div class="hi"><h3>Teto se KI</h3><p>+10%<span>Call 110%</span></p></div></section>
+<section class="highlights"><div class="hi"><h3>Prazo</h3><p>12 meses<span></span></p></div><div class="hi"><h3>Piso</h3><p>+0%<span>Put 100%</span></p></div><div class="hi"><h3>Barreira KI</h3><p>134,70%<span>+34,7%</span></p></div><div class="hi"><h3>Teto se KI</h3><p>+10%<span>Call 110%</span></p></div></section>
 
 <section class="research">
   <div class="research-head">
     <h2>Research BTG</h2>
     <a class="research-link" href="https://content.btgpactual.com/research/ativo/PETR4" target="_blank" rel="noopener">Abrir PETR4 no Research <span class="arrow" aria-hidden="true">→</span></a>
   </div>
-  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 49,00</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 65,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+32,65%</div></div></div><p class="research-note">Spot do fechamento anterior (11/09/2026) · preço-alvo atualizado em 11/09/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
+  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 49,53</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 65,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+31,23%</div></div></div><p class="research-note">Spot do fechamento anterior (14/09/2026) · preço-alvo atualizado em 11/09/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
 </section>
 
 <div class="main">
 <aside class="panel">
   <h2>Estrutura</h2>
-  <table class="struct-table"><thead><tr><th>Perna</th><th>Nível</th></tr></thead><tbody><tr><td><span class="tag b">B</span> Put</td><td>100.00%</td></tr><tr><td><span class="tag s">S</span> Call KI</td><td>110.00% · barreira 134.70%</td></tr></tbody></table>
+  <table class="struct-table"><thead><tr><th>Perna</th><th>Nível</th></tr></thead><tbody><tr><td><span class="tag b">B</span> Put</td><td>100%</td></tr><tr><td><span class="tag s">S</span> Call KI</td><td>110% · barreira 134,70%</td></tr></tbody></table>
   <p class="legend-note">Payoff ilustrativo no vencimento. Condições oficiais no DIE.</p>
 </aside>
 <section class="panel chart-panel">
@@ -189,7 +189,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
 </div>
 <section class="speech-box">
   <h2>Speech comercial</h2>
-  <p class="speech-label">Para quem</p><p>Cliente construtivo em PETR4 no horizonte de 12 meses, com proteção na queda.</p><p class="speech-label">Como encaixa</p><p>Put 100% · call 110% KI em 134.70% · prazo 12 meses.</p><p class="speech-label">Fechamento</p><p>Material de uso interno — condições no DIE.</p>
+  <p class="speech-label">Para quem</p><p>Cliente construtivo em PETR4 no horizonte de 12 meses, com proteção na queda.</p><p class="speech-label">Como encaixa</p><p>Put 100% · call 110% KI em 134,70% · prazo 12 meses.</p><p class="speech-label">Fechamento</p><p>Material de uso interno — condições no DIE.</p>
 </section>
 
 <section class="speech-box insights-box">
@@ -206,7 +206,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
   var X_MIN=-50,X_MAX=80,Y_MIN=-50,Y_MAX=80;
   var PAD={l:48,t:24,r:48,b:24},VW=600,VH=400;
   var PLOT_W=VW-PAD.l-PAD.r,PLOT_H=VH-PAD.t-PAD.b;
-  var RESEARCH_X=32.6531;
+  var RESEARCH_X=31.2336;
   var PUT=100.0, CALL=110.0, KI=134.7;
   function structureReturn(x){ var st=100+x; var r=st+Math.max(PUT-st,0)-(st>=KI?Math.max(st-CALL,0):0)-100; return r; }
   function regimeFor(x){ var st=100+x; if(st>=KI) return 'KI: teto +10%.'; if(x<=(PUT-100)) return 'Piso da put.'; return 'Participa 1:1.'; }

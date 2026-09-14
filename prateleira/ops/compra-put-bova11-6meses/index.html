@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Smart Hedge EMBJ3 | BTG Pactual</title>
+<title>Compra de Put BOVA11 | BTG Pactual</title>
 <style>
 :root {
   --ink:#0b1f3a; --muted:#5c6b7a; --line:#d0d8e2; --bg:#eef2f6; --card:#ffffff;
-  --brand:#007e33; --btg:#0b1f3a; --success:#0f7a4a; --danger:#c0392b; --dash:#8b83a0;
+  --brand:#2c5f7c; --btg:#0b1f3a; --success:#0f7a4a; --danger:#c0392b; --dash:#8b83a0;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:Segoe UI,-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);min-height:100vh;line-height:1.45}
@@ -118,27 +118,27 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
   <div class="brand-block">
     <div class="logos">
       <span class="logo-btg">BTG PACTUAL</span>
-      <span class="logo-co"><span class="dot">SH</span> EMBJ3</span>
+      <span class="logo-co"><span class="dot">CP</span> BOVA11</span>
     </div>
-    <h1>Smart Hedge <span>EMBJ3</span></h1>
-    <p class="subtitle">Smart Hedge sobre EMBJ3: piso na queda, participação 1:1 até a barreira KI; se KI, retorno limitado ao strike da call.</p>
+    <h1>Compra de Put <span>BOVA11</span></h1>
+    <p class="subtitle">Compra de put BOVA11 strike 95%: proteção/tática de queda. Matriz também em retorno % só sobre o prêmio (2,93%).</p>
   </div>
-  <div class="meta-pills"><div class="pill"><strong>Ativo</strong> EMBJ3</div><div class="pill"><strong>Prazo</strong> 12 meses</div><div class="pill"><strong>Put</strong> 100%</div><div class="pill"><strong>Call</strong> 110%</div><div class="pill"><strong>KI</strong> 145.96%</div></div>
+  <div class="meta-pills"><div class="pill"><strong>Ativo</strong> BOVA11</div><div class="pill"><strong>Prazo</strong> 6 meses</div><div class="pill"><strong>Strike</strong> 95%</div><div class="pill"><strong>Preço</strong> 2,93%</div></div>
 </header>
-<section class="highlights"><div class="hi"><h3>Prazo</h3><p>12 meses<span></span></p></div><div class="hi"><h3>Piso</h3><p>+0%<span>Put 100%</span></p></div><div class="hi"><h3>Barreira KI</h3><p>145.96%<span>+46.0%</span></p></div><div class="hi"><h3>Teto se KI</h3><p>+10%<span>Call 110%</span></p></div></section>
+<section class="highlights"><div class="hi"><h3>Prazo</h3><p>6 meses<span></span></p></div><div class="hi"><h3>Strike</h3><p>95%<span>Put comprada</span></p></div><div class="hi"><h3>Preço</h3><p>2,93%<span>Prêmio pago</span></p></div><div class="hi"><h3>Risco</h3><p>−100%<span>Sobre o prêmio (OTM)</span></p></div></section>
 
 <section class="research">
   <div class="research-head">
     <h2>Research BTG</h2>
-    <a class="research-link" href="https://content.btgpactual.com/research/ativo/EMBJ3" target="_blank" rel="noopener">Abrir EMBJ3 no Research <span class="arrow" aria-hidden="true">→</span></a>
+    <a class="research-link" href="https://content.btgpactual.com/research/ativo/BOVA11" target="_blank" rel="noopener">Abrir BOVA11 no Research <span class="arrow" aria-hidden="true">→</span></a>
   </div>
-  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 96,94</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 126,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+29,98%</div></div></div><p class="research-note">Spot do fechamento anterior (11/09/2026) · preço-alvo atualizado em 24/08/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
+  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 181,58</div></div></div><p class="research-note">Spot do fechamento anterior (14/09/2026) · sem preço-alvo publicado para este ticker · atualizado às 18h30 · fonte Research BTG.</p>
 </section>
 
 <div class="main">
 <aside class="panel">
   <h2>Estrutura</h2>
-  <table class="struct-table"><thead><tr><th>Perna</th><th>Nível</th></tr></thead><tbody><tr><td><span class="tag b">B</span> Put</td><td>100.00%</td></tr><tr><td><span class="tag s">S</span> Call KI</td><td>110.00% · barreira 145.96%</td></tr></tbody></table>
+  <table class="struct-table"><thead><tr><th>Perna</th><th>Nível</th></tr></thead><tbody><tr><td><span class="tag b">B</span> Put</td><td>95%</td></tr><tr><td>Preço (offer)</td><td>2,93%</td></tr></tbody></table>
   <p class="legend-note">Payoff ilustrativo no vencimento. Condições oficiais no DIE.</p>
 </aside>
 <section class="panel chart-panel">
@@ -154,48 +154,56 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
       <line id="axisZeroX" x1="0" y1="0" x2="0" y2="400" stroke="#c5ced8" stroke-width="1"/>
       <line id="axisZeroY" x1="48" y1="0" x2="552" y2="0" stroke="#c5ced8" stroke-width="1"/>
       <polyline id="assetPath" fill="none" stroke="#8b83a0" stroke-width="2" stroke-dasharray="6 5"/>
-      <path id="structPath" fill="none" stroke="#007e33" stroke-width="2.5"/>
+      <path id="structPath" fill="none" stroke="#2c5f7c" stroke-width="2.5"/>
       <line id="putKoGap" x1="0" y1="0" x2="0" y2="0" stroke="#0f7a4a" stroke-width="2" stroke-dasharray="4 3" opacity="0"/>
-      <line id="callKoGap" x1="0" y1="0" x2="0" y2="0" stroke="#007e33" stroke-width="2" stroke-dasharray="4 3" opacity="0"/>
+      <line id="callKoGap" x1="0" y1="0" x2="0" y2="0" stroke="#2c5f7c" stroke-width="2" stroke-dasharray="4 3" opacity="0"/>
       <text id="putKoLabel" font-size="11" fill="#0f7a4a" font-weight="700" opacity="0">Put KO</text>
-      <text id="callKoLabel" font-size="11" fill="#007e33" font-weight="700" opacity="0">Call vendida</text>
+      <text id="callKoLabel" font-size="11" fill="#2c5f7c" font-weight="700" opacity="0">Call vendida</text>
       <line id="researchTargetLine" x1="0" y1="24" x2="0" y2="376" stroke="#1a66b3" stroke-width="1.5" stroke-dasharray="5 4" opacity="0"/>
       <text id="researchTargetLabel" font-size="11" fill="#1a66b3" font-weight="700" opacity="0">PA Research</text>
       <g id="xLabels"></g><g id="yLabels"></g>
-      <line id="hoverLine" x1="0" y1="24" x2="0" y2="376" stroke="#007e33" stroke-width="1" opacity="0"/>
-      <circle id="hoverStruct" r="5" fill="#007e33" opacity="0"/>
+      <line id="hoverLine" x1="0" y1="24" x2="0" y2="376" stroke="#2c5f7c" stroke-width="1" opacity="0"/>
+      <circle id="hoverStruct" r="5" fill="#2c5f7c" opacity="0"/>
       <circle id="hoverAsset" r="4" fill="#8b83a0" opacity="0"/>
     </svg>
   </div>
   <p class="chart-touch-hint">Arraste no gráfico para simular</p>
       <div class="mobile-sim">
     <div class="sim-label"><span>Spot final</span><output id="spotOutMobile">0%</output></div>
-    <input type="range" id="spotSliderMobile" min="-50" max="80" step="0.5" value="0"/>
+    <input type="range" id="spotSliderMobile" min="-50" max="30" step="0.5" value="0"/>
   </div>
-  <div class="zones"><div class="zone"><strong>Queda</strong><p>Piso +0% (put).</p></div><div class="zone"><strong>Até +46%</strong><p>Acompanha o ativo 1:1.</p></div><div class="zone"><strong>≥ +46%</strong><p>KI: retorno limitado a +10%.</p></div></div>
+  <div class="zones"><div class="zone"><strong>> -5%</strong><p>OTM: −2,93% no nocional = −100% sobre o prêmio.</p></div><div class="zone"><strong>≤ -5%</strong><p>ITM: (|queda| além do strike) − 2,93% no nocional.</p></div><div class="zone"><strong>Ideia</strong><p>Hedge ou tática de queda com perda limitada ao prêmio.</p></div></div>
 </section>
 <aside class="panel panel-sim">
   <h2>Simulador</h2>
   <div class="sim-label"><span>Variação do ativo</span><output id="spotOut">0%</output></div>
-  <input type="range" id="spotSlider" min="-50" max="80" step="0.5" value="0"/>
+  <input type="range" id="spotSlider" min="-50" max="30" step="0.5" value="0"/>
   <div class="sim-cards">
     <div class="sim-card"><div class="lbl">Ativo</div><div class="val" id="assetVal">0,0%</div></div>
-    <div class="sim-card"><div class="lbl">Estrutura</div><div class="val" id="structVal">0,0%</div></div>
-    
+    <div class="sim-card"><div class="lbl">Put (nocional)</div><div class="val" id="structVal">0,0%</div></div>
+    <div class="sim-card wide"><div class="lbl">Retorno sobre o prêmio (2,93%)</div><div class="val" id="premVal">−100%</div></div>
   </div>
-  <div class="regime" id="regimeText">Entre o piso e a barreira: participa 1:1.</div>
+  <div class="regime" id="regimeText">OTM: perde o prêmio. ITM: ganha com a queda além do strike.</div>
   
+  <div class="matrix-wrap">
+    <h2>Matriz de ganho (só prêmio)</h2>
+    <p class="matrix-note">
+      Retorno <strong>sobre o prêmio pago (2,93%)</strong> =
+      (resultado no nocional ÷ 2,93%) × 100.
+    </p>
+    <table class="struct-table">
+      <thead><tr><th>Spot</th><th>Nocional</th><th>Sobre prêmio</th><th></th></tr></thead>
+      <tbody>
+        <tr><td>+20%</td><td>-2,9%</td><td><strong>-100%</strong></td><td>OTM</td></tr><tr><td>+10%</td><td>-2,9%</td><td><strong>-100%</strong></td><td>OTM</td></tr><tr><td>+0%</td><td>-2,9%</td><td><strong>-100%</strong></td><td>OTM</td></tr><tr><td>-5%</td><td>-2,9%</td><td><strong>-100%</strong></td><td>Strike</td></tr><tr><td>-10%</td><td>+2,1%</td><td><strong>+71%</strong></td><td>ITM</td></tr><tr><td>-20%</td><td>+12,1%</td><td><strong>+412%</strong></td><td>ITM</td></tr><tr><td>-30%</td><td>+22,1%</td><td><strong>+753%</strong></td><td>ITM</td></tr><tr><td>-40%</td><td>+32,1%</td><td><strong>+1095%</strong></td><td>ITM</td></tr>
+      </tbody>
+    </table>
+  </div>
+
 </aside>
 </div>
 <section class="speech-box">
   <h2>Speech comercial</h2>
-  <p class="speech-label">Para quem</p><p>Cliente construtivo em EMBJ3 no horizonte de 12 meses, com proteção na queda.</p><p class="speech-label">Como encaixa</p><p>Put 100% · call 110% KI em 145.96% · prazo 12 meses.</p><p class="speech-label">Fechamento</p><p>Material de uso interno — condições no DIE.</p>
-</section>
-
-<section class="speech-box insights-box">
-  <h2>Insights Research BTG</h2>
-  <ul class="research-bullets"><li>No 2T26, a Embraer entregou 65 aeronaves, +7% a/a e ~10% acima da prévia, com receita de US$2,2 bi, +23% a/a e ~6% acima do esperado.</li><li>O EBITDA ajustado ficou em US$356 mi, ou ~US$296 mi ao excluir crédito tributário e tarifas, com margem de ~13%, enquanto o EBIT ajustado foi de US$237 mi e margem de 10,6%, 280 bps acima da estimativa. O lucro líquido ajustado somou…</li><li>A dívida líquida ex-Eve caiu para US$124 mi, com alavancagem de 0,2x. Na prévia, o BTG esperava 65 jatos, receita de ~US$2,1 bi, EBITDA de US$217 mi e LL de US$102 mi, e o trimestre confirmou recuperação operacional após um 1T mais…</li></ul>
-  <p class="research-note">Insights BTG · 24/08/2026 · fonte Research BTG.</p>
+  <p class="speech-label">Para quem</p><p>Cliente que quer proteção ou tática de queda em BOVA11 (6 meses).</p><p class="speech-label">Como encaixa</p><p>Compra de put 95% · preço 2,93%. Perda limitada a −100% do prêmio se o ativo não cair além do strike.</p><p class="speech-label">Fechamento</p><p>Material de uso interno — condições no DIE.</p>
 </section>
 
 <p class="footer">Material ilustrativo para uso interno. Não constitui oferta, recomendação ou garantia de rentabilidade.</p>
@@ -203,13 +211,13 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
 </div>
 <script>
 (function(){
-  var X_MIN=-50,X_MAX=80,Y_MIN=-50,Y_MAX=80;
+  var X_MIN=-50,X_MAX=30,Y_MIN=-20,Y_MAX=50;
   var PAD={l:48,t:24,r:48,b:24},VW=600,VH=400;
   var PLOT_W=VW-PAD.l-PAD.r,PLOT_H=VH-PAD.t-PAD.b;
-  var RESEARCH_X=29.9773;
-  var PUT=100.0, CALL=110.0, KI=145.96;
-  function structureReturn(x){ var st=100+x; var r=st+Math.max(PUT-st,0)-(st>=KI?Math.max(st-CALL,0):0)-100; return r; }
-  function regimeFor(x){ var st=100+x; if(st>=KI) return 'KI: teto +10%.'; if(x<=(PUT-100)) return 'Piso da put.'; return 'Participa 1:1.'; }
+  var RESEARCH_X=null;
+  var PUT=95.0, COST=2.93;
+  function structureReturn(x){ return Math.max(PUT-(100+x), 0) - COST; }
+  function regimeFor(x){ var rp=(structureReturn(x)/COST)*100; if (x < PUT-100) return 'Put ITM: '+structureReturn(x).toFixed(1).replace('.',',')+'% nocional · '+rp.toFixed(0)+'% sobre o prêmio.'; return 'OTM: −'+COST.toFixed(2).replace('.',',')+'% nocional · −100% sobre o prêmio.'; }
   function fmtPct(v,d){ d=d==null?1:d; var s=v.toFixed(d).replace('.',','); return (v>0?'+':'')+s+'%'; }
   function xToSvg(x){ return PAD.l+((x-X_MIN)/(X_MAX-X_MIN))*PLOT_W; }
   function yToSvg(y){ return PAD.t+((Y_MAX-y)/(Y_MAX-Y_MIN))*PLOT_H; }
@@ -309,7 +317,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
     document.getElementById('hoverAsset').setAttribute('cy',yToSvg(Math.max(Y_MIN,Math.min(Y_MAX,x))));
     document.getElementById('hoverAsset').setAttribute('opacity','1');
     var tip=document.getElementById('tooltip');
-    tip.innerHTML='<div class="t-title">Spot '+fmtPct(x)+'</div><div class="row"><span>Ativo</span><span>'+fmtPct(x)+'</span></div><div class="row"><span>Estrutura</span><span>'+fmtPct(ys)+'</span></div>'+(typeof COST==='number' && COST!==0 ? '<div class="row"><span>Sobre o prêmio</span><span>'+fmtPct((ys/COST)*100,0)+'</span></div>' : '');
+    tip.innerHTML='<div class="t-title">Spot '+fmtPct(x)+'</div><div class="row"><span>Ativo</span><span>'+fmtPct(x)+'</span></div><div class="row"><span>Put (nocional)</span><span>'+fmtPct(ys)+'</span></div>'+(typeof COST==='number' && COST!==0 ? '<div class="row"><span>Sobre o prêmio</span><span>'+fmtPct((ys/COST)*100,0)+'</span></div>' : '');
     tip.className='tooltip on';
     tip.style.left=px+'px'; tip.style.top=yToSvg(ys)+'px';
   }
