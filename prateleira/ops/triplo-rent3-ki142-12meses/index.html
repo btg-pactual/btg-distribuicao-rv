@@ -132,7 +132,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
     <h2>Research BTG</h2>
     <a class="research-link" href="https://content.btgpactual.com/research/ativo/RENT3" target="_blank" rel="noopener">Abrir RENT3 no Research <span class="arrow" aria-hidden="true">→</span></a>
   </div>
-  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 34,96</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 65,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+85,93%</div></div></div><p class="research-note">Spot do fechamento anterior (14/09/2026) · preço-alvo atualizado em 07/08/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
+  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 35,59</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 63,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+77,02%</div></div></div><p class="research-note">Spot do fechamento anterior (14/09/2026) · preço-alvo atualizado em 14/09/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
 </section>
 
 <div class="main">
@@ -170,14 +170,14 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
   <p class="chart-touch-hint">Arraste no gráfico para simular</p>
       <div class="mobile-sim">
     <div class="sim-label"><span>Spot final</span><output id="spotOutMobile">0%</output></div>
-    <input type="range" id="spotSliderMobile" min="-50" max="100" step="0.5" value="0"/>
+    <input type="range" id="spotSliderMobile" min="-50" max="90" step="0.5" value="0"/>
   </div>
   <div class="zones"><div class="zone"><strong>< -20%</strong><p>Acompanha o ativo.</p></div><div class="zone"><strong>-20% → 0%</strong><p>Ganho ≈ |queda|.</p></div><div class="zone"><strong>0% → +42%</strong><p>3× a alta; acima: teto.</p></div></div>
 </section>
 <aside class="panel panel-sim">
   <h2>Simulador</h2>
   <div class="sim-label"><span>Variação do ativo</span><output id="spotOut">0%</output></div>
-  <input type="range" id="spotSlider" min="-50" max="100" step="0.5" value="0"/>
+  <input type="range" id="spotSlider" min="-50" max="90" step="0.5" value="0"/>
   <div class="sim-cards">
     <div class="sim-card"><div class="lbl">Ativo</div><div class="val" id="assetVal">0,0%</div></div>
     <div class="sim-card"><div class="lbl">Estrutura</div><div class="val" id="structVal">0,0%</div></div>
@@ -194,8 +194,8 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
 
 <section class="speech-box insights-box">
   <h2>Insights Research BTG</h2>
-  <ul class="research-bullets"><li>A Localiza reportou 2T26 acima das estimativas no consolidado, com receita líquida de R$12,3 bi, +25% a/a, EBITDA de R$3,8 bi, +14% a/a, e lucro líquido de R$1,0 bi, +31% a/a, enquanto o spread de ROIC ajustado subiu para 6,1%, de 5,9%…</li><li>Em Gestão de Frotas, os volumes cresceram 1% a/a, a diária média foi a R$109, a receita somou R$2,4 bi, +6% a/a, e a margem EBITDA atingiu 76%, acima de 71% no 2T25. A operação no México ainda segue em fase de investimento, com receita…</li><li>A companhia comprou 120,6 mil veículos no trimestre, ante 74 mil um ano antes. Parte do lucro foi beneficiada por menor alíquota efetiva e créditos de PIS/COFINS, o que pode limitar a qualidade percebida do resultado. Em valuation, o…</li></ul>
-  <p class="research-note">Insights BTG · 12/08/2026 · fonte Research BTG.</p>
+  <ul class="research-bullets"><li>No 2T26, a Localiza entregou receita líquida de R$12,3 bi, EBITDA de R$3,8 bi e lucro líquido de R$1,0 bi, com altas de 25%, 14% e 31% a/a, respectivamente, e desempenho acima das estimativas, embora com pressão em Seminovos. Em…</li><li>O spread de ROIC ajustado subiu para 6,1%. Em Seminovos, a receita foi de R$7,1 bi com 92 mil veículos vendidos, mas a margem EBITDA caiu para 1,9%, de 3,1% no 1T26, por mix pior e custos de expansão no varejo. A prévia apontava receita…</li><li>O spread caiu de 0,8 p.p. para 0,1 p.p. O perfil da frota ofertada também melhorou, com 74% dos carros abaixo de 45 mil km e 81% concentrados em modelos 2024/25 e 2025/26. Em valuation, a ação negocia perto de 9,0x–9,7x P/L 2026E, com…</li></ul>
+  <p class="research-note">Insights BTG · 14/09/2026 · fonte Research BTG.</p>
 </section>
 
 <p class="footer">Material ilustrativo para uso interno. Não constitui oferta, recomendação ou garantia de rentabilidade.</p>
@@ -203,10 +203,10 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
 </div>
 <script>
 (function(){
-  var X_MIN=-50,X_MAX=100,Y_MIN=-50,Y_MAX=150;
+  var X_MIN=-50,X_MAX=90,Y_MIN=-50,Y_MAX=150;
   var PAD={l:48,t:24,r:48,b:24},VW=600,VH=400;
   var PLOT_W=VW-PAD.l-PAD.r,PLOT_H=VH-PAD.t-PAD.b;
-  var RESEARCH_X=85.9268;
+  var RESEARCH_X=77.0160;
   var L=-20.0, H=42.0, CAP=15.0;
   function structureReturn(x){ if (x < L) return x; if (x < 0) return -x; if (x < H) return 3*x; return CAP; }
   function regimeFor(x){ if (x < L) return 'Abaixo do put KO: acompanha.'; if (x < 0) return 'Queda moderada: |x|.'; if (x < H) return 'Alta: 3×.'; return 'KO alta: teto.'; }
