@@ -428,18 +428,19 @@ TRIPLO = [
 ]
 
 # (ticker, fixing, ko_pct, rebate, cost/offer abs) — preço de compra OK; sem bid/delta
+# Offer Excel 14.09 (atualizado): -5,00% / -3,50% / -1,20% (células % → abs)
 CALL_KO = [
-    ("PRIO3", date(2026, 11, 13), 121.0, 5.50, 3.60),
-    ("TEND3", date(2026, 11, 13), 129.28, 5.50, 4.00),
-    ("AXIA3", date(2026, 11, 13), 123.19, 5.50, 4.00),
-    ("WEGE3", date(2026, 11, 13), 119.90, 5.50, 4.00),
+    ("PRIO3", date(2026, 11, 13), 121.0, 5.50, 5.00),
+    ("TEND3", date(2026, 11, 13), 129.28, 5.50, 5.00),
+    ("AXIA3", date(2026, 11, 13), 123.19, 5.50, 5.00),
+    ("WEGE3", date(2026, 11, 13), 119.90, 5.50, 5.00),
 ]
-PUT_KO = ("EMBJ3", date(2026, 12, 10), 80.0, 5.50, 2.95)
+PUT_KO = ("EMBJ3", date(2026, 12, 10), 80.0, 5.50, 3.50)
 # (ticker, fixing, put, call_ki_strike, ki, put_ko, put_ko_barrier, bid)
 TWIP = ("GOLD11", date(2027, 9, 13), 100.0, 100.0, 140.0, 100.0, 80.0, 4.51)
 # (ticker, fixing, barrier_pct, rebate, cost)
 ONE_TOUCH = [
-    ("BOVA11", date(2026, 11, 16), 120.0, 5.0, 0.75),
+    ("BOVA11", date(2026, 11, 16), 120.0, 5.0, 1.20),
 ]
 # POP: venda call 0.5x + put ATM · custo comercial 0% (PDF); bid da book NÃO entra na UI
 # (ticker, fixing, call_strike, put_strike)
