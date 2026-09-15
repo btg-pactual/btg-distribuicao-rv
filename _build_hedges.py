@@ -1372,6 +1372,18 @@ OPS = [
         "prazo": "6 meses",
         "initials": "IT",
     },
+    {
+        "slug": "smart-hedge-embj3",
+        "ticker": "EMBJ3",
+        "name": "Embraer",
+        "brand": "#2f6b5a",
+        "brand_soft": "rgba(47,107,90,0.12)",
+        "put": 90.0,
+        "call": 110.0,
+        "barrier": 148.0,
+        "prazo": "1 ano",
+        "initials": "EM",
+    },
 ]
 
 
