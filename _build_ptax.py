@@ -147,7 +147,8 @@ def ptax_call_html(cfg: dict, spot_info: dict | None = None) -> str:
     .speech-box h2 {{ font-size:12px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--fx); margin-bottom:12px; }}
     .speech-label {{ font-size:11px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--fx); margin:12px 0 6px; }}
     .footer {{ margin-top:24px; font-size:12px; color:var(--muted); line-height:1.5; }}
-    .footer-alert {{ margin-top:14px; font-size:14px; font-weight:700; color:var(--danger); text-align:center; line-height:1.5; }}
+    .footer-alert {{ margin-top:16px; font-size:15px; font-weight:700; color:var(--danger); text-align:center; line-height:1.55; }}
+    .footer-alert strong {{ font-weight:700; }}
     .mobile-sim {{ display:none; margin-top:12px; }}
     .chart-touch-hint {{ display:none; font-size:12px; color:var(--muted); margin-top:8px; }}
     @media (max-width:1100px) {{ .main {{ grid-template-columns:1fr; }} .highlights {{ grid-template-columns:1fr 1fr; }} .meta-pills {{ justify-content:flex-start; }} }}

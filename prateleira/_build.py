@@ -605,7 +605,8 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
 .speech-label{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--brand);margin:14px 0 6px}
 .speech-box p{font-size:14px;color:var(--ink);max-width:70em}
 .footer{margin-top:28px;font-size:11px;color:var(--muted);text-align:center;line-height:1.55}
-.footer-alert{margin-top:10px;text-align:center;font-size:11px;color:var(--btg);font-weight:700}
+.footer-alert{margin-top:16px;text-align:center;font-size:15px;font-weight:700;color:var(--danger);line-height:1.55}
+.footer-alert strong{font-weight:700}
 @media (max-width:1100px){.main{grid-template-columns:1fr}.research-grid{grid-template-columns:1fr 1fr}}
 @media (max-width:640px){.page{padding:16px 14px 40px}.topbar{flex-direction:column}.meta-pills{justify-content:flex-start}.highlights{grid-template-columns:1fr}.zones{grid-template-columns:1fr}}
 @media (min-width:1101px){.mobile-sim{display:none}}
@@ -719,7 +720,10 @@ def op_page(cfg: dict) -> str:
 </section>
 {cfg.get('research_insights_html', '')}
 <p class="footer">Material ilustrativo para uso interno. Não constitui oferta, recomendação ou garantia de rentabilidade.</p>
-<p class="footer-alert">MATERIAL DE USO INTERNO, NÃO ENVIAR AOS CLIENTES</p>
+<p class="footer-alert">
+  <strong>MATERIAL DE USO INTERNO, NÃO ENVIAR AOS CLIENTES</strong><br />
+  <strong>PARA INFORMAÇÕES OFICIAIS, ACESSAR O DIE DA OPERAÇÃO DISPONIBILIZADO NO ADMIN BTG</strong>
+</p>
 </div>
 <script>
 (function(){{
@@ -1835,7 +1839,8 @@ h1{{font-size:clamp(28px,4.5vw,40px);font-weight:700;letter-spacing:-.02em;line-
 .pill{{background:#eef2f6;border:1px solid var(--line);border-radius:2px;padding:4px 10px;color:var(--btg-mid);font-size:11px;font-weight:600}}
 .op-cta{{margin-top:12px;font-size:12px;font-weight:700;color:var(--link)}}
 .footer{{margin-top:32px;padding-top:16px;border-top:1px solid var(--line);font-size:11px;color:var(--muted);text-align:center;line-height:1.55}}
-.footer strong{{display:block;margin-top:10px;color:var(--btg)}}
+.footer-alert{{margin-top:16px;text-align:center;font-size:15px;font-weight:700;color:#c0392b;line-height:1.55}}
+.footer-alert strong{{font-weight:700}}
 @media (max-width:900px){{.spot-grid{{grid-template-columns:repeat(3,minmax(0,1fr))}}}}
 @media (max-width:720px){{.cat-grid{{grid-template-columns:1fr}}.spot-grid{{grid-template-columns:repeat(2,minmax(0,1fr))}}}}
 @media (max-width:640px){{.hero{{padding:28px 16px 32px}}.page{{padding:20px 16px 48px}}.hero-row{{flex-direction:column;align-items:flex-start}}.cat-section-head{{flex-direction:column;align-items:flex-start}}}}
@@ -1872,8 +1877,11 @@ h1{{font-size:clamp(28px,4.5vw,40px);font-weight:700;letter-spacing:-.02em;line-
     <div class="cat-grid" id="catGrid">{cats}</div>
   </div>
   {body}
-  <p class="footer">Material ilustrativo para uso interno. Não constitui oferta, recomendação ou garantia de rentabilidade.
-  <strong>MATERIAL DE USO INTERNO, NÃO ENVIAR AOS CLIENTES</strong></p>
+  <p class="footer">Material ilustrativo para uso interno. Não constitui oferta, recomendação ou garantia de rentabilidade.</p>
+  <p class="footer-alert">
+    <strong>MATERIAL DE USO INTERNO, NÃO ENVIAR AOS CLIENTES</strong><br />
+    <strong>PARA INFORMAÇÕES OFICIAIS, ACESSAR O DIE DA OPERAÇÃO DISPONIBILIZADO NO ADMIN BTG</strong>
+  </p>
 </main>
 <script>
 (function(){{

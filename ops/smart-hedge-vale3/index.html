@@ -101,7 +101,8 @@
     .speech-label { font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--brand); margin: 14px 0 6px; }
     .speech-box p { font-size: 14px; color: var(--ink); max-width: 70em; }
     .footer { margin-top: 28px; font-size: 11px; color: var(--muted); text-align: center; line-height: 1.55; }
-    .footer-alert { margin-top: 10px; text-align: center; font-size: 11px; color: var(--btg); font-weight: 700; line-height: 1.5; }
+    .footer-alert { margin-top: 16px; text-align: center; font-size: 15px; font-weight: 700; color: var(--danger); line-height: 1.55; }
+    .footer-alert strong { font-weight: 700; }
     .visit-pixel { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
     @media (max-width: 1100px) { .main { grid-template-columns: 1fr; } .highlights { grid-template-columns: 1fr 1fr; } .zones { grid-template-columns: 1fr; } .research-grid{grid-template-columns:1fr 1fr} }
     @media (max-width: 640px) { .page { padding: 16px 14px 40px; } .topbar { flex-direction: column; } .meta-pills { justify-content: flex-start; } .highlights { grid-template-columns: 1fr; } }
@@ -139,7 +140,7 @@
     <h2>Research BTG</h2>
     <a class="research-link" href="https://content.btgpactual.com/research/ativo/VALE3" target="_blank" rel="noopener">Abrir VALE3 no Research <span class="arrow" aria-hidden="true">→</span></a>
   </div>
-  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 74,60</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 90,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+20,64%</div></div></div><p class="research-note">Spot do fechamento anterior (15/09/2026) · preço-alvo atualizado em 14/09/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
+  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 72,64</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 90,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+23,90%</div></div></div><p class="research-note">Spot do fechamento anterior (16/09/2026) · preço-alvo atualizado em 14/09/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
 </section>
 
 
@@ -246,8 +247,8 @@
     
 <section class="speech-box insights-box">
   <h2>Insights Research BTG</h2>
-  <ul class="research-bullets"><li>A Vale reportou 2T26 acima do esperado, com EBITDA consolidado de US$4,1 bi, 6% acima da estimativa do BTG, apoiado por preços realizados mais fortes em finos, pelotas e cobre e por melhor desempenho de metais básicos.</li><li>Em ferrosos, o EBITDA foi de US$3,1 bi, com vendas de finos de 69,9 Mt a US$95/t, enquanto pelotas somaram US$416 mi e a VBM entregou US$1,3 bi, com cobre em nível recorde. Na prévia operacional, as vendas de minério de ferro e pelotas…</li><li>Para investidores, recomenda-se acompanhar cortes de oferta no Brasil, que podem sustentar o minério em US$105–110/t.</li></ul>
-  <p class="research-note">Insights BTG · 14/09/2026 · fonte Research BTG.</p>
+  <ul class="research-bullets"><li>A Vale reportou 2T26 acima do esperado, com EBITDA consolidado de US$4,1 bi, apoiado por preços realizados mais fortes em minério de ferro, pelotas e cobre e por boa execução em metais básicos.</li><li>Em ferrosos, o EBITDA foi de US$3,1 bi, com vendas de finos de 69,9 Mt a US$95/t, enquanto pelotas somaram US$416 mi e a VBM entregou US$1,3 bi, com cobre recorde de 98 mil t. Na prévia operacional, as vendas de minério de ferro e…</li><li>Os preços realizados ficaram em US$95/t para finos, US$137/t para pelotas e US$14.062/t para cobre. O FCFE do trimestre foi de US$1,5 bi, equivalente a yield anualizado de ~9%. A companhia revisou o guidance de custo C1 do minério para…</li></ul>
+  <p class="research-note">Insights BTG · 16/09/2026 · fonte Research BTG.</p>
 </section>
 
 
@@ -265,7 +266,7 @@
       var PLOT_H = VH - PAD.t - PAD.b;
       var PUT = 110.0, CALL = 110.0, BARRIER = 174.35;
       var FLOOR = 10.0, CAP = 10.0, KI_VAR = 74.35;
-      var RESEARCH_X=20.6434;
+      var RESEARCH_X=23.8987;
 
       function structureReturn(x) {
         var st = 100 + x;

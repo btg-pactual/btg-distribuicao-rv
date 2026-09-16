@@ -101,7 +101,8 @@
     .speech-label { font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--brand); margin: 14px 0 6px; }
     .speech-box p { font-size: 14px; color: var(--ink); max-width: 70em; }
     .footer { margin-top: 28px; font-size: 11px; color: var(--muted); text-align: center; line-height: 1.55; }
-    .footer-alert { margin-top: 10px; text-align: center; font-size: 11px; color: var(--btg); font-weight: 700; line-height: 1.5; }
+    .footer-alert { margin-top: 16px; text-align: center; font-size: 15px; font-weight: 700; color: var(--danger); line-height: 1.55; }
+    .footer-alert strong { font-weight: 700; }
     .visit-pixel { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
     @media (max-width: 1100px) { .main { grid-template-columns: 1fr; } .highlights { grid-template-columns: 1fr 1fr; } .zones { grid-template-columns: 1fr; } .research-grid{grid-template-columns:1fr 1fr} }
     @media (max-width: 640px) { .page { padding: 16px 14px 40px; } .topbar { flex-direction: column; } .meta-pills { justify-content: flex-start; } .highlights { grid-template-columns: 1fr; } }
@@ -139,7 +140,7 @@
     <h2>Research BTG</h2>
     <a class="research-link" href="https://content.btgpactual.com/research/ativo/PETR4" target="_blank" rel="noopener">Abrir PETR4 no Research <span class="arrow" aria-hidden="true">→</span></a>
   </div>
-  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 50,43</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 65,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+28,89%</div></div></div><p class="research-note">Spot do fechamento anterior (15/09/2026) · preço-alvo atualizado em 11/09/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
+  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 48,77</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 65,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+33,28%</div></div></div><p class="research-note">Spot do fechamento anterior (16/09/2026) · preço-alvo atualizado em 11/09/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
 </section>
 
 
@@ -265,7 +266,7 @@
       var PLOT_H = VH - PAD.t - PAD.b;
       var PUT = 90.0, CALL = 110.0, BARRIER = 151.0;
       var FLOOR = -10.0, CAP = 10.0, KI_VAR = 51.0;
-      var RESEARCH_X=28.8915;
+      var RESEARCH_X=33.2787;
 
       function structureReturn(x) {
         var st = 100 + x;
