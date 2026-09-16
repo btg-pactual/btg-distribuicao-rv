@@ -30,8 +30,8 @@
   "AXIA3": {
     "ticker": "AXIA3",
     "url": "https://content.btgpactual.com/research/ativo/AXIA3",
-    "price": 54.99,
-    "last_trade": "2026-09-16T19:02:04",
+    "price": 55.23,
+    "last_trade": "2026-09-16T20:59:59",
     "sector": "Serviços Básicos",
     "company": "Axia Energia",
     "rec": "COMPRA",
@@ -45,7 +45,7 @@
       "Essa estratégia acumulava alpha de 5,1% desde 24 de julho de 2026. O caso de investimento segue apoiado em baixa alavancagem, forte capacidade de distribuição de caixa e execução do mecanismo de resgate, ainda em fase inicial por se…"
     ],
     "summary_date": "2026-09-09 19:39:10.617079+00:00",
-    "upside": 34.56992180396434
+    "upside": 33.98515299655984
   },
   "WEGE3": {
     "ticker": "WEGE3",
@@ -158,8 +158,8 @@
   "ITUB4": {
     "ticker": "ITUB4",
     "url": "https://content.btgpactual.com/research/ativo/ITUB4",
-    "price": 42.37,
-    "last_trade": "2026-09-16T19:02:01",
+    "price": 42.62,
+    "last_trade": "2026-09-16T20:59:49",
     "sector": "Financeiro",
     "company": "Itaú Unibanco",
     "rec": "COMPRA",
@@ -173,13 +173,13 @@
       "Entre os KPIs, a inadimplência acima de 90 dias ficou em 1,9%, o custo de crédito líquido de recuperações em R$9 bi, as provisões brutas em R$10,5 bi, as recuperações em R$1,5 bi, o índice de cobertura em 53,8% e o CET1 em 12,3%."
     ],
     "summary_date": "2026-08-12 23:32:45.794653+00:00",
-    "upside": 27.44866650932265
+    "upside": 26.701079305490396
   },
   "PETR4": {
     "ticker": "PETR4",
     "url": "https://content.btgpactual.com/research/ativo/PETR4",
-    "price": 49.04,
-    "last_trade": "2026-09-16T19:02:02",
+    "price": 48.65,
+    "last_trade": "2026-09-16T20:59:50",
     "sector": "Petróleo & Gás",
     "company": "Petrobras",
     "rec": "COMPRA",
@@ -193,13 +193,13 @@
       "No refino, a utilização média foi de 101%, com produção recorde de diesel e gasolina. Os dados operacionais mais recentes reforçam esse quadro: a produção de petróleo ficou em ~2,77 mi bpd em julho e ~2,66–2,68 mi bpd no acumulado de…"
     ],
     "summary_date": "2026-09-11 09:27:37.051808+00:00",
-    "upside": 32.54486133768353
+    "upside": 33.60739979445015
   },
   "VALE3": {
     "ticker": "VALE3",
     "url": "https://content.btgpactual.com/research/ativo/VALE3",
     "price": 73.0,
-    "last_trade": "2026-09-16T19:02:04",
+    "last_trade": "2026-09-16T20:59:56",
     "sector": "Mineração & Siderurgia",
     "company": "Vale",
     "rec": "COMPRA",
@@ -218,8 +218,8 @@
   "EMBJ3": {
     "ticker": "EMBJ3",
     "url": "https://content.btgpactual.com/research/ativo/EMBJ3",
-    "price": 95.38,
-    "last_trade": "2026-09-16T19:02:03",
+    "price": 95.29,
+    "last_trade": "2026-09-16T20:58:58",
     "sector": "Aéreas",
     "company": "Embraer",
     "rec": "COMPRA",
@@ -233,7 +233,7 @@
       "A dívida líquida ex-Eve caiu para US$124 mi, com alavancagem de 0,2x. Na prévia, o BTG esperava 65 jatos, receita de ~US$2,1 bi, EBITDA de US$217 mi e LL de US$102 mi, e o trimestre confirmou recuperação operacional após um 1T mais…"
     ],
     "summary_date": "2026-08-24 13:23:13.154487+00:00",
-    "upside": 32.10316628223946
+    "upside": 32.22793577500263
   },
   "ITLC34": {
     "ticker": "ITLC34",
@@ -272,8 +272,8 @@
   "ROXO34": {
     "ticker": "ROXO34",
     "url": "https://content.btgpactual.com/research/ativo/ROXO34",
-    "price": 11.67,
-    "last_trade": "2026-09-16T19:02:04",
+    "price": 11.74,
+    "last_trade": "2026-09-16T20:51:08",
     "sector": "Financeiro",
     "company": "Nubank",
     "rec": "COMPRA",
@@ -287,7 +287,7 @@
       "A operação nos EUA começa com cerca de 50–60 funcionários e pode pressionar o índice de eficiência em até 100 bps em 2026 e 2027, ainda dentro do orçamento já previsto. A administração também reiterou guidance de eficiência de 20% para…"
     ],
     "summary_date": "2026-09-15 14:41:17.924465+00:00",
-    "upside": 79.94858611825192
+    "upside": 78.8756388415673
   },
   "GOGL34": {
     "ticker": "GOGL34",
@@ -440,13 +440,14 @@
   "EQTL3": {
     "ticker": "EQTL3",
     "url": "https://content.btgpactual.com/research/ativo/EQTL3",
-    "price": 39.77,
-    "last_trade": "2026-09-16T17:40:00",
+    "price": 39.56,
+    "last_trade": "2026-09-16T20:59:20",
+    "sector": "Serviços Básicos",
+    "company": "Equatorial",
     "rec": "COMPRA",
     "rec_lbl": "Compra",
     "rec_cls": "buy",
     "date": "2026-09-09T19:38:24.035Z",
-    "company": "Equatorial",
     "target": 56.0,
     "bullets": [
       "No 2T26, a Equatorial entregou EBITDA ajustado de R$2,7 bi, alta de 4,1% a/a e praticamente em linha com a estimativa, enquanto o EBITDA reportado somou R$3,2 bi.",
@@ -454,6 +455,6 @@
       "Em renováveis, a geração da Echoenergia caiu 14,6% a/a para 1.014 GWh, com curtailment de 10,0% em eólica e 38,7% em solar. Em visão mais estrutural, o histórico de alocação de capital segue como pilar da tese: o BTG estima criação de…"
     ],
     "summary_date": "2026-09-09 19:39:25.218708+00:00",
-    "upside": 40.80965551923559
+    "upside": 41.557128412537914
   }
 }

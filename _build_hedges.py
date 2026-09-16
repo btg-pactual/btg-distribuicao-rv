@@ -48,6 +48,16 @@ def smart_hedge_html(cfg: dict, prat=None) -> str:
         research_block = prat.research_html({"ticker": ticker, "research": rs})
         insights_block = prat.research_insights_html({"ticker": ticker, "research": rs})
 
+    try:
+        import _range_52w
+
+        spot_ref = rs.get("price")
+        range_52w = _range_52w.range_block_html(
+            ticker, spot=float(spot_ref) if spot_ref is not None else None
+        )
+    except Exception:
+        range_52w = ""
+
     floor = put - 100
     cap = call - 100
     ki_var = barrier - 100
@@ -255,6 +265,7 @@ def smart_hedge_html(cfg: dict, prat=None) -> str:
           </tbody>
         </table>
         <p class="legend-note"><strong>B</strong> = Compra · <strong>S</strong> = Venda<br />Payoff = long + put {floor_put_label} + short call {fmt_br(call)}% se spot ≥ barreira.</p>
+        {range_52w}
       </aside>
 
       <section class="panel chart-panel">
@@ -559,6 +570,15 @@ def twin_coupon_html(prat=None, research=None) -> str:
     if prat is not None:
         research_block = prat.research_html({"ticker": "ITUB4", "research": rs})
         insights_block = prat.research_insights_html({"ticker": "ITUB4", "research": rs})
+    try:
+        import _range_52w
+
+        spot_ref = rs.get("price")
+        range_52w = _range_52w.range_block_html(
+            "ITUB4", spot=float(spot_ref) if spot_ref is not None else None
+        )
+    except Exception:
+        range_52w = ""
     brand = "#ec7000"
     brand_soft = "rgba(236,112,0,0.12)"
     ticker = "ITUB4"
@@ -761,6 +781,7 @@ def twin_coupon_html(prat=None, research=None) -> str:
           <strong>B</strong> = Compra · <strong>S</strong> = Venda<br />
           Cupom = strike − 100 = +10%. Payoff no vencimento (barreiras discretas diárias no DIE).
         </p>
+        {range_52w}
       </aside>
 
       <section class="panel chart-panel">
@@ -1514,6 +1535,18 @@ if __name__ == "__main__":
         print("research_fail", exc)
         snap = ROOT / "prateleira" / "research_targets.json"
         research = json.loads(snap.read_text(encoding="utf-8")) if snap.exists() else {}
+
+    # Máx./mín. 52 semanas (Yahoo + PTAX Bacen) — alimenta o bloco sob a estrutura
+    try:
+        import _range_52w
+
+        _range_52w.save(_range_52w.fetch_all())
+        pacb_spot = (research.get("PACB11") or {}).get("price")
+        _range_52w.patch_pacb11(
+            spot=float(pacb_spot) if pacb_spot is not None else None
+        )
+    except Exception as exc:
+        print("range_52w_fail", exc)
 
     # PTAX spot Bacen + factsheets (duas fixing)
     try:

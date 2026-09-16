@@ -1,0 +1,96 @@
+{
+  "updated_at": "2026-09-16T22:33:11Z",
+  "as_of_br": "16/09/2026",
+  "tickers": {
+    "VALE3": {
+      "ticker": "VALE3",
+      "source": "Yahoo Finance VALE3.SA",
+      "high": 91.62,
+      "low": 56.54,
+      "last": 73.0,
+      "n_days": 250,
+      "as_of": "2026-09-16",
+      "as_of_br": "16/09/2026"
+    },
+    "PETR4": {
+      "ticker": "PETR4",
+      "source": "Yahoo Finance PETR4.SA",
+      "high": 50.7,
+      "low": 29.31,
+      "last": 48.65,
+      "n_days": 250,
+      "as_of": "2026-09-16",
+      "as_of_br": "16/09/2026"
+    },
+    "AXIA3": {
+      "ticker": "AXIA3",
+      "source": "Yahoo Finance AXIA3.SA",
+      "high": 67.84,
+      "low": 47.43,
+      "last": 55.23,
+      "n_days": 250,
+      "as_of": "2026-09-16",
+      "as_of_br": "16/09/2026"
+    },
+    "ROXO34": {
+      "ticker": "ROXO34",
+      "source": "Yahoo Finance ROXO34.SA",
+      "high": 16.57,
+      "low": 9.47,
+      "last": 11.74,
+      "n_days": 250,
+      "as_of": "2026-09-16",
+      "as_of_br": "16/09/2026"
+    },
+    "ITUB4": {
+      "ticker": "ITUB4",
+      "source": "Yahoo Finance ITUB4.SA",
+      "high": 49.67,
+      "low": 35.8835,
+      "last": 42.62,
+      "n_days": 250,
+      "as_of": "2026-09-16",
+      "as_of_br": "16/09/2026"
+    },
+    "EMBJ3": {
+      "ticker": "EMBJ3",
+      "source": "Yahoo Finance EMBJ3.SA",
+      "high": 105.5,
+      "low": 68.08,
+      "last": 95.29,
+      "n_days": 250,
+      "as_of": "2026-09-16",
+      "as_of_br": "16/09/2026"
+    },
+    "EQTL3": {
+      "ticker": "EQTL3",
+      "source": "Yahoo Finance EQTL3.SA",
+      "high": 46.32,
+      "low": 33.61,
+      "last": 39.56,
+      "n_days": 250,
+      "as_of": "2026-09-16",
+      "as_of_br": "16/09/2026"
+    },
+    "PACB11": {
+      "ticker": "PACB11",
+      "source": "Yahoo Finance PACB11.SA",
+      "high": 11.22,
+      "low": 9.9893,
+      "last": 11.07,
+      "n_days": 243,
+      "as_of": "2026-09-16",
+      "as_of_br": "16/09/2026"
+    },
+    "PTAX": {
+      "ticker": "PTAX",
+      "source": "BCB Olinda PTAX",
+      "high": 5.5739,
+      "low": 4.8973,
+      "last": 5.1527,
+      "n_days": 255,
+      "as_of": "2026-09-16",
+      "as_of_br": "16/09/2026"
+    }
+  }
+}

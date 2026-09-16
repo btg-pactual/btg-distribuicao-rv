@@ -61,6 +61,13 @@ def ptax_call_html(cfg: dict, spot_info: dict | None = None) -> str:
     ko_brl_lbl = fmt_br(ko_brl, 4)
     delta_lbl = fmt_br(delta, 1) if delta is not None else "—"
 
+    try:
+        import _range_52w
+
+        range_52w = _range_52w.range_block_html("PTAX", spot=spot, currency="R$")
+    except Exception:
+        range_52w = ""
+
     # pontos-chave tabela
     rows = []
     for x in (-10.0, 0.0, 3.0, 5.0, 8.0, 9.5, ko_var, 15.0):
@@ -214,6 +221,7 @@ def ptax_call_html(cfg: dict, spot_info: dict | None = None) -> str:
           </table>
           <p class="legend-note">Ref. = PTAX venda Bacen {spot_date} (atualização diária). Fixing oficial no DIE.</p>
         </div>
+        {range_52w}
         <div class="thesis" style="margin-top:16px">
           <h2>Projeção câmbio BTG</h2>
           <ul>
