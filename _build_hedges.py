@@ -1388,9 +1388,6 @@ def hub_html(research: dict, prat) -> str:
 </html>
 """
 
-    # unreachable — kept old return replaced above
-
-
 
 OPS = [
     {
@@ -1477,6 +1474,18 @@ OPS = [
         "barrier": 148.0,
         "prazo": "1 ano",
         "initials": "EM",
+    },
+    {
+        "slug": "smart-hedge-eqtl3",
+        "ticker": "EQTL3",
+        "name": "Equatorial",
+        "brand": "#c9a227",
+        "brand_soft": "rgba(201,162,39,0.14)",
+        "put": 90.0,
+        "call": 104.0,
+        "barrier": 130.0,
+        "prazo": "6 meses · fixing 15/03/2027",
+        "initials": "EQ",
     },
 ]
 
