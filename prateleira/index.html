@@ -13,7 +13,7 @@ body{font-family:Segoe UI,-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-
 .logo-btg{display:inline-block;font-weight:700;font-size:12px;letter-spacing:.1em;border:1px solid rgba(255,255,255,.35);padding:7px 12px;border-radius:2px;margin-bottom:22px}
 .hero-row{display:flex;justify-content:space-between;align-items:flex-end;gap:24px}
 h1{font-size:clamp(28px,4.5vw,40px);font-weight:700;letter-spacing:-.02em;line-height:1.15}
-.lede{margin-top:12px;font-size:15px;color:rgba(255,255,255,.82);max-width:40em}
+.lede{margin-top:12px;font-size:15px;color:rgba(255,255,255,.82);max-width:42em}
 .lede-strong{display:inline;font-size:18px;font-weight:700;color:#fff}
 .badge{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border:1px solid rgba(255,255,255,.35);padding:8px 12px;border-radius:2px;white-space:nowrap}
 .page{max-width:960px;margin:0 auto;padding:28px 24px 56px}
@@ -26,6 +26,23 @@ h1{font-size:clamp(28px,4.5vw,40px);font-weight:700;letter-spacing:-.02em;line-h
 .pdf-box-cta:hover{background:#15569a;text-decoration:none}
 .pdf-box-cta span{font-size:16px;line-height:1}
 @media (max-width:640px){.pdf-box{padding:16px}.pdf-box-cta{width:100%;justify-content:center}}
+.spotlights{margin-bottom:28px}
+.spot-head{margin-bottom:14px}
+.spot-head h2{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--btg-blue);margin-bottom:4px}
+.spot-head p{font-size:14px;color:var(--muted)}
+.spot-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.spot{appearance:none;border:1px solid var(--line);background:var(--card);border-radius:6px;padding:12px 14px;text-align:left;cursor:pointer;display:flex;gap:10px;align-items:flex-start;transition:transform .12s ease,box-shadow .12s ease,border-color .12s}
+.spot:hover,.spot:focus-visible{transform:translateY(-1px);box-shadow:0 6px 16px rgba(11,31,58,.07);border-color:color-mix(in srgb,var(--spot) 45%,var(--line));outline:none}
+.spot-dot{width:8px;height:8px;border-radius:50%;background:var(--spot);margin-top:5px;flex-shrink:0}
+.spot-body{display:flex;flex-direction:column;gap:2px;min-width:0}
+.spot-name{font-size:14px;font-weight:700;color:var(--btg);line-height:1.25}
+.spot-ticker{font-size:11px;font-weight:700;letter-spacing:.04em;color:var(--spot)}
+.spot-sector{font-size:11px;color:var(--muted);line-height:1.3;margin-top:2px}
+.spot-hi{font-size:12px;color:var(--ink);margin-top:4px;line-height:1.35}
+.spot-ops{font-size:11px;color:var(--muted);line-height:1.3}
+.products-head{margin:8px 0 14px}
+.products-head h2{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--btg-blue);margin-bottom:4px}
+.products-head p{font-size:14px;color:var(--muted)}
 .cat-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-bottom:8px}
 .cat-card{appearance:none;border:1px solid var(--line);background:var(--card);border-radius:6px;overflow:hidden;text-align:left;cursor:pointer;padding:0;display:flex;flex-direction:column;transition:transform .12s ease,box-shadow .12s ease,border-color .12s}
 .cat-card:hover,.cat-card:focus-visible{transform:translateY(-2px);box-shadow:0 8px 20px rgba(11,31,58,.08);border-color:#b8c6d6;outline:none}
@@ -54,7 +71,8 @@ h1{font-size:clamp(28px,4.5vw,40px);font-weight:700;letter-spacing:-.02em;line-h
 .op-cta{margin-top:12px;font-size:12px;font-weight:700;color:var(--link)}
 .footer{margin-top:32px;padding-top:16px;border-top:1px solid var(--line);font-size:11px;color:var(--muted);text-align:center;line-height:1.55}
 .footer strong{display:block;margin-top:10px;color:var(--btg)}
-@media (max-width:720px){.cat-grid{grid-template-columns:1fr}}
+@media (max-width:900px){.spot-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:720px){.cat-grid{grid-template-columns:1fr}.spot-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:640px){.hero{padding:28px 16px 32px}.page{padding:20px 16px 48px}.hero-row{flex-direction:column;align-items:flex-start}.cat-section-head{flex-direction:column;align-items:flex-start}}
 </style>
 </head>
@@ -65,7 +83,7 @@ h1{font-size:clamp(28px,4.5vw,40px);font-weight:700;letter-spacing:-.02em;line-h
     <div class="hero-row">
       <div>
         <h1>Prateleira Tática</h1>
-        <p class="lede"><span class="lede-strong">Distribuição Renda Variável</span> · escolha um card para ver as operações</p>
+        <p class="lede"><span class="lede-strong">Distribuição Renda Variável</span> · empresas abaixo; depois escolha o tipo de estrutura</p>
       </div>
       <div class="badge">Uso interno</div>
     </div>
@@ -80,7 +98,290 @@ h1{font-size:clamp(28px,4.5vw,40px);font-weight:700;letter-spacing:-.02em;line-h
     </div>
     <a class="pdf-box-cta" href="./Material-Prateleira-Tatica-14092026.pdf" target="_blank" rel="noopener noreferrer">Abrir PDF ↗</a>
   </div>
-  <div class="cat-grid" id="catGrid">
+  <div id="homeBlock">
+    
+<section class="spotlights" id="spotlights" aria-label="Empresas e destaques">
+  <div class="spot-head">
+    <h2>Empresas com operação</h2>
+    <p>Toque para ver todas as operações da empresa.</p>
+  </div>
+  <div class="spot-grid">
+<button type="button" class="spot" data-target="co-nvdc34" style="--spot:#0d6e6e">
+  <span class="spot-dot" aria-hidden="true"></span>
+  <span class="spot-body">
+    <span class="spot-name">Nvidia</span>
+    <span class="spot-ticker">NVDC34</span>
+    <span class="spot-sector">Tecnologia</span>
+    <span class="spot-hi">SOC · Triplo Retorno KO</span>
+    <span class="spot-ops">SOC · Triplo Retorno KO</span>
+  </span>
+</button>
+<button type="button" class="spot" data-target="co-tend3" style="--spot:#0d6e6e">
+  <span class="spot-dot" aria-hidden="true"></span>
+  <span class="spot-body">
+    <span class="spot-name">Tenda</span>
+    <span class="spot-ticker">TEND3</span>
+    <span class="spot-sector">Construção Civil &amp; Propriedades</span>
+    <span class="spot-hi">Compra · PA R$ 44,00 · +42,5%</span>
+    <span class="spot-ops">SOC · Call KO com Rebate</span>
+  </span>
+</button>
+<button type="button" class="spot" data-target="co-axia3" style="--spot:#0d6e6e">
+  <span class="spot-dot" aria-hidden="true"></span>
+  <span class="spot-body">
+    <span class="spot-name">Axia Energia</span>
+    <span class="spot-ticker">AXIA3</span>
+    <span class="spot-sector">Serviços Básicos</span>
+    <span class="spot-hi">Compra · PA R$ 74,00 · +34,6%</span>
+    <span class="spot-ops">SOC · Smart Hedge · Call KO com Rebate</span>
+  </span>
+</button>
+<button type="button" class="spot" data-target="co-prio3" style="--spot:#0d6e6e">
+  <span class="spot-dot" aria-hidden="true"></span>
+  <span class="spot-body">
+    <span class="spot-name">PetroRio</span>
+    <span class="spot-ticker">PRIO3</span>
+    <span class="spot-sector">Petróleo &amp; Gás</span>
+    <span class="spot-hi">Compra · PA R$ 72,00 · +14,0%</span>
+    <span class="spot-ops">SOC · Call KO com Rebate</span>
+  </span>
+</button>
+<button type="button" class="spot" data-target="co-spcx34" style="--spot:#0d6e6e">
+  <span class="spot-dot" aria-hidden="true"></span>
+  <span class="spot-body">
+    <span class="spot-name">SpaceX</span>
+    <span class="spot-ticker">SPCX34</span>
+    <span class="spot-sector">Telecom &amp; Tecnologia</span>
+    <span class="spot-hi">Compra · PA R$ 77,00 · +49,3%</span>
+    <span class="spot-ops">SOC · Smart Hedge</span>
+  </span>
+</button>
+<button type="button" class="spot" data-target="co-tots3" style="--spot:#0d6e6e">
+  <span class="spot-dot" aria-hidden="true"></span>
+  <span class="spot-body">
+    <span class="spot-name">TOTVS</span>
+    <span class="spot-ticker">TOTS3</span>
+    <span class="spot-sector">Telecom &amp; Tecnologia</span>
+    <span class="spot-hi">Compra · PA R$ 55,00 · +60,0%</span>
+    <span class="spot-ops">SOC</span>
+  </span>
+</button>
+<button type="button" class="spot" data-target="co-b3sa3" style="--spot:#0d6e6e">
+  <span class="spot-dot" aria-hidden="true"></span>
+  <span class="spot-body">
+    <span class="spot-name">B3</span>
+    <span class="spot-ticker">B3SA3</span>
+    <span class="spot-sector">Financeiro</span>
+    <span class="spot-hi">Neutro · PA R$ 19,00 · +8,4%</span>
+    <span class="spot-ops">SOC · Triplo Retorno KO</span>
+  </span>
+</button>
+<button type="button" class="spot" data-target="co-tsla34" style="--spot:#0d6e6e">
+  <span class="spot-dot" aria-hidden="true"></span>
+  <span class="spot-body">
+    <span class="spot-name">Tesla</span>
+    <span class="spot-ticker">TSLA34</span>
+    <span class="spot-sector">Consumo discricionário</span>
+    <span class="spot-hi">SOC</span>
+    <span class="spot-ops">SOC</span>
+  </span>
+</button>
+<button type="button" class="spot" data-target="co-cyre3" style="--spot:#0d6e6e">
+  <span class="spot-dot" aria-hidden="true"></span>
+  <span class="spot-body">
+    <span class="spot-name">Cyrela</span>
+    <span class="spot-ticker">CYRE3</span>
+    <span class="spot-sector">Construção Civil &amp; Propriedades</span>
+    <span class="spot-hi">Compra · PA R$ 40,00 · +49,7%</span>
+    <span class="spot-ops">SOC · Triplo Retorno KO</span>
+  </span>
+</button>
+<button type="button" class="spot" data-target="co-bbdc4" style="--spot:#0d6e6e">
+  <span class="spot-dot" aria-hidden="true"></span>
+  <span class="spot-body">
+    <span class="spot-name">Bradesco</span>
+    <span class="spot-ticker">BBDC4</span>
+    <span class="spot-sector">Financeiro</span>
+    <span class="spot-hi">Neutro · PA R$ 21,00 · +16,2%</span>
+    <span class="spot-ops">SOC</span>
+  </span>
+</button>
+<button type="button" class="spot" data-target="co-itub4" style="--spot:#007e33">
+  <span class="spot-dot" aria-hidden="true"></span>
+  <span class="spot-body">
+    <span class="spot-name">Itaú Unibanco</span>
+    <span class="spot-ticker">ITUB4</span>
+    <span class="spot-sector">Financeiro</span>
+    <span class="spot-hi">Compra · PA R$ 54,00 · +27,4%</span>
+    <span class="spot-ops">Smart Hedge</span>
+  </span>
+</button>
+<button type="button" class="spot" data-target="co-petr4" style="--spot:#007e33">
+  <span class="spot-dot" aria-hidden="true"></span>
+  <span class="spot-body">
+    <span class="spot-name">Petrobras</span>
+    <span class="spot-ticker">PETR4</span>
+    <span class="spot-sector">Petróleo &amp; Gás</span>
+    <span class="spot-hi">Compra · PA R$ 65,00 · +32,5%</span>
+    <span class="spot-ops">Smart Hedge</span>
+  </span>
+</button>
+<button type="button" class="spot" data-target="co-vale3" style="--spot:#007e33">
+  <span class="spot-dot" aria-hidden="true"></span>
+  <span class="spot-body">
+    <span class="spot-name">Vale</span>
+    <span class="spot-ticker">VALE3</span>
+    <span class="spot-sector">Mineração &amp; Siderurgia</span>
+    <span class="spot-hi">Compra · PA R$ 90,00 · +23,3%</span>
+    <span class="spot-ops">Smart Hedge</span>
+  </span>
+</button>
+<button type="button" class="spot" data-target="co-suzb3" style="--spot:#007e33">
+  <span class="spot-dot" aria-hidden="true"></span>
+  <span class="spot-body">
+    <span class="spot-name">SUZANO</span>
+    <span class="spot-ticker">SUZB3</span>
+    <span class="spot-sector">Papel &amp; Celulose</span>
+    <span class="spot-hi">Compra · PA R$ 72,00 · +53,4%</span>
+    <span class="spot-ops">Smart Hedge</span>
+  </span>
+</button>
+<button type="button" class="spot" data-target="co-itlc34" style="--spot:#5a4a8a">
+  <span class="spot-dot" aria-hidden="true"></span>
+  <span class="spot-body">
+    <span class="spot-name">Intel</span>
+    <span class="spot-ticker">ITLC34</span>
+    <span class="spot-sector">Tecnologia</span>
+    <span class="spot-hi">Aceleradora Dinâmica</span>
+    <span class="spot-ops">Aceleradora Dinâmica</span>
+  </span>
+</button>
+<button type="button" class="spot" data-target="co-bbas3" style="--spot:#5a4a8a">
+  <span class="spot-dot" aria-hidden="true"></span>
+  <span class="spot-body">
+    <span class="spot-name">Banco do Brasil</span>
+    <span class="spot-ticker">BBAS3</span>
+    <span class="spot-sector">Financeiro</span>
+    <span class="spot-hi">Neutro · PA R$ 19,00 · -15,5%</span>
+    <span class="spot-ops">Aceleradora Dinâmica</span>
+  </span>
+</button>
+<button type="button" class="spot" data-target="co-smal11" style="--spot:#5a4a8a">
+  <span class="spot-dot" aria-hidden="true"></span>
+  <span class="spot-body">
+    <span class="spot-name">iShares BM&amp;FBOVESPA Small Cap Fundo de Índice</span>
+    <span class="spot-ticker">SMAL11</span>
+    <span class="spot-sector">Fundos de Índice</span>
+    <span class="spot-hi">Aceleradora Dinâmica</span>
+    <span class="spot-ops">Aceleradora Dinâmica</span>
+  </span>
+</button>
+<button type="button" class="spot" data-target="co-roxo34" style="--spot:#820ad1">
+  <span class="spot-dot" aria-hidden="true"></span>
+  <span class="spot-body">
+    <span class="spot-name">Nubank</span>
+    <span class="spot-ticker">ROXO34</span>
+    <span class="spot-sector">Financeiro</span>
+    <span class="spot-hi">Compra · PA R$ 21,00 · +79,9%</span>
+    <span class="spot-ops">Triplo Retorno KO</span>
+  </span>
+</button>
+<button type="button" class="spot" data-target="co-gogl34" style="--spot:#820ad1">
+  <span class="spot-dot" aria-hidden="true"></span>
+  <span class="spot-body">
+    <span class="spot-name">Alphabet</span>
+    <span class="spot-ticker">GOGL34</span>
+    <span class="spot-sector">Comunicação</span>
+    <span class="spot-hi">Triplo Retorno KO</span>
+    <span class="spot-ops">Triplo Retorno KO</span>
+  </span>
+</button>
+<button type="button" class="spot" data-target="co-lily34" style="--spot:#820ad1">
+  <span class="spot-dot" aria-hidden="true"></span>
+  <span class="spot-body">
+    <span class="spot-name">Eli Lilly</span>
+    <span class="spot-ticker">LILY34</span>
+    <span class="spot-sector">Consumo não Discricionário</span>
+    <span class="spot-hi">Triplo Retorno KO</span>
+    <span class="spot-ops">Triplo Retorno KO</span>
+  </span>
+</button>
+<button type="button" class="spot" data-target="co-smft3" style="--spot:#820ad1">
+  <span class="spot-dot" aria-hidden="true"></span>
+  <span class="spot-body">
+    <span class="spot-name">Smart Fit</span>
+    <span class="spot-ticker">SMFT3</span>
+    <span class="spot-sector">Varejo &amp; Consumo</span>
+    <span class="spot-hi">Compra · PA R$ 30,00 · +74,8%</span>
+    <span class="spot-ops">Triplo Retorno KO</span>
+  </span>
+</button>
+<button type="button" class="spot" data-target="co-rent3" style="--spot:#820ad1">
+  <span class="spot-dot" aria-hidden="true"></span>
+  <span class="spot-body">
+    <span class="spot-name">Localiza</span>
+    <span class="spot-ticker">RENT3</span>
+    <span class="spot-sector">Aluguel de Carros &amp; Logística</span>
+    <span class="spot-hi">Compra · PA R$ 63,00 · +73,3%</span>
+    <span class="spot-ops">Triplo Retorno KO</span>
+  </span>
+</button>
+<button type="button" class="spot" data-target="co-wege3" style="--spot:#c0392b">
+  <span class="spot-dot" aria-hidden="true"></span>
+  <span class="spot-body">
+    <span class="spot-name">WEG</span>
+    <span class="spot-ticker">WEGE3</span>
+    <span class="spot-sector">Bens de Capital</span>
+    <span class="spot-hi">Compra · PA R$ 65,00 · +26,5%</span>
+    <span class="spot-ops">Call KO com Rebate</span>
+  </span>
+</button>
+<button type="button" class="spot" data-target="co-embj3" style="--spot:#2f6b5a">
+  <span class="spot-dot" aria-hidden="true"></span>
+  <span class="spot-body">
+    <span class="spot-name">Embraer</span>
+    <span class="spot-ticker">EMBJ3</span>
+    <span class="spot-sector">Aéreas</span>
+    <span class="spot-hi">Compra · PA R$ 126,00 · +32,1%</span>
+    <span class="spot-ops">Put KO com Rebate</span>
+  </span>
+</button>
+<button type="button" class="spot" data-target="co-gold11" style="--spot:#b8860b">
+  <span class="spot-dot" aria-hidden="true"></span>
+  <span class="spot-body">
+    <span class="spot-name">TREND ETF LBMA OURO</span>
+    <span class="spot-ticker">GOLD11</span>
+    <span class="spot-sector">Fundos de Índice</span>
+    <span class="spot-hi">TWIP</span>
+    <span class="spot-ops">TWIP</span>
+  </span>
+</button>
+<button type="button" class="spot" data-target="co-bova11" style="--spot:#1e4d7b">
+  <span class="spot-dot" aria-hidden="true"></span>
+  <span class="spot-body">
+    <span class="spot-name">Ishares Ibovespa Fundo de Índice</span>
+    <span class="spot-ticker">BOVA11</span>
+    <span class="spot-sector">Fundos de Índice</span>
+    <span class="spot-hi">One Touch de Alta · Compra de Put</span>
+    <span class="spot-ops">One Touch de Alta · Compra de Put</span>
+  </span>
+</button>
+<button type="button" class="spot" data-target="co-bitc11" style="--spot:#0a6e8a">
+  <span class="spot-dot" aria-hidden="true"></span>
+  <span class="spot-body">
+    <span class="spot-name">BTG Pactual Teva Bitcoin</span>
+    <span class="spot-ticker">BITC11</span>
+    <span class="spot-sector">Fundos de Índice</span>
+    <span class="spot-hi">POP</span>
+    <span class="spot-ops">POP</span>
+  </span>
+</button></div>
+</section>
+    <div class="products-head">
+      <h2>Tipos de estrutura</h2>
+      <p>Ou escolha pelo produto.</p>
+    </div>
+    <div class="cat-grid" id="catGrid">
 <button type="button" class="cat-card" data-target="soc" style="--cat:#0d6e6e">
   <span class="cat-bar"></span>
   <span class="cat-body">
@@ -180,7 +481,620 @@ h1{font-size:clamp(28px,4.5vw,40px);font-weight:700;letter-spacing:-.02em;line-h
     <span class="cat-tickers">BOVA11</span>
   </span>
 </button></div>
+  </div>
   
+<section class="cat-section" id="co-nvdc34" hidden>
+  <div class="cat-section-head">
+    <h2>Nvidia · NVDC34 · Tecnologia · 2 operações</h2>
+    <button type="button" class="cat-back" data-back>← Voltar aos cards</button>
+  </div>
+  <ul class="ops">
+<li class="op-block">
+  <div class="op-bar" style="background:#0d6e6e"></div>
+  <a class="op" href="./ops/soc-nvdc34-30dc/index.html">
+    <div class="op-top"><span class="op-title">SOC NVDC34</span><span class="op-ticker">NVDC34</span></div>
+    <p class="op-blurb">Stock or Coupon sobre NVDC34: cupom se a barreira de queda não for atingida; se KO, acompanha o ativo.</p>
+    <div class="op-meta"><span class="pill">Ativo: NVDC34</span> <span class="pill">Prazo: 30dc</span> <span class="pill">Vencimento: 14/10/2026</span> <span class="pill">Strike: 103.14%</span> <span class="pill">KO: 90%</span> <span class="pill">Cupom: 3.14%</span> <span class="pill">Backtest (barreira): 15%</span></div>
+    <div class="op-cta">Abrir material →</div>
+  </a>
+</li>
+<li class="op-block">
+  <div class="op-bar" style="background:#820ad1"></div>
+  <a class="op" href="./ops/triplo-nvdc34-ki154-12meses/index.html">
+    <div class="op-top"><span class="op-title">Triplo Retorno KO NVDC34</span><span class="op-ticker">NVDC34</span></div>
+    <p class="op-blurb">3× na alta até a barreira, ganho na queda moderada, teto se KO de alta.</p>
+    <div class="op-meta"><span class="pill">Ativo: NVDC34</span> <span class="pill">Prazo: 12 meses</span> <span class="pill">Teto: +15%</span> <span class="pill">KO alta: 154%</span> <span class="pill">KO baixa: 80%</span></div>
+    <div class="op-cta">Abrir material →</div>
+  </a>
+</li></ul>
+</section>
+
+<section class="cat-section" id="co-tend3" hidden>
+  <div class="cat-section-head">
+    <h2>Tenda · TEND3 · Construção Civil &amp; Propriedades · 2 operações</h2>
+    <button type="button" class="cat-back" data-back>← Voltar aos cards</button>
+  </div>
+  <ul class="ops">
+<li class="op-block">
+  <div class="op-bar" style="background:#0d6e6e"></div>
+  <a class="op" href="./ops/soc-tend3-20dc/index.html">
+    <div class="op-top"><span class="op-title">SOC TEND3</span><span class="op-ticker">TEND3</span></div>
+    <p class="op-blurb">Stock or Coupon sobre TEND3: cupom se a barreira de queda não for atingida; se KO, acompanha o ativo.</p>
+    <div class="op-meta"><span class="pill">Ativo: TEND3</span> <span class="pill">Prazo: 20dc</span> <span class="pill">Vencimento: 01/10/2026</span> <span class="pill">Strike: 104.00%</span> <span class="pill">KO: 90%</span> <span class="pill">Cupom: 4.00%</span> <span class="pill">Backtest (barreira): 29%</span><span class="pill">Research: Compra</span><span class="pill">PA: R$ 44,00</span></div>
+    <div class="op-cta">Abrir material →</div>
+  </a>
+</li>
+<li class="op-block">
+  <div class="op-bar" style="background:#c0392b"></div>
+  <a class="op" href="./ops/call-ko-rebate-tend3-2meses/index.html">
+    <div class="op-top"><span class="op-title">Call KO com Rebate TEND3</span><span class="op-ticker">TEND3</span></div>
+    <p class="op-blurb">Call up-and-out TEND3: participa da alta até a barreira; no KO recebe rebate. Matriz também em retorno % só sobre o prêmio (5,00%).</p>
+    <div class="op-meta"><span class="pill">Ativo: TEND3</span> <span class="pill">Prazo: 2 meses</span> <span class="pill">KO: 129,28%</span> <span class="pill">Rebate: 5,50%</span> <span class="pill">Preço: 5,00%</span><span class="pill">Research: Compra</span><span class="pill">PA: R$ 44,00</span></div>
+    <div class="op-cta">Abrir material →</div>
+  </a>
+</li></ul>
+</section>
+
+<section class="cat-section" id="co-axia3" hidden>
+  <div class="cat-section-head">
+    <h2>Axia Energia · AXIA3 · Serviços Básicos · 4 operações</h2>
+    <button type="button" class="cat-back" data-back>← Voltar aos cards</button>
+  </div>
+  <ul class="ops">
+<li class="op-block">
+  <div class="op-bar" style="background:#0d6e6e"></div>
+  <a class="op" href="./ops/soc-axia3-45dc/index.html">
+    <div class="op-top"><span class="op-title">SOC AXIA3</span><span class="op-ticker">AXIA3</span></div>
+    <p class="op-blurb">Stock or Coupon sobre AXIA3: cupom se a barreira de queda não for atingida; se KO, acompanha o ativo.</p>
+    <div class="op-meta"><span class="pill">Ativo: AXIA3</span> <span class="pill">Prazo: 45dc</span> <span class="pill">Vencimento: 27/10/2026</span> <span class="pill">Strike: 106.96%</span> <span class="pill">KO: 90%</span> <span class="pill">Cupom: 6.96%</span> <span class="pill">Backtest (barreira): 25%</span><span class="pill">Research: Compra</span><span class="pill">PA: R$ 74,00</span></div>
+    <div class="op-cta">Abrir material →</div>
+  </a>
+</li>
+<li class="op-block">
+  <div class="op-bar" style="background:#007e33"></div>
+  <a class="op" href="./ops/smart-hedge-axia3-put90-12meses/index.html">
+    <div class="op-top"><span class="op-title">Smart Hedge AXIA3</span><span class="op-ticker">AXIA3</span></div>
+    <p class="op-blurb">Smart Hedge sobre AXIA3: piso na queda, participação 1:1 até a barreira KI; se KI, retorno limitado ao strike da call.</p>
+    <div class="op-meta"><span class="pill">Ativo: AXIA3</span> <span class="pill">Prazo: 12 meses</span> <span class="pill">Put: 90%</span> <span class="pill">Call: 110%</span> <span class="pill">KI: 151,78%</span><span class="pill">Research: Compra</span><span class="pill">PA: R$ 74,00</span></div>
+    <div class="op-cta">Abrir material →</div>
+  </a>
+</li>
+<li class="op-block">
+  <div class="op-bar" style="background:#007e33"></div>
+  <a class="op" href="./ops/smart-hedge-axia3-put110-24meses/index.html">
+    <div class="op-top"><span class="op-title">Smart Hedge AXIA3</span><span class="op-ticker">AXIA3</span></div>
+    <p class="op-blurb">Smart Hedge sobre AXIA3: piso na queda, participação 1:1 até a barreira KI; se KI, retorno limitado ao strike da call.</p>
+    <div class="op-meta"><span class="pill">Ativo: AXIA3</span> <span class="pill">Prazo: 24 meses</span> <span class="pill">Put: 110%</span> <span class="pill">Call: 110%</span> <span class="pill">KI: 177,35%</span><span class="pill">Research: Compra</span><span class="pill">PA: R$ 74,00</span></div>
+    <div class="op-cta">Abrir material →</div>
+  </a>
+</li>
+<li class="op-block">
+  <div class="op-bar" style="background:#c0392b"></div>
+  <a class="op" href="./ops/call-ko-rebate-axia3-2meses/index.html">
+    <div class="op-top"><span class="op-title">Call KO com Rebate AXIA3</span><span class="op-ticker">AXIA3</span></div>
+    <p class="op-blurb">Call up-and-out AXIA3: participa da alta até a barreira; no KO recebe rebate. Matriz também em retorno % só sobre o prêmio (5,00%).</p>
+    <div class="op-meta"><span class="pill">Ativo: AXIA3</span> <span class="pill">Prazo: 2 meses</span> <span class="pill">KO: 123,19%</span> <span class="pill">Rebate: 5,50%</span> <span class="pill">Preço: 5,00%</span><span class="pill">Research: Compra</span><span class="pill">PA: R$ 74,00</span></div>
+    <div class="op-cta">Abrir material →</div>
+  </a>
+</li></ul>
+</section>
+
+<section class="cat-section" id="co-prio3" hidden>
+  <div class="cat-section-head">
+    <h2>PetroRio · PRIO3 · Petróleo &amp; Gás · 2 operações</h2>
+    <button type="button" class="cat-back" data-back>← Voltar aos cards</button>
+  </div>
+  <ul class="ops">
+<li class="op-block">
+  <div class="op-bar" style="background:#0d6e6e"></div>
+  <a class="op" href="./ops/soc-prio3-45dc/index.html">
+    <div class="op-top"><span class="op-title">SOC PRIO3</span><span class="op-ticker">PRIO3</span></div>
+    <p class="op-blurb">Stock or Coupon sobre PRIO3: cupom se a barreira de queda não for atingida; se KO, acompanha o ativo.</p>
+    <div class="op-meta"><span class="pill">Ativo: PRIO3</span> <span class="pill">Prazo: 45dc</span> <span class="pill">Vencimento: 28/10/2026</span> <span class="pill">Strike: 105.87%</span> <span class="pill">KO: 90%</span> <span class="pill">Cupom: 5.87%</span> <span class="pill">Backtest (barreira): 38%</span><span class="pill">Research: Compra</span><span class="pill">PA: R$ 72,00</span></div>
+    <div class="op-cta">Abrir material →</div>
+  </a>
+</li>
+<li class="op-block">
+  <div class="op-bar" style="background:#c0392b"></div>
+  <a class="op" href="./ops/call-ko-rebate-prio3-2meses/index.html">
+    <div class="op-top"><span class="op-title">Call KO com Rebate PRIO3</span><span class="op-ticker">PRIO3</span></div>
+    <p class="op-blurb">Call up-and-out PRIO3: participa da alta até a barreira; no KO recebe rebate. Matriz também em retorno % só sobre o prêmio (5,00%).</p>
+    <div class="op-meta"><span class="pill">Ativo: PRIO3</span> <span class="pill">Prazo: 2 meses</span> <span class="pill">KO: 121%</span> <span class="pill">Rebate: 5,50%</span> <span class="pill">Preço: 5,00%</span><span class="pill">Research: Compra</span><span class="pill">PA: R$ 72,00</span></div>
+    <div class="op-cta">Abrir material →</div>
+  </a>
+</li></ul>
+</section>
+
+<section class="cat-section" id="co-spcx34" hidden>
+  <div class="cat-section-head">
+    <h2>SpaceX · SPCX34 · Telecom &amp; Tecnologia · 3 operações</h2>
+    <button type="button" class="cat-back" data-back>← Voltar aos cards</button>
+  </div>
+  <ul class="ops">
+<li class="op-block">
+  <div class="op-bar" style="background:#0d6e6e"></div>
+  <a class="op" href="./ops/soc-spcx34-20dc/index.html">
+    <div class="op-top"><span class="op-title">SOC SPCX34</span><span class="op-ticker">SPCX34</span></div>
+    <p class="op-blurb">Stock or Coupon sobre SPCX34: cupom se a barreira de queda não for atingida; se KO, acompanha o ativo.</p>
+    <div class="op-meta"><span class="pill">Ativo: SPCX34</span> <span class="pill">Prazo: 20dc</span> <span class="pill">Vencimento: 01/10/2026</span> <span class="pill">Strike: 103.00%</span> <span class="pill">KO: 87%</span> <span class="pill">Cupom: 3.00%</span> <span class="pill">Backtest (barreira): —*</span><span class="pill">Research: Compra</span><span class="pill">PA: R$ 77,00</span></div>
+    <div class="op-cta">Abrir material →</div>
+  </a>
+</li>
+<li class="op-block">
+  <div class="op-bar" style="background:#007e33"></div>
+  <a class="op" href="./ops/smart-hedge-spcx34-put90-12meses/index.html">
+    <div class="op-top"><span class="op-title">Smart Hedge SPCX34</span><span class="op-ticker">SPCX34</span></div>
+    <p class="op-blurb">Smart Hedge sobre SPCX34: piso na queda, participação 1:1 até a barreira KI; se KI, retorno limitado ao strike da call.</p>
+    <div class="op-meta"><span class="pill">Ativo: SPCX34</span> <span class="pill">Prazo: 12 meses</span> <span class="pill">Put: 90%</span> <span class="pill">Call: 114%</span> <span class="pill">KI: 190%</span><span class="pill">Research: Compra</span><span class="pill">PA: R$ 77,00</span></div>
+    <div class="op-cta">Abrir material →</div>
+  </a>
+</li>
+<li class="op-block">
+  <div class="op-bar" style="background:#007e33"></div>
+  <a class="op" href="./ops/smart-hedge-spcx34-put100-24meses/index.html">
+    <div class="op-top"><span class="op-title">Smart Hedge SPCX34</span><span class="op-ticker">SPCX34</span></div>
+    <p class="op-blurb">Smart Hedge sobre SPCX34: piso na queda, participação 1:1 até a barreira KI; se KI, retorno limitado ao strike da call.</p>
+    <div class="op-meta"><span class="pill">Ativo: SPCX34</span> <span class="pill">Prazo: 24 meses</span> <span class="pill">Put: 100%</span> <span class="pill">Call: 130%</span> <span class="pill">KI: 261,90%</span><span class="pill">Research: Compra</span><span class="pill">PA: R$ 77,00</span></div>
+    <div class="op-cta">Abrir material →</div>
+  </a>
+</li></ul>
+</section>
+
+<section class="cat-section" id="co-tots3" hidden>
+  <div class="cat-section-head">
+    <h2>TOTVS · TOTS3 · Telecom &amp; Tecnologia · 1 operação</h2>
+    <button type="button" class="cat-back" data-back>← Voltar aos cards</button>
+  </div>
+  <ul class="ops">
+<li class="op-block">
+  <div class="op-bar" style="background:#0d6e6e"></div>
+  <a class="op" href="./ops/soc-tots3-30dc/index.html">
+    <div class="op-top"><span class="op-title">SOC TOTS3</span><span class="op-ticker">TOTS3</span></div>
+    <p class="op-blurb">Stock or Coupon sobre TOTS3: cupom se a barreira de queda não for atingida; se KO, acompanha o ativo.</p>
+    <div class="op-meta"><span class="pill">Ativo: TOTS3</span> <span class="pill">Prazo: 30dc</span> <span class="pill">Vencimento: 13/10/2026</span> <span class="pill">Strike: 104.72%</span> <span class="pill">KO: 90%</span> <span class="pill">Cupom: 4.72%</span> <span class="pill">Backtest (barreira): 42%</span><span class="pill">Research: Compra</span><span class="pill">PA: R$ 55,00</span></div>
+    <div class="op-cta">Abrir material →</div>
+  </a>
+</li></ul>
+</section>
+
+<section class="cat-section" id="co-b3sa3" hidden>
+  <div class="cat-section-head">
+    <h2>B3 · B3SA3 · Financeiro · 2 operações</h2>
+    <button type="button" class="cat-back" data-back>← Voltar aos cards</button>
+  </div>
+  <ul class="ops">
+<li class="op-block">
+  <div class="op-bar" style="background:#0d6e6e"></div>
+  <a class="op" href="./ops/soc-b3sa3-30dc/index.html">
+    <div class="op-top"><span class="op-title">SOC B3SA3</span><span class="op-ticker">B3SA3</span></div>
+    <p class="op-blurb">Stock or Coupon sobre B3SA3: cupom se a barreira de queda não for atingida; se KO, acompanha o ativo.</p>
+    <div class="op-meta"><span class="pill">Ativo: B3SA3</span> <span class="pill">Prazo: 30dc</span> <span class="pill">Vencimento: 13/10/2026</span> <span class="pill">Strike: 105.07%</span> <span class="pill">KO: 90%</span> <span class="pill">Cupom: 5.07%</span> <span class="pill">Backtest (barreira): 23%</span><span class="pill">Research: Neutro</span><span class="pill">PA: R$ 19,00</span></div>
+    <div class="op-cta">Abrir material →</div>
+  </a>
+</li>
+<li class="op-block">
+  <div class="op-bar" style="background:#820ad1"></div>
+  <a class="op" href="./ops/triplo-b3sa3-ki142-12meses/index.html">
+    <div class="op-top"><span class="op-title">Triplo Retorno KO B3SA3</span><span class="op-ticker">B3SA3</span></div>
+    <p class="op-blurb">3× na alta até a barreira, ganho na queda moderada, teto se KO de alta.</p>
+    <div class="op-meta"><span class="pill">Ativo: B3SA3</span> <span class="pill">Prazo: 12 meses</span> <span class="pill">Teto: +15%</span> <span class="pill">KO alta: 142%</span> <span class="pill">KO baixa: 80%</span><span class="pill">Research: Neutro</span><span class="pill">PA: R$ 19,00</span></div>
+    <div class="op-cta">Abrir material →</div>
+  </a>
+</li></ul>
+</section>
+
+<section class="cat-section" id="co-tsla34" hidden>
+  <div class="cat-section-head">
+    <h2>Tesla · TSLA34 · Consumo discricionário · 1 operação</h2>
+    <button type="button" class="cat-back" data-back>← Voltar aos cards</button>
+  </div>
+  <ul class="ops">
+<li class="op-block">
+  <div class="op-bar" style="background:#0d6e6e"></div>
+  <a class="op" href="./ops/soc-tsla34-20dc/index.html">
+    <div class="op-top"><span class="op-title">SOC TSLA34</span><span class="op-ticker">TSLA34</span></div>
+    <p class="op-blurb">Stock or Coupon sobre TSLA34: cupom se a barreira de queda não for atingida; se KO, acompanha o ativo.</p>
+    <div class="op-meta"><span class="pill">Ativo: TSLA34</span> <span class="pill">Prazo: 20dc</span> <span class="pill">Vencimento: 09/10/2026</span> <span class="pill">Strike: 103.50%</span> <span class="pill">KO: 90%</span> <span class="pill">Cupom: 3.50%</span> <span class="pill">Backtest (barreira): 29%</span></div>
+    <div class="op-cta">Abrir material →</div>
+  </a>
+</li></ul>
+</section>
+
+<section class="cat-section" id="co-cyre3" hidden>
+  <div class="cat-section-head">
+    <h2>Cyrela · CYRE3 · Construção Civil &amp; Propriedades · 2 operações</h2>
+    <button type="button" class="cat-back" data-back>← Voltar aos cards</button>
+  </div>
+  <ul class="ops">
+<li class="op-block">
+  <div class="op-bar" style="background:#0d6e6e"></div>
+  <a class="op" href="./ops/soc-cyre3-30dc/index.html">
+    <div class="op-top"><span class="op-title">SOC CYRE3</span><span class="op-ticker">CYRE3</span></div>
+    <p class="op-blurb">Stock or Coupon sobre CYRE3: cupom se a barreira de queda não for atingida; se KO, acompanha o ativo.</p>
+    <div class="op-meta"><span class="pill">Ativo: CYRE3</span> <span class="pill">Prazo: 30dc</span> <span class="pill">Vencimento: 14/10/2026</span> <span class="pill">Strike: 105.50%</span> <span class="pill">KO: 88%</span> <span class="pill">Cupom: 5.50%</span> <span class="pill">Backtest (barreira): 30%</span><span class="pill">Research: Compra</span><span class="pill">PA: R$ 40,00</span></div>
+    <div class="op-cta">Abrir material →</div>
+  </a>
+</li>
+<li class="op-block">
+  <div class="op-bar" style="background:#820ad1"></div>
+  <a class="op" href="./ops/triplo-cyre3-ki148-12meses/index.html">
+    <div class="op-top"><span class="op-title">Triplo Retorno KO CYRE3</span><span class="op-ticker">CYRE3</span></div>
+    <p class="op-blurb">3× na alta até a barreira, ganho na queda moderada, teto se KO de alta.</p>
+    <div class="op-meta"><span class="pill">Ativo: CYRE3</span> <span class="pill">Prazo: 12 meses</span> <span class="pill">Teto: +15%</span> <span class="pill">KO alta: 148%</span> <span class="pill">KO baixa: 80%</span><span class="pill">Research: Compra</span><span class="pill">PA: R$ 40,00</span></div>
+    <div class="op-cta">Abrir material →</div>
+  </a>
+</li></ul>
+</section>
+
+<section class="cat-section" id="co-bbdc4" hidden>
+  <div class="cat-section-head">
+    <h2>Bradesco · BBDC4 · Financeiro · 1 operação</h2>
+    <button type="button" class="cat-back" data-back>← Voltar aos cards</button>
+  </div>
+  <ul class="ops">
+<li class="op-block">
+  <div class="op-bar" style="background:#0d6e6e"></div>
+  <a class="op" href="./ops/soc-bbdc4-45dc/index.html">
+    <div class="op-top"><span class="op-title">SOC BBDC4</span><span class="op-ticker">BBDC4</span></div>
+    <p class="op-blurb">Stock or Coupon sobre BBDC4: cupom se a barreira de queda não for atingida; se KO, acompanha o ativo.</p>
+    <div class="op-meta"><span class="pill">Ativo: BBDC4</span> <span class="pill">Prazo: 45dc</span> <span class="pill">Vencimento: 27/10/2026</span> <span class="pill">Strike: 105.40%</span> <span class="pill">KO: 90%</span> <span class="pill">Cupom: 5.40%</span> <span class="pill">Backtest (barreira): 21%</span><span class="pill">Research: Neutro</span><span class="pill">PA: R$ 21,00</span></div>
+    <div class="op-cta">Abrir material →</div>
+  </a>
+</li></ul>
+</section>
+
+<section class="cat-section" id="co-itub4" hidden>
+  <div class="cat-section-head">
+    <h2>Itaú Unibanco · ITUB4 · Financeiro · 3 operações</h2>
+    <button type="button" class="cat-back" data-back>← Voltar aos cards</button>
+  </div>
+  <ul class="ops">
+<li class="op-block">
+  <div class="op-bar" style="background:#007e33"></div>
+  <a class="op" href="./ops/smart-hedge-itub4-put90-12meses/index.html">
+    <div class="op-top"><span class="op-title">Smart Hedge ITUB4</span><span class="op-ticker">ITUB4</span></div>
+    <p class="op-blurb">Smart Hedge sobre ITUB4: piso na queda, participação 1:1 até a barreira KI; se KI, retorno limitado ao strike da call.</p>
+    <div class="op-meta"><span class="pill">Ativo: ITUB4</span> <span class="pill">Prazo: 12 meses</span> <span class="pill">Put: 90%</span> <span class="pill">Call: 110%</span> <span class="pill">KI: 144,32%</span><span class="pill">Research: Compra</span><span class="pill">PA: R$ 54,00</span></div>
+    <div class="op-cta">Abrir material →</div>
+  </a>
+</li>
+<li class="op-block">
+  <div class="op-bar" style="background:#007e33"></div>
+  <a class="op" href="./ops/smart-hedge-itub4-put90-24meses/index.html">
+    <div class="op-top"><span class="op-title">Smart Hedge ITUB4</span><span class="op-ticker">ITUB4</span></div>
+    <p class="op-blurb">Smart Hedge sobre ITUB4: piso na queda, participação 1:1 até a barreira KI; se KI, retorno limitado ao strike da call.</p>
+    <div class="op-meta"><span class="pill">Ativo: ITUB4</span> <span class="pill">Prazo: 24 meses</span> <span class="pill">Put: 90%</span> <span class="pill">Call: 130%</span> <span class="pill">KI: 166%</span><span class="pill">Research: Compra</span><span class="pill">PA: R$ 54,00</span></div>
+    <div class="op-cta">Abrir material →</div>
+  </a>
+</li>
+<li class="op-block">
+  <div class="op-bar" style="background:#007e33"></div>
+  <a class="op" href="./ops/smart-hedge-itub4-put90-4meses/index.html">
+    <div class="op-top"><span class="op-title">Smart Hedge ITUB4</span><span class="op-ticker">ITUB4</span></div>
+    <p class="op-blurb">Smart Hedge sobre ITUB4: piso na queda, participação 1:1 até a barreira KI; se KI, retorno limitado ao strike da call.</p>
+    <div class="op-meta"><span class="pill">Ativo: ITUB4</span> <span class="pill">Prazo: 4 meses</span> <span class="pill">Put: 90%</span> <span class="pill">Call: 103%</span> <span class="pill">KI: 128,79%</span><span class="pill">Research: Compra</span><span class="pill">PA: R$ 54,00</span></div>
+    <div class="op-cta">Abrir material →</div>
+  </a>
+</li></ul>
+</section>
+
+<section class="cat-section" id="co-petr4" hidden>
+  <div class="cat-section-head">
+    <h2>Petrobras · PETR4 · Petróleo &amp; Gás · 3 operações</h2>
+    <button type="button" class="cat-back" data-back>← Voltar aos cards</button>
+  </div>
+  <ul class="ops">
+<li class="op-block">
+  <div class="op-bar" style="background:#007e33"></div>
+  <a class="op" href="./ops/smart-hedge-petr4-put90-12meses/index.html">
+    <div class="op-top"><span class="op-title">Smart Hedge PETR4</span><span class="op-ticker">PETR4</span></div>
+    <p class="op-blurb">Smart Hedge sobre PETR4: piso na queda, participação 1:1 até a barreira KI; se KI, retorno limitado ao strike da call.</p>
+    <div class="op-meta"><span class="pill">Ativo: PETR4</span> <span class="pill">Prazo: 12 meses</span> <span class="pill">Put: 90%</span> <span class="pill">Call: 110%</span> <span class="pill">KI: 151,08%</span><span class="pill">Research: Compra</span><span class="pill">PA: R$ 65,00</span></div>
+    <div class="op-cta">Abrir material →</div>
+  </a>
+</li>
+<li class="op-block">
+  <div class="op-bar" style="background:#007e33"></div>
+  <a class="op" href="./ops/smart-hedge-petr4-put100-12meses/index.html">
+    <div class="op-top"><span class="op-title">Smart Hedge PETR4</span><span class="op-ticker">PETR4</span></div>
+    <p class="op-blurb">Smart Hedge sobre PETR4: piso na queda, participação 1:1 até a barreira KI; se KI, retorno limitado ao strike da call.</p>
+    <div class="op-meta"><span class="pill">Ativo: PETR4</span> <span class="pill">Prazo: 12 meses</span> <span class="pill">Put: 100%</span> <span class="pill">Call: 110%</span> <span class="pill">KI: 134,70%</span><span class="pill">Research: Compra</span><span class="pill">PA: R$ 65,00</span></div>
+    <div class="op-cta">Abrir material →</div>
+  </a>
+</li>
+<li class="op-block">
+  <div class="op-bar" style="background:#007e33"></div>
+  <a class="op" href="./ops/smart-hedge-petr4-put90-4meses/index.html">
+    <div class="op-top"><span class="op-title">Smart Hedge PETR4</span><span class="op-ticker">PETR4</span></div>
+    <p class="op-blurb">Smart Hedge sobre PETR4: piso na queda, participação 1:1 até a barreira KI; se KI, retorno limitado ao strike da call.</p>
+    <div class="op-meta"><span class="pill">Ativo: PETR4</span> <span class="pill">Prazo: 4 meses</span> <span class="pill">Put: 90%</span> <span class="pill">Call: 103%</span> <span class="pill">KI: 135,19%</span><span class="pill">Research: Compra</span><span class="pill">PA: R$ 65,00</span></div>
+    <div class="op-cta">Abrir material →</div>
+  </a>
+</li></ul>
+</section>
+
+<section class="cat-section" id="co-vale3" hidden>
+  <div class="cat-section-head">
+    <h2>Vale · VALE3 · Mineração &amp; Siderurgia · 2 operações</h2>
+    <button type="button" class="cat-back" data-back>← Voltar aos cards</button>
+  </div>
+  <ul class="ops">
+<li class="op-block">
+  <div class="op-bar" style="background:#007e33"></div>
+  <a class="op" href="./ops/smart-hedge-vale3-put110-24meses/index.html">
+    <div class="op-top"><span class="op-title">Smart Hedge VALE3</span><span class="op-ticker">VALE3</span></div>
+    <p class="op-blurb">Smart Hedge sobre VALE3: piso na queda, participação 1:1 até a barreira KI; se KI, retorno limitado ao strike da call.</p>
+    <div class="op-meta"><span class="pill">Ativo: VALE3</span> <span class="pill">Prazo: 24 meses</span> <span class="pill">Put: 110%</span> <span class="pill">Call: 110%</span> <span class="pill">KI: 174,35%</span><span class="pill">Research: Compra</span><span class="pill">PA: R$ 90,00</span></div>
+    <div class="op-cta">Abrir material →</div>
+  </a>
+</li>
+<li class="op-block">
+  <div class="op-bar" style="background:#007e33"></div>
+  <a class="op" href="./ops/smart-hedge-vale3-put90-4meses/index.html">
+    <div class="op-top"><span class="op-title">Smart Hedge VALE3</span><span class="op-ticker">VALE3</span></div>
+    <p class="op-blurb">Smart Hedge sobre VALE3: piso na queda, participação 1:1 até a barreira KI; se KI, retorno limitado ao strike da call.</p>
+    <div class="op-meta"><span class="pill">Ativo: VALE3</span> <span class="pill">Prazo: 4 meses</span> <span class="pill">Put: 90%</span> <span class="pill">Call: 103%</span> <span class="pill">KI: 126,43%</span><span class="pill">Research: Compra</span><span class="pill">PA: R$ 90,00</span></div>
+    <div class="op-cta">Abrir material →</div>
+  </a>
+</li></ul>
+</section>
+
+<section class="cat-section" id="co-suzb3" hidden>
+  <div class="cat-section-head">
+    <h2>SUZANO · SUZB3 · Papel &amp; Celulose · 1 operação</h2>
+    <button type="button" class="cat-back" data-back>← Voltar aos cards</button>
+  </div>
+  <ul class="ops">
+<li class="op-block">
+  <div class="op-bar" style="background:#007e33"></div>
+  <a class="op" href="./ops/smart-hedge-suzb3-put90-4meses/index.html">
+    <div class="op-top"><span class="op-title">Smart Hedge SUZB3</span><span class="op-ticker">SUZB3</span></div>
+    <p class="op-blurb">Smart Hedge sobre SUZB3: piso na queda, participação 1:1 até a barreira KI; se KI, retorno limitado ao strike da call.</p>
+    <div class="op-meta"><span class="pill">Ativo: SUZB3</span> <span class="pill">Prazo: 4 meses</span> <span class="pill">Put: 90%</span> <span class="pill">Call: 103%</span> <span class="pill">KI: 126,17%</span><span class="pill">Research: Compra</span><span class="pill">PA: R$ 72,00</span></div>
+    <div class="op-cta">Abrir material →</div>
+  </a>
+</li></ul>
+</section>
+
+<section class="cat-section" id="co-itlc34" hidden>
+  <div class="cat-section-head">
+    <h2>Intel · ITLC34 · Tecnologia · 1 operação</h2>
+    <button type="button" class="cat-back" data-back>← Voltar aos cards</button>
+  </div>
+  <ul class="ops">
+<li class="op-block">
+  <div class="op-bar" style="background:#5a4a8a"></div>
+  <a class="op" href="./ops/aceleradora-itlc34-17meses/index.html">
+    <div class="op-top"><span class="op-title">Aceleradora Dinâmica ITLC34</span><span class="op-ticker">ITLC34</span></div>
+    <p class="op-blurb">Ganho dobrado (2×) na alta até atingir o teto +70% (em +35% de alta). Na call vanilla / KO 170%, o ganho fica limitado ao KO — teto +70% (não dobra de novo). Proteção parcial na queda até a barreira 40%.</p>
+    <div class="op-meta"><span class="pill">Ativo: ITLC34</span> <span class="pill">Prazo: 17 meses</span> <span class="pill">Alta: 2×</span> <span class="pill">Call vendida: 170% vanilla</span> <span class="pill">Teto: +70%</span> <span class="pill">KO baixa: 40%</span></div>
+    <div class="op-cta">Abrir material →</div>
+  </a>
+</li></ul>
+</section>
+
+<section class="cat-section" id="co-bbas3" hidden>
+  <div class="cat-section-head">
+    <h2>Banco do Brasil · BBAS3 · Financeiro · 1 operação</h2>
+    <button type="button" class="cat-back" data-back>← Voltar aos cards</button>
+  </div>
+  <ul class="ops">
+<li class="op-block">
+  <div class="op-bar" style="background:#5a4a8a"></div>
+  <a class="op" href="./ops/aceleradora-bbas3-4meses/index.html">
+    <div class="op-top"><span class="op-title">Aceleradora Dinâmica BBAS3</span><span class="op-ticker">BBAS3</span></div>
+    <p class="op-blurb">Ganho dobrado (2×) na alta até atingir o teto +20% (em +10% de alta). Na call vanilla / KO 120%, o ganho fica limitado ao KO — teto +20% (não dobra de novo). Proteção parcial na queda até a barreira 90%.</p>
+    <div class="op-meta"><span class="pill">Ativo: BBAS3</span> <span class="pill">Prazo: 4 meses</span> <span class="pill">Alta: 2×</span> <span class="pill">Call vendida: 120% vanilla</span> <span class="pill">Teto: +20%</span> <span class="pill">KO baixa: 90%</span><span class="pill">Research: Neutro</span><span class="pill">PA: R$ 19,00</span></div>
+    <div class="op-cta">Abrir material →</div>
+  </a>
+</li></ul>
+</section>
+
+<section class="cat-section" id="co-smal11" hidden>
+  <div class="cat-section-head">
+    <h2>iShares BM&amp;FBOVESPA Small Cap Fundo de Índice · SMAL11 · Fundos de Índice · 1 operação</h2>
+    <button type="button" class="cat-back" data-back>← Voltar aos cards</button>
+  </div>
+  <ul class="ops">
+<li class="op-block">
+  <div class="op-bar" style="background:#5a4a8a"></div>
+  <a class="op" href="./ops/aceleradora-smal11-4meses/index.html">
+    <div class="op-top"><span class="op-title">Aceleradora Dinâmica SMAL11</span><span class="op-ticker">SMAL11</span></div>
+    <p class="op-blurb">Ganho dobrado (2×) na alta até atingir o teto +16% (em +8% de alta). Na call vanilla / KO 116%, o ganho fica limitado ao KO — teto +16% (não dobra de novo). Proteção parcial na queda até a barreira 90%.</p>
+    <div class="op-meta"><span class="pill">Ativo: SMAL11</span> <span class="pill">Prazo: 4 meses</span> <span class="pill">Alta: 2×</span> <span class="pill">Call vendida: 116% vanilla</span> <span class="pill">Teto: +16%</span> <span class="pill">KO baixa: 90%</span></div>
+    <div class="op-cta">Abrir material →</div>
+  </a>
+</li></ul>
+</section>
+
+<section class="cat-section" id="co-roxo34" hidden>
+  <div class="cat-section-head">
+    <h2>Nubank · ROXO34 · Financeiro · 2 operações</h2>
+    <button type="button" class="cat-back" data-back>← Voltar aos cards</button>
+  </div>
+  <ul class="ops">
+<li class="op-block">
+  <div class="op-bar" style="background:#820ad1"></div>
+  <a class="op" href="./ops/triplo-roxo34-ki150-12meses/index.html">
+    <div class="op-top"><span class="op-title">Triplo Retorno KO ROXO34</span><span class="op-ticker">ROXO34</span></div>
+    <p class="op-blurb">3× na alta até a barreira, ganho na queda moderada, teto se KO de alta.</p>
+    <div class="op-meta"><span class="pill">Ativo: ROXO34</span> <span class="pill">Prazo: 12 meses</span> <span class="pill">Teto: +15%</span> <span class="pill">KO alta: 150%</span> <span class="pill">KO baixa: 80%</span><span class="pill">Research: Compra</span><span class="pill">PA: R$ 21,00</span></div>
+    <div class="op-cta">Abrir material →</div>
+  </a>
+</li>
+<li class="op-block">
+  <div class="op-bar" style="background:#820ad1"></div>
+  <a class="op" href="./ops/triplo-roxo34-ki134-6meses/index.html">
+    <div class="op-top"><span class="op-title">Triplo Retorno KO ROXO34</span><span class="op-ticker">ROXO34</span></div>
+    <p class="op-blurb">3× na alta até a barreira, ganho na queda moderada, teto se KO de alta.</p>
+    <div class="op-meta"><span class="pill">Ativo: ROXO34</span> <span class="pill">Prazo: 6 meses</span> <span class="pill">Teto: +6%</span> <span class="pill">KO alta: 134%</span> <span class="pill">KO baixa: 80%</span><span class="pill">Research: Compra</span><span class="pill">PA: R$ 21,00</span></div>
+    <div class="op-cta">Abrir material →</div>
+  </a>
+</li></ul>
+</section>
+
+<section class="cat-section" id="co-gogl34" hidden>
+  <div class="cat-section-head">
+    <h2>Alphabet · GOGL34 · Comunicação · 1 operação</h2>
+    <button type="button" class="cat-back" data-back>← Voltar aos cards</button>
+  </div>
+  <ul class="ops">
+<li class="op-block">
+  <div class="op-bar" style="background:#820ad1"></div>
+  <a class="op" href="./ops/triplo-gogl34-ki145-12meses/index.html">
+    <div class="op-top"><span class="op-title">Triplo Retorno KO GOGL34</span><span class="op-ticker">GOGL34</span></div>
+    <p class="op-blurb">3× na alta até a barreira, ganho na queda moderada, teto se KO de alta.</p>
+    <div class="op-meta"><span class="pill">Ativo: GOGL34</span> <span class="pill">Prazo: 12 meses</span> <span class="pill">Teto: +15%</span> <span class="pill">KO alta: 145%</span> <span class="pill">KO baixa: 80%</span></div>
+    <div class="op-cta">Abrir material →</div>
+  </a>
+</li></ul>
+</section>
+
+<section class="cat-section" id="co-lily34" hidden>
+  <div class="cat-section-head">
+    <h2>Eli Lilly · LILY34 · Consumo não Discricionário · 1 operação</h2>
+    <button type="button" class="cat-back" data-back>← Voltar aos cards</button>
+  </div>
+  <ul class="ops">
+<li class="op-block">
+  <div class="op-bar" style="background:#820ad1"></div>
+  <a class="op" href="./ops/triplo-lily34-ki150-12meses/index.html">
+    <div class="op-top"><span class="op-title">Triplo Retorno KO LILY34</span><span class="op-ticker">LILY34</span></div>
+    <p class="op-blurb">3× na alta até a barreira, ganho na queda moderada, teto se KO de alta.</p>
+    <div class="op-meta"><span class="pill">Ativo: LILY34</span> <span class="pill">Prazo: 12 meses</span> <span class="pill">Teto: +15%</span> <span class="pill">KO alta: 150%</span> <span class="pill">KO baixa: 80%</span></div>
+    <div class="op-cta">Abrir material →</div>
+  </a>
+</li></ul>
+</section>
+
+<section class="cat-section" id="co-smft3" hidden>
+  <div class="cat-section-head">
+    <h2>Smart Fit · SMFT3 · Varejo &amp; Consumo · 1 operação</h2>
+    <button type="button" class="cat-back" data-back>← Voltar aos cards</button>
+  </div>
+  <ul class="ops">
+<li class="op-block">
+  <div class="op-bar" style="background:#820ad1"></div>
+  <a class="op" href="./ops/triplo-smft3-ki149-12meses/index.html">
+    <div class="op-top"><span class="op-title">Triplo Retorno KO SMFT3</span><span class="op-ticker">SMFT3</span></div>
+    <p class="op-blurb">3× na alta até a barreira, ganho na queda moderada, teto se KO de alta.</p>
+    <div class="op-meta"><span class="pill">Ativo: SMFT3</span> <span class="pill">Prazo: 12 meses</span> <span class="pill">Teto: +15%</span> <span class="pill">KO alta: 149%</span> <span class="pill">KO baixa: 80%</span><span class="pill">Research: Compra</span><span class="pill">PA: R$ 30,00</span></div>
+    <div class="op-cta">Abrir material →</div>
+  </a>
+</li></ul>
+</section>
+
+<section class="cat-section" id="co-rent3" hidden>
+  <div class="cat-section-head">
+    <h2>Localiza · RENT3 · Aluguel de Carros &amp; Logística · 1 operação</h2>
+    <button type="button" class="cat-back" data-back>← Voltar aos cards</button>
+  </div>
+  <ul class="ops">
+<li class="op-block">
+  <div class="op-bar" style="background:#820ad1"></div>
+  <a class="op" href="./ops/triplo-rent3-ki142-12meses/index.html">
+    <div class="op-top"><span class="op-title">Triplo Retorno KO RENT3</span><span class="op-ticker">RENT3</span></div>
+    <p class="op-blurb">3× na alta até a barreira, ganho na queda moderada, teto se KO de alta.</p>
+    <div class="op-meta"><span class="pill">Ativo: RENT3</span> <span class="pill">Prazo: 12 meses</span> <span class="pill">Teto: +15%</span> <span class="pill">KO alta: 142%</span> <span class="pill">KO baixa: 80%</span><span class="pill">Research: Compra</span><span class="pill">PA: R$ 63,00</span></div>
+    <div class="op-cta">Abrir material →</div>
+  </a>
+</li></ul>
+</section>
+
+<section class="cat-section" id="co-wege3" hidden>
+  <div class="cat-section-head">
+    <h2>WEG · WEGE3 · Bens de Capital · 1 operação</h2>
+    <button type="button" class="cat-back" data-back>← Voltar aos cards</button>
+  </div>
+  <ul class="ops">
+<li class="op-block">
+  <div class="op-bar" style="background:#c0392b"></div>
+  <a class="op" href="./ops/call-ko-rebate-wege3-2meses/index.html">
+    <div class="op-top"><span class="op-title">Call KO com Rebate WEGE3</span><span class="op-ticker">WEGE3</span></div>
+    <p class="op-blurb">Call up-and-out WEGE3: participa da alta até a barreira; no KO recebe rebate. Matriz também em retorno % só sobre o prêmio (5,00%).</p>
+    <div class="op-meta"><span class="pill">Ativo: WEGE3</span> <span class="pill">Prazo: 2 meses</span> <span class="pill">KO: 119,90%</span> <span class="pill">Rebate: 5,50%</span> <span class="pill">Preço: 5,00%</span><span class="pill">Research: Compra</span><span class="pill">PA: R$ 65,00</span></div>
+    <div class="op-cta">Abrir material →</div>
+  </a>
+</li></ul>
+</section>
+
+<section class="cat-section" id="co-embj3" hidden>
+  <div class="cat-section-head">
+    <h2>Embraer · EMBJ3 · Aéreas · 1 operação</h2>
+    <button type="button" class="cat-back" data-back>← Voltar aos cards</button>
+  </div>
+  <ul class="ops">
+<li class="op-block">
+  <div class="op-bar" style="background:#2f6b5a"></div>
+  <a class="op" href="./ops/put-ko-rebate-embj3-3meses/index.html">
+    <div class="op-top"><span class="op-title">Put KO com Rebate EMBJ3</span><span class="op-ticker">EMBJ3</span></div>
+    <p class="op-blurb">Put down-and-out EMBJ3: ganha na queda até a barreira; no KO recebe rebate. Matriz também em retorno % só sobre o prêmio (3,50%).</p>
+    <div class="op-meta"><span class="pill">Ativo: EMBJ3</span> <span class="pill">Prazo: 3 meses</span> <span class="pill">KO: 80%</span> <span class="pill">Rebate: 5,50%</span> <span class="pill">Preço: 3,50%</span><span class="pill">Research: Compra</span><span class="pill">PA: R$ 126,00</span></div>
+    <div class="op-cta">Abrir material →</div>
+  </a>
+</li></ul>
+</section>
+
+<section class="cat-section" id="co-gold11" hidden>
+  <div class="cat-section-head">
+    <h2>TREND ETF LBMA OURO · GOLD11 · Fundos de Índice · 1 operação</h2>
+    <button type="button" class="cat-back" data-back>← Voltar aos cards</button>
+  </div>
+  <ul class="ops">
+<li class="op-block">
+  <div class="op-bar" style="background:#b8860b"></div>
+  <a class="op" href="./ops/twip-gold11-12meses/index.html">
+    <div class="op-top"><span class="op-title">TWIP GOLD11</span><span class="op-ticker">GOLD11</span></div>
+    <p class="op-blurb">Twin Win Protected: ganha na alta e na queda moderada; fora das barreiras retorno 0% (capital protegido).</p>
+    <div class="op-meta"><span class="pill">Ativo: GOLD11</span> <span class="pill">Prazo: 12 meses</span> <span class="pill">Put: 100%</span> <span class="pill">KI: 140%</span> <span class="pill">Put KO: 80%</span></div>
+    <div class="op-cta">Abrir material →</div>
+  </a>
+</li></ul>
+</section>
+
+<section class="cat-section" id="co-bova11" hidden>
+  <div class="cat-section-head">
+    <h2>Ishares Ibovespa Fundo de Índice · BOVA11 · Fundos de Índice · 2 operações</h2>
+    <button type="button" class="cat-back" data-back>← Voltar aos cards</button>
+  </div>
+  <ul class="ops">
+<li class="op-block">
+  <div class="op-bar" style="background:#1e4d7b"></div>
+  <a class="op" href="./ops/one-touch-bova11-2meses/index.html">
+    <div class="op-top"><span class="op-title">One Touch de Alta BOVA11</span><span class="op-ticker">BOVA11</span></div>
+    <p class="op-blurb">Paga rebate se o ativo atingir a barreira de alta; caso contrário, perde só o preço.</p>
+    <div class="op-meta"><span class="pill">Ativo: BOVA11</span> <span class="pill">Prazo: 2 meses</span> <span class="pill">Barreira: 120%</span> <span class="pill">Rebate: 5,00%</span> <span class="pill">Preço: 1,20%</span></div>
+    <div class="op-cta">Abrir material →</div>
+  </a>
+</li>
+<li class="op-block">
+  <div class="op-bar" style="background:#2c5f7c"></div>
+  <a class="op" href="./ops/compra-put-bova11-6meses/index.html">
+    <div class="op-top"><span class="op-title">Compra de Put BOVA11</span><span class="op-ticker">BOVA11</span></div>
+    <p class="op-blurb">Compra de put BOVA11 strike 95%: proteção/tática de queda. Matriz também em retorno % só sobre o prêmio (2,93%).</p>
+    <div class="op-meta"><span class="pill">Ativo: BOVA11</span> <span class="pill">Prazo: 6 meses</span> <span class="pill">Strike: 95%</span> <span class="pill">Preço: 2,93%</span></div>
+    <div class="op-cta">Abrir material →</div>
+  </a>
+</li></ul>
+</section>
+
+<section class="cat-section" id="co-bitc11" hidden>
+  <div class="cat-section-head">
+    <h2>BTG Pactual Teva Bitcoin · BITC11 · Fundos de Índice · 1 operação</h2>
+    <button type="button" class="cat-back" data-back>← Voltar aos cards</button>
+  </div>
+  <ul class="ops">
+<li class="op-block">
+  <div class="op-bar" style="background:#0a6e8a"></div>
+  <a class="op" href="./ops/pop-bitc11-24meses/index.html">
+    <div class="op-top"><span class="op-title">POP BITC11</span><span class="op-ticker">BITC11</span></div>
+    <p class="op-blurb">Protected Ownership Participation sobre BITC11: proteção total na queda (put 100%) e participação parcial na alta (call vendida 100% em metade da posição).</p>
+    <div class="op-meta"><span class="pill">Ativo: BITC11</span> <span class="pill">Prazo: 24 meses</span> <span class="pill">Put: 100%</span> <span class="pill">Call 0,5×: 100%</span> <span class="pill">Participação: 50%</span></div>
+    <div class="op-cta">Abrir material →</div>
+  </a>
+</li></ul>
+</section>
+
 <section class="cat-section" id="soc" hidden>
   <div class="cat-section-head">
     <h2>SOC</h2>
@@ -661,28 +1575,33 @@ h1{font-size:clamp(28px,4.5vw,40px);font-weight:700;letter-spacing:-.02em;line-h
 </main>
 <script>
 (function(){
-  var grid=document.getElementById('catGrid');
+  var home=document.getElementById('homeBlock');
   var cards=[].slice.call(document.querySelectorAll('.cat-card'));
+  var spots=[].slice.call(document.querySelectorAll('.spot'));
   var sections=[].slice.call(document.querySelectorAll('.cat-section'));
   function show(id){
     cards.forEach(function(c){ c.classList.toggle('active', c.getAttribute('data-target')===id); });
+    spots.forEach(function(s){ s.classList.toggle('active', s.getAttribute('data-target')===id); });
     sections.forEach(function(s){
       var on=s.id===id;
       if(on) s.removeAttribute('hidden'); else s.setAttribute('hidden','');
     });
     if(id){
-      grid.style.display='none';
+      home.style.display='none';
       var el=document.getElementById(id);
       if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
       history.replaceState(null,'','#'+id);
     } else {
-      grid.style.display='';
+      home.style.display='';
       history.replaceState(null,'',location.pathname);
       window.scrollTo({top:0,behavior:'smooth'});
     }
   }
   cards.forEach(function(c){
     c.addEventListener('click',function(){ show(c.getAttribute('data-target')); });
+  });
+  spots.forEach(function(s){
+    s.addEventListener('click',function(){ show(s.getAttribute('data-target')); });
   });
   document.querySelectorAll('[data-back]').forEach(function(b){
     b.addEventListener('click',function(){ show(null); });

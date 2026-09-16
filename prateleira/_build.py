@@ -192,6 +192,37 @@ def _http_json(url: str, payload: object | None = None):
         return json.loads(raw.decode("utf-8"))
 
 
+# Setor/nome quando Research não cobre (BDRs / ETFs).
+SECTOR_FALLBACK = {
+    "SPCX34": "Tecnologia (BDR)",
+    "NVDC34": "Tecnologia (BDR)",
+    "TSLA34": "Consumo / Automotivo (BDR)",
+    "ROXO34": "Financeiro (BDR)",
+    "GOGL34": "Tecnologia (BDR)",
+    "LILY34": "Saúde (BDR)",
+    "TSMC34": "Semicondutores (BDR)",
+    "ITLC34": "Tecnologia (BDR)",
+    "GOLD11": "Commodities / Ouro (ETF)",
+    "BITC11": "Cripto (ETF)",
+    "BOVA11": "Índice (ETF)",
+    "SMAL11": "Índice Small Caps (ETF)",
+}
+COMPANY_FALLBACK = {
+    "SPCX34": "SPDR S&P 500",
+    "NVDC34": "NVIDIA",
+    "TSLA34": "Tesla",
+    "ROXO34": "Nu Holdings",
+    "GOGL34": "Alphabet",
+    "LILY34": "Eli Lilly",
+    "TSMC34": "TSMC",
+    "ITLC34": "Intel",
+    "GOLD11": "Trend Ouro",
+    "BITC11": "Hashdex Bitcoin",
+    "BOVA11": "iShares Ibovespa",
+    "SMAL11": "iShares Small Cap",
+}
+
+
 def fetch_research(tickers: list[str]) -> dict[str, dict]:
     uniq = list(dict.fromkeys(tickers))
     prev: dict[str, dict] = {}
@@ -230,34 +261,41 @@ def fetch_research(tickers: list[str]) -> dict[str, dict]:
         except Exception as exc:
             item["rec_error"] = str(exc)
 
-        # Fallback: endpoint /info também traz recommendation + marketData.
+        # /info: setor + company; também fallback de recommendation/marketData.
         info = None
-        if not (rec and rec.get("recommendation")):
-            try:
-                info = _http_json(RESEARCH_INFO.format(ticker=t))
-            except Exception as exc:
-                item["info_error"] = str(exc)
-            if info and isinstance(info.get("recommendation"), dict):
-                nested = info["recommendation"]
-                rec = {
-                    "recommendation": nested.get("recommendation"),
-                    "recommendationDate": nested.get("recommendationDate"),
-                    "targetPrice": nested.get("targetPrice"),
-                    "asset": (info.get("asset") or {}),
-                }
-            md = (info or {}).get("marketData") or {}
-            if item.get("price") is None and md.get("price") is not None:
-                item["price"] = float(md["price"])
-            cons = md.get("consolidationDate")
-            if cons and valid_trade_date(cons) and not valid_trade_date(item.get("last_trade")):
-                item["last_trade"] = cons
+        try:
+            info = _http_json(RESEARCH_INFO.format(ticker=t))
+        except Exception as exc:
+            item["info_error"] = str(exc)
+
+        asset = (info or {}).get("asset") or {}
+        if isinstance(asset.get("sector"), dict) and asset["sector"].get("name"):
+            item["sector"] = str(asset["sector"]["name"]).strip()
+        if asset.get("company"):
+            item["company"] = asset.get("company")
+
+        if not (rec and rec.get("recommendation")) and info and isinstance(info.get("recommendation"), dict):
+            nested = info["recommendation"]
+            rec = {
+                "recommendation": nested.get("recommendation"),
+                "recommendationDate": nested.get("recommendationDate"),
+                "targetPrice": nested.get("targetPrice"),
+                "asset": asset,
+            }
+        md = (info or {}).get("marketData") or {}
+        if item.get("price") is None and md.get("price") is not None:
+            item["price"] = float(md["price"])
+        cons = md.get("consolidationDate")
+        if cons and valid_trade_date(cons) and not valid_trade_date(item.get("last_trade")):
+            item["last_trade"] = cons
 
         if rec and rec.get("recommendation"):
             item["rec"] = rec.get("recommendation")
             item["rec_lbl"] = rec_label(rec.get("recommendation"))
             item["rec_cls"] = rec_class(rec.get("recommendation"))
             item["date"] = rec.get("recommendationDate")
-            item["company"] = (rec.get("asset") or {}).get("company")
+            if not item.get("company"):
+                item["company"] = (rec.get("asset") or {}).get("company")
             try:
                 item["target"] = float(rec.get("targetPrice"))
             except (TypeError, ValueError):
@@ -271,9 +309,26 @@ def fetch_research(tickers: list[str]) -> dict[str, dict]:
             except Exception as exc:
                 item["summary_error"] = str(exc)
 
-        # Se a API falhar pontualmente, preserva PA/rec/bullets do snapshot anterior.
+        if not item.get("sector"):
+            item["sector"] = SECTOR_FALLBACK.get(t, "")
+        if not item.get("company"):
+            item["company"] = COMPANY_FALLBACK.get(t, t)
+
+        # Se a API falhar pontualmente, preserva PA/rec/bullets/setor do snapshot anterior.
         old = prev.get(t) or {}
-        for key in ("rec", "rec_lbl", "rec_cls", "date", "company", "target", "bullets", "summary_date", "last_trade", "price"):
+        for key in (
+            "rec",
+            "rec_lbl",
+            "rec_cls",
+            "date",
+            "company",
+            "sector",
+            "target",
+            "bullets",
+            "summary_date",
+            "last_trade",
+            "price",
+        ):
             if item.get(key) in (None, "", []) and old.get(key) not in (None, "", []):
                 item[key] = old[key]
         if not valid_trade_date(item.get("last_trade")):
@@ -294,7 +349,8 @@ def fetch_research(tickers: list[str]) -> dict[str, dict]:
     RESEARCH_SNAP.write_text(json.dumps(merged, ensure_ascii=False, indent=2), encoding="utf-8")
     n_ok = sum(1 for v in out.values() if v.get("target"))
     n_bullets = sum(1 for v in out.values() if v.get("bullets"))
-    print("research", n_ok, "/", len(uniq), "bullets", n_bullets)
+    n_sector = sum(1 for v in out.values() if v.get("sector"))
+    print("research", n_ok, "/", len(uniq), "bullets", n_bullets, "sector", n_sector)
     return out
 
 
@@ -1571,9 +1627,30 @@ SECTION_META = {
 }
 
 
+def _op_list_item(slug: str, cfg: dict) -> str:
+    extra = ""
+    rs = cfg.get("research") or {}
+    if rs.get("rec_lbl"):
+        extra += f'<span class="pill">Research: {rs["rec_lbl"]}</span>'
+    if rs.get("target") is not None:
+        extra += f'<span class="pill">PA: {fmt_brl(rs["target"])}</span>'
+    pills = " ".join(f'<span class="pill">{k}: {v}</span>' for k, v in cfg["pills"]) + extra
+    return f"""
+<li class="op-block">
+  <div class="op-bar" style="background:{cfg['brand']}"></div>
+  <a class="op" href="./ops/{slug}/index.html">
+    <div class="op-top"><span class="op-title">{cfg['h1']} {cfg['ticker']}</span><span class="op-ticker">{cfg['ticker']}</span></div>
+    <p class="op-blurb">{cfg['subtitle']}</p>
+    <div class="op-meta">{pills}</div>
+    <div class="op-cta">Abrir material →</div>
+  </a>
+</li>"""
+
+
 def hub_html(sections: list[tuple[str, list[tuple[str, dict]]]]) -> str:
     cat_cards = []
     sections_html = []
+    companies: dict[str, dict] = {}
 
     for title, items in sections:
         meta = SECTION_META.get(title, {"id": slugify(title), "blurb": title, "color": "#1e4d7b"})
@@ -1596,25 +1673,28 @@ def hub_html(sections: list[tuple[str, list[tuple[str, dict]]]]) -> str:
 
         ops = []
         for slug, cfg in items:
-            extra = ""
+            ops.append(_op_list_item(slug, cfg))
+            t = cfg["ticker"]
             rs = cfg.get("research") or {}
-            if rs.get("rec_lbl"):
-                extra += f'<span class="pill">Research: {rs["rec_lbl"]}</span>'
-            if rs.get("target") is not None:
-                extra += f'<span class="pill">PA: {fmt_brl(rs["target"])}</span>'
-            pills = " ".join(f'<span class="pill">{k}: {v}</span>' for k, v in cfg["pills"]) + extra
-            ops.append(
-                f"""
-<li class="op-block">
-  <div class="op-bar" style="background:{cfg['brand']}"></div>
-  <a class="op" href="./ops/{slug}/index.html">
-    <div class="op-top"><span class="op-title">{cfg['h1']} {cfg['ticker']}</span><span class="op-ticker">{cfg['ticker']}</span></div>
-    <p class="op-blurb">{cfg['subtitle']}</p>
-    <div class="op-meta">{pills}</div>
-    <div class="op-cta">Abrir material →</div>
-  </a>
-</li>"""
+            entry = companies.setdefault(
+                t,
+                {
+                    "ticker": t,
+                    "name": rs.get("company") or COMPANY_FALLBACK.get(t, t),
+                    "brand": cfg["brand"],
+                    "ops_titles": [],
+                    "items": [],
+                    "research": rs,
+                },
             )
+            if title not in entry["ops_titles"]:
+                entry["ops_titles"].append(title)
+            entry["items"].append((slug, cfg, title))
+            if rs:
+                entry["research"] = rs
+                if rs.get("company"):
+                    entry["name"] = rs["company"]
+
         sections_html.append(
             f"""
 <section class="cat-section" id="{sid}" hidden>
@@ -1626,8 +1706,63 @@ def hub_html(sections: list[tuple[str, list[tuple[str, dict]]]]) -> str:
 </section>"""
         )
 
+    # Cards iniciais por empresa + seções agregadas por ticker.
+    spot_cards = []
+    company_sections = []
+    for t, c in companies.items():
+        rs = c["research"] or {}
+        bits = []
+        if rs.get("rec_lbl"):
+            bits.append(rs["rec_lbl"])
+        if rs.get("target") is not None:
+            bits.append(f"PA {fmt_brl(rs['target'])}")
+        if rs.get("upside") is not None:
+            up = rs["upside"]
+            bits.append(("+" if up > 0 else "") + f"{up:.1f}".replace(".", ",") + "%")
+        if not bits:
+            bits.append(" · ".join(c["ops_titles"][:2]))
+        highlight = " · ".join(bits)
+        sector = (rs.get("sector") or SECTOR_FALLBACK.get(t) or "").strip()
+        sector_html = f'<span class="spot-sector">{html_esc(sector)}</span>' if sector else ""
+        ops_lbl = " · ".join(c["ops_titles"])
+        co_id = "co-" + slugify(t)
+        n_ops = len(c["items"])
+        spot_cards.append(
+            f"""
+<button type="button" class="spot" data-target="{co_id}" style="--spot:{c['brand']}">
+  <span class="spot-dot" aria-hidden="true"></span>
+  <span class="spot-body">
+    <span class="spot-name">{html_esc(c['name'])}</span>
+    <span class="spot-ticker">{html_esc(t)}</span>
+    {sector_html}
+    <span class="spot-hi">{html_esc(highlight)}</span>
+    <span class="spot-ops">{html_esc(ops_lbl)}</span>
+  </span>
+</button>"""
+        )
+        co_ops = "".join(_op_list_item(slug, cfg) for slug, cfg, _title in c["items"])
+        company_sections.append(
+            f"""
+<section class="cat-section" id="{co_id}" hidden>
+  <div class="cat-section-head">
+    <h2>{html_esc(c['name'])} · {html_esc(t)}{f' · {html_esc(sector)}' if sector else ''} · {n_ops} operaç{'ão' if n_ops == 1 else 'ões'}</h2>
+    <button type="button" class="cat-back" data-back>← Voltar aos cards</button>
+  </div>
+  <ul class="ops">{co_ops}</ul>
+</section>"""
+        )
+
+    spotlights = f"""
+<section class="spotlights" id="spotlights" aria-label="Empresas e destaques">
+  <div class="spot-head">
+    <h2>Empresas com operação</h2>
+    <p>Toque para ver todas as operações da empresa.</p>
+  </div>
+  <div class="spot-grid">{''.join(spot_cards)}</div>
+</section>"""
+
     cats = "\n".join(cat_cards)
-    body = "\n".join(sections_html)
+    body = "\n".join(company_sections + sections_html)
     return f"""<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -1643,7 +1778,7 @@ body{{font-family:Segoe UI,-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans
 .logo-btg{{display:inline-block;font-weight:700;font-size:12px;letter-spacing:.1em;border:1px solid rgba(255,255,255,.35);padding:7px 12px;border-radius:2px;margin-bottom:22px}}
 .hero-row{{display:flex;justify-content:space-between;align-items:flex-end;gap:24px}}
 h1{{font-size:clamp(28px,4.5vw,40px);font-weight:700;letter-spacing:-.02em;line-height:1.15}}
-.lede{{margin-top:12px;font-size:15px;color:rgba(255,255,255,.82);max-width:40em}}
+.lede{{margin-top:12px;font-size:15px;color:rgba(255,255,255,.82);max-width:42em}}
 .lede-strong{{display:inline;font-size:18px;font-weight:700;color:#fff}}
 .badge{{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border:1px solid rgba(255,255,255,.35);padding:8px 12px;border-radius:2px;white-space:nowrap}}
 .page{{max-width:960px;margin:0 auto;padding:28px 24px 56px}}
@@ -1656,6 +1791,23 @@ h1{{font-size:clamp(28px,4.5vw,40px);font-weight:700;letter-spacing:-.02em;line-
 .pdf-box-cta:hover{{background:#15569a;text-decoration:none}}
 .pdf-box-cta span{{font-size:16px;line-height:1}}
 @media (max-width:640px){{.pdf-box{{padding:16px}}.pdf-box-cta{{width:100%;justify-content:center}}}}
+.spotlights{{margin-bottom:28px}}
+.spot-head{{margin-bottom:14px}}
+.spot-head h2{{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--btg-blue);margin-bottom:4px}}
+.spot-head p{{font-size:14px;color:var(--muted)}}
+.spot-grid{{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}}
+.spot{{appearance:none;border:1px solid var(--line);background:var(--card);border-radius:6px;padding:12px 14px;text-align:left;cursor:pointer;display:flex;gap:10px;align-items:flex-start;transition:transform .12s ease,box-shadow .12s ease,border-color .12s}}
+.spot:hover,.spot:focus-visible{{transform:translateY(-1px);box-shadow:0 6px 16px rgba(11,31,58,.07);border-color:color-mix(in srgb,var(--spot) 45%,var(--line));outline:none}}
+.spot-dot{{width:8px;height:8px;border-radius:50%;background:var(--spot);margin-top:5px;flex-shrink:0}}
+.spot-body{{display:flex;flex-direction:column;gap:2px;min-width:0}}
+.spot-name{{font-size:14px;font-weight:700;color:var(--btg);line-height:1.25}}
+.spot-ticker{{font-size:11px;font-weight:700;letter-spacing:.04em;color:var(--spot)}}
+.spot-sector{{font-size:11px;color:var(--muted);line-height:1.3;margin-top:2px}}
+.spot-hi{{font-size:12px;color:var(--ink);margin-top:4px;line-height:1.35}}
+.spot-ops{{font-size:11px;color:var(--muted);line-height:1.3}}
+.products-head{{margin:8px 0 14px}}
+.products-head h2{{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--btg-blue);margin-bottom:4px}}
+.products-head p{{font-size:14px;color:var(--muted)}}
 .cat-grid{{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-bottom:8px}}
 .cat-card{{appearance:none;border:1px solid var(--line);background:var(--card);border-radius:6px;overflow:hidden;text-align:left;cursor:pointer;padding:0;display:flex;flex-direction:column;transition:transform .12s ease,box-shadow .12s ease,border-color .12s}}
 .cat-card:hover,.cat-card:focus-visible{{transform:translateY(-2px);box-shadow:0 8px 20px rgba(11,31,58,.08);border-color:#b8c6d6;outline:none}}
@@ -1684,7 +1836,8 @@ h1{{font-size:clamp(28px,4.5vw,40px);font-weight:700;letter-spacing:-.02em;line-
 .op-cta{{margin-top:12px;font-size:12px;font-weight:700;color:var(--link)}}
 .footer{{margin-top:32px;padding-top:16px;border-top:1px solid var(--line);font-size:11px;color:var(--muted);text-align:center;line-height:1.55}}
 .footer strong{{display:block;margin-top:10px;color:var(--btg)}}
-@media (max-width:720px){{.cat-grid{{grid-template-columns:1fr}}}}
+@media (max-width:900px){{.spot-grid{{grid-template-columns:repeat(3,minmax(0,1fr))}}}}
+@media (max-width:720px){{.cat-grid{{grid-template-columns:1fr}}.spot-grid{{grid-template-columns:repeat(2,minmax(0,1fr))}}}}
 @media (max-width:640px){{.hero{{padding:28px 16px 32px}}.page{{padding:20px 16px 48px}}.hero-row{{flex-direction:column;align-items:flex-start}}.cat-section-head{{flex-direction:column;align-items:flex-start}}}}
 </style>
 </head>
@@ -1695,7 +1848,7 @@ h1{{font-size:clamp(28px,4.5vw,40px);font-weight:700;letter-spacing:-.02em;line-
     <div class="hero-row">
       <div>
         <h1>Prateleira Tática</h1>
-        <p class="lede"><span class="lede-strong">Distribuição Renda Variável</span> · escolha um card para ver as operações</p>
+        <p class="lede"><span class="lede-strong">Distribuição Renda Variável</span> · empresas abaixo; depois escolha o tipo de estrutura</p>
       </div>
       <div class="badge">Uso interno</div>
     </div>
@@ -1710,35 +1863,47 @@ h1{{font-size:clamp(28px,4.5vw,40px);font-weight:700;letter-spacing:-.02em;line-
     </div>
     <a class="pdf-box-cta" href="./{PDF_NAME}" target="_blank" rel="noopener noreferrer">Abrir PDF ↗</a>
   </div>
-  <div class="cat-grid" id="catGrid">{cats}</div>
+  <div id="homeBlock">
+    {spotlights}
+    <div class="products-head">
+      <h2>Tipos de estrutura</h2>
+      <p>Ou escolha pelo produto.</p>
+    </div>
+    <div class="cat-grid" id="catGrid">{cats}</div>
+  </div>
   {body}
   <p class="footer">Material ilustrativo para uso interno. Não constitui oferta, recomendação ou garantia de rentabilidade.
   <strong>MATERIAL DE USO INTERNO, NÃO ENVIAR AOS CLIENTES</strong></p>
 </main>
 <script>
 (function(){{
-  var grid=document.getElementById('catGrid');
+  var home=document.getElementById('homeBlock');
   var cards=[].slice.call(document.querySelectorAll('.cat-card'));
+  var spots=[].slice.call(document.querySelectorAll('.spot'));
   var sections=[].slice.call(document.querySelectorAll('.cat-section'));
   function show(id){{
     cards.forEach(function(c){{ c.classList.toggle('active', c.getAttribute('data-target')===id); }});
+    spots.forEach(function(s){{ s.classList.toggle('active', s.getAttribute('data-target')===id); }});
     sections.forEach(function(s){{
       var on=s.id===id;
       if(on) s.removeAttribute('hidden'); else s.setAttribute('hidden','');
     }});
     if(id){{
-      grid.style.display='none';
+      home.style.display='none';
       var el=document.getElementById(id);
       if(el) el.scrollIntoView({{behavior:'smooth',block:'start'}});
       history.replaceState(null,'','#'+id);
     }} else {{
-      grid.style.display='';
+      home.style.display='';
       history.replaceState(null,'',location.pathname);
       window.scrollTo({{top:0,behavior:'smooth'}});
     }}
   }}
   cards.forEach(function(c){{
     c.addEventListener('click',function(){{ show(c.getAttribute('data-target')); }});
+  }});
+  spots.forEach(function(s){{
+    s.addEventListener('click',function(){{ show(s.getAttribute('data-target')); }});
   }});
   document.querySelectorAll('[data-back]').forEach(function(b){{
     b.addEventListener('click',function(){{ show(null); }});
