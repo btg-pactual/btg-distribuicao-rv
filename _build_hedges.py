@@ -1250,8 +1250,8 @@ def hub_html(research: dict, prat) -> str:
     spotlights = f"""
 <section class="spotlights" id="spotlights" aria-label="Empresas e destaques">
   <div class="spot-head">
-    <h2>No radar hoje</h2>
-    <p>Empresas com operação no Dia D — toque para abrir a categoria.</p>
+    <h2>Empresas com operação</h2>
+    <p>Toque para abrir a categoria.</p>
   </div>
   <div class="spot-grid">{''.join(spot_cards)}</div>
 </section>"""
@@ -1331,7 +1331,7 @@ def hub_html(research: dict, prat) -> str:
       <div class="hero-row">
         <div>
           <h1>Operações dia D</h1>
-          <p class="lede"><span class="lede-strong">Distribuição Renda Variável</span> · empresas no radar abaixo; depois escolha o tipo de estrutura</p>
+          <p class="lede"><span class="lede-strong">Distribuição Renda Variável</span> · empresas abaixo; depois escolha o tipo de estrutura</p>
         </div>
         <div class="badge">Uso interno</div>
       </div>
