@@ -15,7 +15,6 @@ PTAX_OPS = [
         "prem": 3.0,
         "rebate": 5.0,
         "ko_pct": 110.0,
-        "qty_usd": 500_000,
         "delta": 46.6,
         "alias": None,
     },
@@ -25,7 +24,6 @@ PTAX_OPS = [
         "prem": 3.1,
         "rebate": 5.0,
         "ko_pct": 110.0,
-        "qty_usd": 500_000,
         "delta": 36.9,
         "alias": "ptax-call-up-out-ko",  # link antigo
     },
@@ -55,7 +53,6 @@ def ptax_call_html(cfg: dict, spot_info: dict | None = None) -> str:
     ko_brl = spot * (ko_pct / 100.0)
     fixing = cfg["fixing"]
     delta = cfg.get("delta")
-    qty = cfg.get("qty_usd")
 
     prem_lbl = fmt_br(prem, 1 if abs(prem - round(prem)) > 1e-9 else 0)
     net_lbl = fmt_br(net_ko, 1)
@@ -63,7 +60,6 @@ def ptax_call_html(cfg: dict, spot_info: dict | None = None) -> str:
     spot_lbl = fmt_br(spot, 4)
     ko_brl_lbl = fmt_br(ko_brl, 4)
     delta_lbl = fmt_br(delta, 1) if delta is not None else "—"
-    qty_lbl = f"{qty:,}".replace(",", ".") if qty else "—"
 
     # pontos-chave tabela
     rows = []
@@ -181,7 +177,6 @@ def ptax_call_html(cfg: dict, spot_info: dict | None = None) -> str:
         <div class="pill"><strong>Preço</strong> {prem_lbl}%</div>
         <div class="pill"><strong>Rebate</strong> {fmt_br(rebate, 0)}%</div>
         <div class="pill"><strong>Fixing</strong> {fixing}</div>
-        <div class="pill"><strong>QTY</strong> USD {qty_lbl}</div>
         <div class="pill"><strong>Delta</strong> {delta_lbl}%</div>
       </div>
     </header>
