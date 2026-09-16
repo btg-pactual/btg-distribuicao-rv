@@ -1185,6 +1185,77 @@ def hub_html(research: dict, prat) -> str:
 </section>"""
         )
 
+    # Intro: empresas em destaque (antes dos cards de categoria)
+    name_by_ticker = {cfg["ticker"]: cfg["name"] for cfg in OPS}
+    name_by_ticker.update(
+        {
+            "PTAX": "Dólar (PTAX)",
+            "PACB11": "ETF Inflação",
+            "ITUB4": "Itaú",
+        }
+    )
+    companies: dict[str, dict] = {}
+    for title, sid, color, blurb, items in sections:
+        for it in items:
+            t = it["ticker"]
+            entry = companies.setdefault(
+                t,
+                {
+                    "ticker": t,
+                    "name": name_by_ticker.get(t, t),
+                    "brand": it["brand"],
+                    "section": sid,
+                    "ops": [],
+                    "research": it.get("research") or {},
+                },
+            )
+            if title not in entry["ops"]:
+                entry["ops"].append(title)
+            if it.get("research"):
+                entry["research"] = it["research"]
+
+    spot_cards = []
+    for t, c in companies.items():
+        rs = c["research"] or {}
+        bits = []
+        if rs.get("rec_lbl"):
+            bits.append(rs["rec_lbl"])
+        if rs.get("target") is not None:
+            bits.append(f"PA {prat.fmt_brl(rs['target'])}")
+        if rs.get("upside") is not None:
+            up = rs["upside"]
+            bits.append(("+" if up > 0 else "") + fmt_br(up, 1) + "%")
+        if not bits:
+            # fallback estrutural curto
+            if t == "PTAX":
+                bits.append("Call KO · fixing 26/10")
+            elif t == "PACB11":
+                bits.append("Put ATM · hedge duration")
+            else:
+                bits.append(" · ".join(c["ops"][:2]))
+        highlight = " · ".join(bits)
+        ops_lbl = " · ".join(c["ops"])
+        spot_cards.append(
+            f"""
+<button type="button" class="spot" data-target="{c['section']}" style="--spot:{c['brand']}">
+  <span class="spot-dot" aria-hidden="true"></span>
+  <span class="spot-body">
+    <span class="spot-name">{c['name']}</span>
+    <span class="spot-ticker">{c['ticker']}</span>
+    <span class="spot-hi">{highlight}</span>
+    <span class="spot-ops">{ops_lbl}</span>
+  </span>
+</button>"""
+        )
+    spotlights = f"""
+<section class="spotlights" id="spotlights" aria-label="Empresas e destaques">
+  <div class="spot-head">
+    <h2>No radar hoje</h2>
+    <p>Empresas com operação no Dia D — toque para abrir a categoria.</p>
+  </div>
+  <div class="spot-grid">{''.join(spot_cards)}</div>
+</section>"""
+
     return f"""<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -1203,10 +1274,23 @@ def hub_html(research: dict, prat) -> str:
     .logo-btg {{ display: inline-block; font-weight: 700; font-size: 12px; letter-spacing: 0.1em; border: 1px solid rgba(255,255,255,0.35); padding: 7px 12px; border-radius: 2px; margin-bottom: 22px; }}
     .hero-row {{ display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; }}
     h1 {{ font-size: clamp(28px, 4.5vw, 40px); font-weight: 700; letter-spacing: -0.02em; line-height: 1.15; }}
-    .lede {{ margin-top: 12px; font-size: 15px; color: rgba(255,255,255,.82); max-width: 40em; }}
+    .lede {{ margin-top: 12px; font-size: 15px; color: rgba(255,255,255,.82); max-width: 42em; }}
     .lede-strong {{ display: inline; font-size: 18px; font-weight: 700; color: #fff; }}
     .badge {{ font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; border: 1px solid rgba(255,255,255,0.35); padding: 8px 12px; border-radius: 2px; white-space: nowrap; }}
     .page {{ max-width: 960px; margin: 0 auto; padding: 28px 24px 56px; }}
+    .spotlights {{ margin-bottom: 28px; }}
+    .spot-head {{ margin-bottom: 14px; }}
+    .spot-head h2 {{ font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--btg-blue); margin-bottom: 4px; }}
+    .spot-head p {{ font-size: 14px; color: var(--muted); }}
+    .spot-grid {{ display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }}
+    .spot {{ appearance: none; border: 1px solid var(--line); background: var(--card); border-radius: 6px; padding: 12px 14px; text-align: left; cursor: pointer; display: flex; gap: 10px; align-items: flex-start; transition: transform .12s ease, box-shadow .12s ease, border-color .12s; }}
+    .spot:hover, .spot:focus-visible {{ transform: translateY(-1px); box-shadow: 0 6px 16px rgba(11,31,58,.07); border-color: color-mix(in srgb, var(--spot) 45%, var(--line)); outline: none; }}
+    .spot-dot {{ width: 8px; height: 8px; border-radius: 50%; background: var(--spot); margin-top: 5px; flex-shrink: 0; }}
+    .spot-body {{ display: flex; flex-direction: column; gap: 2px; min-width: 0; }}
+    .spot-name {{ font-size: 14px; font-weight: 700; color: var(--btg); line-height: 1.25; }}
+    .spot-ticker {{ font-size: 11px; font-weight: 700; letter-spacing: .04em; color: var(--spot); }}
+    .spot-hi {{ font-size: 12px; color: var(--ink); margin-top: 4px; line-height: 1.35; }}
+    .spot-ops {{ font-size: 11px; color: var(--muted); line-height: 1.3; }}
     .cat-grid {{ display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-bottom: 8px; }}
     .cat-card {{ appearance: none; border: 1px solid var(--line); background: var(--card); border-radius: 6px; overflow: hidden; text-align: left; cursor: pointer; padding: 0; display: flex; flex-direction: column; transition: transform .12s ease, box-shadow .12s ease, border-color .12s; }}
     .cat-card:hover, .cat-card:focus-visible {{ transform: translateY(-2px); box-shadow: 0 8px 20px rgba(11,31,58,.08); border-color: #b8c6d6; outline: none; }}
@@ -1235,7 +1319,8 @@ def hub_html(research: dict, prat) -> str:
     .op-cta {{ margin-top: 12px; font-size: 12px; font-weight: 700; color: var(--link); }}
     .footer {{ margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--line); font-size: 11px; color: var(--muted); text-align: center; line-height: 1.55; }}
     .footer strong {{ display: block; margin-top: 10px; color: var(--btg); }}
-    @media (max-width: 720px) {{ .cat-grid {{ grid-template-columns: 1fr; }} }}
+    @media (max-width: 900px) {{ .spot-grid {{ grid-template-columns: repeat(3, minmax(0, 1fr)); }} }}
+    @media (max-width: 720px) {{ .cat-grid {{ grid-template-columns: 1fr; }} .spot-grid {{ grid-template-columns: repeat(2, minmax(0, 1fr)); }} }}
     @media (max-width: 640px) {{ .hero {{ padding: 28px 16px 32px; }} .page {{ padding: 20px 16px 48px; }} .hero-row {{ flex-direction: column; align-items: flex-start; }} .cat-section-head {{ flex-direction: column; align-items: flex-start; }} }}
   </style>
 </head>
@@ -1246,14 +1331,17 @@ def hub_html(research: dict, prat) -> str:
       <div class="hero-row">
         <div>
           <h1>Operações dia D</h1>
-          <p class="lede"><span class="lede-strong">Distribuição Renda Variável</span> · escolha um card para ver as operações</p>
+          <p class="lede"><span class="lede-strong">Distribuição Renda Variável</span> · empresas no radar abaixo; depois escolha o tipo de estrutura</p>
         </div>
         <div class="badge">Uso interno</div>
       </div>
     </div>
   </header>
   <main class="page">
-    <div class="cat-grid" id="catGrid">{''.join(cat_cards)}</div>
+    <div id="homeBlock">
+      {spotlights}
+      <div class="cat-grid" id="catGrid">{''.join(cat_cards)}</div>
+    </div>
     {''.join(sections_html)}
     <p class="footer">
       Material ilustrativo para uso interno. Não constitui oferta, recomendação ou garantia de rentabilidade.
@@ -1262,8 +1350,9 @@ def hub_html(research: dict, prat) -> str:
   </main>
 <script>
 (function(){{
-  var grid=document.getElementById('catGrid');
+  var home=document.getElementById('homeBlock');
   var cards=[].slice.call(document.querySelectorAll('.cat-card'));
+  var spots=[].slice.call(document.querySelectorAll('.spot'));
   var sections=[].slice.call(document.querySelectorAll('.cat-section'));
   function show(id){{
     cards.forEach(function(c){{ c.classList.toggle('active', c.getAttribute('data-target')===id); }});
@@ -1272,18 +1361,21 @@ def hub_html(research: dict, prat) -> str:
       if(on) s.removeAttribute('hidden'); else s.setAttribute('hidden','');
     }});
     if(id){{
-      grid.style.display='none';
+      home.style.display='none';
       var el=document.getElementById(id);
       if(el) el.scrollIntoView({{behavior:'smooth',block:'start'}});
       history.replaceState(null,'','#'+id);
     }} else {{
-      grid.style.display='';
+      home.style.display='';
       history.replaceState(null,'',location.pathname);
       window.scrollTo({{top:0,behavior:'smooth'}});
     }}
   }}
   cards.forEach(function(c){{
     c.addEventListener('click',function(){{ show(c.getAttribute('data-target')); }});
+  }});
+  spots.forEach(function(s){{
+    s.addEventListener('click',function(){{ show(s.getAttribute('data-target')); }});
   }});
   document.querySelectorAll('[data-back]').forEach(function(b){{
     b.addEventListener('click',function(){{ show(null); }});
@@ -1295,6 +1387,8 @@ def hub_html(research: dict, prat) -> str:
 </body>
 </html>
 """
+
+    # unreachable — kept old return replaced above
 
 
 
