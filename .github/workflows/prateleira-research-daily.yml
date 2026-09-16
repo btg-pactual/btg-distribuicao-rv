@@ -35,7 +35,7 @@ jobs:
       - name: Rebuild Prateleira semanal (spot + alvo)
         run: python prateleira/_build.py
 
-      - name: Rebuild Operações dia D (spot + alvo)
+      - name: Rebuild Operações dia D (spot + alvo + PTAX Bacen)
         run: python _build_hedges.py
 
       - name: Commit se houver mudança
@@ -43,11 +43,12 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add prateleira/index.html prateleira/ops prateleira/research_targets.json \
-                  ops/smart-hedge-* ops/twin-coupon-itub4 prateleira-tatica/index.html
+                  ops/smart-hedge-* ops/twin-coupon-itub4 ops/ptax-* ops/ptax_spot.json \
+                  prateleira-tatica/index.html
           if git diff --staged --quiet; then
-            echo "sem mudança de research/spot"
+            echo "sem mudança de research/spot/ptax"
           else
-            git commit -m "Atualiza spot e preço-alvo (prateleira semanal + dia D)."
+            git commit -m "Atualiza spot, preço-alvo e PTAX Bacen (prateleira + dia D)."
             git push
           fi
 

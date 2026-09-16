@@ -1,0 +1,457 @@
+# -*- coding: utf-8 -*-
+"""Gera factsheets Call KO PTAX (duas fixing) com spot Bacen."""
+from __future__ import annotations
+
+import json
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent
+SPOT_PATH = ROOT / "ops" / "ptax_spot.json"
+
+PTAX_OPS = [
+    {
+        "slug": "ptax-call-ko-05-10",
+        "fixing": "05/10/2026",
+        "prem": 3.0,
+        "rebate": 5.0,
+        "ko_pct": 110.0,
+        "qty_usd": 500_000,
+        "delta": 46.6,
+        "alias": None,
+    },
+    {
+        "slug": "ptax-call-ko-26-10",
+        "fixing": "26/10/2026",
+        "prem": 3.1,
+        "rebate": 5.0,
+        "ko_pct": 110.0,
+        "qty_usd": 500_000,
+        "delta": 36.9,
+        "alias": "ptax-call-up-out-ko",  # link antigo
+    },
+]
+
+
+def fmt_br(n: float, digits: int = 2) -> str:
+    return f"{n:.{digits}f}".replace(".", ",")
+
+
+def load_spot() -> dict:
+    if SPOT_PATH.exists():
+        return json.loads(SPOT_PATH.read_text(encoding="utf-8"))
+    return {"spot": 5.1527, "date_br": "16/09/2026"}
+
+
+def ptax_call_html(cfg: dict, spot_info: dict | None = None) -> str:
+    spot_info = spot_info or load_spot()
+    spot = float(spot_info["spot"])
+    spot_date = spot_info.get("date_br") or ""
+    prem = float(cfg["prem"])
+    rebate = float(cfg["rebate"])
+    ko_pct = float(cfg["ko_pct"])
+    ko_var = ko_pct - 100.0
+    net_ko = rebate - prem
+    ret_ko = (net_ko / prem) * 100.0 if prem else 0.0
+    ko_brl = spot * (ko_pct / 100.0)
+    fixing = cfg["fixing"]
+    delta = cfg.get("delta")
+    qty = cfg.get("qty_usd")
+
+    prem_lbl = fmt_br(prem, 1 if abs(prem - round(prem)) > 1e-9 else 0)
+    net_lbl = fmt_br(net_ko, 1)
+    ret_lbl = fmt_br(ret_ko, 0)
+    spot_lbl = fmt_br(spot, 4)
+    ko_brl_lbl = fmt_br(ko_brl, 4)
+    delta_lbl = fmt_br(delta, 1) if delta is not None else "—"
+    qty_lbl = f"{qty:,}".replace(",", ".") if qty else "—"
+
+    # pontos-chave tabela
+    rows = []
+    for x in (-10.0, 0.0, 3.0, 5.0, 8.0, 9.5, ko_var, 15.0):
+        brl = spot * (1 + x / 100.0)
+        if x >= ko_var:
+            y = net_ko
+        else:
+            y = max(x, 0.0) - prem
+        rp = (y / prem) * 100.0 if prem else 0.0
+        xs = ("+" if x > 0 else "") + fmt_br(x, 1 if abs(x - round(x)) > 1e-9 else 0) + "%"
+        if abs(x - ko_var) < 1e-9:
+            xs = f"+{fmt_br(ko_var, 0)}% KO"
+        ys = ("+" if y > 0 else "") + fmt_br(y, 1) + "%"
+        rps = ("+" if rp > 0 else "") + fmt_br(rp, 0) + "%"
+        rows.append(
+            f"<tr><td>{xs}</td><td>{fmt_br(brl, 4)}</td>"
+            f"<td><strong>{ys}</strong></td><td><strong>{rps}</strong></td></tr>"
+        )
+
+    thesis_vs = ((5.40 / spot) - 1.0) * 100.0
+
+    return f"""<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <title>Call Up and Out PTAX — fixing {fixing}</title>
+  <style>
+    :root {{
+      --ink:#0b1f3a; --muted:#5c6b7a; --line:#d0d8e2; --bg:#eef2f6; --card:#ffffff;
+      --btg:#0b1f3a; --accent:#1e4d7b; --fx:#0d6e6e; --success:#0f7a4a; --danger:#c0392b; --dash:#8b83a0;
+    }}
+    * {{ box-sizing:border-box; margin:0; padding:0; }}
+    body {{ font-family:Segoe UI,-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif; color:var(--ink); background:var(--bg); min-height:100vh; line-height:1.45; }}
+    .page {{ max-width:1280px; margin:0 auto; padding:28px 24px 48px; }}
+    .back-link {{ margin-bottom:16px; font-size:13px; }}
+    .back-link a {{ color:var(--accent); text-decoration:none; font-weight:600; }}
+    .topbar {{ display:flex; justify-content:space-between; align-items:flex-start; gap:24px; margin-bottom:20px; padding-bottom:20px; border-bottom:1px solid var(--line); }}
+    .logos {{ display:flex; gap:12px; align-items:center; flex-wrap:wrap; margin-bottom:12px; }}
+    .logo-btg {{ font-weight:700; font-size:11px; letter-spacing:.08em; border:1px solid var(--line); padding:6px 10px; border-radius:2px; }}
+    .logo-fx {{ display:inline-flex; align-items:center; gap:8px; font-weight:700; color:var(--fx); }}
+    .logo-fx .dot {{ width:22px; height:22px; border-radius:50%; background:var(--fx); color:#fff; display:grid; place-items:center; font-size:9px; }}
+    h1 {{ font-size:clamp(26px,3.5vw,34px); font-weight:700; letter-spacing:-.02em; }}
+    h1 span {{ color:var(--fx); }}
+    .subtitle {{ margin-top:8px; color:var(--muted); font-size:14px; max-width:40em; }}
+    .meta-pills {{ display:flex; flex-wrap:wrap; gap:8px; max-width:420px; justify-content:flex-end; }}
+    .pill {{ background:#fff; border:1px solid var(--line); border-radius:2px; padding:6px 10px; font-size:12px; }}
+    .pill strong {{ display:block; font-size:10px; letter-spacing:.04em; text-transform:uppercase; color:var(--muted); }}
+    .hero-msg {{ background:linear-gradient(135deg,#0b1f3a 0%,#0d6e6e 100%); color:#fff; border-radius:12px; padding:16px 20px; margin-bottom:18px; font-weight:600; }}
+    .highlights {{ display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:22px; }}
+    .hi {{ background:var(--card); border:1px solid var(--line); border-radius:12px; padding:14px 16px; border-top:3px solid var(--fx); }}
+    .hi h3 {{ font-size:11px; text-transform:uppercase; letter-spacing:.06em; color:var(--fx); margin-bottom:6px; }}
+    .hi p {{ font-size:15px; font-weight:700; }}
+    .hi span {{ display:block; font-size:12px; font-weight:500; color:var(--muted); margin-top:4px; }}
+    .main {{ display:grid; grid-template-columns:280px 1fr 280px; gap:16px; }}
+    .panel {{ background:var(--card); border:1px solid var(--line); border-radius:12px; padding:18px; }}
+    .panel h2 {{ font-size:12px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--fx); margin-bottom:12px; }}
+    .struct-table {{ width:100%; border-collapse:collapse; font-size:13px; }}
+    .struct-table th,.struct-table td {{ border-bottom:1px solid var(--line); padding:8px 6px; text-align:left; }}
+    .tag {{ display:inline-block; font-size:10px; font-weight:700; padding:2px 6px; border-radius:3px; margin-right:4px; }}
+    .tag.b {{ background:#e7f6ef; color:var(--success); }}
+    .legend-note {{ font-size:12px; color:var(--muted); margin-top:10px; line-height:1.45; }}
+    .thesis ul {{ margin:0; padding-left:18px; font-size:13px; color:var(--ink); }}
+    .thesis li {{ margin-bottom:6px; }}
+    .chart-caption {{ font-size:12px; color:var(--muted); margin-top:4px; }}
+    .chart-legend {{ display:flex; gap:12px; font-size:12px; color:var(--muted); }}
+    .swatch {{ display:inline-block; width:16px; height:3px; background:#1e4d7b; margin-right:4px; vertical-align:middle; }}
+    .swatch.asset {{ background:var(--dash); }}
+    .chart-box {{ position:relative; margin-top:10px; }}
+    .chart-overlay {{ position:absolute; left:48px; top:24px; width:504px; height:352px; cursor:crosshair; }}
+    .tooltip {{ position:absolute; pointer-events:none; background:var(--ink); color:#fff; padding:10px 12px; border-radius:8px; font-size:12px; min-width:170px; opacity:0; z-index:5; transform:translate(-50%,-120%); }}
+    .zones {{ display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:14px; }}
+    .zone {{ background:var(--bg); border:1px solid var(--line); border-radius:8px; padding:10px 12px; font-size:12px; }}
+    .zone strong {{ display:block; color:var(--fx); margin-bottom:4px; }}
+    .sim-label {{ display:flex; justify-content:space-between; font-size:13px; font-weight:600; margin-bottom:6px; }}
+    input[type=range] {{ width:100%; accent-color:var(--fx); margin-bottom:12px; }}
+    .sim-cards {{ display:grid; grid-template-columns:1fr 1fr; gap:8px; }}
+    .sim-card {{ background:var(--bg); border:1px solid var(--line); border-radius:8px; padding:10px; }}
+    .sim-card .lbl {{ font-size:10px; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); }}
+    .sim-card .val {{ font-size:15px; font-weight:700; margin-top:4px; }}
+    .regime {{ margin-top:12px; font-size:12px; background:#fff7ef; border:1px solid #f0d4b8; border-radius:8px; padding:10px 12px; }}
+    .speech-box {{ margin-top:22px; background:var(--card); border:1px solid var(--line); border-radius:14px; padding:22px 24px; border-top:3px solid var(--fx); }}
+    .speech-box h2 {{ font-size:12px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--fx); margin-bottom:12px; }}
+    .speech-label {{ font-size:11px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--fx); margin:12px 0 6px; }}
+    .footer {{ margin-top:24px; font-size:12px; color:var(--muted); line-height:1.5; }}
+    .footer-alert {{ margin-top:14px; font-size:14px; font-weight:700; color:var(--danger); text-align:center; line-height:1.5; }}
+    .mobile-sim {{ display:none; margin-top:12px; }}
+    .chart-touch-hint {{ display:none; font-size:12px; color:var(--muted); margin-top:8px; }}
+    @media (max-width:1100px) {{ .main {{ grid-template-columns:1fr; }} .highlights {{ grid-template-columns:1fr 1fr; }} .meta-pills {{ justify-content:flex-start; }} }}
+    @media (max-width:720px) {{ .highlights {{ grid-template-columns:1fr; }} .mobile-sim,.chart-touch-hint {{ display:block; }} .panel-sim .sim-label:first-of-type, .panel-sim > input[type=range] {{ display:none; }} }}
+  </style>
+</head>
+<body>
+  <div class="page">
+    <p class="back-link"><a href="../../prateleira-tatica/index.html">← Operações dia D</a></p>
+    <header class="topbar">
+      <div>
+        <div class="logos">
+          <span class="logo-btg">BTG PACTUAL</span>
+          <span class="logo-fx"><span class="dot">FX</span> PTAX</span>
+        </div>
+        <h1>Call Up and Out <span>PTAX</span></h1>
+        <p class="subtitle">
+          Call up-and-out PTAX, observação discreta diária. Preço {prem_lbl}%, KO em {fmt_br(ko_pct, 0)}%, rebate {fmt_br(rebate, 0)}%.
+          Fixing {fixing}.
+        </p>
+      </div>
+      <div class="meta-pills">
+        <div class="pill"><strong>Ativo</strong> PTAX (USD/BRL)</div>
+        <div class="pill"><strong>PTAX ref.</strong> R$ {spot_lbl}</div>
+        <div class="pill"><strong>Strike</strong> 100%</div>
+        <div class="pill"><strong>Barreira KO</strong> {fmt_br(ko_pct, 0)}%</div>
+        <div class="pill"><strong>Preço</strong> {prem_lbl}%</div>
+        <div class="pill"><strong>Rebate</strong> {fmt_br(rebate, 0)}%</div>
+        <div class="pill"><strong>Fixing</strong> {fixing}</div>
+        <div class="pill"><strong>QTY</strong> USD {qty_lbl}</div>
+        <div class="pill"><strong>Delta</strong> {delta_lbl}%</div>
+      </div>
+    </header>
+
+    <div class="hero-msg">
+      Participa da alta do dólar até a barreira; se o KO dispara, rebate {fmt_br(rebate, 0)}% − preço {prem_lbl}% = líquido +{net_lbl}%.
+    </div>
+
+    <section class="highlights">
+      <div class="hi"><h3>Sem KO</h3><p>Call ATM<span>Ganho ≈ alta − {prem_lbl}% (até &lt; +{fmt_br(ko_var, 0)}%)</span></p></div>
+      <div class="hi"><h3>No KO (≥{fmt_br(ko_pct, 0)}%)</h3><p>Rebate {fmt_br(rebate, 0)}%<span>Líquido +{net_lbl}% · +{ret_lbl}% s/ preço</span></p></div>
+      <div class="hi"><h3>Risco</h3><p>Perda limitada<span>Ao preço de {prem_lbl}%</span></p></div>
+      <div class="hi"><h3>Fixing</h3><p>{fixing}</p></div>
+    </section>
+
+    <div class="main">
+      <aside class="panel">
+        <h2>Estrutura</h2>
+        <table class="struct-table">
+          <thead><tr><th>Perna</th><th>Strike</th><th>Barreira</th></tr></thead>
+          <tbody>
+            <tr><td><span class="tag b">B</span> Call Up&amp;Out</td><td>100%</td><td>{fmt_br(ko_pct, 0)}% KO</td></tr>
+          </tbody>
+        </table>
+        <p class="legend-note">Observação <strong>discreta diária</strong> (PTAX Bacen do dia).</p>
+        <div style="margin-top:16px">
+          <h2>Níveis em R$</h2>
+          <table class="struct-table">
+            <thead><tr><th>Referência</th><th>%</th><th>PTAX (R$)</th></tr></thead>
+            <tbody>
+              <tr><td>Spot / strike</td><td>100%</td><td><strong>{spot_lbl}</strong></td></tr>
+              <tr><td>Barreira KO</td><td>{fmt_br(ko_pct, 0)}%</td><td><strong>{ko_brl_lbl}</strong></td></tr>
+            </tbody>
+          </table>
+          <p class="legend-note">Ref. = PTAX venda Bacen {spot_date} (atualização diária). Fixing oficial no DIE.</p>
+        </div>
+        <div class="thesis" style="margin-top:16px">
+          <h2>Projeção câmbio BTG</h2>
+          <ul>
+            <li>Target BTG dez/2026: <strong>R$ 5,40</strong></li>
+            <li>Vs ref {spot_lbl} ≈ {fmt_br(thesis_vs, 1)}%; KO em {ko_brl_lbl}</li>
+          </ul>
+        </div>
+      </aside>
+
+      <section class="panel chart-panel">
+        <div class="chart-head" style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap">
+          <div>
+            <h2>Payoff da call KO</h2>
+            <p class="chart-caption">Resultado líquido no vencimento vs. variação da PTAX</p>
+          </div>
+          <div class="chart-legend">
+            <span><i class="swatch"></i> Call KO</span>
+            <span><i class="swatch asset"></i> PTAX</span>
+          </div>
+        </div>
+        <div class="chart-box" id="chartBox">
+          <div class="tooltip" id="tooltip"></div>
+          <svg id="payoffSvg" viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Payoff Call KO PTAX">
+            <rect x="48" y="24" width="504" height="352" fill="#fafcfd" />
+            <g id="gridLines" stroke="#e4ebf2" stroke-width="1"></g>
+            <line id="axisZeroX" x1="300" y1="24" x2="300" y2="376" stroke="#c5d0dc" stroke-width="1.25"/>
+            <line id="axisZeroY" x1="48" y1="220" x2="552" y2="220" stroke="#c5d0dc" stroke-width="1.25"/>
+            <g id="yLabels" fill="#8b83a0" font-size="11" font-family="Segoe UI, Arial, sans-serif" text-anchor="end"></g>
+            <g id="xLabels" fill="#8b83a0" font-size="11" font-family="Segoe UI, Arial, sans-serif" text-anchor="middle"></g>
+            <text x="300" y="16" fill="#5c6b7a" font-size="11" font-family="Segoe UI, Arial, sans-serif" text-anchor="middle">Variação da PTAX no vencimento (%)</text>
+            <polyline id="assetPath" fill="none" stroke="#8b83a0" stroke-width="1.75" stroke-dasharray="6 5" points="" />
+            <path id="structPath" d="" fill="none" stroke="#1e4d7b" stroke-width="2.75" stroke-linejoin="round" stroke-linecap="round" />
+            <line id="koLine" x1="0" y1="24" x2="0" y2="376" stroke="#c0392b" stroke-width="1.25" stroke-dasharray="4 4" opacity="0.85"/>
+            <circle id="koDot" cx="0" cy="0" r="5" fill="#c0392b"/>
+            <text id="koLabel" x="0" y="0" fill="#c0392b" font-size="11" font-weight="600" font-family="Segoe UI, Arial, sans-serif">KO {fmt_br(ko_pct, 0)}% · líquido +{net_lbl}%</text>
+            <line id="hoverLine" x1="0" y1="24" x2="0" y2="376" stroke="rgba(13,110,110,0.35)" stroke-width="1.25" stroke-dasharray="4 4" visibility="hidden"/>
+            <circle id="hoverStruct" r="5.5" fill="#1e4d7b" visibility="hidden"/>
+            <circle id="hoverAsset" r="4" fill="#8b83a0" visibility="hidden"/>
+          </svg>
+          <div class="chart-overlay" id="chartOverlay"></div>
+        </div>
+        <p class="chart-touch-hint">Toque e arraste no gráfico · ou use o controle abaixo</p>
+        <div class="mobile-sim">
+          <div class="sim-label"><span>Variação da PTAX</span><output id="spotOutMobile">+5%</output></div>
+          <input type="range" id="spotSliderMobile" min="-20" max="30" step="0.5" value="5" />
+        </div>
+        <div class="zones">
+          <div class="zone"><strong>≤ 0%</strong><p>Call OTM: resultado −{prem_lbl}%</p></div>
+          <div class="zone"><strong>0% → &lt; +{fmt_br(ko_var, 0)}%</strong><p>Call ITM sem KO: alta − {prem_lbl}%</p></div>
+          <div class="zone"><strong>≥ +{fmt_br(ko_var, 0)}% (KO)</strong><p>Líquido +{net_lbl}% · +{ret_lbl}% s/ preço</p></div>
+          <div class="zone"><strong>Observação</strong><p>Discreta diária até {fixing}</p></div>
+        </div>
+      </section>
+
+      <aside class="panel panel-sim">
+        <h2>Simulador</h2>
+        <div class="sim-label"><span>Variação da PTAX</span><output id="spotOut">+5%</output></div>
+        <input type="range" id="spotSlider" min="-20" max="30" step="0.5" value="5" />
+        <div class="sim-cards">
+          <div class="sim-card"><div class="lbl">Variação PTAX</div><div class="val" id="assetVal">+5,0%</div></div>
+          <div class="sim-card"><div class="lbl">PTAX em R$</div><div class="val" id="spotBrlVal">{fmt_br(spot * 1.05, 4)}</div></div>
+          <div class="sim-card"><div class="lbl">Resultado (nocional)</div><div class="val" id="structVal">+2,0%</div></div>
+          <div class="sim-card"><div class="lbl">Retorno / preço ({prem_lbl}%)</div><div class="val" id="premVal">+67%</div></div>
+        </div>
+        <div class="regime" id="regimeText">Entre 0% e +{fmt_br(ko_var, 0)}%: call ITM sem KO.</div>
+        <div style="margin-top:16px">
+          <h2>Pontos-chave</h2>
+          <table class="struct-table">
+            <thead><tr><th>PTAX %</th><th>PTAX R$</th><th>Resultado</th><th>Ret. preço</th></tr></thead>
+            <tbody>{''.join(rows)}</tbody>
+          </table>
+        </div>
+      </aside>
+    </div>
+
+    <section class="speech-box">
+      <h2>Speech comercial</h2>
+      <p class="speech-label">Como encaixa</p>
+      <p>
+        Compra Call Up&amp;Out PTAX: ganha se a PTAX sobe até o fixing ({fixing}), enquanto não tocar {fmt_br(ko_pct, 0)}%
+        (R$ {ko_brl_lbl}). Strike 100% = R$ {spot_lbl}. Custo ~{prem_lbl}%. Se KO, rebate {fmt_br(rebate, 0)}% (líquido +{net_lbl}% sobre o nocional).
+      </p>
+      <p class="speech-label">Fechamento</p>
+      <p>Material de uso interno — condições oficiais no DIE. Spot Bacen atualizado diariamente.</p>
+    </section>
+
+    <p class="footer">
+      Material ilustrativo. Barreira up-and-out com observação discreta diária até {fixing} (KO se nível ≥ {fmt_br(ko_pct, 0)}%).
+      Spot ref. PTAX venda Bacen {spot_date}.
+    </p>
+    <p class="footer-alert">
+      <strong>MATERIAL DE USO INTERNO, NÃO ENVIAR AOS CLIENTES</strong><br />
+      <strong>PARA INFORMAÇÕES OFICIAIS, ACESSAR O DIE DA OPERAÇÃO DISPONIBILIZADO NO ADMIN BTG</strong>
+    </p>
+  </div>
+
+  <script>
+  (function () {{
+    var X_MIN = -20, X_MAX = 30, Y_MIN = -10, Y_MAX = 20;
+    var PAD = {{ l: 48, t: 24, r: 48, b: 24 }};
+    var VW = 600, VH = 400;
+    var PLOT_W = VW - PAD.l - PAD.r, PLOT_H = VH - PAD.t - PAD.b;
+    var PREM = {prem}, KO = {ko_var}, REBATE = {rebate}, SPOT0 = {spot};
+
+    function structureReturn(x) {{
+      if (x >= KO) return REBATE - PREM;
+      return Math.max(x, 0) - PREM;
+    }}
+    function premiumReturn(x) {{ return (structureReturn(x) / PREM) * 100; }}
+    function spotBrl(x) {{ return SPOT0 * (1 + x / 100); }}
+    function fmtBrl(n) {{ return n.toFixed(4).replace(".", ","); }}
+    function fmtPct(n, digits) {{
+      if (digits == null) digits = 1;
+      var sign = n > 0 ? "+" : "";
+      return sign + n.toFixed(digits).replace(".", ",") + "%";
+    }}
+    function regimeFor(x) {{
+      if (x >= KO) return "KO (≥{fmt_br(ko_pct, 0)}%): rebate {fmt_br(rebate, 0)}% − preço {prem_lbl}% = líquido " + fmtPct(structureReturn(x)) + " · " + fmtPct(premiumReturn(x), 0) + " s/ preço.";
+      if (x > 0) return "Entre 0% e +{fmt_br(ko_var, 0)}%: call ITM sem KO — " + fmtPct(structureReturn(x)) + " · " + fmtPct(premiumReturn(x), 0) + " s/ preço.";
+      return "PTAX ≤ 0%: call OTM — −{prem_lbl}% no nocional · −100% sobre o preço.";
+    }}
+    function xToSvg(x) {{ return PAD.l + ((x - X_MIN) / (X_MAX - X_MIN)) * PLOT_W; }}
+    function yToSvg(y) {{
+      var yy = Math.max(Y_MIN, Math.min(Y_MAX, y));
+      return PAD.t + (1 - (yy - Y_MIN) / (Y_MAX - Y_MIN)) * PLOT_H;
+    }}
+    function svgToX(px) {{ return X_MIN + ((px - PAD.l) / PLOT_W) * (X_MAX - X_MIN); }}
+    function buildStructD() {{
+      var d = "", first = true;
+      function add(x, y) {{
+        var cmd = first ? "M" : "L"; first = false;
+        d += cmd + " " + xToSvg(x).toFixed(3) + " " + yToSvg(y).toFixed(3) + " ";
+      }}
+      for (var x = X_MIN; x < KO; x += 0.25) add(x, structureReturn(x));
+      add(KO - 0.001, structureReturn(KO - 0.001));
+      add(KO, structureReturn(KO));
+      for (var x2 = KO; x2 <= X_MAX; x2 += 0.5) add(x2, structureReturn(x2));
+      return d.trim();
+    }}
+    function buildAssetPoints() {{
+      var pts = [];
+      for (var x = X_MIN; x <= X_MAX; x += 1) pts.push(xToSvg(x).toFixed(3) + "," + yToSvg(x).toFixed(3));
+      return pts.join(" ");
+    }}
+    var grid = document.getElementById("gridLines");
+    var yLabels = document.getElementById("yLabels");
+    var xLabels = document.getElementById("xLabels");
+    if (grid && yLabels && xLabels) {{
+      for (var y = -10; y <= 20; y += 5) {{
+        var py = yToSvg(y);
+        grid.innerHTML += '<line x1="48" y1="' + py + '" x2="552" y2="' + py + '"/>';
+        yLabels.innerHTML += '<text x="42" y="' + (py + 3) + '">' + y + "%</text>";
+      }}
+      for (var x = -20; x <= 30; x += 10) {{
+        var px = xToSvg(x);
+        grid.innerHTML += '<line x1="' + px + '" y1="24" x2="' + px + '" y2="376"/>';
+        xLabels.innerHTML += '<text x="' + px + '" y="392">' + x + "%</text>";
+      }}
+    }}
+    document.getElementById("structPath").setAttribute("d", buildStructD());
+    document.getElementById("assetPath").setAttribute("points", buildAssetPoints());
+    var koX = xToSvg(KO);
+    document.getElementById("koLine").setAttribute("x1", koX);
+    document.getElementById("koLine").setAttribute("x2", koX);
+    document.getElementById("koDot").setAttribute("cx", koX);
+    document.getElementById("koDot").setAttribute("cy", yToSvg(structureReturn(KO)));
+    document.getElementById("koLabel").setAttribute("x", koX + 6);
+    document.getElementById("koLabel").setAttribute("y", yToSvg(structureReturn(KO)) - 8);
+
+    var slider = document.getElementById("spotSlider");
+    var sliderMobile = document.getElementById("spotSliderMobile");
+    var tooltip = document.getElementById("tooltip");
+    function showAt(x) {{
+      x = Math.max(X_MIN, Math.min(X_MAX, x));
+      var ys = structureReturn(x), rp = premiumReturn(x), brl = spotBrl(x);
+      var sx = xToSvg(x), sy = yToSvg(ys), ay = yToSvg(x);
+      document.getElementById("hoverLine").setAttribute("x1", sx);
+      document.getElementById("hoverLine").setAttribute("x2", sx);
+      document.getElementById("hoverLine").setAttribute("visibility", "visible");
+      document.getElementById("hoverStruct").setAttribute("cx", sx);
+      document.getElementById("hoverStruct").setAttribute("cy", sy);
+      document.getElementById("hoverStruct").setAttribute("visibility", "visible");
+      document.getElementById("hoverAsset").setAttribute("cx", sx);
+      document.getElementById("hoverAsset").setAttribute("cy", ay);
+      document.getElementById("hoverAsset").setAttribute("visibility", "visible");
+      document.getElementById("assetVal").textContent = fmtPct(x);
+      document.getElementById("spotBrlVal").textContent = fmtBrl(brl);
+      document.getElementById("structVal").textContent = fmtPct(ys);
+      document.getElementById("premVal").textContent = fmtPct(rp, 0);
+      document.getElementById("regimeText").textContent = regimeFor(x);
+      document.getElementById("spotOut").textContent = fmtPct(x, 1);
+      if (document.getElementById("spotOutMobile")) document.getElementById("spotOutMobile").textContent = fmtPct(x, 1);
+      if (slider) slider.value = String(x);
+      if (sliderMobile) sliderMobile.value = String(x);
+      tooltip.style.opacity = "1";
+      tooltip.style.left = sx + "px";
+      tooltip.style.top = Math.min(sy, ay) + "px";
+      tooltip.innerHTML = "<div><strong>PTAX " + fmtPct(x) + "</strong></div><div>R$ " + fmtBrl(brl) + "</div><div>Estrutura " + fmtPct(ys) + "</div>";
+    }}
+    function onSlider(e) {{ showAt(Number(e.target.value)); }}
+    if (slider) slider.addEventListener("input", onSlider);
+    if (sliderMobile) {{ sliderMobile.addEventListener("input", onSlider); sliderMobile.addEventListener("change", onSlider); }}
+    var overlay = document.getElementById("chartOverlay");
+    function fromEvt(ev) {{
+      var rect = overlay.getBoundingClientRect();
+      var clientX = ev.touches ? ev.touches[0].clientX : ev.clientX;
+      return svgToX(((clientX - rect.left) / rect.width) * PLOT_W + PAD.l);
+    }}
+    overlay.addEventListener("mousemove", function (e) {{ showAt(fromEvt(e)); }});
+    overlay.addEventListener("touchstart", function (e) {{ showAt(fromEvt(e)); }}, {{ passive: true }});
+    overlay.addEventListener("touchmove", function (e) {{ showAt(fromEvt(e)); }}, {{ passive: true }});
+    showAt(5);
+  }})();
+  </script>
+</body>
+</html>
+"""
+
+
+def write_all(spot_info: dict | None = None) -> list[str]:
+    spot_info = spot_info or load_spot()
+    written = []
+    for cfg in PTAX_OPS:
+        html = ptax_call_html(cfg, spot_info)
+        paths = [ROOT / "ops" / cfg["slug"] / "index.html"]
+        if cfg.get("alias"):
+            paths.append(ROOT / "ops" / cfg["alias"] / "index.html")
+        for path in paths:
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text(html, encoding="utf-8")
+            written.append(str(path.relative_to(ROOT)))
+            print(f"wrote {path.relative_to(ROOT)} ({path.stat().st_size})")
+    return written
+
+
+if __name__ == "__main__":
+    write_all()

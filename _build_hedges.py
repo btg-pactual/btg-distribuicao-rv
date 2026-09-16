@@ -1077,12 +1077,21 @@ def hub_html(research: dict, prat) -> str:
             "FX e hedge de duration",
             [
                 {
-                    "href": "../ops/ptax-call-up-out-ko/index.html",
-                    "title": "Call Up and Out PTAX",
+                    "href": "../ops/ptax-call-ko-05-10/index.html",
+                    "title": "Call Up and Out PTAX · 05/10",
                     "ticker": "PTAX",
                     "brand": "#0d6e6e",
-                    "blurb": "Call KO 110% · participa da alta até a barreira; no KO líquido +2% (rebate 5% − preço 3%).",
-                    "pills": ["Câmbio", "Fixing 26/10", "Preço 3%", "Rebate 5%"],
+                    "blurb": "Call KO 110% · preço 3,0% · rebate 5% · fixing 05/10/2026 · QTY USD 500.000.",
+                    "pills": ["Câmbio", "Fixing 05/10", "Preço 3,0%", "Rebate 5%"],
+                    "research": {},
+                },
+                {
+                    "href": "../ops/ptax-call-ko-26-10/index.html",
+                    "title": "Call Up and Out PTAX · 26/10",
+                    "ticker": "PTAX",
+                    "brand": "#0d6e6e",
+                    "blurb": "Call KO 110% · preço 3,1% · rebate 5% · fixing 26/10/2026 · QTY USD 500.000.",
+                    "pills": ["Câmbio", "Fixing 26/10", "Preço 3,1%", "Rebate 5%"],
                     "research": {},
                 },
                 {
@@ -1228,7 +1237,7 @@ def hub_html(research: dict, prat) -> str:
         if not bits:
             # fallback estrutural curto
             if t == "PTAX":
-                bits.append("Call KO · fixing 26/10")
+                bits.append("Call KO · fixing 05/10 e 26/10")
             elif t == "PACB11":
                 bits.append("Put ATM · hedge duration")
             else:
@@ -1499,6 +1508,22 @@ if __name__ == "__main__":
         print("research_fail", exc)
         snap = ROOT / "prateleira" / "research_targets.json"
         research = json.loads(snap.read_text(encoding="utf-8")) if snap.exists() else {}
+
+    # PTAX spot Bacen + factsheets (duas fixing)
+    try:
+        import _update_ptax
+        import _build_ptax
+
+        _update_ptax.main()
+        _build_ptax.write_all()
+    except Exception as exc:
+        print("ptax_fail", exc)
+        try:
+            import _build_ptax
+
+            _build_ptax.write_all()
+        except Exception as exc2:
+            print("ptax_build_fail", exc2)
 
     for cfg in OPS:
         cfg = dict(cfg)
