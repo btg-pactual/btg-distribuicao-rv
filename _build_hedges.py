@@ -1364,7 +1364,7 @@ def hub_html(research: dict, prat) -> str:
       <div class="hero-row">
         <div>
           <h1>Operações dia D</h1>
-          <p class="lede"><span class="lede-strong">Distribuição Renda Variável</span> · empresas abaixo; depois escolha o tipo de estrutura</p>
+          <p class="lede"><span class="lede-strong">Distribuição Renda Variável</span></p>
         </div>
         <div class="badge">Uso interno</div>
       </div>

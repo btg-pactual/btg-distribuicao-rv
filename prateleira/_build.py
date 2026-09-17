@@ -1853,7 +1853,7 @@ h1{{font-size:clamp(28px,4.5vw,40px);font-weight:700;letter-spacing:-.02em;line-
     <div class="hero-row">
       <div>
         <h1>Prateleira Tática</h1>
-        <p class="lede"><span class="lede-strong">Distribuição Renda Variável</span> · empresas abaixo; depois escolha o tipo de estrutura</p>
+        <p class="lede"><span class="lede-strong">Distribuição Renda Variável</span></p>
       </div>
       <div class="badge">Uso interno</div>
     </div>
