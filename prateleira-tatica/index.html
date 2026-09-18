@@ -20,6 +20,19 @@
     .lede-strong { display: inline; font-size: 18px; font-weight: 700; color: #fff; }
     .badge { font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; border: 1px solid rgba(255,255,255,0.35); padding: 8px 12px; border-radius: 2px; white-space: nowrap; }
     .page { max-width: 960px; margin: 0 auto; padding: 28px 24px 56px; }
+    .pdf-box { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; text-decoration: none; color: inherit; background: linear-gradient(90deg, #e8f1fb 0%, #ffffff 42%); border: 2px solid #1a66b3; border-radius: 6px; padding: 18px 20px; margin-bottom: 22px; box-shadow: 0 4px 14px rgba(26,102,179,.12); transition: transform .12s ease, box-shadow .12s ease; }
+    .pdf-box:hover, .pdf-box:focus-visible { transform: translateY(-1px); box-shadow: 0 8px 22px rgba(26,102,179,.18); outline: none; }
+    .pdf-box-feature { border-width: 2px; border-color: #0b1f3a; background: linear-gradient(105deg, #0b1f3a 0%, #163a5f 38%, #1a66b3 100%); color: #fff; box-shadow: 0 8px 24px rgba(11,31,58,.28); }
+    .pdf-box-feature .pdf-box-kicker { color: #9ec5ef; }
+    .pdf-box-feature .pdf-box-title { color: #fff; }
+    .pdf-box-feature .pdf-box-meta { color: rgba(255,255,255,.82); }
+    .pdf-box-feature .pdf-box-cta { background: #fff; color: #0b1f3a !important; }
+    .pdf-box-feature:hover .pdf-box-cta, .pdf-box-feature:focus-visible .pdf-box-cta { background: #e8f1fb; }
+    .pdf-box-copy { display: flex; flex-direction: column; gap: 6px; min-width: min(100%, 280px); }
+    .pdf-box-kicker { font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #1a66b3; }
+    .pdf-box-title { font-size: 18px; font-weight: 700; color: var(--btg); line-height: 1.25; }
+    .pdf-box-meta { font-size: 13px; color: var(--muted); }
+    .pdf-box-cta { display: inline-flex; align-items: center; gap: 8px; background: #1a66b3; color: #fff !important; font-size: 14px; font-weight: 700; text-decoration: none; padding: 12px 16px; border-radius: 4px; white-space: nowrap; }
     .spotlights { margin-bottom: 28px; }
     .spot-head { margin-bottom: 14px; }
     .spot-head h2 { font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--btg-blue); margin-bottom: 4px; }
@@ -64,7 +77,7 @@
     .footer-alert strong { font-weight: 700; }
     @media (max-width: 900px) { .spot-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
     @media (max-width: 720px) { .cat-grid { grid-template-columns: 1fr; } .spot-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-    @media (max-width: 640px) { .hero { padding: 28px 16px 32px; } .page { padding: 20px 16px 48px; } .hero-row { flex-direction: column; align-items: flex-start; } .cat-section-head { flex-direction: column; align-items: flex-start; } }
+    @media (max-width: 640px) { .hero { padding: 28px 16px 32px; } .page { padding: 20px 16px 48px; } .hero-row { flex-direction: column; align-items: flex-start; } .cat-section-head { flex-direction: column; align-items: flex-start; } .pdf-box { padding: 16px; } .pdf-box-cta { width: 100%; justify-content: center; } }
   </style>
 </head>
 <body>
@@ -82,6 +95,15 @@
   </header>
   <main class="page">
     <div id="homeBlock">
+      
+  <a class="pdf-box pdf-box-feature" href="./BTG_Teses_Destaque_Set26.pdf" target="_blank" rel="noopener noreferrer" aria-label="Abrir PDF Teses em destaque — setembro 2026">
+    <div class="pdf-box-copy">
+      <span class="pdf-box-kicker">Material em destaque</span>
+      <span class="pdf-box-title">Teses Research · set/2026</span>
+      <span class="pdf-box-meta">Leitura prioritária na entrada do Dia D — abra o PDF completo</span>
+    </div>
+    <span class="pdf-box-cta">Abrir PDF <span aria-hidden="true">↗</span></span>
+  </a>
       
 <section class="spotlights" id="spotlights" aria-label="Empresas e destaques">
   <div class="spot-head">
