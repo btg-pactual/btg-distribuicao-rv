@@ -161,8 +161,13 @@ MARKER_OPEN = "<!-- RANGE_52W -->"
 MARKER_CLOSE = "<!-- /RANGE_52W -->"
 
 
-def range_block_html(ticker: str, spot: float | None = None, currency: str = "R$") -> str:
-    """Bloco HTML abaixo da estrutura — máx/mín 52 semanas vs Dia D."""
+def range_block_html(
+    ticker: str,
+    spot: float | None = None,
+    currency: str = "R$",
+    as_of_phrase: str | None = None,
+) -> str:
+    """Bloco HTML abaixo da estrutura — máx/mín 52 semanas vs spot."""
     data = load().get(ticker.upper())
     if not data:
         return ""
@@ -172,6 +177,7 @@ def range_block_html(ticker: str, spot: float | None = None, currency: str = "R$
     ref = float(spot) if spot is not None else last
     as_of = data.get("as_of_br") or ""
     dig = 4 if ticker.upper() == "PTAX" else 2
+    when = as_of_phrase or (f"até {as_of}" if as_of else "últimos ~12 meses")
 
     def vs(level: float) -> str:
         if not ref:
@@ -191,7 +197,7 @@ def range_block_html(ticker: str, spot: float | None = None, currency: str = "R$
             </tbody>
           </table>
           <p class="legend-note">
-            Máx./mín. dos últimos ~12 meses até o Dia D ({as_of}).
+            Máx./mín. dos últimos ~12 meses ({when}).
             Fonte: {data.get('source') or 'mercado'}.
           </p>
         </div>"""

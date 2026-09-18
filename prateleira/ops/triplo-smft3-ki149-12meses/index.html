@@ -133,7 +133,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
     <h2>Research BTG</h2>
     <a class="research-link" href="https://content.btgpactual.com/research/ativo/SMFT3" target="_blank" rel="noopener">Abrir SMFT3 no Research <span class="arrow" aria-hidden="true">→</span></a>
   </div>
-  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 16,93</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 30,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+77,20%</div></div></div><p class="research-note">Spot do fechamento anterior (17/09/2026) · preço-alvo atualizado em 17/09/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
+  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 16,89</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 30,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+77,62%</div></div></div><p class="research-note">Spot do fechamento anterior (18/09/2026) · preço-alvo atualizado em 17/09/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
 </section>
 
 <div class="main">
@@ -141,6 +141,22 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
   <h2>Estrutura</h2>
   <table class="struct-table"><thead><tr><th>Perna</th><th>Nível</th></tr></thead><tbody><tr><td><span class="tag s">S</span> Call KI (100×)</td><td>115% · KI 149%</td></tr><tr><td><span class="tag b">B</span> Call KO (200×)</td><td>100% · KO 149%</td></tr><tr><td><span class="tag b">B</span> Put KO (200×)</td><td>100% · KO 80%</td></tr></tbody></table>
   <p class="legend-note">Payoff ilustrativo no vencimento. Condições oficiais no DIE.</p>
+  <!-- RANGE_52W -->
+        <div class="range-52w" style="margin-top:16px">
+          <h2>Faixa 52 semanas</h2>
+          <table class="struct-table">
+            <thead><tr><th></th><th>R$</th><th>vs spot</th></tr></thead>
+            <tbody>
+              <tr><td>Máximo</td><td><strong>27,52</strong></td><td>+62,9%</td></tr>
+              <tr><td>Mínimo</td><td><strong>16,45</strong></td><td>-2,6%</td></tr>
+            </tbody>
+          </table>
+          <p class="legend-note">
+            Máx./mín. dos últimos ~12 meses (até a ref. 14/09/2026).
+            Fonte: Yahoo Finance SMFT3.SA.
+          </p>
+        </div>
+        <!-- /RANGE_52W -->
 </aside>
 <section class="panel chart-panel">
   <div class="chart-head">
@@ -210,7 +226,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
   var X_MIN=-50,X_MAX=90,Y_MIN=-50,Y_MAX=170;
   var PAD={l:48,t:24,r:48,b:24},VW=600,VH=400;
   var PLOT_W=VW-PAD.l-PAD.r,PLOT_H=VH-PAD.t-PAD.b;
-  var RESEARCH_X=77.2002;
+  var RESEARCH_X=77.6199;
   var L=-20.0, H=49.0, CAP=15.0;
   function structureReturn(x){ if (x < L) return x; if (x < 0) return -x; if (x < H) return 3*x; return CAP; }
   function regimeFor(x){ if (x < L) return 'Abaixo do put KO: acompanha.'; if (x < 0) return 'Queda moderada: |x|.'; if (x < H) return 'Alta: 3×.'; return 'KO alta: teto.'; }

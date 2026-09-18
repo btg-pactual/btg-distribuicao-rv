@@ -52,8 +52,11 @@ def smart_hedge_html(cfg: dict, prat=None) -> str:
         import _range_52w
 
         spot_ref = rs.get("price")
+        as_of = (_range_52w.load().get(ticker.upper()) or {}).get("as_of_br") or ""
         range_52w = _range_52w.range_block_html(
-            ticker, spot=float(spot_ref) if spot_ref is not None else None
+            ticker,
+            spot=float(spot_ref) if spot_ref is not None else None,
+            as_of_phrase=f"até o Dia D ({as_of})" if as_of else "até o Dia D",
         )
     except Exception:
         range_52w = ""
@@ -574,8 +577,11 @@ def twin_coupon_html(prat=None, research=None) -> str:
         import _range_52w
 
         spot_ref = rs.get("price")
+        as_of = (_range_52w.load().get("ITUB4") or {}).get("as_of_br") or ""
         range_52w = _range_52w.range_block_html(
-            "ITUB4", spot=float(spot_ref) if spot_ref is not None else None
+            "ITUB4",
+            spot=float(spot_ref) if spot_ref is not None else None,
+            as_of_phrase=f"até o Dia D ({as_of})" if as_of else "até o Dia D",
         )
     except Exception:
         range_52w = ""

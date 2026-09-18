@@ -7,6 +7,7 @@ import math
 import re
 import shutil
 import ssl
+import sys
 import unicodedata
 import urllib.error
 import urllib.request
@@ -15,6 +16,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
 REPO = ROOT.parent
+if str(REPO) not in sys.path:
+    sys.path.insert(0, str(REPO))
 OPS = ROOT / "ops"
 REF = date(2026, 9, 14)  # semana 14.09.26
 PDF_NAME = "Material-Prateleira-Tatica-14092026.pdf"
@@ -638,6 +641,7 @@ def op_page(cfg: dict) -> str:
         js_research = "var RESEARCH_X=null;"
     else:
         js_research = f"var RESEARCH_X={float(research_x):.4f};"
+    range_52w = cfg.get("range_52w_html") or ""
     return f"""<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -667,6 +671,7 @@ def op_page(cfg: dict) -> str:
   <h2>Estrutura</h2>
   <table class="struct-table"><thead><tr><th>Perna</th><th>Nível</th></tr></thead><tbody>{rows}</tbody></table>
   <p class="legend-note">Payoff ilustrativo no vencimento. Condições oficiais no DIE.</p>
+  {range_52w}
 </aside>
 <section class="panel chart-panel">
   <div class="chart-head">
@@ -2014,6 +2019,21 @@ def main():
             research = json.loads(RESEARCH_SNAP.read_text(encoding="utf-8"))
         else:
             research = {}
+
+    # Máx./mín. 52 semanas (Yahoo) — mesmo bloco do Dia D, sob a estrutura.
+    try:
+        import _range_52w
+
+        uniq = list(dict.fromkeys(t.upper() for t in tickers))
+        merged = dict(_range_52w.load())
+        fetched = _range_52w.fetch_all(uniq)
+        merged.update(fetched)
+        _range_52w.save(merged)
+        print("range_52w", len(fetched), "of", len(uniq))
+    except Exception as exc:
+        print("range_52w_fail", exc)
+
+    ref_br = REF.strftime("%d/%m/%Y")
     for slug, cfg in all_ops:
         cfg["research"] = research.get(cfg["ticker"], {})
         rs = cfg["research"]
@@ -2030,6 +2050,17 @@ def main():
             cfg["x_min"] = xmin
         cfg["research_html"] = research_html(cfg)
         cfg["research_insights_html"] = research_insights_html(cfg)
+        try:
+            import _range_52w
+
+            spot_ref = rs.get("price")
+            cfg["range_52w_html"] = _range_52w.range_block_html(
+                cfg["ticker"],
+                spot=float(spot_ref) if spot_ref is not None else None,
+                as_of_phrase=f"até a ref. {ref_br}",
+            )
+        except Exception:
+            cfg["range_52w_html"] = ""
 
     for slug, cfg in all_ops:
         d = OPS / slug
