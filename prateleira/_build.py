@@ -415,17 +415,20 @@ def research_html(cfg: dict) -> str:
 
 def research_insights_html(cfg: dict) -> str:
     rs = cfg.get("research") or {}
-    bullets = rs.get("bullets") or []
+    bullets = cfg.get("insights") or rs.get("bullets") or []
     if not bullets:
         return ""
     lis = "".join(f"<li>{html_esc(b)}</li>" for b in bullets)
-    sum_d = fmt_date(rs.get("summary_date"))
-    sum_note = f"Insights BTG{f' · {sum_d}' if sum_d else ''} · fonte Research BTG."
+    if cfg.get("insights_note"):
+        sum_note = cfg["insights_note"]
+    else:
+        sum_d = fmt_date(rs.get("summary_date"))
+        sum_note = f"Insights BTG{f' · {sum_d}' if sum_d else ''} · fonte Research BTG."
     return f"""
 <section class="speech-box insights-box">
   <h2>Insights Research BTG</h2>
   <ul class="research-bullets">{lis}</ul>
-  <p class="research-note">{sum_note}</p>
+  <p class="research-note">{html_esc(sum_note)}</p>
 </section>
 """
 
@@ -1381,7 +1384,7 @@ def make_pop(t, fixing, call_strike, put_strike):
     slug = slugify("pop", t, prazo.replace(" ", ""))
     call_lbl = fmt_lvl(call_strike)
     put_lbl = fmt_lvl(put_strike)
-    return slug, {
+    cfg = {
         "title": f"POP {t}",
         "h1": "POP",
         "ticker": t,
@@ -1431,6 +1434,26 @@ def make_pop(t, fixing, call_strike, put_strike):
         "js_fn": "if (x < 0) return 0; return PART * x;",
         "js_regime": "if (x < 0) return 'Put: proteção — piso 0%.'; return 'Alta: participa 50%.';",
     }
+    if t.upper() == "BITC11":
+        cfg["insights"] = [
+            (
+                "Após uma queda superior a 50% das máximas, o Bitcoin encerrou o primeiro semestre "
+                "em uma faixa de desconto presente em menos de 10% do histórico analisado. "
+                "A retomada recente reforçou a leitura de uma oportunidade de alocação com horizonte mais longo."
+            ),
+            (
+                "O Bitcoin oferece exposição ao debasement trade: a busca por ativos escassos para "
+                "preservar poder de compra diante da corrosão do poder de compra das moedas, diante "
+                "do aumento das dívidas públicas, déficits fiscais persistentes e impressão monetária."
+            ),
+            (
+                "Melhora da liquidez, avanços regulatórios nos EUA e recuperação dos fluxos apoiam a retomada. "
+                "A POP permite participar parcialmente da alta do BITC11, com proteção integral contra a "
+                "queda no vencimento de 24 meses."
+            ),
+        ]
+        cfg["insights_note"] = "Tese Bitcoin · POP BITC11 24 meses."
+    return slug, cfg
 
 
 def make_put_buy(t, fixing, put_strike, cost, prazo=None):
