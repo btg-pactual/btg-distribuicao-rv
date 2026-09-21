@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Aceleradora SMAL11 | BTG Pactual</title>
+<title>Smart Hedge ROXO34 | BTG Pactual</title>
 <style>
 :root {
   --ink:#0b1f3a; --muted:#5c6b7a; --line:#d0d8e2; --bg:#eef2f6; --card:#ffffff;
-  --brand:#5a4a8a; --btg:#0b1f3a; --success:#0f7a4a; --danger:#c0392b; --dash:#8b83a0;
+  --brand:#007e33; --btg:#0b1f3a; --success:#0f7a4a; --danger:#c0392b; --dash:#8b83a0;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:Segoe UI,-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);min-height:100vh;line-height:1.45}
@@ -119,27 +119,27 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
   <div class="brand-block">
     <div class="logos">
       <span class="logo-btg">BTG PACTUAL</span>
-      <span class="logo-co"><span class="dot">AC</span> SMAL11</span>
+      <span class="logo-co"><span class="dot">SH</span> ROXO34</span>
     </div>
-    <h1>Aceleradora Dinâmica <span>SMAL11</span></h1>
-    <p class="subtitle">Ganho dobrado (2×) na alta até atingir o teto +16% (em +8% de alta). Na call vanilla / KO 116%, o ganho fica limitado ao KO — teto +16% (não dobra de novo). Proteção parcial na queda até a barreira 90%.</p>
+    <h1>Smart Hedge <span>ROXO34</span></h1>
+    <p class="subtitle">Smart Hedge sobre ROXO34: piso na queda, participação 1:1 até a barreira KI; se KI, retorno limitado ao strike da call.</p>
   </div>
-  <div class="meta-pills"><div class="pill"><strong>Ativo</strong> SMAL11</div><div class="pill"><strong>Prazo</strong> 4 meses</div><div class="pill"><strong>Alta</strong> 2×</div><div class="pill"><strong>Call vendida</strong> 116% vanilla</div><div class="pill"><strong>Teto</strong> +16%</div><div class="pill"><strong>KO baixa</strong> 90%</div></div>
+  <div class="meta-pills"><div class="pill"><strong>Ativo</strong> ROXO34</div><div class="pill"><strong>Prazo</strong> 6 meses</div><div class="pill"><strong>Put</strong> 90%</div><div class="pill"><strong>Call</strong> 104%</div><div class="pill"><strong>KI</strong> 137,50%</div></div>
 </header>
-<section class="highlights"><div class="hi"><h3>Prazo</h3><p>4 meses<span></span></p></div><div class="hi"><h3>Alta</h3><p>2×<span>Até o teto +16% (a partir de +8%)</span></p></div><div class="hi"><h3>Se bater KO</h3><p>+16%<span>Ganho limitado ao KO (stk vanilla 116%)</span></p></div><div class="hi"><h3>Proteção</h3><p>Parcial<span>Piso 0% até KO 90%; abaixo acompanha</span></p></div></section>
+<section class="highlights"><div class="hi"><h3>Prazo</h3><p>6 meses<span></span></p></div><div class="hi"><h3>Piso</h3><p>-10%<span>Put 90%</span></p></div><div class="hi"><h3>Barreira KI</h3><p>137,50%<span>+37,5%</span></p></div><div class="hi"><h3>Teto se KI</h3><p>+4%<span>Call 104%</span></p></div></section>
 
 <section class="research">
   <div class="research-head">
     <h2>Research BTG</h2>
-    <a class="research-link" href="https://content.btgpactual.com/research/ativo/SMAL11" target="_blank" rel="noopener">Abrir SMAL11 no Research <span class="arrow" aria-hidden="true">→</span></a>
+    <a class="research-link" href="https://content.btgpactual.com/research/ativo/ROXO34" target="_blank" rel="noopener">Abrir ROXO34 no Research <span class="arrow" aria-hidden="true">→</span></a>
   </div>
-  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 109,69</div></div></div><p class="research-note">Spot do fechamento anterior (18/09/2026) · sem preço-alvo publicado para este ticker · atualizado às 18h30 · fonte Research BTG.</p>
+  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 11,71</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 21,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+79,33%</div></div></div><p class="research-note">Spot do fechamento anterior (18/09/2026) · preço-alvo atualizado em 15/09/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
 </section>
 
 <div class="main">
 <aside class="panel">
   <h2>Estrutura</h2>
-  <table class="struct-table"><thead><tr><th>Perna</th><th>Nível</th></tr></thead><tbody><tr><td><span class="tag b">B</span> Call KO</td><td>stk 100% · barreira 116%</td></tr><tr><td><span class="tag s">S</span> Call vanilla</td><td>stk 116%</td></tr><tr><td><span class="tag b">B</span> Put KO</td><td>stk 100% · barreira 90%</td></tr></tbody></table>
+  <table class="struct-table"><thead><tr><th>Perna</th><th>Nível</th></tr></thead><tbody><tr><td><span class="tag b">B</span> Put</td><td>90%</td></tr><tr><td><span class="tag s">S</span> Call KI</td><td>104% · barreira 137,50%</td></tr></tbody></table>
   <p class="legend-note">Payoff ilustrativo no vencimento. Condições oficiais no DIE.</p>
   <!-- RANGE_52W -->
         <div class="range-52w" style="margin-top:16px">
@@ -147,13 +147,13 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
           <table class="struct-table">
             <thead><tr><th></th><th>R$</th><th>vs spot</th></tr></thead>
             <tbody>
-              <tr><td>Máximo</td><td><strong>130,44</strong></td><td>+18,9%</td></tr>
-              <tr><td>Mínimo</td><td><strong>98,46</strong></td><td>-10,2%</td></tr>
+              <tr><td>Máximo</td><td><strong>16,57</strong></td><td>+41,5%</td></tr>
+              <tr><td>Mínimo</td><td><strong>9,47</strong></td><td>-19,1%</td></tr>
             </tbody>
           </table>
           <p class="legend-note">
-            Máx./mín. dos últimos ~12 meses (até a ref. 14/09/2026).
-            Fonte: Yahoo Finance SMAL11.SA.
+            Máx./mín. dos últimos ~12 meses (até a ref. 21/09/2026).
+            Fonte: Yahoo Finance ROXO34.SA.
           </p>
         </div>
         <!-- /RANGE_52W -->
@@ -171,42 +171,48 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
       <line id="axisZeroX" x1="0" y1="0" x2="0" y2="400" stroke="#c5ced8" stroke-width="1"/>
       <line id="axisZeroY" x1="48" y1="0" x2="552" y2="0" stroke="#c5ced8" stroke-width="1"/>
       <polyline id="assetPath" fill="none" stroke="#8b83a0" stroke-width="2" stroke-dasharray="6 5"/>
-      <path id="structPath" fill="none" stroke="#5a4a8a" stroke-width="2.5"/>
+      <path id="structPath" fill="none" stroke="#007e33" stroke-width="2.5"/>
       <line id="putKoGap" x1="0" y1="0" x2="0" y2="0" stroke="#0f7a4a" stroke-width="2" stroke-dasharray="4 3" opacity="0"/>
-      <line id="callKoGap" x1="0" y1="0" x2="0" y2="0" stroke="#5a4a8a" stroke-width="2" stroke-dasharray="4 3" opacity="0"/>
+      <line id="callKoGap" x1="0" y1="0" x2="0" y2="0" stroke="#007e33" stroke-width="2" stroke-dasharray="4 3" opacity="0"/>
       <text id="putKoLabel" font-size="11" fill="#0f7a4a" font-weight="700" opacity="0">Put KO</text>
-      <text id="callKoLabel" font-size="11" fill="#5a4a8a" font-weight="700" opacity="0">Call vendida</text>
+      <text id="callKoLabel" font-size="11" fill="#007e33" font-weight="700" opacity="0">Call vendida</text>
       <line id="researchTargetLine" x1="0" y1="24" x2="0" y2="376" stroke="#1a66b3" stroke-width="1.5" stroke-dasharray="5 4" opacity="0"/>
       <text id="researchTargetLabel" font-size="11" fill="#1a66b3" font-weight="700" opacity="0">PA Research</text>
       <g id="xLabels"></g><g id="yLabels"></g>
-      <line id="hoverLine" x1="0" y1="24" x2="0" y2="376" stroke="#5a4a8a" stroke-width="1" opacity="0"/>
-      <circle id="hoverStruct" r="5" fill="#5a4a8a" opacity="0"/>
+      <line id="hoverLine" x1="0" y1="24" x2="0" y2="376" stroke="#007e33" stroke-width="1" opacity="0"/>
+      <circle id="hoverStruct" r="5" fill="#007e33" opacity="0"/>
       <circle id="hoverAsset" r="4" fill="#8b83a0" opacity="0"/>
     </svg>
   </div>
   <p class="chart-touch-hint">Arraste no gráfico para simular</p>
       <div class="mobile-sim">
     <div class="sim-label"><span>Spot final</span><output id="spotOutMobile">0%</output></div>
-    <input type="range" id="spotSliderMobile" min="-50" max="80" step="0.5" value="0"/>
+    <input type="range" id="spotSliderMobile" min="-50" max="90" step="0.5" value="0"/>
   </div>
-  <div class="zones"><div class="zone"><strong>≤ -10%</strong><p>Put KO nocauteada — acompanha o ativo.</p></div><div class="zone"><strong>-10% → 0%</strong><p>Proteção parcial: retorno 0%.</p></div><div class="zone"><strong>0% → +8%</strong><p>Ganho dobrado: retorno = 2× a alta.</p></div><div class="zone"><strong>≥ +8%</strong><p>Teto +16% — limitado ao KO 116% (call vendida).</p></div></div>
+  <div class="zones"><div class="zone"><strong>Queda</strong><p>Piso -10% (put).</p></div><div class="zone"><strong>Até +38%</strong><p>Acompanha o ativo 1:1.</p></div><div class="zone"><strong>≥ +38%</strong><p>KI: retorno limitado a +4%.</p></div></div>
 </section>
 <aside class="panel panel-sim">
   <h2>Simulador</h2>
   <div class="sim-label"><span>Variação do ativo</span><output id="spotOut">0%</output></div>
-  <input type="range" id="spotSlider" min="-50" max="80" step="0.5" value="0"/>
+  <input type="range" id="spotSlider" min="-50" max="90" step="0.5" value="0"/>
   <div class="sim-cards">
     <div class="sim-card"><div class="lbl">Ativo</div><div class="val" id="assetVal">0,0%</div></div>
     <div class="sim-card"><div class="lbl">Estrutura</div><div class="val" id="structVal">0,0%</div></div>
     
   </div>
-  <div class="regime" id="regimeText">Na alta: 2× até o teto +16%. Call vanilla / KO 116%: permanece em +16%.</div>
+  <div class="regime" id="regimeText">Entre o piso e a barreira: participa 1:1.</div>
   
 </aside>
 </div>
 <section class="speech-box">
   <h2>Speech comercial</h2>
-  <p class="speech-label">Para quem</p><p>Cliente tático em SMAL11 (4 meses) que quer ganho dobrado na alta com proteção parcial na queda.</p><p class="speech-label">Como encaixa</p><p>Aceleradora Dinâmica: Call KO stk 100% (barreira 116%) + Call vanilla vendida stk 116% + Put KO stk 100% (barreira 90%). 2× na alta até o teto +16% (limitado ao KO) — na call vendida não dobra de novo.</p><p class="speech-label">Fechamento</p><p>Material de uso interno — condições no DIE.</p>
+  <p class="speech-label">Para quem</p><p>Cliente construtivo em ROXO34 no horizonte de 6 meses, com proteção na queda.</p><p class="speech-label">Como encaixa</p><p>Put 90% · call 104% KI em 137,50% · prazo 6 meses.</p><p class="speech-label">Fechamento</p><p>Material de uso interno — condições no DIE.</p>
+</section>
+
+<section class="speech-box insights-box">
+  <h2>Insights Research BTG</h2>
+  <ul class="research-bullets"><li>O 2T26 do Nubank veio acima das expectativas, com lucro líquido GAAP de US$1,06 bi, ROE de 33% e alta de 22% t/t e 67% a/a, enquanto o NII após provisões atingiu US$1,72 bi, 13% acima da estimativa do BTG, apoiado por provisões de…</li><li>O índice de eficiência ficou em 19,5%. Na qualidade dos ativos, a inadimplência inicial recuou 20 bps t/t, enquanto o NPL acima de 90 dias subiu para 6,9%, movimento atribuído à sazonalidade, sem indicação de mudança relevante no…</li><li>A operação nos EUA começa com cerca de 50–60 funcionários e pode pressionar o índice de eficiência em até 100 bps em 2026 e 2027, ainda dentro do orçamento já previsto. A administração também reiterou guidance de eficiência de 20% para…</li></ul>
+  <p class="research-note">Insights BTG · 15/09/2026 · fonte Research BTG.</p>
 </section>
 
 <p class="footer">Material ilustrativo para uso interno. Não constitui oferta, recomendação ou garantia de rentabilidade.</p>
@@ -217,13 +223,13 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
 </div>
 <script>
 (function(){
-  var X_MIN=-50,X_MAX=80,Y_MIN=-50,Y_MAX=40;
+  var X_MIN=-50,X_MAX=90,Y_MIN=-50,Y_MAX=80;
   var PAD={l:48,t:24,r:48,b:24},VW=600,VH=400;
   var PLOT_W=VW-PAD.l-PAD.r,PLOT_H=VH-PAD.t-PAD.b;
-  var RESEARCH_X=null;
-  var L=-10.0, H=16.0, CAP=16.0;
-  function structureReturn(x){ if (x <= L) return x; if (x < 0) return 0; if (x < H) return Math.min(2*x, CAP); return CAP; }
-  function regimeFor(x){ if (x <= L) return 'Put KO atingida: perde a proteção e acompanha o ativo.'; if (x < 0) return 'Put KO viva: proteção até a barreira — piso 0%.'; if (2*x < CAP) return 'Alta acelerada: 2× (ainda abaixo do teto).'; if (x < H) return 'Teto do KO atingido — ganho limitado a '+CAP.toFixed(1).replace('.',',')+'%.'; return 'Call vanilla / KO: teto '+CAP.toFixed(1).replace('.',',')+'% (limitado ao KO).'; }
+  var RESEARCH_X=79.3339;
+  var PUT=90.0, CALL=104.0, KI=137.5;
+  function structureReturn(x){ var st=100+x; var r=st+Math.max(PUT-st,0)-(st>=KI?Math.max(st-CALL,0):0)-100; return r; }
+  function regimeFor(x){ var st=100+x; if(st>=KI) return 'KI: teto +4%.'; if(x<=(PUT-100)) return 'Piso da put.'; return 'Participa 1:1.'; }
   function fmtPct(v,d){ d=d==null?1:d; var s=v.toFixed(d).replace('.',','); return (v>0?'+':'')+s+'%'; }
   function xToSvg(x){ return PAD.l+((x-X_MIN)/(X_MAX-X_MIN))*PLOT_W; }
   function yToSvg(y){ return PAD.t+((Y_MAX-y)/(Y_MAX-Y_MIN))*PLOT_H; }
@@ -244,14 +250,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
     var d='',first=true;
     function add(x,y){ var c=first?'M':'L'; first=false; d+=c+' '+xToSvg(x).toFixed(2)+' '+yToSvg(y).toFixed(2)+' '; }
     function move(x,y){ first=true; add(x,y); }
-    
-    for (var x = X_MIN; x <= L; x += 0.5) add(x, x);
-    add(L, 0);
-    for (var x2 = L + 0.5; x2 <= 0; x2 += 0.5) add(x2, 0);
-    for (var x3 = 0.5; x3 < H; x3 += 0.5) add(x3, Math.min(2 * x3, CAP));
-    add(H, CAP);
-    for (var x4 = H + 0.5; x4 <= X_MAX; x4 += 0.5) add(x4, CAP);
-
+    for(var x=X_MIN;x<=X_MAX;x+=0.5) add(x, structureReturn(x));
     return d.trim();
   }
   function buildAsset(){
@@ -281,7 +280,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
   document.getElementById('axisZeroY').setAttribute('y2',yToSvg(0));
   document.getElementById('structPath').setAttribute('d',buildStructD());
   document.getElementById('assetPath').setAttribute('points',buildAsset());
-  if (true) {
+  if (false) {
     if (typeof L === 'number') {
       var pL=document.getElementById('putKoGap'), pT=document.getElementById('putKoLabel');
       pL.setAttribute('x1', xToSvg(L)); pL.setAttribute('x2', xToSvg(L));
@@ -298,7 +297,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
       cL.setAttribute('y1', yToSvg(peakY)); cL.setAttribute('y2', yToSvg(0));
       cL.setAttribute('opacity', '1');
       cT.setAttribute('x', Math.max(48, xToSvg(H) - 72)); cT.setAttribute('y', yToSvg(peakY) - 8);
-      cT.textContent = "Call vanilla \u00b7 teto +16%";
+      cT.textContent = "Call vanilla \u00b7 teto";
       cT.setAttribute('opacity', '1');
     }
   }

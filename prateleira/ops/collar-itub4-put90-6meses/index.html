@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>SOC BBDC4 | BTG Pactual</title>
+<title>Collar ITUB4 | BTG Pactual</title>
 <style>
 :root {
   --ink:#0b1f3a; --muted:#5c6b7a; --line:#d0d8e2; --bg:#eef2f6; --card:#ffffff;
-  --brand:#0d6e6e; --btg:#0b1f3a; --success:#0f7a4a; --danger:#c0392b; --dash:#8b83a0;
+  --brand:#4a6b3a; --btg:#0b1f3a; --success:#0f7a4a; --danger:#c0392b; --dash:#8b83a0;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:Segoe UI,-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);min-height:100vh;line-height:1.45}
@@ -119,27 +119,27 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
   <div class="brand-block">
     <div class="logos">
       <span class="logo-btg">BTG PACTUAL</span>
-      <span class="logo-co"><span class="dot">SOC</span> BBDC4</span>
+      <span class="logo-co"><span class="dot">CL</span> ITUB4</span>
     </div>
-    <h1>SOC <span>BBDC4</span></h1>
-    <p class="subtitle">Stock or Coupon sobre BBDC4: cupom se a barreira de queda não for atingida; se KO, acompanha o ativo.</p>
+    <h1>Collar <span>ITUB4</span></h1>
+    <p class="subtitle">Collar sobre ITUB4: piso na put 90% e teto na call 114%; entre os strikes acompanha o ativo 1:1.</p>
   </div>
-  <div class="meta-pills"><div class="pill"><strong>Ativo</strong> BBDC4</div><div class="pill"><strong>Prazo</strong> 45dc</div><div class="pill"><strong>Vencimento</strong> 27/10/2026</div><div class="pill"><strong>Strike</strong> 105.40%</div><div class="pill"><strong>KO</strong> 90%</div><div class="pill"><strong>Cupom</strong> 5.40%</div><div class="pill"><strong>Backtest (barreira)</strong> 21%</div></div>
+  <div class="meta-pills"><div class="pill"><strong>Ativo</strong> ITUB4</div><div class="pill"><strong>Prazo</strong> 6 meses</div><div class="pill"><strong>Put</strong> 90%</div><div class="pill"><strong>Call</strong> 114%</div><div class="pill"><strong>Piso</strong> -10%</div><div class="pill"><strong>Teto</strong> +14%</div></div>
 </header>
-<section class="highlights"><div class="hi"><h3>Prazo</h3><p>45dc<span>Vencimento 27/10/2026</span></p></div><div class="hi"><h3>Cupom</h3><p>+5.40%<span>Se barreira não for atingida</span></p></div><div class="hi"><h3>KO</h3><p>90%<span>Abaixo de -10%: acompanha o ativo</span></p></div><div class="hi"><h3>Strike</h3><p>105.40%<span>Put KO / Call KO</span></p></div><div class="hi"><h3>Backtest (barreira)</h3><p>21%<span>Histórico de toque da barreira</span></p></div></section>
+<section class="highlights"><div class="hi"><h3>Prazo</h3><p>6 meses<span></span></p></div><div class="hi"><h3>Piso</h3><p>-10%<span>Put 90%</span></p></div><div class="hi"><h3>Teto</h3><p>+14%<span>Call 114%</span></p></div><div class="hi"><h3>Meio</h3><p>1:1<span>Entre put e call</span></p></div></section>
 
 <section class="research">
   <div class="research-head">
     <h2>Research BTG</h2>
-    <a class="research-link" href="https://content.btgpactual.com/research/ativo/BBDC4" target="_blank" rel="noopener">Abrir BBDC4 no Research <span class="arrow" aria-hidden="true">→</span></a>
+    <a class="research-link" href="https://content.btgpactual.com/research/ativo/ITUB4" target="_blank" rel="noopener">Abrir ITUB4 no Research <span class="arrow" aria-hidden="true">→</span></a>
   </div>
-  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 17,99</div></div><div><div class="lbl">Recomendação</div><div class="val hold">Neutro</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 21,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+16,73%</div></div></div><p class="research-note">Spot do fechamento anterior (18/09/2026) · preço-alvo atualizado em 07/08/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
+  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 42,33</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 54,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+27,57%</div></div></div><p class="research-note">Spot do fechamento anterior (18/09/2026) · preço-alvo atualizado em 06/08/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
 </section>
 
 <div class="main">
 <aside class="panel">
   <h2>Estrutura</h2>
-  <table class="struct-table"><thead><tr><th>Perna</th><th>Nível</th></tr></thead><tbody><tr><td><span class="tag b">B</span> Put KO</td><td>105.40% · barreira 90%</td></tr><tr><td><span class="tag s">S</span> Call KO</td><td>105.40% · barreira 90%</td></tr></tbody></table>
+  <table class="struct-table"><thead><tr><th>Perna</th><th>Nível</th></tr></thead><tbody><tr><td><span class="tag b">B</span> Put</td><td>90%</td></tr><tr><td><span class="tag s">S</span> Call</td><td>114%</td></tr></tbody></table>
   <p class="legend-note">Payoff ilustrativo no vencimento. Condições oficiais no DIE.</p>
   <!-- RANGE_52W -->
         <div class="range-52w" style="margin-top:16px">
@@ -147,13 +147,13 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
           <table class="struct-table">
             <thead><tr><th></th><th>R$</th><th>vs spot</th></tr></thead>
             <tbody>
-              <tr><td>Máximo</td><td><strong>22,12</strong></td><td>+23,0%</td></tr>
-              <tr><td>Mínimo</td><td><strong>15,68</strong></td><td>-12,8%</td></tr>
+              <tr><td>Máximo</td><td><strong>49,67</strong></td><td>+17,3%</td></tr>
+              <tr><td>Mínimo</td><td><strong>35,88</strong></td><td>-15,2%</td></tr>
             </tbody>
           </table>
           <p class="legend-note">
-            Máx./mín. dos últimos ~12 meses (até a ref. 14/09/2026).
-            Fonte: Yahoo Finance BBDC4.SA.
+            Máx./mín. dos últimos ~12 meses (até a ref. 21/09/2026).
+            Fonte: Yahoo Finance ITUB4.SA.
           </p>
         </div>
         <!-- /RANGE_52W -->
@@ -171,48 +171,48 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
       <line id="axisZeroX" x1="0" y1="0" x2="0" y2="400" stroke="#c5ced8" stroke-width="1"/>
       <line id="axisZeroY" x1="48" y1="0" x2="552" y2="0" stroke="#c5ced8" stroke-width="1"/>
       <polyline id="assetPath" fill="none" stroke="#8b83a0" stroke-width="2" stroke-dasharray="6 5"/>
-      <path id="structPath" fill="none" stroke="#0d6e6e" stroke-width="2.5"/>
+      <path id="structPath" fill="none" stroke="#4a6b3a" stroke-width="2.5"/>
       <line id="putKoGap" x1="0" y1="0" x2="0" y2="0" stroke="#0f7a4a" stroke-width="2" stroke-dasharray="4 3" opacity="0"/>
-      <line id="callKoGap" x1="0" y1="0" x2="0" y2="0" stroke="#0d6e6e" stroke-width="2" stroke-dasharray="4 3" opacity="0"/>
+      <line id="callKoGap" x1="0" y1="0" x2="0" y2="0" stroke="#4a6b3a" stroke-width="2" stroke-dasharray="4 3" opacity="0"/>
       <text id="putKoLabel" font-size="11" fill="#0f7a4a" font-weight="700" opacity="0">Put KO</text>
-      <text id="callKoLabel" font-size="11" fill="#0d6e6e" font-weight="700" opacity="0">Call vendida</text>
+      <text id="callKoLabel" font-size="11" fill="#4a6b3a" font-weight="700" opacity="0">Call vendida</text>
       <line id="researchTargetLine" x1="0" y1="24" x2="0" y2="376" stroke="#1a66b3" stroke-width="1.5" stroke-dasharray="5 4" opacity="0"/>
       <text id="researchTargetLabel" font-size="11" fill="#1a66b3" font-weight="700" opacity="0">PA Research</text>
       <g id="xLabels"></g><g id="yLabels"></g>
-      <line id="hoverLine" x1="0" y1="24" x2="0" y2="376" stroke="#0d6e6e" stroke-width="1" opacity="0"/>
-      <circle id="hoverStruct" r="5" fill="#0d6e6e" opacity="0"/>
+      <line id="hoverLine" x1="0" y1="24" x2="0" y2="376" stroke="#4a6b3a" stroke-width="1" opacity="0"/>
+      <circle id="hoverStruct" r="5" fill="#4a6b3a" opacity="0"/>
       <circle id="hoverAsset" r="4" fill="#8b83a0" opacity="0"/>
     </svg>
   </div>
   <p class="chart-touch-hint">Arraste no gráfico para simular</p>
       <div class="mobile-sim">
     <div class="sim-label"><span>Spot final</span><output id="spotOutMobile">0%</output></div>
-    <input type="range" id="spotSliderMobile" min="-30" max="40" step="0.5" value="0"/>
+    <input type="range" id="spotSliderMobile" min="-50" max="50" step="0.5" value="0"/>
   </div>
-  <div class="zones"><div class="zone"><strong>≤ -10%</strong><p>Put/Call KO nocauteados — acompanha o ativo 1:1.</p></div><div class="zone"><strong>> -10%</strong><p>Cupom fixo +5.40% (SOC).</p></div><div class="zone"><strong>Ideia</strong><p>Fluxo de cupom com risco de conversão se cair forte.</p></div></div>
+  <div class="zones"><div class="zone"><strong>≤ -10%</strong><p>Piso -10% (put).</p></div><div class="zone"><strong>-10% → +14%</strong><p>Acompanha o ativo 1:1.</p></div><div class="zone"><strong>≥ +14%</strong><p>Teto +14% (call vendida).</p></div></div>
 </section>
 <aside class="panel panel-sim">
   <h2>Simulador</h2>
   <div class="sim-label"><span>Variação do ativo</span><output id="spotOut">0%</output></div>
-  <input type="range" id="spotSlider" min="-30" max="40" step="0.5" value="0"/>
+  <input type="range" id="spotSlider" min="-50" max="50" step="0.5" value="0"/>
   <div class="sim-cards">
     <div class="sim-card"><div class="lbl">Ativo</div><div class="val" id="assetVal">0,0%</div></div>
     <div class="sim-card"><div class="lbl">Estrutura</div><div class="val" id="structVal">0,0%</div></div>
     
   </div>
-  <div class="regime" id="regimeText">Acima da barreira: cupom +5.40%.</div>
+  <div class="regime" id="regimeText">Entre put e call: participa 1:1.</div>
   
 </aside>
 </div>
 <section class="speech-box">
   <h2>Speech comercial</h2>
-  <p class="speech-label">Para quem</p><p>Cliente que quer cupom curto em BBDC4, aceitando risco de exposição se o papel cair além da barreira.</p><p class="speech-label">Como encaixa</p><p>SOC · 45dc (venc. 27/10/2026). Sem KO: cupom +5.40%. Com KO (90%): acompanha o ativo. Backtest (barreira): 21% das janelas históricas tocaram a barreira 90% (material da prateleira).</p><p class="speech-label">Fechamento</p><p>Material de uso interno — condições no DIE.</p>
+  <p class="speech-label">Para quem</p><p>Cliente com visão em ITUB4 (6 meses) que aceita teto em troca de proteção.</p><p class="speech-label">Como encaixa</p><p>Collar · put 90% · call 114% · prazo 6 meses.</p><p class="speech-label">Fechamento</p><p>Material de uso interno — condições no DIE.</p>
 </section>
 
 <section class="speech-box insights-box">
   <h2>Insights Research BTG</h2>
-  <ul class="research-bullets"><li>O Bradesco reportou 2T26 em linha, com lucro líquido ajustado de R$7,05 bi, +3,5% t/t e +16,2% a/a, e ROE de 16,2%, +0,4 p.p. t/t. A margem financeira com clientes somou R$20,2 bi, +4% t/t e +14% a/a, com NIM estável em 9%, enquanto o…</li><li>O custo de risco ficou estável em 3,5% e a cobertura caiu para 152%. As receitas com tarifas foram de R$10,5 bi, +1% t/t e +2% a/a, seguros entregou R$6,1 bi, com lucro de R$2,9 bi e ROE de 23%, e as despesas sem juros somaram R$18,7…</li><li>A emissão pode chegar a 604,9 mi de ações, com preços de R$15,43 por ON e R$17,64 por PN, e diluição máxima de ~3,4% para quem não acompanhar. A operação deve adicionar ~90 bps ao CET1 sobre base proforma de ~12,7% e reforçar o…</li></ul>
-  <p class="research-note">Insights BTG · 14/08/2026 · fonte Research BTG.</p>
+  <ul class="research-bullets"><li>O Itaú Unibanco reportou 2T26 sólido em balanço e qualidade de ativos, ainda que com operação um pouco mais fraca que o padrão histórico: o lucro líquido recorrente foi de R$12,4 bi, +1% t/t e +8% a/a, com ROE de 24,5%, ligeiramente…</li><li>Na prévia operacional, a carteira de crédito cresceu 3% t/t e 10% a/a, puxada por corporate, imobiliário e consignado, enquanto o NII com clientes somou R$31,4 bi, +2,8% t/t e +6,1% a/a, e o NII total chegou a R$32,3 bi.</li><li>Entre os KPIs, a inadimplência acima de 90 dias ficou em 1,9%, o custo de crédito líquido de recuperações em R$9 bi, as provisões brutas em R$10,5 bi, as recuperações em R$1,5 bi, o índice de cobertura em 53,8% e o CET1 em 12,3%.</li></ul>
+  <p class="research-note">Insights BTG · 12/08/2026 · fonte Research BTG.</p>
 </section>
 
 <p class="footer">Material ilustrativo para uso interno. Não constitui oferta, recomendação ou garantia de rentabilidade.</p>
@@ -223,13 +223,13 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
 </div>
 <script>
 (function(){
-  var X_MIN=-30,X_MAX=40,Y_MIN=-30,Y_MAX=15;
+  var X_MIN=-50,X_MAX=50,Y_MIN=-50,Y_MAX=50;
   var PAD={l:48,t:24,r:48,b:24},VW=600,VH=400;
   var PLOT_W=VW-PAD.l-PAD.r,PLOT_H=VH-PAD.t-PAD.b;
-  var RESEARCH_X=16.7315;
-  var KO_VAR=-10.0, CUPON=5.4;
-  function structureReturn(x){ if (x <= KO_VAR) return x; return CUPON; }
-  function regimeFor(x){ if (x <= KO_VAR) return 'KO: acompanha o ativo.'; return 'Cupom SOC +5.40%.'; }
+  var RESEARCH_X=27.5691;
+  var PUT=90.0, CALL=114.0;
+  function structureReturn(x){ var st=100+x; return st+Math.max(PUT-st,0)-Math.max(st-CALL,0)-100; }
+  function regimeFor(x){ if (x <= PUT-100) return 'Piso da put.'; if (x >= CALL-100) return 'Teto da call.'; return 'Participa 1:1.'; }
   function fmtPct(v,d){ d=d==null?1:d; var s=v.toFixed(d).replace('.',','); return (v>0?'+':'')+s+'%'; }
   function xToSvg(x){ return PAD.l+((x-X_MIN)/(X_MAX-X_MIN))*PLOT_W; }
   function yToSvg(y){ return PAD.t+((Y_MAX-y)/(Y_MAX-Y_MIN))*PLOT_H; }
