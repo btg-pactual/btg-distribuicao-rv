@@ -5,6 +5,7 @@ from __future__ import annotations
 import importlib.util
 import json
 import math
+from datetime import date
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
@@ -29,6 +30,61 @@ def write(rel: str, content: str) -> None:
 
 def fmt_br(n: float, digits: int = 2) -> str:
     return f"{n:.{digits}f}".replace(".", ",")
+
+
+# Collar Dia D: long put + short call (bid interno — NÃO exibir)
+COLLAR_OPS = [
+    {
+        "slug": "collar-axia3",
+        "ticker": "AXIA3",
+        "name": "Axia",
+        "brand": "#5a4a8a",
+        "put": 90.0,
+        "call": 124.0,
+        "fixing": date(2027, 9, 20),
+        "bid": 4.0,  # interno
+        "backtest": -68.0,
+    },
+]
+
+
+def collar_page_html(cfg: dict, prat, research: dict | None = None) -> str:
+    """Factsheet Collar no estilo prateleira, com voltar → Operações dia D."""
+    rs = (research or {}).get(cfg["ticker"]) or {}
+    slug, page = prat.make_collar(
+        cfg["ticker"],
+        cfg["fixing"],
+        cfg["put"],
+        cfg["call"],
+        cfg.get("bid", 0.0),
+        cfg.get("backtest"),
+    )
+    page["research"] = rs
+    page["research_html"] = prat.research_html({"ticker": cfg["ticker"], "research": rs})
+    page["research_insights_html"] = prat.research_insights_html(
+        {"ticker": cfg["ticker"], "research": rs}
+    )
+    try:
+        import _range_52w
+
+        spot_ref = rs.get("price")
+        as_of = (_range_52w.load().get(cfg["ticker"].upper()) or {}).get("as_of_br") or ""
+        page["range_52w_html"] = _range_52w.range_block_html(
+            cfg["ticker"],
+            spot=float(spot_ref) if spot_ref is not None else None,
+            as_of_phrase=f"até o Dia D ({as_of})" if as_of else "até o Dia D",
+        )
+    except Exception:
+        page["range_52w_html"] = ""
+
+    html = prat.op_page(page)
+    html = html.replace(
+        '<a href="../../index.html">← Prateleira Tática</a>',
+        '<a href="../../prateleira-tatica/index.html">← Operações dia D</a>',
+    )
+    # slug semanal pode diferir; o destino Dia D usa cfg["slug"]
+    _ = slug
+    return html
 
 
 def smart_hedge_html(cfg: dict, prat=None) -> str:
@@ -1161,6 +1217,37 @@ def hub_html(research: dict, prat) -> str:
             ],
         ),
         (
+            "Collar",
+            "collar",
+            "#4a6b3a",
+            "Piso na put e teto na call · participação 1:1 no meio",
+            [
+                {
+                    "href": f"../ops/{cfg['slug']}/index.html",
+                    "title": f"Collar {cfg['name']}",
+                    "ticker": cfg["ticker"],
+                    "brand": cfg["brand"],
+                    "blurb": (
+                        f"Put {fmt_br(cfg['put'])}% · call {fmt_br(cfg['call'])}% · "
+                        f"venc. {cfg['fixing'].strftime('%d/%m/%Y')}."
+                        + (
+                            f" Backtest {cfg['backtest']:.0f}%."
+                            if cfg.get("backtest") is not None
+                            else ""
+                        )
+                    ),
+                    "pills": [
+                        "Equity",
+                        cfg["fixing"].strftime("%d/%m/%Y"),
+                        f"Put {fmt_br(cfg['put'])}%",
+                        f"Call {fmt_br(cfg['call'])}%",
+                    ],
+                    "research": research.get(cfg["ticker"]) or {},
+                }
+                for cfg in COLLAR_OPS
+            ],
+        ),
+        (
             "Twip Coupon",
             "twin-coupon",
             "#ec7000",
@@ -1225,6 +1312,7 @@ def hub_html(research: dict, prat) -> str:
 
     # Intro: empresas em destaque (antes dos cards de categoria)
     name_by_ticker = {cfg["ticker"]: cfg["name"] for cfg in OPS}
+    name_by_ticker.update({cfg["ticker"]: cfg["name"] for cfg in COLLAR_OPS})
     name_by_ticker.update(
         {
             "PTAX": "Dólar (PTAX)",
@@ -1559,7 +1647,7 @@ OPS = [
 
 if __name__ == "__main__":
     prat = load_prat()
-    tickers = [cfg["ticker"] for cfg in OPS] + ["ITUB4"]
+    tickers = [cfg["ticker"] for cfg in OPS] + [cfg["ticker"] for cfg in COLLAR_OPS] + ["ITUB4"]
     try:
         research = prat.fetch_research(tickers)
     except Exception as exc:
@@ -1599,6 +1687,9 @@ if __name__ == "__main__":
         cfg = dict(cfg)
         cfg["research"] = research.get(cfg["ticker"]) or {}
         write(f"ops/{cfg['slug']}/index.html", smart_hedge_html(cfg, prat))
+
+    for cfg in COLLAR_OPS:
+        write(f"ops/{cfg['slug']}/index.html", collar_page_html(cfg, prat, research))
 
     twin_rs = research.get("ITUB4") or {}
     write("ops/twin-coupon-itub4/index.html", twin_coupon_html(prat, twin_rs))
