@@ -32,7 +32,7 @@ def fmt_br(n: float, digits: int = 2) -> str:
     return f"{n:.{digits}f}".replace(".", ",")
 
 
-# Collar Dia D: long put + short call (bid interno — NÃO exibir)
+# Collar Dia D: long put + short call (bid/delta internos — NÃO exibir)
 COLLAR_OPS = [
     {
         "slug": "collar-axia3",
@@ -44,6 +44,17 @@ COLLAR_OPS = [
         "fixing": date(2027, 9, 20),
         "bid": 4.0,  # interno
         "backtest": -68.0,
+    },
+    {
+        "slug": "collar-itub4",
+        "ticker": "ITUB4",
+        "name": "Itaú",
+        "brand": "#ec7000",
+        "put": 90.0,
+        "call": 112.0,
+        "fixing": date(2027, 3, 19),
+        "bid": 2.70,  # interno
+        "delta": -54.93,  # interno — nunca na UI
     },
 ]
 
