@@ -20,8 +20,7 @@ if str(REPO) not in sys.path:
     sys.path.insert(0, str(REPO))
 OPS = ROOT / "ops"
 REF = date(2026, 9, 21)  # semana 21.09.26
-# PDF 21.09 ainda não chegou; hub usa o material 14.09 até nova versão.
-PDF_NAME = "Material-Prateleira-Tatica-14092026.pdf"
+PDF_NAME = "Material-Prateleira-Tatica-21092026.pdf"
 RESEARCH_REC = "https://content.btgpactual.com/api/research/content-hub/recommendations/ticker/{ticker}?includeInstitutionalData=true"
 RESEARCH_QUOTES = "https://content.btgpactual.com/api/research/research/public/asset/quotes"
 RESEARCH_SUMMARY = "https://content.btgpactual.com/api/research/content-hub-assets/v1/asset/summary/{ticker}"
@@ -450,9 +449,9 @@ SOC = [
     ("SPCX34", date(2026, 10, 8), 103.0, 87.0, 0.98, None, 20),
     ("TOTS3", date(2026, 10, 20), 104.72, 90.0, 1.70, 42.0, 30),
     ("B3SA3", date(2026, 10, 20), 105.07, 90.0, 2.30, 23.0, 30),
-    ("TSLA34", date(2026, 10, 19), 103.50, 90.0, 1.50, 29.0, 30),
+    ("TSLA34", date(2026, 10, 19), 103.50, 90.0, 1.50, 46.0, 30),
     ("CYRE3", date(2026, 10, 21), 105.50, 88.0, 1.50, 30.0, 30),
-    ("VBBR3", date(2026, 11, 5), 106.0, 90.0, 1.30, None, 45),
+    ("VBBR3", date(2026, 11, 5), 106.0, 90.0, 1.30, 11.0, 45),
 ]
 
 # (ticker, fixing, put, call, ki, bid) — bid NÃO vai para a UI

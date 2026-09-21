@@ -133,7 +133,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
     <h2>Research BTG</h2>
     <a class="research-link" href="https://content.btgpactual.com/research/ativo/PETR4" target="_blank" rel="noopener">Abrir PETR4 no Research <span class="arrow" aria-hidden="true">→</span></a>
   </div>
-  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 48,50</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 65,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+34,02%</div></div></div><p class="research-note">Spot do fechamento anterior (18/09/2026) · preço-alvo atualizado em 17/09/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
+  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 48,11</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 56,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+16,40%</div></div></div><p class="research-note">Spot do fechamento anterior (21/09/2026) · preço-alvo atualizado em 21/09/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
 </section>
 
 <div class="main">
@@ -147,8 +147,8 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
           <table class="struct-table">
             <thead><tr><th></th><th>R$</th><th>vs spot</th></tr></thead>
             <tbody>
-              <tr><td>Máximo</td><td><strong>50,70</strong></td><td>+4,5%</td></tr>
-              <tr><td>Mínimo</td><td><strong>29,31</strong></td><td>-39,6%</td></tr>
+              <tr><td>Máximo</td><td><strong>50,70</strong></td><td>+5,4%</td></tr>
+              <tr><td>Mínimo</td><td><strong>29,31</strong></td><td>-39,1%</td></tr>
             </tbody>
           </table>
           <p class="legend-note">
@@ -211,8 +211,8 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
 
 <section class="speech-box insights-box">
   <h2>Insights Research BTG</h2>
-  <ul class="research-bullets"><li>A Petrobras reportou 2T26 forte, com EBITDA de US$18,9 bi, ~5% acima do consenso, apoiado por preços mais altos de petróleo e derivados e produção ~4% t/t maior.</li><li>O lifting cost caiu para US$6,3/boe, a dívida líquida recuou para US$60,4 bi, o caixa subiu para US$10,4 bi e a alavancagem caiu para ~1,1x, com dividendos trimestrais de US$3,4 bi. Na prévia do trimestre, a produção de petróleo havia…</li><li>As estimativas apontam impacto positivo de ~US$2,8–3,4 bi em receitas até o fim do ano. O BTG também revisou o EBITDA de 2026E/2027E para US$68,6 bi e US$63,8 bi, alta de ~12% em ambos os anos. A tese combina produção acima do guidance…</li></ul>
-  <p class="research-note">Insights BTG · 17/09/2026 · fonte Research BTG.</p>
+  <ul class="research-bullets"><li>A Petrobras reportou 2T26 forte, com EBITDA de US$18,9 bi, ~5% acima do consenso, apoiado por preços mais altos de petróleo e derivados e por alta de ~4% t/t na produção.</li><li>O lifting cost caiu para US$6,3/boe, a dívida líquida recuou para US$60,4 bi e a alavancagem para ~1,1x, enquanto o fluxo de caixa foi pressionado por ~US$1,9 bi em recebíveis de subvenção ainda não pagos. Na prévia do trimestre, a…</li><li>No refino, a companhia segue capturando margens robustas, com ~1,8–1,9 mi bpd processados e preços realizados de diesel em ~US$135–169/bbl e gasolina em ~US$101/bbl. A principal âncora segue a política de combustíveis: no diesel, a…</li></ul>
+  <p class="research-note">Insights BTG · 21/09/2026 · fonte Research BTG.</p>
 </section>
 
 <p class="footer">Material ilustrativo para uso interno. Não constitui oferta, recomendação ou garantia de rentabilidade.</p>
@@ -226,7 +226,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
   var X_MIN=-50,X_MAX=80,Y_MIN=-50,Y_MAX=80;
   var PAD={l:48,t:24,r:48,b:24},VW=600,VH=400;
   var PLOT_W=VW-PAD.l-PAD.r,PLOT_H=VH-PAD.t-PAD.b;
-  var RESEARCH_X=34.0206;
+  var RESEARCH_X=16.3999;
   var PUT=100.0, CALL=110.0, KI=134.7;
   function structureReturn(x){ var st=100+x; var r=st+Math.max(PUT-st,0)-(st>=KI?Math.max(st-CALL,0):0)-100; return r; }
   function regimeFor(x){ var st=100+x; if(st>=KI) return 'KI: teto +10%.'; if(x<=(PUT-100)) return 'Piso da put.'; return 'Participa 1:1.'; }
