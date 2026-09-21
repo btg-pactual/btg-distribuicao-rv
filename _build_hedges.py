@@ -43,7 +43,7 @@ COLLAR_OPS = [
         "call": 124.0,
         "fixing": date(2027, 9, 20),
         "bid": 4.0,  # interno
-        "backtest": -68.0,
+        "delta": -68.0,  # interno — nunca na UI
     },
     {
         "slug": "collar-itub4",
@@ -1241,11 +1241,6 @@ def hub_html(research: dict, prat) -> str:
                     "blurb": (
                         f"Put {fmt_br(cfg['put'])}% · call {fmt_br(cfg['call'])}% · "
                         f"venc. {cfg['fixing'].strftime('%d/%m/%Y')}."
-                        + (
-                            f" Backtest {cfg['backtest']:.0f}%."
-                            if cfg.get("backtest") is not None
-                            else ""
-                        )
                     ),
                     "pills": [
                         "Equity",

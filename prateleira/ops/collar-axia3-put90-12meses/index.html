@@ -122,41 +122,26 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
       <span class="logo-co"><span class="dot">CL</span> AXIA3</span>
     </div>
     <h1>Collar <span>AXIA3</span></h1>
-    <p class="subtitle">Collar sobre AXIA3: piso na put 90% e teto na call 128%; entre os strikes acompanha o ativo 1:1.</p>
+    <p class="subtitle">Collar sobre AXIA3: piso na put 90% e teto na call 124%; entre os strikes acompanha o ativo 1:1.</p>
   </div>
-  <div class="meta-pills"><div class="pill"><strong>Ativo</strong> AXIA3</div><div class="pill"><strong>Prazo</strong> 12 meses</div><div class="pill"><strong>Put</strong> 90%</div><div class="pill"><strong>Call</strong> 128%</div><div class="pill"><strong>Piso</strong> -10%</div><div class="pill"><strong>Teto</strong> +28%</div></div>
+  <div class="meta-pills"><div class="pill"><strong>Ativo</strong> AXIA3</div><div class="pill"><strong>Prazo</strong> 12 meses</div><div class="pill"><strong>Vencimento</strong> 20/09/2027</div><div class="pill"><strong>Put</strong> 90%</div><div class="pill"><strong>Call</strong> 124%</div><div class="pill"><strong>Piso</strong> -10%</div><div class="pill"><strong>Teto</strong> +24%</div></div>
 </header>
-<section class="highlights"><div class="hi"><h3>Prazo</h3><p>12 meses<span></span></p></div><div class="hi"><h3>Piso</h3><p>-10%<span>Put 90%</span></p></div><div class="hi"><h3>Teto</h3><p>+28%<span>Call 128%</span></p></div><div class="hi"><h3>Meio</h3><p>1:1<span>Entre put e call</span></p></div></section>
+<section class="highlights"><div class="hi"><h3>Prazo</h3><p>12 meses<span>Vencimento 20/09/2027</span></p></div><div class="hi"><h3>Piso</h3><p>-10%<span>Put 90%</span></p></div><div class="hi"><h3>Teto</h3><p>+24%<span>Call 124%</span></p></div><div class="hi"><h3>Meio</h3><p>1:1<span>Entre put e call</span></p></div></section>
 
 <section class="research">
   <div class="research-head">
     <h2>Research BTG</h2>
     <a class="research-link" href="https://content.btgpactual.com/research/ativo/AXIA3" target="_blank" rel="noopener">Abrir AXIA3 no Research <span class="arrow" aria-hidden="true">→</span></a>
   </div>
-  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 54,53</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 74,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+35,71%</div></div></div><p class="research-note">Spot do fechamento anterior (21/09/2026) · preço-alvo atualizado em 09/09/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
+  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 55,35</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 74,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+33,69%</div></div></div><p class="research-note">Spot do fechamento anterior (21/09/2026) · preço-alvo atualizado em 09/09/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
 </section>
 
 <div class="main">
 <aside class="panel">
   <h2>Estrutura</h2>
-  <table class="struct-table"><thead><tr><th>Perna</th><th>Nível</th></tr></thead><tbody><tr><td><span class="tag b">B</span> Put</td><td>90%</td></tr><tr><td><span class="tag s">S</span> Call</td><td>128%</td></tr></tbody></table>
+  <table class="struct-table"><thead><tr><th>Perna</th><th>Nível</th></tr></thead><tbody><tr><td><span class="tag b">B</span> Put</td><td>90%</td></tr><tr><td><span class="tag s">S</span> Call</td><td>124%</td></tr></tbody></table>
   <p class="legend-note">Payoff ilustrativo no vencimento. Condições oficiais no DIE.</p>
-  <!-- RANGE_52W -->
-        <div class="range-52w" style="margin-top:16px">
-          <h2>Faixa 52 semanas</h2>
-          <table class="struct-table">
-            <thead><tr><th></th><th>R$</th><th>vs spot</th></tr></thead>
-            <tbody>
-              <tr><td>Máximo</td><td><strong>67,84</strong></td><td>+24,4%</td></tr>
-              <tr><td>Mínimo</td><td><strong>47,43</strong></td><td>-13,0%</td></tr>
-            </tbody>
-          </table>
-          <p class="legend-note">
-            Máx./mín. dos últimos ~12 meses (até a ref. 21/09/2026).
-            Fonte: Yahoo Finance AXIA3.SA.
-          </p>
-        </div>
-        <!-- /RANGE_52W -->
+  
 </aside>
 <section class="panel chart-panel">
   <div class="chart-head">
@@ -189,7 +174,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
     <div class="sim-label"><span>Spot final</span><output id="spotOutMobile">0%</output></div>
     <input type="range" id="spotSliderMobile" min="-50" max="50" step="0.5" value="0"/>
   </div>
-  <div class="zones"><div class="zone"><strong>≤ -10%</strong><p>Piso -10% (put).</p></div><div class="zone"><strong>-10% → +28%</strong><p>Acompanha o ativo 1:1.</p></div><div class="zone"><strong>≥ +28%</strong><p>Teto +28% (call vendida).</p></div></div>
+  <div class="zones"><div class="zone"><strong>≤ -10%</strong><p>Piso -10% (put).</p></div><div class="zone"><strong>-10% → +24%</strong><p>Acompanha o ativo 1:1.</p></div><div class="zone"><strong>≥ +24%</strong><p>Teto +24% (call vendida).</p></div></div>
 </section>
 <aside class="panel panel-sim">
   <h2>Simulador</h2>
@@ -206,7 +191,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
 </div>
 <section class="speech-box">
   <h2>Speech comercial</h2>
-  <p class="speech-label">Para quem</p><p>Cliente com visão em AXIA3 (12 meses) que aceita teto em troca de proteção.</p><p class="speech-label">Como encaixa</p><p>Collar · put 90% · call 128% · prazo 12 meses.</p><p class="speech-label">Fechamento</p><p>Material de uso interno — condições no DIE.</p>
+  <p class="speech-label">Para quem</p><p>Cliente com visão em AXIA3 (12 meses) que aceita teto em troca de proteção.</p><p class="speech-label">Como encaixa</p><p>Collar · put 90% · call 124% · prazo 12 meses (venc. 20/09/2027).</p><p class="speech-label">Fechamento</p><p>Material de uso interno — condições no DIE.</p>
 </section>
 
 <section class="speech-box insights-box">
@@ -226,8 +211,8 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
   var X_MIN=-50,X_MAX=50,Y_MIN=-50,Y_MAX=50;
   var PAD={l:48,t:24,r:48,b:24},VW=600,VH=400;
   var PLOT_W=VW-PAD.l-PAD.r,PLOT_H=VH-PAD.t-PAD.b;
-  var RESEARCH_X=35.7051;
-  var PUT=90.0, CALL=128.0;
+  var RESEARCH_X=33.6947;
+  var PUT=90.0, CALL=124.0;
   function structureReturn(x){ var st=100+x; return st+Math.max(PUT-st,0)-Math.max(st-CALL,0)-100; }
   function regimeFor(x){ if (x <= PUT-100) return 'Piso da put.'; if (x >= CALL-100) return 'Teto da call.'; return 'Participa 1:1.'; }
   function fmtPct(v,d){ d=d==null?1:d; var s=v.toFixed(d).replace('.',','); return (v>0?'+':'')+s+'%'; }
