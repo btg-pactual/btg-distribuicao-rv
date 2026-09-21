@@ -124,16 +124,16 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
     <h1>Collar <span>SMFT3</span></h1>
     <p class="subtitle">Collar sobre SMFT3: piso na put 90% e teto na call 123%; entre os strikes acompanha o ativo 1:1.</p>
   </div>
-  <div class="meta-pills"><div class="pill"><strong>Ativo</strong> SMFT3</div><div class="pill"><strong>Prazo</strong> 12 meses</div><div class="pill"><strong>Put</strong> 90%</div><div class="pill"><strong>Call</strong> 123%</div><div class="pill"><strong>Piso</strong> -10%</div><div class="pill"><strong>Teto</strong> +23%</div></div>
+  <div class="meta-pills"><div class="pill"><strong>Ativo</strong> SMFT3</div><div class="pill"><strong>Prazo</strong> 12 meses</div><div class="pill"><strong>Vencimento</strong> 20/09/2027</div><div class="pill"><strong>Put</strong> 90%</div><div class="pill"><strong>Call</strong> 123%</div><div class="pill"><strong>Piso</strong> -10%</div><div class="pill"><strong>Teto</strong> +23%</div><div class="pill"><strong>CDI per.</strong> 13,37%</div></div>
 </header>
-<section class="highlights"><div class="hi"><h3>Prazo</h3><p>12 meses<span></span></p></div><div class="hi"><h3>Piso</h3><p>-10%<span>Put 90%</span></p></div><div class="hi"><h3>Teto</h3><p>+23%<span>Call 123%</span></p></div><div class="hi"><h3>Meio</h3><p>1:1<span>Entre put e call</span></p></div></section>
+<section class="highlights"><div class="hi"><h3>Prazo</h3><p>12 meses<span>Vencimento 20/09/2027</span></p></div><div class="hi"><h3>Piso</h3><p>-10%<span>Put 90%</span></p></div><div class="hi"><h3>Teto</h3><p>+23%<span>Call 123%</span></p></div><div class="hi"><h3>CDI per.</h3><p>13,37%<span>Proxy Selic BTG</span></p></div></section>
 
 <section class="research">
   <div class="research-head">
     <h2>Research BTG</h2>
     <a class="research-link" href="https://content.btgpactual.com/research/ativo/SMFT3" target="_blank" rel="noopener">Abrir SMFT3 no Research <span class="arrow" aria-hidden="true">→</span></a>
   </div>
-  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 17,06</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 30,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+75,85%</div></div></div><p class="research-note">Spot do fechamento anterior (21/09/2026) · preço-alvo atualizado em 18/09/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
+  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 17,55</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 30,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+70,94%</div></div></div><p class="research-note">Spot do fechamento anterior (21/09/2026) · preço-alvo atualizado em 18/09/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
 </section>
 
 <div class="main">
@@ -147,8 +147,8 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
           <table class="struct-table">
             <thead><tr><th></th><th>R$</th><th>vs spot</th></tr></thead>
             <tbody>
-              <tr><td>Máximo</td><td><strong>27,52</strong></td><td>+61,3%</td></tr>
-              <tr><td>Mínimo</td><td><strong>16,45</strong></td><td>-3,6%</td></tr>
+              <tr><td>Máximo</td><td><strong>27,52</strong></td><td>+56,8%</td></tr>
+              <tr><td>Mínimo</td><td><strong>16,45</strong></td><td>-6,3%</td></tr>
             </tbody>
           </table>
           <p class="legend-note">
@@ -157,6 +157,18 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
           </p>
         </div>
         <!-- /RANGE_52W -->
+  
+  <div class="selic-box" style="margin-top:16px">
+    <h2>Projeção Selic BTG</h2>
+    <table class="struct-table">
+      <thead><tr><th>Trimestre</th><th>% a.a.</th></tr></thead>
+      <tbody><tr><td>Q4/26</td><td><strong>13,75</strong></td></tr><tr><td>Q1/27</td><td><strong>13,75</strong></td></tr><tr><td>Q2/27</td><td><strong>13,50</strong></td></tr><tr><td>Q3/27</td><td><strong>12,50</strong></td></tr><tr><td>Q4/27</td><td><strong>12,50</strong></td></tr></tbody>
+    </table>
+    <p class="legend-note">
+      CDI estimado até 20/09/2027: <strong>13,37%</strong> (proxy Selic Research BTG, Actual/365).
+      No simulador, <strong>% do CDI</strong> = retorno da estrutura ÷ CDI do período.
+    </p>
+  </div>
 </aside>
 <section class="panel chart-panel">
   <div class="chart-head">
@@ -187,18 +199,18 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
   <p class="chart-touch-hint">Arraste no gráfico para simular</p>
       <div class="mobile-sim">
     <div class="sim-label"><span>Spot final</span><output id="spotOutMobile">0%</output></div>
-    <input type="range" id="spotSliderMobile" min="-50" max="90" step="0.5" value="0"/>
+    <input type="range" id="spotSliderMobile" min="-50" max="50" step="0.5" value="0"/>
   </div>
   <div class="zones"><div class="zone"><strong>≤ -10%</strong><p>Piso -10% (put).</p></div><div class="zone"><strong>-10% → +23%</strong><p>Acompanha o ativo 1:1.</p></div><div class="zone"><strong>≥ +23%</strong><p>Teto +23% (call vendida).</p></div></div>
 </section>
 <aside class="panel panel-sim">
   <h2>Simulador</h2>
   <div class="sim-label"><span>Variação do ativo</span><output id="spotOut">0%</output></div>
-  <input type="range" id="spotSlider" min="-50" max="90" step="0.5" value="0"/>
+  <input type="range" id="spotSlider" min="-50" max="50" step="0.5" value="0"/>
   <div class="sim-cards">
     <div class="sim-card"><div class="lbl">Ativo</div><div class="val" id="assetVal">0,0%</div></div>
     <div class="sim-card"><div class="lbl">Estrutura</div><div class="val" id="structVal">0,0%</div></div>
-    
+    <div class="sim-card wide"><div class="lbl">% do CDI</div><div class="val" id="cdiVal">—</div></div>
   </div>
   <div class="regime" id="regimeText">Entre put e call: participa 1:1.</div>
   
@@ -206,7 +218,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
 </div>
 <section class="speech-box">
   <h2>Speech comercial</h2>
-  <p class="speech-label">Para quem</p><p>Cliente com visão em SMFT3 (12 meses) que aceita teto em troca de proteção.</p><p class="speech-label">Como encaixa</p><p>Collar · put 90% · call 123% · prazo 12 meses.</p><p class="speech-label">Fechamento</p><p>Material de uso interno — condições no DIE.</p>
+  <p class="speech-label">Para quem</p><p>Cliente com visão em SMFT3 (12 meses) que aceita teto em troca de proteção.</p><p class="speech-label">Como encaixa</p><p>Collar · put 90% · call 123% · prazo 12 meses (venc. 20/09/2027). CDI estimado no período 13,37% (Selic Research BTG).</p><p class="speech-label">Fechamento</p><p>Material de uso interno — condições no DIE.</p>
 </section>
 
 <section class="speech-box insights-box">
@@ -223,11 +235,11 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
 </div>
 <script>
 (function(){
-  var X_MIN=-50,X_MAX=90,Y_MIN=-50,Y_MAX=50;
+  var X_MIN=-50,X_MAX=50,Y_MIN=-50,Y_MAX=50;
   var PAD={l:48,t:24,r:48,b:24},VW=600,VH=400;
   var PLOT_W=VW-PAD.l-PAD.r,PLOT_H=VH-PAD.t-PAD.b;
-  var RESEARCH_X=75.8499;
-  var PUT=90.0, CALL=123.0;
+  var RESEARCH_X=70.9402;
+  var PUT=90.0, CALL=123.0, CDI_PERIOD=13.369159;
   function structureReturn(x){ var st=100+x; return st+Math.max(PUT-st,0)-Math.max(st-CALL,0)-100; }
   function regimeFor(x){ if (x <= PUT-100) return 'Piso da put.'; if (x >= CALL-100) return 'Teto da call.'; return 'Participa 1:1.'; }
   function fmtPct(v,d){ d=d==null?1:d; var s=v.toFixed(d).replace('.',','); return (v>0?'+':'')+s+'%'; }
@@ -317,6 +329,14 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
       pv.textContent = fmtPct(rp, 0);
       pv.className = 'val ' + (rp > 0 ? 'pos' : rp < 0 ? 'neg' : '');
     }
+    var cv=document.getElementById('cdiVal');
+    var cdiTip='';
+    if (cv && typeof CDI_PERIOD === 'number' && CDI_PERIOD !== 0) {
+      var cp = (ys / CDI_PERIOD) * 100;
+      cv.textContent = fmtPct(cp, 0);
+      cv.className = 'val ' + (cp > 0 ? 'pos' : cp < 0 ? 'neg' : '');
+      cdiTip = '<div class="row"><span>% do CDI</span><span>'+fmtPct(cp,0)+'</span></div>';
+    }
     document.getElementById('regimeText').textContent=regimeFor(x);
     var px=xToSvg(x);
     document.getElementById('hoverLine').setAttribute('x1',px);
@@ -329,7 +349,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
     document.getElementById('hoverAsset').setAttribute('cy',yToSvg(Math.max(Y_MIN,Math.min(Y_MAX,x))));
     document.getElementById('hoverAsset').setAttribute('opacity','1');
     var tip=document.getElementById('tooltip');
-    tip.innerHTML='<div class="t-title">Spot '+fmtPct(x)+'</div><div class="row"><span>Ativo</span><span>'+fmtPct(x)+'</span></div><div class="row"><span>Estrutura</span><span>'+fmtPct(ys)+'</span></div>'+(typeof COST==='number' && COST!==0 ? '<div class="row"><span>Sobre o prêmio</span><span>'+fmtPct((ys/COST)*100,0)+'</span></div>' : '');
+    tip.innerHTML='<div class="t-title">Spot '+fmtPct(x)+'</div><div class="row"><span>Ativo</span><span>'+fmtPct(x)+'</span></div><div class="row"><span>Estrutura</span><span>'+fmtPct(ys)+'</span></div>'+(typeof COST==='number' && COST!==0 ? '<div class="row"><span>Sobre o prêmio</span><span>'+fmtPct((ys/COST)*100,0)+'</span></div>' : '')+cdiTip;
     tip.className='tooltip on';
     tip.style.left=px+'px'; tip.style.top=yToSvg(ys)+'px';
   }

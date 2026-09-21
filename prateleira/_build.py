@@ -11,7 +11,7 @@ import sys
 import unicodedata
 import urllib.error
 import urllib.request
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
@@ -46,6 +46,74 @@ def months_label(fixing: date) -> str:
         return "1 mês"
     m = max(1, math.floor(days / 30.44 + 0.5))
     return f"{m} mês" if m == 1 else f"{m} meses"
+
+
+# Projeção Selic Research BTG (%, a.a.) — proxy de CDI no material
+# Q4/26 → Q4/27 (tabela do banco)
+SELIC_PROJ = [
+    ("Q4/26", date(2026, 10, 1), date(2026, 12, 31), 13.75),
+    ("Q1/27", date(2027, 1, 1), date(2027, 3, 31), 13.75),
+    ("Q2/27", date(2027, 4, 1), date(2027, 6, 30), 13.50),
+    ("Q3/27", date(2027, 7, 1), date(2027, 9, 30), 12.50),
+    ("Q4/27", date(2027, 10, 1), date(2027, 12, 31), 12.50),
+]
+
+
+def selic_on(day: date) -> float:
+    """Selic a.a. na data; antes da curva usa o 1º ponto, depois o último."""
+    if day < SELIC_PROJ[0][1]:
+        return SELIC_PROJ[0][3]
+    for _lbl, a, b, r in SELIC_PROJ:
+        if a <= day <= b:
+            return r
+    return SELIC_PROJ[-1][3]
+
+
+def cdi_period_pct(start: date, end: date) -> float:
+    """CDI acumulado no período (proxy Selic), capitalização Actual/365."""
+    if end <= start:
+        return 0.0
+    cuts = {start, end}
+    for _lbl, a, b, _r in SELIC_PROJ:
+        if start < a < end:
+            cuts.add(a)
+        nxt = b + timedelta(days=1)
+        if start < nxt < end:
+            cuts.add(nxt)
+    marks = sorted(cuts)
+    factor = 1.0
+    for i in range(len(marks) - 1):
+        a, b = marks[i], marks[i + 1]
+        days = (b - a).days
+        if days <= 0:
+            continue
+        rate = selic_on(a)
+        factor *= (1.0 + rate / 100.0) ** (days / 365.0)
+    return (factor - 1.0) * 100.0
+
+
+def selic_proj_html(cdi_period: float, venc_br: str) -> str:
+    rows = "".join(
+        f"<tr><td>{lbl}</td><td><strong>{fmt_br(r, 2)}</strong></td></tr>"
+        for lbl, _a, _b, r in SELIC_PROJ
+    )
+    cdi_lbl = fmt_br(cdi_period, 2)
+    return f"""
+  <div class="selic-box" style="margin-top:16px">
+    <h2>Projeção Selic BTG</h2>
+    <table class="struct-table">
+      <thead><tr><th>Trimestre</th><th>% a.a.</th></tr></thead>
+      <tbody>{rows}</tbody>
+    </table>
+    <p class="legend-note">
+      CDI estimado até {venc_br}: <strong>{cdi_lbl}%</strong> (proxy Selic Research BTG, Actual/365).
+      No simulador, <strong>% do CDI</strong> = retorno da estrutura ÷ CDI do período.
+    </p>
+  </div>"""
+
+
+def fmt_br(n: float, digits: int = 2) -> str:
+    return f"{n:.{digits}f}".replace(".", ",")
 
 
 def slugify(*parts: str) -> str:
@@ -677,6 +745,7 @@ def op_page(cfg: dict) -> str:
   <table class="struct-table"><thead><tr><th>Perna</th><th>Nível</th></tr></thead><tbody>{rows}</tbody></table>
   <p class="legend-note">Payoff ilustrativo no vencimento. Condições oficiais no DIE.</p>
   {range_52w}
+  {cfg.get('aside_extra_html', '')}
 </aside>
 <section class="panel chart-panel">
   <div class="chart-head">
@@ -831,6 +900,14 @@ def op_page(cfg: dict) -> str:
       pv.textContent = fmtPct(rp, 0);
       pv.className = 'val ' + (rp > 0 ? 'pos' : rp < 0 ? 'neg' : '');
     }}
+    var cv=document.getElementById('cdiVal');
+    var cdiTip='';
+    if (cv && typeof CDI_PERIOD === 'number' && CDI_PERIOD !== 0) {{
+      var cp = (ys / CDI_PERIOD) * 100;
+      cv.textContent = fmtPct(cp, 0);
+      cv.className = 'val ' + (cp > 0 ? 'pos' : cp < 0 ? 'neg' : '');
+      cdiTip = '<div class="row"><span>% do CDI</span><span>'+fmtPct(cp,0)+'</span></div>';
+    }}
     document.getElementById('regimeText').textContent=regimeFor(x);
     var px=xToSvg(x);
     document.getElementById('hoverLine').setAttribute('x1',px);
@@ -843,7 +920,7 @@ def op_page(cfg: dict) -> str:
     document.getElementById('hoverAsset').setAttribute('cy',yToSvg(Math.max(Y_MIN,Math.min(Y_MAX,x))));
     document.getElementById('hoverAsset').setAttribute('opacity','1');
     var tip=document.getElementById('tooltip');
-    tip.innerHTML='<div class="t-title">Spot '+fmtPct(x)+'</div><div class="row"><span>Ativo</span><span>'+fmtPct(x)+'</span></div><div class="row"><span>{cfg.get('struct_lbl', 'Estrutura')}</span><span>'+fmtPct(ys)+'</span></div>'+(typeof COST==='number' && COST!==0 ? '<div class="row"><span>Sobre o prêmio</span><span>'+fmtPct((ys/COST)*100,0)+'</span></div>' : '');
+    tip.innerHTML='<div class="t-title">Spot '+fmtPct(x)+'</div><div class="row"><span>Ativo</span><span>'+fmtPct(x)+'</span></div><div class="row"><span>{cfg.get('struct_lbl', 'Estrutura')}</span><span>'+fmtPct(ys)+'</span></div>'+(typeof COST==='number' && COST!==0 ? '<div class="row"><span>Sobre o prêmio</span><span>'+fmtPct((ys/COST)*100,0)+'</span></div>' : '')+cdiTip;
     tip.className='tooltip on';
     tip.style.left=px+'px'; tip.style.top=yToSvg(ys)+'px';
   }}
@@ -1697,6 +1774,8 @@ def make_collar(t, fixing, put, call, _bid, backtest=None):
         if bt_lbl
         else ""
     )
+    cdi = cdi_period_pct(REF, fixing)
+    cdi_lbl = fmt_br(cdi, 2)
     pills = [
         ("Ativo", t),
         ("Prazo", prazo),
@@ -1705,6 +1784,7 @@ def make_collar(t, fixing, put, call, _bid, backtest=None):
         ("Call", call_lbl),
         ("Piso", f"{floor:+.0f}%"),
         ("Teto", f"{cap:+.0f}%"),
+        ("CDI per.", f"{cdi_lbl}%"),
     ]
     if bt_lbl:
         pills.append(("Backtest", bt_lbl))
@@ -1712,12 +1792,15 @@ def make_collar(t, fixing, put, call, _bid, backtest=None):
         ("Prazo", prazo, f"Vencimento {venc}"),
         ("Piso", f"{floor:+.0f}%", f"Put {put_lbl}"),
         ("Teto", f"{cap:+.0f}%", f"Call {call_lbl}"),
-        ("Meio", "1:1", "Entre put e call"),
+        ("CDI per.", f"{cdi_lbl}%", "Proxy Selic BTG"),
     ]
     if bt_lbl:
         highlights.append(("Backtest", bt_lbl, "Histórico da estrutura"))
     speech_close = "Material de uso interno — condições no DIE."
-    speech_mid = f"Collar · put {put_lbl} · call {call_lbl} · prazo {prazo} (venc. {venc})."
+    speech_mid = (
+        f"Collar · put {put_lbl} · call {call_lbl} · prazo {prazo} (venc. {venc}). "
+        f"CDI estimado no período {cdi_lbl}% (Selic Research BTG)."
+    )
     if bt_speech:
         speech_mid += f" {bt_speech}"
     return slug, {
@@ -1751,12 +1834,19 @@ def make_collar(t, fixing, put, call, _bid, backtest=None):
         "x_max": max(50, int(cap) + 20),
         "y_min": min(-50, int(floor) - 15),
         "y_max": max(50, int(cap) + 20),
-        "js_const": f"var PUT={put}, CALL={call};",
+        "js_const": f"var PUT={put}, CALL={call}, CDI_PERIOD={cdi:.6f};",
         "js_fn": "var st=100+x; return st+Math.max(PUT-st,0)-Math.max(st-CALL,0)-100;",
         "js_regime": (
             "if (x <= PUT-100) return 'Piso da put.'; "
             "if (x >= CALL-100) return 'Teto da call.'; "
             "return 'Participa 1:1.';"
+        ),
+        "aside_extra_html": selic_proj_html(cdi, venc),
+        "sim_extra_html": (
+            '<div class="sim-card wide">'
+            '<div class="lbl">% do CDI</div>'
+            '<div class="val" id="cdiVal">—</div>'
+            "</div>"
         ),
     }
 

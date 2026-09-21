@@ -124,9 +124,9 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
     <h1>Collar <span>ITUB4</span></h1>
     <p class="subtitle">Collar sobre ITUB4: piso na put 90% e teto na call 112%; entre os strikes acompanha o ativo 1:1.</p>
   </div>
-  <div class="meta-pills"><div class="pill"><strong>Ativo</strong> ITUB4</div><div class="pill"><strong>Prazo</strong> 6 meses</div><div class="pill"><strong>Vencimento</strong> 19/03/2027</div><div class="pill"><strong>Put</strong> 90%</div><div class="pill"><strong>Call</strong> 112%</div><div class="pill"><strong>Piso</strong> -10%</div><div class="pill"><strong>Teto</strong> +12%</div></div>
+  <div class="meta-pills"><div class="pill"><strong>Ativo</strong> ITUB4</div><div class="pill"><strong>Prazo</strong> 6 meses</div><div class="pill"><strong>Vencimento</strong> 19/03/2027</div><div class="pill"><strong>Put</strong> 90%</div><div class="pill"><strong>Call</strong> 112%</div><div class="pill"><strong>Piso</strong> -10%</div><div class="pill"><strong>Teto</strong> +12%</div><div class="pill"><strong>CDI per.</strong> 6,52%</div></div>
 </header>
-<section class="highlights"><div class="hi"><h3>Prazo</h3><p>6 meses<span>Vencimento 19/03/2027</span></p></div><div class="hi"><h3>Piso</h3><p>-10%<span>Put 90%</span></p></div><div class="hi"><h3>Teto</h3><p>+12%<span>Call 112%</span></p></div><div class="hi"><h3>Meio</h3><p>1:1<span>Entre put e call</span></p></div></section>
+<section class="highlights"><div class="hi"><h3>Prazo</h3><p>6 meses<span>Vencimento 19/03/2027</span></p></div><div class="hi"><h3>Piso</h3><p>-10%<span>Put 90%</span></p></div><div class="hi"><h3>Teto</h3><p>+12%<span>Call 112%</span></p></div><div class="hi"><h3>CDI per.</h3><p>6,52%<span>Proxy Selic BTG</span></p></div></section>
 
 <section class="research">
   <div class="research-head">
@@ -157,6 +157,18 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
           </p>
         </div>
         <!-- /RANGE_52W -->
+  
+  <div class="selic-box" style="margin-top:16px">
+    <h2>Projeção Selic BTG</h2>
+    <table class="struct-table">
+      <thead><tr><th>Trimestre</th><th>% a.a.</th></tr></thead>
+      <tbody><tr><td>Q4/26</td><td><strong>13,75</strong></td></tr><tr><td>Q1/27</td><td><strong>13,75</strong></td></tr><tr><td>Q2/27</td><td><strong>13,50</strong></td></tr><tr><td>Q3/27</td><td><strong>12,50</strong></td></tr><tr><td>Q4/27</td><td><strong>12,50</strong></td></tr></tbody>
+    </table>
+    <p class="legend-note">
+      CDI estimado até 19/03/2027: <strong>6,52%</strong> (proxy Selic Research BTG, Actual/365).
+      No simulador, <strong>% do CDI</strong> = retorno da estrutura ÷ CDI do período.
+    </p>
+  </div>
 </aside>
 <section class="panel chart-panel">
   <div class="chart-head">
@@ -198,7 +210,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
   <div class="sim-cards">
     <div class="sim-card"><div class="lbl">Ativo</div><div class="val" id="assetVal">0,0%</div></div>
     <div class="sim-card"><div class="lbl">Estrutura</div><div class="val" id="structVal">0,0%</div></div>
-    
+    <div class="sim-card wide"><div class="lbl">% do CDI</div><div class="val" id="cdiVal">—</div></div>
   </div>
   <div class="regime" id="regimeText">Entre put e call: participa 1:1.</div>
   
@@ -206,7 +218,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
 </div>
 <section class="speech-box">
   <h2>Speech comercial</h2>
-  <p class="speech-label">Para quem</p><p>Cliente com visão em ITUB4 (6 meses) que aceita teto em troca de proteção.</p><p class="speech-label">Como encaixa</p><p>Collar · put 90% · call 112% · prazo 6 meses (venc. 19/03/2027).</p><p class="speech-label">Fechamento</p><p>Material de uso interno — condições no DIE.</p>
+  <p class="speech-label">Para quem</p><p>Cliente com visão em ITUB4 (6 meses) que aceita teto em troca de proteção.</p><p class="speech-label">Como encaixa</p><p>Collar · put 90% · call 112% · prazo 6 meses (venc. 19/03/2027). CDI estimado no período 6,52% (Selic Research BTG).</p><p class="speech-label">Fechamento</p><p>Material de uso interno — condições no DIE.</p>
 </section>
 
 <section class="speech-box insights-box">
@@ -227,7 +239,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
   var PAD={l:48,t:24,r:48,b:24},VW=600,VH=400;
   var PLOT_W=VW-PAD.l-PAD.r,PLOT_H=VH-PAD.t-PAD.b;
   var RESEARCH_X=24.9422;
-  var PUT=90.0, CALL=112.0;
+  var PUT=90.0, CALL=112.0, CDI_PERIOD=6.521968;
   function structureReturn(x){ var st=100+x; return st+Math.max(PUT-st,0)-Math.max(st-CALL,0)-100; }
   function regimeFor(x){ if (x <= PUT-100) return 'Piso da put.'; if (x >= CALL-100) return 'Teto da call.'; return 'Participa 1:1.'; }
   function fmtPct(v,d){ d=d==null?1:d; var s=v.toFixed(d).replace('.',','); return (v>0?'+':'')+s+'%'; }
@@ -317,6 +329,14 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
       pv.textContent = fmtPct(rp, 0);
       pv.className = 'val ' + (rp > 0 ? 'pos' : rp < 0 ? 'neg' : '');
     }
+    var cv=document.getElementById('cdiVal');
+    var cdiTip='';
+    if (cv && typeof CDI_PERIOD === 'number' && CDI_PERIOD !== 0) {
+      var cp = (ys / CDI_PERIOD) * 100;
+      cv.textContent = fmtPct(cp, 0);
+      cv.className = 'val ' + (cp > 0 ? 'pos' : cp < 0 ? 'neg' : '');
+      cdiTip = '<div class="row"><span>% do CDI</span><span>'+fmtPct(cp,0)+'</span></div>';
+    }
     document.getElementById('regimeText').textContent=regimeFor(x);
     var px=xToSvg(x);
     document.getElementById('hoverLine').setAttribute('x1',px);
@@ -329,7 +349,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
     document.getElementById('hoverAsset').setAttribute('cy',yToSvg(Math.max(Y_MIN,Math.min(Y_MAX,x))));
     document.getElementById('hoverAsset').setAttribute('opacity','1');
     var tip=document.getElementById('tooltip');
-    tip.innerHTML='<div class="t-title">Spot '+fmtPct(x)+'</div><div class="row"><span>Ativo</span><span>'+fmtPct(x)+'</span></div><div class="row"><span>Estrutura</span><span>'+fmtPct(ys)+'</span></div>'+(typeof COST==='number' && COST!==0 ? '<div class="row"><span>Sobre o prêmio</span><span>'+fmtPct((ys/COST)*100,0)+'</span></div>' : '');
+    tip.innerHTML='<div class="t-title">Spot '+fmtPct(x)+'</div><div class="row"><span>Ativo</span><span>'+fmtPct(x)+'</span></div><div class="row"><span>Estrutura</span><span>'+fmtPct(ys)+'</span></div>'+(typeof COST==='number' && COST!==0 ? '<div class="row"><span>Sobre o prêmio</span><span>'+fmtPct((ys/COST)*100,0)+'</span></div>' : '')+cdiTip;
     tip.className='tooltip on';
     tip.style.left=px+'px'; tip.style.top=yToSvg(ys)+'px';
   }
