@@ -492,24 +492,24 @@ TRIPLO = [
     ("SBSP3", date(2027, 9, 20), 115.0, 136.88, 80.0, 4.50),
 ]
 
-# Offer Excel 21.09: Put KO -2,95%; Call Spread -2,00% (células % → abs)
-PUT_KO = ("EMBJ3", date(2026, 12, 17), 80.0, 5.50, 2.95)
+# Offer Excel 21.09 (refresh): Put KO -3,50%; Put -4,00%; Call Spread -3,00%
+PUT_KO = ("EMBJ3", date(2026, 12, 17), 80.0, 5.50, 3.50)
 # (ticker, fixing, put, call_ki_strike, ki, put_ko, put_ko_barrier, bid)
 TWIP = ("GOLD11", date(2027, 9, 20), 100.0, 100.0, 140.0, 100.0, 80.0, 4.51)
 # Compra de put: (ticker, fixing, put_strike, cost abs, prazo_pdf)
-PUT_BUY = ("BOVA11", date(2027, 1, 18), 95.0, 2.93, "4 meses")
+PUT_BUY = ("BOVA11", date(2027, 1, 18), 95.0, 4.00, "4 meses")
 # Compra de call spread: (ticker, fixing, buy_call, sell_call, cost abs)
 CALL_SPREAD = [
-    ("BOVA11", date(2026, 10, 28), 105.0, 115.0, 2.00),
+    ("BOVA11", date(2026, 10, 28), 105.0, 115.0, 3.00),
 ]
 # Collar: long put + short call (bid NÃO vai para a UI)
-# (ticker, fixing, put, call, bid)
+# (ticker, fixing, put, call, bid, backtest% opcional)
 COLLAR = [
     ("MELI34", date(2027, 9, 20), 90.0, 127.0, 3.00),
     ("LREN3", date(2027, 9, 20), 90.0, 125.0, 3.00),
     ("SMFT3", date(2027, 9, 20), 90.0, 123.0, 3.00),
     ("ITUB4", date(2027, 3, 18), 90.0, 114.0, 2.00),
-    ("AXIA3", date(2027, 9, 17), 90.0, 128.0, 3.00),
+    ("AXIA3", date(2027, 9, 20), 90.0, 124.0, 4.00, -68.0),
 ]
 
 CSS = """
@@ -1682,14 +1682,44 @@ def make_call_spread(t, fixing, buy_call, sell_call, cost):
     }
 
 
-def make_collar(t, fixing, put, call, _bid):
+def make_collar(t, fixing, put, call, _bid, backtest=None):
     """Collar: long put + short call (estrutura sobre o ativo); bid NÃO na UI."""
     prazo = months_label(fixing)
+    venc = fixing.strftime("%d/%m/%Y")
     floor = put - 100
     cap = call - 100
     put_lbl = fmt_lvl(put)
     call_lbl = fmt_lvl(call)
     slug = slugify("collar", t, f"put{int(put)}", prazo.replace(" ", ""))
+    bt_lbl = f"{backtest:.0f}%" if backtest is not None else None
+    bt_speech = (
+        f"Backtest: {bt_lbl} no histórico da estrutura (material da prateleira)."
+        if bt_lbl
+        else ""
+    )
+    pills = [
+        ("Ativo", t),
+        ("Prazo", prazo),
+        ("Vencimento", venc),
+        ("Put", put_lbl),
+        ("Call", call_lbl),
+        ("Piso", f"{floor:+.0f}%"),
+        ("Teto", f"{cap:+.0f}%"),
+    ]
+    if bt_lbl:
+        pills.append(("Backtest", bt_lbl))
+    highlights = [
+        ("Prazo", prazo, f"Vencimento {venc}"),
+        ("Piso", f"{floor:+.0f}%", f"Put {put_lbl}"),
+        ("Teto", f"{cap:+.0f}%", f"Call {call_lbl}"),
+        ("Meio", "1:1", "Entre put e call"),
+    ]
+    if bt_lbl:
+        highlights.append(("Backtest", bt_lbl, "Histórico da estrutura"))
+    speech_close = "Material de uso interno — condições no DIE."
+    speech_mid = f"Collar · put {put_lbl} · call {call_lbl} · prazo {prazo} (venc. {venc})."
+    if bt_speech:
+        speech_mid += f" {bt_speech}"
     return slug, {
         "title": f"Collar {t}",
         "h1": "Collar",
@@ -1700,20 +1730,8 @@ def make_collar(t, fixing, put, call, _bid):
             f"Collar sobre {t}: piso na put {put_lbl} e teto na call {call_lbl}; "
             f"entre os strikes acompanha o ativo 1:1."
         ),
-        "pills": [
-            ("Ativo", t),
-            ("Prazo", prazo),
-            ("Put", put_lbl),
-            ("Call", call_lbl),
-            ("Piso", f"{floor:+.0f}%"),
-            ("Teto", f"{cap:+.0f}%"),
-        ],
-        "highlights": [
-            ("Prazo", prazo, ""),
-            ("Piso", f"{floor:+.0f}%", f"Put {put_lbl}"),
-            ("Teto", f"{cap:+.0f}%", f"Call {call_lbl}"),
-            ("Meio", "1:1", "Entre put e call"),
-        ],
+        "pills": pills,
+        "highlights": highlights,
         "struct": [
             ('<span class="tag b">B</span> Put', put_lbl),
             ('<span class="tag s">S</span> Call', call_lbl),
@@ -1726,8 +1744,8 @@ def make_collar(t, fixing, put, call, _bid):
         "regime0": "Entre put e call: participa 1:1.",
         "speech": [
             ("Para quem", f"Cliente com visão em {t} ({prazo}) que aceita teto em troca de proteção."),
-            ("Como encaixa", f"Collar · put {put_lbl} · call {call_lbl} · prazo {prazo}."),
-            ("Fechamento", "Material de uso interno — condições no DIE."),
+            ("Como encaixa", speech_mid),
+            ("Fechamento", speech_close),
         ],
         "x_min": min(-50, int(floor) - 15),
         "x_max": max(50, int(cap) + 20),
