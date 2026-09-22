@@ -133,7 +133,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
     <h2>Research BTG</h2>
     <a class="research-link" href="https://content.btgpactual.com/research/ativo/EMBJ3" target="_blank" rel="noopener">Abrir EMBJ3 no Research <span class="arrow" aria-hidden="true">→</span></a>
   </div>
-  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 98,01</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 126,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+28,56%</div></div></div><p class="research-note">Spot do fechamento anterior (21/09/2026) · preço-alvo atualizado em 24/08/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
+  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 98,45</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 126,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+27,98%</div></div></div><p class="research-note">Spot do fechamento anterior (21/09/2026) · preço-alvo atualizado em 24/08/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
 </section>
 
 <div class="main">
@@ -147,8 +147,8 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
           <table class="struct-table">
             <thead><tr><th></th><th>R$</th><th>vs spot</th></tr></thead>
             <tbody>
-              <tr><td>Máximo</td><td><strong>105,50</strong></td><td>+7,6%</td></tr>
-              <tr><td>Mínimo</td><td><strong>68,08</strong></td><td>-30,5%</td></tr>
+              <tr><td>Máximo</td><td><strong>105,50</strong></td><td>+7,2%</td></tr>
+              <tr><td>Mínimo</td><td><strong>68,08</strong></td><td>-30,8%</td></tr>
             </tbody>
           </table>
           <p class="legend-note">
@@ -157,6 +157,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
           </p>
         </div>
         <!-- /RANGE_52W -->
+  
 </aside>
 <section class="panel chart-panel">
   <div class="chart-head">
@@ -241,7 +242,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
   var X_MIN=-50,X_MAX=80,Y_MIN=-50,Y_MAX=80;
   var PAD={l:48,t:24,r:48,b:24},VW=600,VH=400;
   var PLOT_W=VW-PAD.l-PAD.r,PLOT_H=VH-PAD.t-PAD.b;
-  var RESEARCH_X=28.5583;
+  var RESEARCH_X=27.9837;
   var KO=-20.0, REB=5.5, COST=3.5;
   function structureReturn(x){ if (x <= KO) return REB - COST; return Math.max(-x, 0) - COST; }
   function regimeFor(x){ var rp=(structureReturn(x)/COST)*100; if (x <= KO) return 'KO: rebate líquido +'+(REB-COST).toFixed(2).replace('.',',')+'% no nocional · '+rp.toFixed(0)+'% sobre o prêmio.'; if (x < 0) return 'Put ITM: '+structureReturn(x).toFixed(1).replace('.',',')+'% nocional · '+rp.toFixed(0)+'% sobre o prêmio.'; return 'OTM: −'+COST.toFixed(2).replace('.',',')+'% nocional · −100% sobre o prêmio.'; }
@@ -332,6 +333,14 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
       pv.textContent = fmtPct(rp, 0);
       pv.className = 'val ' + (rp > 0 ? 'pos' : rp < 0 ? 'neg' : '');
     }
+    var cv=document.getElementById('cdiVal');
+    var cdiTip='';
+    if (cv && typeof CDI_PERIOD === 'number' && CDI_PERIOD !== 0) {
+      var cp = (ys / CDI_PERIOD) * 100;
+      cv.textContent = fmtPct(cp, 0);
+      cv.className = 'val ' + (cp > 0 ? 'pos' : cp < 0 ? 'neg' : '');
+      cdiTip = '<div class="row"><span>% do CDI</span><span>'+fmtPct(cp,0)+'</span></div>';
+    }
     document.getElementById('regimeText').textContent=regimeFor(x);
     var px=xToSvg(x);
     document.getElementById('hoverLine').setAttribute('x1',px);
@@ -344,7 +353,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
     document.getElementById('hoverAsset').setAttribute('cy',yToSvg(Math.max(Y_MIN,Math.min(Y_MAX,x))));
     document.getElementById('hoverAsset').setAttribute('opacity','1');
     var tip=document.getElementById('tooltip');
-    tip.innerHTML='<div class="t-title">Spot '+fmtPct(x)+'</div><div class="row"><span>Ativo</span><span>'+fmtPct(x)+'</span></div><div class="row"><span>Put (nocional)</span><span>'+fmtPct(ys)+'</span></div>'+(typeof COST==='number' && COST!==0 ? '<div class="row"><span>Sobre o prêmio</span><span>'+fmtPct((ys/COST)*100,0)+'</span></div>' : '');
+    tip.innerHTML='<div class="t-title">Spot '+fmtPct(x)+'</div><div class="row"><span>Ativo</span><span>'+fmtPct(x)+'</span></div><div class="row"><span>Put (nocional)</span><span>'+fmtPct(ys)+'</span></div>'+(typeof COST==='number' && COST!==0 ? '<div class="row"><span>Sobre o prêmio</span><span>'+fmtPct((ys/COST)*100,0)+'</span></div>' : '')+cdiTip;
     tip.className='tooltip on';
     tip.style.left=px+'px'; tip.style.top=yToSvg(ys)+'px';
   }

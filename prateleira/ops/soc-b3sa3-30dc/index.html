@@ -133,7 +133,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
     <h2>Research BTG</h2>
     <a class="research-link" href="https://content.btgpactual.com/research/ativo/B3SA3" target="_blank" rel="noopener">Abrir B3SA3 no Research <span class="arrow" aria-hidden="true">→</span></a>
   </div>
-  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 17,95</div></div><div><div class="lbl">Recomendação</div><div class="val hold">Neutro</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 19,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+5,85%</div></div></div><p class="research-note">Spot do fechamento anterior (21/09/2026) · preço-alvo atualizado em 16/09/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
+  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 18,23</div></div><div><div class="lbl">Recomendação</div><div class="val hold">Neutro</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 19,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+4,22%</div></div></div><p class="research-note">Spot do fechamento anterior (21/09/2026) · preço-alvo atualizado em 16/09/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
 </section>
 
 <div class="main">
@@ -147,8 +147,8 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
           <table class="struct-table">
             <thead><tr><th></th><th>R$</th><th>vs spot</th></tr></thead>
             <tbody>
-              <tr><td>Máximo</td><td><strong>20,33</strong></td><td>+13,3%</td></tr>
-              <tr><td>Mínimo</td><td><strong>12,16</strong></td><td>-32,3%</td></tr>
+              <tr><td>Máximo</td><td><strong>20,33</strong></td><td>+11,5%</td></tr>
+              <tr><td>Mínimo</td><td><strong>12,16</strong></td><td>-33,3%</td></tr>
             </tbody>
           </table>
           <p class="legend-note">
@@ -157,6 +157,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
           </p>
         </div>
         <!-- /RANGE_52W -->
+  
 </aside>
 <section class="panel chart-panel">
   <div class="chart-head">
@@ -226,7 +227,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
   var X_MIN=-30,X_MAX=40,Y_MIN=-30,Y_MAX=15;
   var PAD={l:48,t:24,r:48,b:24},VW=600,VH=400;
   var PLOT_W=VW-PAD.l-PAD.r,PLOT_H=VH-PAD.t-PAD.b;
-  var RESEARCH_X=5.8496;
+  var RESEARCH_X=4.2238;
   var KO_VAR=-10.0, CUPON=5.07;
   function structureReturn(x){ if (x <= KO_VAR) return x; return CUPON; }
   function regimeFor(x){ if (x <= KO_VAR) return 'KO: acompanha o ativo.'; return 'Cupom SOC +5.07%.'; }
@@ -317,6 +318,14 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
       pv.textContent = fmtPct(rp, 0);
       pv.className = 'val ' + (rp > 0 ? 'pos' : rp < 0 ? 'neg' : '');
     }
+    var cv=document.getElementById('cdiVal');
+    var cdiTip='';
+    if (cv && typeof CDI_PERIOD === 'number' && CDI_PERIOD !== 0) {
+      var cp = (ys / CDI_PERIOD) * 100;
+      cv.textContent = fmtPct(cp, 0);
+      cv.className = 'val ' + (cp > 0 ? 'pos' : cp < 0 ? 'neg' : '');
+      cdiTip = '<div class="row"><span>% do CDI</span><span>'+fmtPct(cp,0)+'</span></div>';
+    }
     document.getElementById('regimeText').textContent=regimeFor(x);
     var px=xToSvg(x);
     document.getElementById('hoverLine').setAttribute('x1',px);
@@ -329,7 +338,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
     document.getElementById('hoverAsset').setAttribute('cy',yToSvg(Math.max(Y_MIN,Math.min(Y_MAX,x))));
     document.getElementById('hoverAsset').setAttribute('opacity','1');
     var tip=document.getElementById('tooltip');
-    tip.innerHTML='<div class="t-title">Spot '+fmtPct(x)+'</div><div class="row"><span>Ativo</span><span>'+fmtPct(x)+'</span></div><div class="row"><span>Estrutura</span><span>'+fmtPct(ys)+'</span></div>'+(typeof COST==='number' && COST!==0 ? '<div class="row"><span>Sobre o prêmio</span><span>'+fmtPct((ys/COST)*100,0)+'</span></div>' : '');
+    tip.innerHTML='<div class="t-title">Spot '+fmtPct(x)+'</div><div class="row"><span>Ativo</span><span>'+fmtPct(x)+'</span></div><div class="row"><span>Estrutura</span><span>'+fmtPct(ys)+'</span></div>'+(typeof COST==='number' && COST!==0 ? '<div class="row"><span>Sobre o prêmio</span><span>'+fmtPct((ys/COST)*100,0)+'</span></div>' : '')+cdiTip;
     tip.className='tooltip on';
     tip.style.left=px+'px'; tip.style.top=yToSvg(ys)+'px';
   }

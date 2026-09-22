@@ -133,7 +133,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
     <h2>Research BTG</h2>
     <a class="research-link" href="https://content.btgpactual.com/research/ativo/BOVA11" target="_blank" rel="noopener">Abrir BOVA11 no Research <span class="arrow" aria-hidden="true">→</span></a>
   </div>
-  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 184,57</div></div></div><p class="research-note">Spot do fechamento anterior (21/09/2026) · sem preço-alvo publicado para este ticker · atualizado às 18h30 · fonte Research BTG.</p>
+  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 183,95</div></div></div><p class="research-note">Spot do fechamento anterior (21/09/2026) · sem preço-alvo publicado para este ticker · atualizado às 18h30 · fonte Research BTG.</p>
 </section>
 
 <div class="main">
@@ -147,8 +147,8 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
           <table class="struct-table">
             <thead><tr><th></th><th>R$</th><th>vs spot</th></tr></thead>
             <tbody>
-              <tr><td>Máximo</td><td><strong>195,73</strong></td><td>+6,0%</td></tr>
-              <tr><td>Mínimo</td><td><strong>137,30</strong></td><td>-25,6%</td></tr>
+              <tr><td>Máximo</td><td><strong>195,73</strong></td><td>+6,4%</td></tr>
+              <tr><td>Mínimo</td><td><strong>137,30</strong></td><td>-25,4%</td></tr>
             </tbody>
           </table>
           <p class="legend-note">
@@ -157,6 +157,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
           </p>
         </div>
         <!-- /RANGE_52W -->
+  
 </aside>
 <section class="panel chart-panel">
   <div class="chart-head">
@@ -327,6 +328,14 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
       pv.textContent = fmtPct(rp, 0);
       pv.className = 'val ' + (rp > 0 ? 'pos' : rp < 0 ? 'neg' : '');
     }
+    var cv=document.getElementById('cdiVal');
+    var cdiTip='';
+    if (cv && typeof CDI_PERIOD === 'number' && CDI_PERIOD !== 0) {
+      var cp = (ys / CDI_PERIOD) * 100;
+      cv.textContent = fmtPct(cp, 0);
+      cv.className = 'val ' + (cp > 0 ? 'pos' : cp < 0 ? 'neg' : '');
+      cdiTip = '<div class="row"><span>% do CDI</span><span>'+fmtPct(cp,0)+'</span></div>';
+    }
     document.getElementById('regimeText').textContent=regimeFor(x);
     var px=xToSvg(x);
     document.getElementById('hoverLine').setAttribute('x1',px);
@@ -339,7 +348,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
     document.getElementById('hoverAsset').setAttribute('cy',yToSvg(Math.max(Y_MIN,Math.min(Y_MAX,x))));
     document.getElementById('hoverAsset').setAttribute('opacity','1');
     var tip=document.getElementById('tooltip');
-    tip.innerHTML='<div class="t-title">Spot '+fmtPct(x)+'</div><div class="row"><span>Ativo</span><span>'+fmtPct(x)+'</span></div><div class="row"><span>Call spread (nocional)</span><span>'+fmtPct(ys)+'</span></div>'+(typeof COST==='number' && COST!==0 ? '<div class="row"><span>Sobre o prêmio</span><span>'+fmtPct((ys/COST)*100,0)+'</span></div>' : '');
+    tip.innerHTML='<div class="t-title">Spot '+fmtPct(x)+'</div><div class="row"><span>Ativo</span><span>'+fmtPct(x)+'</span></div><div class="row"><span>Call spread (nocional)</span><span>'+fmtPct(ys)+'</span></div>'+(typeof COST==='number' && COST!==0 ? '<div class="row"><span>Sobre o prêmio</span><span>'+fmtPct((ys/COST)*100,0)+'</span></div>' : '')+cdiTip;
     tip.className='tooltip on';
     tip.style.left=px+'px'; tip.style.top=yToSvg(ys)+'px';
   }
