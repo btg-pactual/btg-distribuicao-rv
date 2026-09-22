@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-22T00:14:55Z",
+  "updated_at": "2026-09-22T23:45:00Z",
   "as_of_br": "22/09/2026",
   "tickers": {
     "VALE3": {
@@ -7,8 +7,8 @@
       "source": "Yahoo Finance VALE3.SA",
       "high": 91.62,
       "low": 56.54,
-      "last": 72.55,
-      "n_days": 248,
+      "last": 72.83,
+      "n_days": 250,
       "as_of": "2026-09-22",
       "as_of_br": "22/09/2026"
     },
@@ -17,8 +17,8 @@
       "source": "Yahoo Finance PETR4.SA",
       "high": 50.7,
       "low": 29.31,
-      "last": 48.0,
-      "n_days": 248,
+      "last": 48.35,
+      "n_days": 250,
       "as_of": "2026-09-22",
       "as_of_br": "22/09/2026"
     },
@@ -27,8 +27,8 @@
       "source": "Yahoo Finance AXIA3.SA",
       "high": 67.84,
       "low": 47.43,
-      "last": 55.15,
-      "n_days": 248,
+      "last": 55.85,
+      "n_days": 250,
       "as_of": "2026-09-22",
       "as_of_br": "22/09/2026"
     },
@@ -37,8 +37,8 @@
       "source": "Yahoo Finance ROXO34.SA",
       "high": 16.57,
       "low": 9.47,
-      "last": 11.87,
-      "n_days": 248,
+      "last": 12.03,
+      "n_days": 250,
       "as_of": "2026-09-22",
       "as_of_br": "22/09/2026"
     },
@@ -47,8 +47,8 @@
       "source": "Yahoo Finance ITUB4.SA",
       "high": 49.67,
       "low": 35.8835,
-      "last": 43.08,
-      "n_days": 248,
+      "last": 43.18,
+      "n_days": 250,
       "as_of": "2026-09-22",
       "as_of_br": "22/09/2026"
     },
@@ -57,8 +57,8 @@
       "source": "Yahoo Finance EMBJ3.SA",
       "high": 105.5,
       "low": 68.08,
-      "last": 98.45,
-      "n_days": 248,
+      "last": 98.4,
+      "n_days": 250,
       "as_of": "2026-09-22",
       "as_of_br": "22/09/2026"
     },
@@ -67,8 +67,8 @@
       "source": "Yahoo Finance EQTL3.SA",
       "high": 46.32,
       "low": 33.61,
-      "last": 40.2,
-      "n_days": 248,
+      "last": 40.54,
+      "n_days": 250,
       "as_of": "2026-09-22",
       "as_of_br": "22/09/2026"
     },
@@ -77,8 +77,8 @@
       "source": "Yahoo Finance PACB11.SA",
       "high": 11.22,
       "low": 9.9893,
-      "last": 11.15,
-      "n_days": 243,
+      "last": 11.17,
+      "n_days": 244,
       "as_of": "2026-09-22",
       "as_of_br": "22/09/2026"
     },
@@ -87,8 +87,8 @@
       "source": "BCB Olinda PTAX",
       "high": 5.5739,
       "low": 4.8973,
-      "last": 5.1117,
-      "n_days": 254,
+      "last": 5.1161,
+      "n_days": 255,
       "as_of": "2026-09-22",
       "as_of_br": "22/09/2026"
     }
