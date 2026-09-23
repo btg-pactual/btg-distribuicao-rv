@@ -133,7 +133,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
     <h2>Research BTG</h2>
     <a class="research-link" href="https://content.btgpactual.com/research/ativo/B3SA3" target="_blank" rel="noopener">Abrir B3SA3 no Research <span class="arrow" aria-hidden="true">→</span></a>
   </div>
-  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 18,43</div></div><div><div class="lbl">Recomendação</div><div class="val hold">Neutro</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 19,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+3,09%</div></div></div><p class="research-note">Spot do fechamento anterior (22/09/2026) · preço-alvo atualizado em 16/09/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
+  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 18,04</div></div><div><div class="lbl">Recomendação</div><div class="val hold">Neutro</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 19,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+5,32%</div></div></div><p class="research-note">Spot do fechamento anterior (23/09/2026) · preço-alvo atualizado em 23/09/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
 </section>
 
 <div class="main">
@@ -147,8 +147,8 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
           <table class="struct-table">
             <thead><tr><th></th><th>R$</th><th>vs spot</th></tr></thead>
             <tbody>
-              <tr><td>Máximo</td><td><strong>20,33</strong></td><td>+10,3%</td></tr>
-              <tr><td>Mínimo</td><td><strong>12,16</strong></td><td>-34,0%</td></tr>
+              <tr><td>Máximo</td><td><strong>20,33</strong></td><td>+12,7%</td></tr>
+              <tr><td>Mínimo</td><td><strong>12,16</strong></td><td>-32,6%</td></tr>
             </tbody>
           </table>
           <p class="legend-note">
@@ -212,8 +212,8 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
 
 <section class="speech-box insights-box">
   <h2>Insights Research BTG</h2>
-  <ul class="research-bullets"><li>No 2T26, a B3 reportou EBITDA ajustado de R$ 1,94 bi, queda de 6% t/t e alta de 6% a/a, com margem de 70,1%, enquanto a receita líquida somou R$ 2,77 bi, -4% t/t e +9% a/a.</li><li>O lucro líquido reportado foi de R$ 1,70 bi, mas sustentado por itens não recorrentes, e o lucro recorrente ficou em R$ 1,38 bi, -8% t/t e +8% a/a. Os negócios recorrentes seguiram como principal suporte, com alta de 17% a/a, enquanto…</li><li>Com isso, o EBT do 3T deve ficar ~3–4% abaixo das estimativas e do consenso. Entre os pontos corporativos, a nova gestão reforçou confiança, clientes, tecnologia e pessoas como pilares, sem mudança relevante de estratégia, enquanto a…</li></ul>
-  <p class="research-note">Insights BTG · 16/09/2026 · fonte Research BTG.</p>
+  <ul class="research-bullets"><li>A B3 reportou no 2T26 lucro líquido de R$ 1,70 bi, alta de 15% t/t e 28% a/a, mas sustentado por itens não recorrentes.</li><li>No operacional, a receita líquida foi de R$ 2,77 bi, -4% t/t e +9% a/a, e o EBITDA ajustado somou R$ 1,94 bi, -6% t/t e +6% a/a, com margem de 70,1%, enquanto o lucro recorrente de R$ 1,38 bi caiu 8% t/t e ficou ~4% abaixo da…</li><li>Despesas totais chegaram a R$ 976 mi, +6% t/t e +16% a/a, pressionadas por pessoal e R$ 40,5 mi em custos extraordinários ligados à mudança de diretoria. O lucro reportado também foi beneficiado por resultado financeiro de R$ 139 mi…</li></ul>
+  <p class="research-note">Insights BTG · 23/09/2026 · fonte Research BTG.</p>
 </section>
 
 <p class="footer">Material ilustrativo para uso interno. Não constitui oferta, recomendação ou garantia de rentabilidade.</p>
@@ -227,7 +227,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
   var X_MIN=-30,X_MAX=40,Y_MIN=-30,Y_MAX=15;
   var PAD={l:48,t:24,r:48,b:24},VW=600,VH=400;
   var PLOT_W=VW-PAD.l-PAD.r,PLOT_H=VH-PAD.t-PAD.b;
-  var RESEARCH_X=3.0928;
+  var RESEARCH_X=5.3215;
   var KO_VAR=-10.0, CUPON=5.07;
   function structureReturn(x){ if (x <= KO_VAR) return x; return CUPON; }
   function regimeFor(x){ if (x <= KO_VAR) return 'KO: acompanha o ativo.'; return 'Cupom SOC +5.07%.'; }

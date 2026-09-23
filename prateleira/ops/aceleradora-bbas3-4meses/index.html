@@ -133,7 +133,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
     <h2>Research BTG</h2>
     <a class="research-link" href="https://content.btgpactual.com/research/ativo/BBAS3" target="_blank" rel="noopener">Abrir BBAS3 no Research <span class="arrow" aria-hidden="true">→</span></a>
   </div>
-  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 22,67</div></div><div><div class="lbl">Recomendação</div><div class="val hold">Neutro</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 19,00</div></div><div><div class="lbl">Potencial</div><div class="val sell">-16,19%</div></div></div><p class="research-note">Spot do fechamento anterior (22/09/2026) · preço-alvo atualizado em 22/09/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
+  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 22,17</div></div><div><div class="lbl">Recomendação</div><div class="val hold">Neutro</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 19,00</div></div><div><div class="lbl">Potencial</div><div class="val sell">-14,30%</div></div></div><p class="research-note">Spot do fechamento anterior (23/09/2026) · preço-alvo atualizado em 23/09/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
 </section>
 
 <div class="main">
@@ -147,8 +147,8 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
           <table class="struct-table">
             <thead><tr><th></th><th>R$</th><th>vs spot</th></tr></thead>
             <tbody>
-              <tr><td>Máximo</td><td><strong>27,81</strong></td><td>+22,7%</td></tr>
-              <tr><td>Mínimo</td><td><strong>17,79</strong></td><td>-21,5%</td></tr>
+              <tr><td>Máximo</td><td><strong>27,81</strong></td><td>+25,4%</td></tr>
+              <tr><td>Mínimo</td><td><strong>17,79</strong></td><td>-19,8%</td></tr>
             </tbody>
           </table>
           <p class="legend-note">
@@ -212,8 +212,8 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
 
 <section class="speech-box insights-box">
   <h2>Insights Research BTG</h2>
-  <ul class="research-bullets"><li>No 2T26, o Banco do Brasil reportou lucro líquido gerencial de R$3,9 bi, alta de 14% t/t e 3% a/a, com ROE ajustado de 8%, enquanto o lucro contábil ficou em R$3,2 bi e o NII somou R$29,3 bi, 1% acima da estimativa, com a carteira de…</li><li>A leitura, porém, foi pressionada pela piora da qualidade dos ativos: provisões, incluindo descontos, chegaram a R$20,3 bi, alta de 17% a/a, a inadimplência acima de 90 dias subiu 56 bps t/t, para 5,6%, a cobertura caiu para 148% e a…</li><li>No capital, o índice de capital principal recuou 31 bps, para 13,9%, o patrimônio líquido caiu para R$189,2 bi e o patrimônio tangível encolheu 15% t/t, para R$90,4 bi, pressionado também pelo aumento de ativos fiscais diferidos.</li></ul>
-  <p class="research-note">Insights BTG · 22/09/2026 · fonte Research BTG.</p>
+  <ul class="research-bullets"><li>No 2T26, o Banco do Brasil reportou lucro líquido gerencial de R$3,9 bi, com ROE de 8%, NII de R$29,3 bi e carteira de crédito de R$1,2 tri, mas o trimestre foi marcado por piora relevante da qualidade dos ativos e pressão sobre capital.</li><li>As provisões, incluindo descontos, somaram R$20,3 bi, a inadimplência acima de 90 dias subiu 56 bps t/t para 5,6% e o índice de cobertura caiu para 148%; a formação de novos créditos inadimplentes avançou 41% t/t para R$21,7 bi, com…</li><li>No capital, o CET1 recuou para 13,9%, o patrimônio líquido caiu para R$189,2 bi e o patrimônio tangível encolheu 15% t/t, para R$90,4 bi, pressionado também pelo aumento de ativos fiscais diferidos.</li></ul>
+  <p class="research-note">Insights BTG · 23/09/2026 · fonte Research BTG.</p>
 </section>
 
 <p class="footer">Material ilustrativo para uso interno. Não constitui oferta, recomendação ou garantia de rentabilidade.</p>
@@ -227,7 +227,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
   var X_MIN=-50,X_MAX=80,Y_MIN=-50,Y_MAX=40;
   var PAD={l:48,t:24,r:48,b:24},VW=600,VH=400;
   var PLOT_W=VW-PAD.l-PAD.r,PLOT_H=VH-PAD.t-PAD.b;
-  var RESEARCH_X=-16.1888;
+  var RESEARCH_X=-14.2986;
   var L=-10.0, H=20.0, CAP=20.0;
   function structureReturn(x){ if (x <= L) return x; if (x < 0) return 0; if (x < H) return Math.min(2*x, CAP); return CAP; }
   function regimeFor(x){ if (x <= L) return 'Put KO atingida: perde a proteção e acompanha o ativo.'; if (x < 0) return 'Put KO viva: proteção até a barreira — piso 0%.'; if (2*x < CAP) return 'Alta acelerada: 2× (ainda abaixo do teto).'; if (x < H) return 'Teto do KO atingido — ganho limitado a '+CAP.toFixed(1).replace('.',',')+'%.'; return 'Call vanilla / KO: teto '+CAP.toFixed(1).replace('.',',')+'% (limitado ao KO).'; }
