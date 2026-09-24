@@ -2,8 +2,8 @@
   "NVDC34": {
     "ticker": "NVDC34",
     "url": "https://content.btgpactual.com/research/ativo/NVDC34",
-    "price": 24.3,
-    "last_trade": "2026-09-23T20:59:32",
+    "price": 24.28,
+    "last_trade": "2026-09-24T20:54:29",
     "sector": "Tecnologia",
     "company": "Nvidia"
   },
@@ -30,8 +30,8 @@
   "AXIA3": {
     "ticker": "AXIA3",
     "url": "https://content.btgpactual.com/research/ativo/AXIA3",
-    "price": 55.35,
-    "last_trade": "2026-09-23T20:50:11",
+    "price": 54.47,
+    "last_trade": "2026-09-24T20:52:20",
     "sector": "Serviços Básicos",
     "company": "Axia Energia",
     "rec": "COMPRA",
@@ -45,7 +45,7 @@
       "Essa estratégia acumulava alpha de 5,1% desde 24 de julho de 2026. O caso de investimento segue apoiado em baixa alavancagem, forte capacidade de distribuição de caixa e execução do mecanismo de resgate, ainda em fase inicial por se…"
     ],
     "summary_date": "2026-09-09 19:39:10.617079+00:00",
-    "upside": 33.69467028003612
+    "upside": 35.85459886175877
   },
   "WEGE3": {
     "ticker": "WEGE3",
@@ -90,8 +90,8 @@
   "SPCX34": {
     "ticker": "SPCX34",
     "url": "https://content.btgpactual.com/research/ativo/SPCX34",
-    "price": 51.0,
-    "last_trade": "2026-09-23T20:59:53",
+    "price": 50.98,
+    "last_trade": "2026-09-24T20:53:36",
     "sector": "Telecom & Tecnologia",
     "company": "SpaceX",
     "rec": "COMPRA",
@@ -105,13 +105,13 @@
       "Em lançamentos, a receita foi de US$962 mi, alta de 29% a/a, com 78 lançamentos no acumulado do ano e mais de 1.000 toneladas colocadas em órbita."
     ],
     "summary_date": "2026-08-12 23:32:45.865687+00:00",
-    "upside": 50.98039215686274
+    "upside": 51.03962338171832
   },
   "TOTS3": {
     "ticker": "TOTS3",
     "url": "https://content.btgpactual.com/research/ativo/TOTS3",
-    "price": 35.55,
-    "last_trade": "2026-09-23T20:59:59",
+    "price": 35.13,
+    "last_trade": "2026-09-24T20:57:43",
     "sector": "Telecom & Tecnologia",
     "company": "TOTVS",
     "rec": "COMPRA",
@@ -125,13 +125,13 @@
       "A margem bruta do software ficou em 73,2% e a margem EBITDA em 25,4%."
     ],
     "summary_date": "2026-08-12 23:32:36.218549+00:00",
-    "upside": 54.711673699015485
+    "upside": 56.561343580984904
   },
   "B3SA3": {
     "ticker": "B3SA3",
     "url": "https://content.btgpactual.com/research/ativo/B3SA3",
-    "price": 18.04,
-    "last_trade": "2026-09-23T20:59:13",
+    "price": 17.82,
+    "last_trade": "2026-09-24T20:59:47",
     "sector": "Financeiro",
     "company": "B3",
     "rec": "NEUTRO",
@@ -145,21 +145,21 @@
       "Despesas totais chegaram a R$ 976 mi, +6% t/t e +16% a/a, pressionadas por pessoal e R$ 40,5 mi em custos extraordinários ligados à mudança de diretoria. O lucro reportado também foi beneficiado por resultado financeiro de R$ 139 mi…"
     ],
     "summary_date": "2026-09-23 09:45:25.972029+00:00",
-    "upside": 5.3215077605321515
+    "upside": 6.621773288439958
   },
   "TSLA34": {
     "ticker": "TSLA34",
     "url": "https://content.btgpactual.com/research/ativo/TSLA34",
-    "price": 61.68,
-    "last_trade": "2026-09-23T20:52:58",
+    "price": 61.47,
+    "last_trade": "2026-09-24T20:59:40",
     "sector": "Consumo discricionário",
     "company": "Tesla"
   },
   "ITUB4": {
     "ticker": "ITUB4",
     "url": "https://content.btgpactual.com/research/ativo/ITUB4",
-    "price": 42.37,
-    "last_trade": "2026-09-23T20:59:57",
+    "price": 41.87,
+    "last_trade": "2026-09-24T20:59:34",
     "sector": "Financeiro",
     "company": "Itaú Unibanco",
     "rec": "COMPRA",
@@ -173,33 +173,33 @@
       "Do lado de receitas, tarifas ficaram em R$11 bi, com queda de 3% a/a, pressionadas por menor atividade em investment banking, corretagem, meios de pagamento e contas correntes."
     ],
     "summary_date": "2026-09-23 09:45:26.104694+00:00",
-    "upside": 27.44866650932265
+    "upside": 28.970623358012904
   },
   "PETR4": {
     "ticker": "PETR4",
     "url": "https://content.btgpactual.com/research/ativo/PETR4",
-    "price": 49.6,
-    "last_trade": "2026-09-23T20:59:52",
+    "price": 49.26,
+    "last_trade": "2026-09-24T20:59:56",
     "sector": "Petróleo & Gás",
     "company": "Petrobras",
     "rec": "COMPRA",
     "rec_lbl": "Compra",
     "rec_cls": "buy",
-    "date": "2026-09-21T10:34:52.595Z",
-    "target": 56.0,
+    "date": "2026-09-24T09:19:52.855Z",
+    "target": 65.0,
     "bullets": [
-      "A Petrobras reportou 2T26 forte, com EBITDA de US$18,9 bi, ~5% acima do consenso, apoiado por preços mais altos de petróleo e derivados e por alta de ~4% t/t na produção.",
-      "O lifting cost caiu para US$6,3/boe, a dívida líquida recuou para US$60,4 bi e a alavancagem para ~1,1x, enquanto o fluxo de caixa foi pressionado por ~US$1,9 bi em recebíveis de subvenção ainda não pagos. Na prévia do trimestre, a…",
-      "No refino, a companhia segue capturando margens robustas, com ~1,8–1,9 mi bpd processados e preços realizados de diesel em ~US$135–169/bbl e gasolina em ~US$101/bbl. A principal âncora segue a política de combustíveis: no diesel, a…"
+      "No 2T26, a Petrobras entregou EBITDA de US$18,9 bi, ~5% acima do consenso, com produção de óleo de 2,69 mi bpd, alta t/t, lifting cost de US$6,3/boe e refino ainda robusto apesar de perdas de estoque.",
+      "A dívida líquida caiu para US$60,4 bi, com alavancagem de ~1,1x e caixa de US$10,4 bi. Na prévia do trimestre, a produção já apontava recorde de 2,69 mi bpd, pré-sal em ~2,3 mi bpd, utilização de refinarias em 101% e EBITDA estimado em…",
+      "No acumulado de 2026, a produção ficou em 2,66–2,69 mi bpd, acima do guidance de 2,4–2,6 mi, sustentando expectativa de revisão para cima. No refino, a tese ganhou suporte com preços realizados elevados e subvenções: o diesel partiu de…"
     ],
-    "summary_date": "2026-09-21 10:35:53.161109+00:00",
-    "upside": 12.903225806451601
+    "summary_date": "2026-09-24 09:21:02.835588+00:00",
+    "upside": 31.952902963865213
   },
   "VALE3": {
     "ticker": "VALE3",
     "url": "https://content.btgpactual.com/research/ativo/VALE3",
-    "price": 71.48,
-    "last_trade": "2026-09-23T20:59:56",
+    "price": 70.66,
+    "last_trade": "2026-09-24T20:59:59",
     "sector": "Mineração & Siderurgia",
     "company": "Vale",
     "rec": "COMPRA",
@@ -213,13 +213,13 @@
       "O cobre produziu 98,4 mil t, melhor 2T desde 2017. O FCFE foi de US$1,5 bi, equivalente a yield anualizado de ~9%, e a companhia elevou o guidance de custo C1 do minério para ~US$23/t no ponto médio e o custo total para ~US$60/t, mas…"
     ],
     "summary_date": "2026-09-22 14:01:41.322101+00:00",
-    "upside": 25.909345271404582
+    "upside": 27.370506651570903
   },
   "EMBJ3": {
     "ticker": "EMBJ3",
     "url": "https://content.btgpactual.com/research/ativo/EMBJ3",
-    "price": 98.17,
-    "last_trade": "2026-09-23T20:57:49",
+    "price": 99.1,
+    "last_trade": "2026-09-24T20:59:08",
     "sector": "Aéreas",
     "company": "Embraer",
     "rec": "COMPRA",
@@ -233,13 +233,13 @@
       "Na aviação executiva, o book-to-bill chegou a 3,1x nos últimos 12 meses até o 2T26, a carteira subiu de US$ 2,9 bi no fim de 2021 para US$ 7,8 bi, a margem EBIT avançou de 11,5% para 13,9% e o preço médio implícito por aeronave entregue…"
     ],
     "summary_date": "2026-09-23 16:26:15.735154+00:00",
-    "upside": 28.348782723846377
+    "upside": 27.144298688193746
   },
   "ITLC34": {
     "ticker": "ITLC34",
     "url": "https://content.btgpactual.com/research/ativo/ITLC34",
-    "price": 105.8,
-    "last_trade": "2026-09-23T20:58:18",
+    "price": 109.76,
+    "last_trade": "2026-09-24T20:57:42",
     "sector": "Tecnologia",
     "company": "Intel"
   },
@@ -252,8 +252,8 @@
   "BBAS3": {
     "ticker": "BBAS3",
     "url": "https://content.btgpactual.com/research/ativo/BBAS3",
-    "price": 22.17,
-    "last_trade": "2026-09-23T20:59:08",
+    "price": 21.54,
+    "last_trade": "2026-09-24T20:59:57",
     "sector": "Financeiro",
     "company": "Banco do Brasil",
     "rec": "NEUTRO",
@@ -267,13 +267,13 @@
       "No capital, o CET1 recuou para 13,9%, o patrimônio líquido caiu para R$189,2 bi e o patrimônio tangível encolheu 15% t/t, para R$90,4 bi, pressionado também pelo aumento de ativos fiscais diferidos."
     ],
     "summary_date": "2026-09-23 09:45:25.878059+00:00",
-    "upside": -14.29860171402797
+    "upside": -11.7920148560817
   },
   "ROXO34": {
     "ticker": "ROXO34",
     "url": "https://content.btgpactual.com/research/ativo/ROXO34",
-    "price": 11.64,
-    "last_trade": "2026-09-23T20:56:54",
+    "price": 11.62,
+    "last_trade": "2026-09-24T20:59:46",
     "sector": "Financeiro",
     "company": "Nubank",
     "rec": "COMPRA",
@@ -287,29 +287,29 @@
       "A administração reiterou que underwriting e apetite a risco permanecem inalterados e indicou recuperação gradual da margem financeira ajustada ao risco aos níveis do 2S25, com guidance de eficiência de 20% em 2026. Na expansão…"
     ],
     "summary_date": "2026-09-22 10:55:18.885194+00:00",
-    "upside": 80.4123711340206
+    "upside": 80.72289156626506
   },
   "GOGL34": {
     "ticker": "GOGL34",
     "url": "https://content.btgpactual.com/research/ativo/GOGL34",
-    "price": 146.04,
-    "last_trade": "2026-09-23T20:47:58",
+    "price": 148.16,
+    "last_trade": "2026-09-24T20:51:01",
     "sector": "Comunicação",
     "company": "Alphabet"
   },
   "LILY34": {
     "ticker": "LILY34",
     "url": "https://content.btgpactual.com/research/ativo/LILY34",
-    "price": 199.2,
-    "last_trade": "2026-09-23T20:51:37",
+    "price": 205.6,
+    "last_trade": "2026-09-24T20:45:13",
     "sector": "Consumo não Discricionário",
     "company": "Eli Lilly"
   },
   "SMFT3": {
     "ticker": "SMFT3",
     "url": "https://content.btgpactual.com/research/ativo/SMFT3",
-    "price": 17.04,
-    "last_trade": "2026-09-23T20:35:39",
+    "price": 17.32,
+    "last_trade": "2026-09-24T20:53:00",
     "sector": "Varejo & Consumo",
     "company": "Smart Fit",
     "rec": "COMPRA",
@@ -323,13 +323,13 @@
       "Na prévia do trimestre, o BTG já indicava crescimento de ~24% da receita e ~26% do EBITDA, colocando a companhia entre os destaques positivos do varejo e consumo em um ambiente ainda pressionado por juros altos e consumo seletivo."
     ],
     "summary_date": "2026-09-23 16:27:12.305019+00:00",
-    "upside": 76.05633802816902
+    "upside": 73.21016166281755
   },
   "CYRE3": {
     "ticker": "CYRE3",
     "url": "https://content.btgpactual.com/research/ativo/CYRE3",
-    "price": 26.68,
-    "last_trade": "2026-09-23T20:56:23",
+    "price": 26.51,
+    "last_trade": "2026-09-24T20:49:46",
     "sector": "Construção Civil & Propriedades",
     "company": "Cyrela",
     "rec": "COMPRA",
@@ -343,13 +343,13 @@
       "Por segmento, foram R$ 1,24 bi em alta renda, R$ 855 mi em média renda e R$ 1,37 bi em baixa renda. Os lançamentos atingiram R$ 5,0 bi, +20% a/a, distribuídos em 20 empreendimentos, com 32% das unidades lançadas vendidas dentro do…"
     ],
     "summary_date": "2026-08-18 19:51:37.769656+00:00",
-    "upside": 49.92503748125938
+    "upside": 50.88645794039983
   },
   "RENT3": {
     "ticker": "RENT3",
     "url": "https://content.btgpactual.com/research/ativo/RENT3",
-    "price": 38.15,
-    "last_trade": "2026-09-23T20:59:53",
+    "price": 38.71,
+    "last_trade": "2026-09-24T20:59:48",
     "sector": "Aluguel de Carros & Logística",
     "company": "Localiza",
     "rec": "COMPRA",
@@ -363,21 +363,21 @@
       "O spread caiu de 0,8 p.p. para 0,1 p.p. O perfil da frota ofertada também melhorou, com 74% dos carros abaixo de 45 mil km e 81% concentrados em modelos 2024/25 e 2025/26. Em valuation, a ação negocia perto de 9,0x–9,7x P/L 2026E, com…"
     ],
     "summary_date": "2026-09-14 11:53:55.285585+00:00",
-    "upside": 65.1376146788991
+    "upside": 62.74864376130198
   },
   "GOLD11": {
     "ticker": "GOLD11",
     "url": "https://content.btgpactual.com/research/ativo/GOLD11",
-    "price": 22.91,
-    "last_trade": "2026-09-23T20:59:47",
+    "price": 22.95,
+    "last_trade": "2026-09-24T20:58:00",
     "sector": "Fundos de Índice",
     "company": "TREND ETF LBMA OURO"
   },
   "BOVA11": {
     "ticker": "BOVA11",
     "url": "https://content.btgpactual.com/research/ativo/BOVA11",
-    "price": 182.86,
-    "last_trade": "2026-09-23T20:57:27",
+    "price": 180.87,
+    "last_trade": "2026-09-24T20:59:59",
     "sector": "Fundos de Índice",
     "company": "Ishares Ibovespa Fundo de Índice"
   },
@@ -440,8 +440,8 @@
   "EQTL3": {
     "ticker": "EQTL3",
     "url": "https://content.btgpactual.com/research/ativo/EQTL3",
-    "price": 40.0,
-    "last_trade": "2026-09-23T20:49:43",
+    "price": 39.63,
+    "last_trade": "2026-09-24T20:45:39",
     "sector": "Serviços Básicos",
     "company": "Equatorial",
     "rec": "COMPRA",
@@ -455,13 +455,13 @@
       "Em renováveis, a geração da Echoenergia caiu 14,6% a/a para 1.014 GWh, com curtailment de 10,0% em eólica e 38,7% em solar. Em visão mais estrutural, o histórico de alocação de capital segue como pilar da tese: o BTG estima criação de…"
     ],
     "summary_date": "2026-09-09 19:39:25.218708+00:00",
-    "upside": 39.99999999999999
+    "upside": 41.30709058793842
   },
   "VBBR3": {
     "ticker": "VBBR3",
     "url": "https://content.btgpactual.com/research/ativo/VBBR3",
-    "price": 39.97,
-    "last_trade": "2026-09-23T20:51:49",
+    "price": 39.15,
+    "last_trade": "2026-09-24T20:53:33",
     "sector": "Petróleo & Gás",
     "company": "Vibra Energia",
     "rec": "COMPRA",
@@ -475,13 +475,13 @@
       "A subvenção total do diesel subiu a R$2,12/l, reforçando o ambiente de margens e geração de caixa do setor. A companhia anunciou ainda R$499 mi em JCP, ou ~R$0,42/ação. Em valuation, o material traz preço-alvo de R$42,0 para a ação…"
     ],
     "summary_date": "2026-09-21 10:35:48.158320+00:00",
-    "upside": 5.078809106830118
+    "upside": 7.279693486590033
   },
   "SBSP3": {
     "ticker": "SBSP3",
     "url": "https://content.btgpactual.com/research/ativo/SBSP3",
-    "price": 26.79,
-    "last_trade": "2026-09-23T20:57:27",
+    "price": 26.9,
+    "last_trade": "2026-09-24T20:45:49",
     "sector": "Serviços Básicos",
     "company": "Sabesp",
     "rec": "COMPRA",
@@ -495,21 +495,21 @@
       "O preço-alvo foi ajustado de R$32 para R$31, com TIR real de 10,4%. Em utilities, o BTG também passou a ver valor tático em posição relativa comprada em Sabesp contra CPFL, após a CPFL superar a Sabesp em ~11% em três meses. Para…"
     ],
     "summary_date": "2026-09-09 19:39:28.676206+00:00",
-    "upside": 15.71481896229936
+    "upside": 15.241635687732359
   },
   "MELI34": {
     "ticker": "MELI34",
     "url": "https://content.btgpactual.com/research/ativo/MELI34",
-    "price": 77.19,
-    "last_trade": "2026-09-23T20:59:26",
+    "price": 75.34,
+    "last_trade": "2026-09-24T20:59:54",
     "sector": "Consumo discricionário",
     "company": "Mercado Livre"
   },
   "LREN3": {
     "ticker": "LREN3",
     "url": "https://content.btgpactual.com/research/ativo/LREN3",
-    "price": 11.17,
-    "last_trade": "2026-09-23T20:59:43",
+    "price": 10.97,
+    "last_trade": "2026-09-24T20:59:02",
     "sector": "Varejo & Consumo",
     "company": "Lojas Renner",
     "rec": "COMPRA",
@@ -523,6 +523,6 @@
       "O GMV digital cresceu 13,1%, com penetração de 16,9%, e as despesas operacionais subiram 1,5%. Na Realize, a carteira de crédito caiu 1% a/a, para R$6,44 bi, a receita de serviços financeiros recuou 2%, para R$509 mi, o lucro…"
     ],
     "summary_date": "2026-09-23 16:27:15.904861+00:00",
-    "upside": 79.05102954341987
+    "upside": 82.31540565177757
   }
 }
