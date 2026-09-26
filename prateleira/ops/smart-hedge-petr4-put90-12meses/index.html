@@ -133,7 +133,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
     <h2>Research BTG</h2>
     <a class="research-link" href="https://content.btgpactual.com/research/ativo/PETR4" target="_blank" rel="noopener">Abrir PETR4 no Research <span class="arrow" aria-hidden="true">→</span></a>
   </div>
-  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 49,26</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 65,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+31,95%</div></div></div><p class="research-note">Spot do fechamento anterior (24/09/2026) · preço-alvo atualizado em 24/09/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
+  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 48,07</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 65,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+35,22%</div></div></div><p class="research-note">Spot do fechamento anterior (25/09/2026) · preço-alvo atualizado em 25/09/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
 </section>
 
 <div class="main">
@@ -147,8 +147,8 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
           <table class="struct-table">
             <thead><tr><th></th><th>R$</th><th>vs spot</th></tr></thead>
             <tbody>
-              <tr><td>Máximo</td><td><strong>50,70</strong></td><td>+2,9%</td></tr>
-              <tr><td>Mínimo</td><td><strong>29,31</strong></td><td>-40,5%</td></tr>
+              <tr><td>Máximo</td><td><strong>50,70</strong></td><td>+5,5%</td></tr>
+              <tr><td>Mínimo</td><td><strong>29,31</strong></td><td>-39,0%</td></tr>
             </tbody>
           </table>
           <p class="legend-note">
@@ -212,8 +212,8 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
 
 <section class="speech-box insights-box">
   <h2>Insights Research BTG</h2>
-  <ul class="research-bullets"><li>No 2T26, a Petrobras entregou EBITDA de US$18,9 bi, ~5% acima do consenso, com produção de óleo de 2,69 mi bpd, alta t/t, lifting cost de US$6,3/boe e refino ainda robusto apesar de perdas de estoque.</li><li>A dívida líquida caiu para US$60,4 bi, com alavancagem de ~1,1x e caixa de US$10,4 bi. Na prévia do trimestre, a produção já apontava recorde de 2,69 mi bpd, pré-sal em ~2,3 mi bpd, utilização de refinarias em 101% e EBITDA estimado em…</li><li>No acumulado de 2026, a produção ficou em 2,66–2,69 mi bpd, acima do guidance de 2,4–2,6 mi, sustentando expectativa de revisão para cima. No refino, a tese ganhou suporte com preços realizados elevados e subvenções: o diesel partiu de…</li></ul>
-  <p class="research-note">Insights BTG · 24/09/2026 · fonte Research BTG.</p>
+  <ul class="research-bullets"><li>No 2T26, a Petrobras entregou EBITDA de US$18,9 bi, ~5% acima do consenso, com produção de óleo +4% t/t, lifting cost em US$6,3/boe e dívida líquida/EBITDA em ~1,1x, ante ~1,4x no 1T26.</li><li>O caixa subiu para US$10,4 bi e os dividendos anunciados somaram US$3,4 bi. Na prévia do trimestre, a produção recorde de 2,69 mi bpd, ante 2,58 mi no 1T26, sustentava EBITDA de ~US$18,8 bi, com refino a 101% de utilização…</li><li>No acumulado de 2026, a média de 2,68–2,69 mi bpd ficou acima do guidance de 2,4–2,6 mi bpd, reforçando a leitura de revisão para cima da meta, puxada por Búzios, Itapu e Marlim. Em combustíveis, a companhia seguiu abaixo da paridade…</li></ul>
+  <p class="research-note">Insights BTG · 25/09/2026 · fonte Research BTG.</p>
 </section>
 
 <p class="footer">Material ilustrativo para uso interno. Não constitui oferta, recomendação ou garantia de rentabilidade.</p>
@@ -227,7 +227,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
   var X_MIN=-50,X_MAX=80,Y_MIN=-50,Y_MAX=80;
   var PAD={l:48,t:24,r:48,b:24},VW=600,VH=400;
   var PLOT_W=VW-PAD.l-PAD.r,PLOT_H=VH-PAD.t-PAD.b;
-  var RESEARCH_X=31.9529;
+  var RESEARCH_X=35.2195;
   var PUT=90.0, CALL=110.0, KI=151.08;
   function structureReturn(x){ var st=100+x; var r=st+Math.max(PUT-st,0)-(st>=KI?Math.max(st-CALL,0):0)-100; return r; }
   function regimeFor(x){ var st=100+x; if(st>=KI) return 'KI: teto +10%.'; if(x<=(PUT-100)) return 'Piso da put.'; return 'Participa 1:1.'; }

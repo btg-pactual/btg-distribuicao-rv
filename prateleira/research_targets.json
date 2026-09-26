@@ -2,8 +2,8 @@
   "NVDC34": {
     "ticker": "NVDC34",
     "url": "https://content.btgpactual.com/research/ativo/NVDC34",
-    "price": 24.28,
-    "last_trade": "2026-09-24T20:54:29",
+    "price": 24.2,
+    "last_trade": "2026-09-25T21:25:25",
     "sector": "Tecnologia",
     "company": "Nvidia"
   },
@@ -30,8 +30,8 @@
   "AXIA3": {
     "ticker": "AXIA3",
     "url": "https://content.btgpactual.com/research/ativo/AXIA3",
-    "price": 54.47,
-    "last_trade": "2026-09-24T20:52:20",
+    "price": 54.55,
+    "last_trade": "2026-09-25T21:33:13",
     "sector": "Serviços Básicos",
     "company": "Axia Energia",
     "rec": "COMPRA",
@@ -45,7 +45,7 @@
       "Essa estratégia acumulava alpha de 5,1% desde 24 de julho de 2026. O caso de investimento segue apoiado em baixa alavancagem, forte capacidade de distribuição de caixa e execução do mecanismo de resgate, ainda em fase inicial por se…"
     ],
     "summary_date": "2026-09-09 19:39:10.617079+00:00",
-    "upside": 35.85459886175877
+    "upside": 35.65536205316224
   },
   "WEGE3": {
     "ticker": "WEGE3",
@@ -90,8 +90,8 @@
   "SPCX34": {
     "ticker": "SPCX34",
     "url": "https://content.btgpactual.com/research/ativo/SPCX34",
-    "price": 50.98,
-    "last_trade": "2026-09-24T20:53:36",
+    "price": 51.25,
+    "last_trade": "2026-09-25T21:39:08",
     "sector": "Telecom & Tecnologia",
     "company": "SpaceX",
     "rec": "COMPRA",
@@ -105,13 +105,13 @@
       "Em lançamentos, a receita foi de US$962 mi, alta de 29% a/a, com 78 lançamentos no acumulado do ano e mais de 1.000 toneladas colocadas em órbita."
     ],
     "summary_date": "2026-08-12 23:32:45.865687+00:00",
-    "upside": 51.03962338171832
+    "upside": 50.24390243902439
   },
   "TOTS3": {
     "ticker": "TOTS3",
     "url": "https://content.btgpactual.com/research/ativo/TOTS3",
-    "price": 35.13,
-    "last_trade": "2026-09-24T20:57:43",
+    "price": 34.9,
+    "last_trade": "2026-09-25T21:28:57",
     "sector": "Telecom & Tecnologia",
     "company": "TOTVS",
     "rec": "COMPRA",
@@ -125,13 +125,13 @@
       "A margem bruta do software ficou em 73,2% e a margem EBITDA em 25,4%."
     ],
     "summary_date": "2026-08-12 23:32:36.218549+00:00",
-    "upside": 56.561343580984904
+    "upside": 57.59312320916905
   },
   "B3SA3": {
     "ticker": "B3SA3",
     "url": "https://content.btgpactual.com/research/ativo/B3SA3",
-    "price": 17.82,
-    "last_trade": "2026-09-24T20:59:47",
+    "price": 17.96,
+    "last_trade": "2026-09-25T21:38:18",
     "sector": "Financeiro",
     "company": "B3",
     "rec": "NEUTRO",
@@ -145,21 +145,21 @@
       "Despesas totais chegaram a R$ 976 mi, +6% t/t e +16% a/a, pressionadas por pessoal e R$ 40,5 mi em custos extraordinários ligados à mudança de diretoria. O lucro reportado também foi beneficiado por resultado financeiro de R$ 139 mi…"
     ],
     "summary_date": "2026-09-23 09:45:25.972029+00:00",
-    "upside": 6.621773288439958
+    "upside": 5.790645879732725
   },
   "TSLA34": {
     "ticker": "TSLA34",
     "url": "https://content.btgpactual.com/research/ativo/TSLA34",
-    "price": 61.47,
-    "last_trade": "2026-09-24T20:59:40",
+    "price": 60.05,
+    "last_trade": "2026-09-25T21:29:02",
     "sector": "Consumo discricionário",
     "company": "Tesla"
   },
   "ITUB4": {
     "ticker": "ITUB4",
     "url": "https://content.btgpactual.com/research/ativo/ITUB4",
-    "price": 41.87,
-    "last_trade": "2026-09-24T20:59:34",
+    "price": 42.13,
+    "last_trade": "2026-09-25T21:39:28",
     "sector": "Financeiro",
     "company": "Itaú Unibanco",
     "rec": "COMPRA",
@@ -173,33 +173,33 @@
       "Do lado de receitas, tarifas ficaram em R$11 bi, com queda de 3% a/a, pressionadas por menor atividade em investment banking, corretagem, meios de pagamento e contas correntes."
     ],
     "summary_date": "2026-09-23 09:45:26.104694+00:00",
-    "upside": 28.970623358012904
+    "upside": 28.174697365297874
   },
   "PETR4": {
     "ticker": "PETR4",
     "url": "https://content.btgpactual.com/research/ativo/PETR4",
-    "price": 49.26,
-    "last_trade": "2026-09-24T20:59:56",
+    "price": 48.07,
+    "last_trade": "2026-09-25T21:39:24",
     "sector": "Petróleo & Gás",
     "company": "Petrobras",
     "rec": "COMPRA",
     "rec_lbl": "Compra",
     "rec_cls": "buy",
-    "date": "2026-09-24T09:19:52.855Z",
+    "date": "2026-09-25T14:16:17.161Z",
     "target": 65.0,
     "bullets": [
-      "No 2T26, a Petrobras entregou EBITDA de US$18,9 bi, ~5% acima do consenso, com produção de óleo de 2,69 mi bpd, alta t/t, lifting cost de US$6,3/boe e refino ainda robusto apesar de perdas de estoque.",
-      "A dívida líquida caiu para US$60,4 bi, com alavancagem de ~1,1x e caixa de US$10,4 bi. Na prévia do trimestre, a produção já apontava recorde de 2,69 mi bpd, pré-sal em ~2,3 mi bpd, utilização de refinarias em 101% e EBITDA estimado em…",
-      "No acumulado de 2026, a produção ficou em 2,66–2,69 mi bpd, acima do guidance de 2,4–2,6 mi, sustentando expectativa de revisão para cima. No refino, a tese ganhou suporte com preços realizados elevados e subvenções: o diesel partiu de…"
+      "No 2T26, a Petrobras entregou EBITDA de US$18,9 bi, ~5% acima do consenso, com produção de óleo +4% t/t, lifting cost em US$6,3/boe e dívida líquida/EBITDA em ~1,1x, ante ~1,4x no 1T26.",
+      "O caixa subiu para US$10,4 bi e os dividendos anunciados somaram US$3,4 bi. Na prévia do trimestre, a produção recorde de 2,69 mi bpd, ante 2,58 mi no 1T26, sustentava EBITDA de ~US$18,8 bi, com refino a 101% de utilização…",
+      "No acumulado de 2026, a média de 2,68–2,69 mi bpd ficou acima do guidance de 2,4–2,6 mi bpd, reforçando a leitura de revisão para cima da meta, puxada por Búzios, Itapu e Marlim. Em combustíveis, a companhia seguiu abaixo da paridade…"
     ],
-    "summary_date": "2026-09-24 09:21:02.835588+00:00",
-    "upside": 31.952902963865213
+    "summary_date": "2026-09-25 14:16:58.988968+00:00",
+    "upside": 35.21947160391097
   },
   "VALE3": {
     "ticker": "VALE3",
     "url": "https://content.btgpactual.com/research/ativo/VALE3",
-    "price": 70.66,
-    "last_trade": "2026-09-24T20:59:59",
+    "price": 70.77,
+    "last_trade": "2026-09-25T21:39:51",
     "sector": "Mineração & Siderurgia",
     "company": "Vale",
     "rec": "COMPRA",
@@ -213,13 +213,13 @@
       "O cobre produziu 98,4 mil t, melhor 2T desde 2017. O FCFE foi de US$1,5 bi, equivalente a yield anualizado de ~9%, e a companhia elevou o guidance de custo C1 do minério para ~US$23/t no ponto médio e o custo total para ~US$60/t, mas…"
     ],
     "summary_date": "2026-09-22 14:01:41.322101+00:00",
-    "upside": 27.370506651570903
+    "upside": 27.17253073336161
   },
   "EMBJ3": {
     "ticker": "EMBJ3",
     "url": "https://content.btgpactual.com/research/ativo/EMBJ3",
-    "price": 99.1,
-    "last_trade": "2026-09-24T20:59:08",
+    "price": 101.52,
+    "last_trade": "2026-09-25T21:39:59",
     "sector": "Aéreas",
     "company": "Embraer",
     "rec": "COMPRA",
@@ -233,13 +233,13 @@
       "Na aviação executiva, o book-to-bill chegou a 3,1x nos últimos 12 meses até o 2T26, a carteira subiu de US$ 2,9 bi no fim de 2021 para US$ 7,8 bi, a margem EBIT avançou de 11,5% para 13,9% e o preço médio implícito por aeronave entregue…"
     ],
     "summary_date": "2026-09-23 16:26:15.735154+00:00",
-    "upside": 27.144298688193746
+    "upside": 24.113475177304977
   },
   "ITLC34": {
     "ticker": "ITLC34",
     "url": "https://content.btgpactual.com/research/ativo/ITLC34",
-    "price": 109.76,
-    "last_trade": "2026-09-24T20:57:42",
+    "price": 107.43,
+    "last_trade": "2026-09-25T21:37:08",
     "sector": "Tecnologia",
     "company": "Intel"
   },
@@ -252,8 +252,8 @@
   "BBAS3": {
     "ticker": "BBAS3",
     "url": "https://content.btgpactual.com/research/ativo/BBAS3",
-    "price": 21.54,
-    "last_trade": "2026-09-24T20:59:57",
+    "price": 21.59,
+    "last_trade": "2026-09-25T21:39:58",
     "sector": "Financeiro",
     "company": "Banco do Brasil",
     "rec": "NEUTRO",
@@ -267,13 +267,13 @@
       "No capital, o CET1 recuou para 13,9%, o patrimônio líquido caiu para R$189,2 bi e o patrimônio tangível encolheu 15% t/t, para R$90,4 bi, pressionado também pelo aumento de ativos fiscais diferidos."
     ],
     "summary_date": "2026-09-23 09:45:25.878059+00:00",
-    "upside": -11.7920148560817
+    "upside": -11.99629458082445
   },
   "ROXO34": {
     "ticker": "ROXO34",
     "url": "https://content.btgpactual.com/research/ativo/ROXO34",
-    "price": 11.62,
-    "last_trade": "2026-09-24T20:59:46",
+    "price": 11.63,
+    "last_trade": "2026-09-25T21:38:26",
     "sector": "Financeiro",
     "company": "Nubank",
     "rec": "COMPRA",
@@ -287,69 +287,69 @@
       "A administração reiterou que underwriting e apetite a risco permanecem inalterados e indicou recuperação gradual da margem financeira ajustada ao risco aos níveis do 2S25, com guidance de eficiência de 20% em 2026. Na expansão…"
     ],
     "summary_date": "2026-09-22 10:55:18.885194+00:00",
-    "upside": 80.72289156626506
+    "upside": 80.56749785038693
   },
   "GOGL34": {
     "ticker": "GOGL34",
     "url": "https://content.btgpactual.com/research/ativo/GOGL34",
-    "price": 148.16,
-    "last_trade": "2026-09-24T20:51:01",
+    "price": 148.95,
+    "last_trade": "2026-09-25T21:28:33",
     "sector": "Comunicação",
     "company": "Alphabet"
   },
   "LILY34": {
     "ticker": "LILY34",
     "url": "https://content.btgpactual.com/research/ativo/LILY34",
-    "price": 205.6,
-    "last_trade": "2026-09-24T20:45:13",
+    "price": 205.5,
+    "last_trade": "2026-09-25T20:06:00",
     "sector": "Consumo não Discricionário",
     "company": "Eli Lilly"
   },
   "SMFT3": {
     "ticker": "SMFT3",
     "url": "https://content.btgpactual.com/research/ativo/SMFT3",
-    "price": 17.32,
-    "last_trade": "2026-09-24T20:53:00",
+    "price": 17.33,
+    "last_trade": "2026-09-25T20:04:00",
     "sector": "Varejo & Consumo",
     "company": "Smart Fit",
     "rec": "COMPRA",
     "rec_lbl": "Compra",
     "rec_cls": "buy",
-    "date": "2026-09-23T03:00:00.000Z",
+    "date": "2026-09-25T03:00:00.000Z",
     "target": 30.0,
     "bullets": [
-      "A Smart Fit reportou 2T26 sólido, ainda que ligeiramente abaixo das estimativas: receita líquida de R$2,2 bi, alta de 22% a/a, EBITDA de R$712 mi, +24% a/a, com margem de 32,7%, e lucro líquido recorrente ajustado de R$204 mi, abaixo…",
-      "O desempenho foi sustentado por expansão de 20% da base de unidades próprias, alta de 8% no número médio de alunos por academia e avanço de 10% no ticket médio.",
-      "Na prévia do trimestre, o BTG já indicava crescimento de ~24% da receita e ~26% do EBITDA, colocando a companhia entre os destaques positivos do varejo e consumo em um ambiente ainda pressionado por juros altos e consumo seletivo."
+      "A Smart Fit reportou 2T26 sólido, ainda que ligeiramente abaixo das estimativas: receita líquida de R$2,2 bi, alta de 22% a/a, EBITDA de R$712 mi, +24%, com margem de 32,7%, e lucro líquido recorrente ajustado de R$204 mi, +8%. O avanço…",
+      "A TotalPass chegou a 2,2 mi de clientes, ante 2,0 mi no 1T26, e sua rede parceira superou 47 mil academias e estúdios entre Brasil e México. O segmento Outros, que inclui a TotalPass, cresceu 47% em receita, para R$230 mi, 11% do total…",
+      "Os MAUs da TotalPass cresceram 75% a/a no 2T26. Em capital, a companhia gerou R$2,4 bi de fluxo de caixa operacional nos últimos 12 meses, com conversão de EBITDA de 92%, mas o FCF segue pressionado pelo capex estruturalmente alto, com…"
     ],
-    "summary_date": "2026-09-23 16:27:12.305019+00:00",
-    "upside": 73.21016166281755
+    "summary_date": "2026-09-25 10:30:48.649129+00:00",
+    "upside": 73.11021350259668
   },
   "CYRE3": {
     "ticker": "CYRE3",
     "url": "https://content.btgpactual.com/research/ativo/CYRE3",
-    "price": 26.51,
-    "last_trade": "2026-09-24T20:49:46",
+    "price": 27.0,
+    "last_trade": "2026-09-25T21:25:25",
     "sector": "Construção Civil & Propriedades",
     "company": "Cyrela",
     "rec": "COMPRA",
     "rec_lbl": "Compra",
     "rec_cls": "buy",
-    "date": "2026-08-18T19:50:50.134Z",
+    "date": "2026-09-25T03:00:00.000Z",
     "target": 40.0,
     "bullets": [
-      "A Cyrela entregou 2T26 sólido, com receita líquida de R$ 2,5 bi, +18% a/a, margem bruta de 37,3% (+240 bps), margem EBITDA de 20,6% (+200 bps) e LPA de R$ 1,04, +17% a/a, embora 6% abaixo da estimativa por maiores despesas comerciais.",
-      "O ROE anualizado ficou em 16%. No caixa, a geração foi de R$ 285 mi, acima dos R$ 150 mi esperados, apoiada por forte recebimento de recebíveis após R$ 2,2 bi em entregas no trimestre (+95% a/a) e por R$ 100 mi de venda de terreno, com…",
-      "Por segmento, foram R$ 1,24 bi em alta renda, R$ 855 mi em média renda e R$ 1,37 bi em baixa renda. Os lançamentos atingiram R$ 5,0 bi, +20% a/a, distribuídos em 20 empreendimentos, com 32% das unidades lançadas vendidas dentro do…"
+      "A Cyrela reportou 2T26 sólido, com receita líquida de R$ 2,5 bi, +18% a/a, margem bruta de 37,3% (+240 bps), margem EBITDA de 20,6% (+200 bps) e LPA de R$ 1,04, +17% a/a, ainda 6% abaixo da estimativa por maiores despesas comerciais.",
+      "O ROE anualizado foi de 16%. No operacional, a prévia já indicava vendas líquidas de R$ 3,47 bi, +6% a/a, velocidade de vendas de 17%, lançamentos de R$ 5,0 bi, +20% a/a, e 32% das unidades lançadas vendidas no trimestre, com mix de R$…",
+      "O preço-alvo informado é de R$ 40. O perfil de balanço e a execução operacional mantêm espaço para dividendos e recompras, especialmente após a venda da torre corporativa. Para investidores, recomenda-se acompanhar a evolução da…"
     ],
-    "summary_date": "2026-08-18 19:51:37.769656+00:00",
-    "upside": 50.88645794039983
+    "summary_date": "2026-09-25 10:30:18.101361+00:00",
+    "upside": 48.14814814814814
   },
   "RENT3": {
     "ticker": "RENT3",
     "url": "https://content.btgpactual.com/research/ativo/RENT3",
-    "price": 38.71,
-    "last_trade": "2026-09-24T20:59:48",
+    "price": 38.35,
+    "last_trade": "2026-09-25T21:39:00",
     "sector": "Aluguel de Carros & Logística",
     "company": "Localiza",
     "rec": "COMPRA",
@@ -363,21 +363,21 @@
       "O spread caiu de 0,8 p.p. para 0,1 p.p. O perfil da frota ofertada também melhorou, com 74% dos carros abaixo de 45 mil km e 81% concentrados em modelos 2024/25 e 2025/26. Em valuation, a ação negocia perto de 9,0x–9,7x P/L 2026E, com…"
     ],
     "summary_date": "2026-09-14 11:53:55.285585+00:00",
-    "upside": 62.74864376130198
+    "upside": 64.27640156453715
   },
   "GOLD11": {
     "ticker": "GOLD11",
     "url": "https://content.btgpactual.com/research/ativo/GOLD11",
-    "price": 22.95,
-    "last_trade": "2026-09-24T20:58:00",
+    "price": 23.06,
+    "last_trade": "2026-09-25T21:25:28",
     "sector": "Fundos de Índice",
     "company": "TREND ETF LBMA OURO"
   },
   "BOVA11": {
     "ticker": "BOVA11",
     "url": "https://content.btgpactual.com/research/ativo/BOVA11",
-    "price": 180.87,
-    "last_trade": "2026-09-24T20:59:59",
+    "price": 180.82,
+    "last_trade": "2026-09-25T21:39:15",
     "sector": "Fundos de Índice",
     "company": "Ishares Ibovespa Fundo de Índice"
   },
@@ -440,8 +440,8 @@
   "EQTL3": {
     "ticker": "EQTL3",
     "url": "https://content.btgpactual.com/research/ativo/EQTL3",
-    "price": 39.63,
-    "last_trade": "2026-09-24T20:45:39",
+    "price": 39.79,
+    "last_trade": "2026-09-25T21:25:00",
     "sector": "Serviços Básicos",
     "company": "Equatorial",
     "rec": "COMPRA",
@@ -455,13 +455,13 @@
       "Em renováveis, a geração da Echoenergia caiu 14,6% a/a para 1.014 GWh, com curtailment de 10,0% em eólica e 38,7% em solar. Em visão mais estrutural, o histórico de alocação de capital segue como pilar da tese: o BTG estima criação de…"
     ],
     "summary_date": "2026-09-09 19:39:25.218708+00:00",
-    "upside": 41.30709058793842
+    "upside": 40.73887911535563
   },
   "VBBR3": {
     "ticker": "VBBR3",
     "url": "https://content.btgpactual.com/research/ativo/VBBR3",
-    "price": 39.15,
-    "last_trade": "2026-09-24T20:53:33",
+    "price": 37.21,
+    "last_trade": "2026-09-25T21:39:26",
     "sector": "Petróleo & Gás",
     "company": "Vibra Energia",
     "rec": "COMPRA",
@@ -475,13 +475,13 @@
       "A subvenção total do diesel subiu a R$2,12/l, reforçando o ambiente de margens e geração de caixa do setor. A companhia anunciou ainda R$499 mi em JCP, ou ~R$0,42/ação. Em valuation, o material traz preço-alvo de R$42,0 para a ação…"
     ],
     "summary_date": "2026-09-21 10:35:48.158320+00:00",
-    "upside": 7.279693486590033
+    "upside": 12.872883633431865
   },
   "SBSP3": {
     "ticker": "SBSP3",
     "url": "https://content.btgpactual.com/research/ativo/SBSP3",
-    "price": 26.9,
-    "last_trade": "2026-09-24T20:45:49",
+    "price": 26.93,
+    "last_trade": "2026-09-25T21:34:43",
     "sector": "Serviços Básicos",
     "company": "Sabesp",
     "rec": "COMPRA",
@@ -495,34 +495,34 @@
       "O preço-alvo foi ajustado de R$32 para R$31, com TIR real de 10,4%. Em utilities, o BTG também passou a ver valor tático em posição relativa comprada em Sabesp contra CPFL, após a CPFL superar a Sabesp em ~11% em três meses. Para…"
     ],
     "summary_date": "2026-09-09 19:39:28.676206+00:00",
-    "upside": 15.241635687732359
+    "upside": 15.113256591162273
   },
   "MELI34": {
     "ticker": "MELI34",
     "url": "https://content.btgpactual.com/research/ativo/MELI34",
-    "price": 75.34,
-    "last_trade": "2026-09-24T20:59:54",
+    "price": 75.45,
+    "last_trade": "2026-09-25T21:34:14",
     "sector": "Consumo discricionário",
     "company": "Mercado Livre"
   },
   "LREN3": {
     "ticker": "LREN3",
     "url": "https://content.btgpactual.com/research/ativo/LREN3",
-    "price": 10.97,
-    "last_trade": "2026-09-24T20:59:02",
+    "price": 11.12,
+    "last_trade": "2026-09-25T21:39:09",
     "sector": "Varejo & Consumo",
     "company": "Lojas Renner",
     "rec": "COMPRA",
     "rec_lbl": "Compra",
     "rec_cls": "buy",
-    "date": "2026-09-23T03:00:00.000Z",
+    "date": "2026-09-25T03:00:00.000Z",
     "target": 20.0,
     "bullets": [
-      "A Lojas Renner reportou 2T26 abaixo do esperado, com receita líquida de varejo de R$3,69 bi, alta de 1,1% a/a e ~3% abaixo das estimativas, SSS de 0,5% e EBITDA consolidado ajustado de R$845 mi, estável a/a e também abaixo do esperado.",
-      "No varejo, o EBITDA pós-IFRS16 foi de R$791 mi, +2,3%, com margem de 21,4%, enquanto o lucro líquido ficou em R$405 mi, praticamente estável. Na prévia do trimestre, a expectativa era de receita de varejo +4%, SSS de 3,2%, margem bruta…",
-      "O GMV digital cresceu 13,1%, com penetração de 16,9%, e as despesas operacionais subiram 1,5%. Na Realize, a carteira de crédito caiu 1% a/a, para R$6,44 bi, a receita de serviços financeiros recuou 2%, para R$509 mi, o lucro…"
+      "A Lojas Renner reportou 2T26 abaixo do esperado, com receita líquida de varejo de R$3,69 bi, alta de 1,1% a/a e ~3% abaixo das estimativas, SSS de 0,5% e GMV digital +13,1%, com penetração de 16,9%. No vestuário, a receita avançou 2,5%…",
+      "O lucro líquido foi de R$405 mi. A prévia do trimestre apontava receita de varejo +4%, SSS de 3,2%, margem bruta de 57,8%, margem EBITDA pré-IFRS16 de 16,8% e EBITDA de R$639 mi, mas o trimestre veio mais fraco em vendas. Ainda assim, a…",
+      "A inadimplência entre 90 e 540 dias subiu para 24,1% e a relação entre 1 e 540 dias foi a 32,2%, reforçando a postura conservadora em crédito. A companhia cortou o guidance de crescimento da receita de varejo de 2026 para 4%–8%, ante…"
     ],
-    "summary_date": "2026-09-23 16:27:15.904861+00:00",
-    "upside": 82.31540565177757
+    "summary_date": "2026-09-25 10:30:48.315550+00:00",
+    "upside": 79.85611510791368
   }
 }

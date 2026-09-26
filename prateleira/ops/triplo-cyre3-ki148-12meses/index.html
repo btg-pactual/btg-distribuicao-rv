@@ -133,7 +133,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
     <h2>Research BTG</h2>
     <a class="research-link" href="https://content.btgpactual.com/research/ativo/CYRE3" target="_blank" rel="noopener">Abrir CYRE3 no Research <span class="arrow" aria-hidden="true">→</span></a>
   </div>
-  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 26,51</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 40,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+50,89%</div></div></div><p class="research-note">Spot do fechamento anterior (24/09/2026) · preço-alvo atualizado em 18/08/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
+  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 27,00</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 40,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+48,15%</div></div></div><p class="research-note">Spot do fechamento anterior (25/09/2026) · preço-alvo atualizado em 25/09/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
 </section>
 
 <div class="main">
@@ -147,8 +147,8 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
           <table class="struct-table">
             <thead><tr><th></th><th>R$</th><th>vs spot</th></tr></thead>
             <tbody>
-              <tr><td>Máximo</td><td><strong>39,06</strong></td><td>+47,3%</td></tr>
-              <tr><td>Mínimo</td><td><strong>19,76</strong></td><td>-25,5%</td></tr>
+              <tr><td>Máximo</td><td><strong>39,06</strong></td><td>+44,7%</td></tr>
+              <tr><td>Mínimo</td><td><strong>19,76</strong></td><td>-26,8%</td></tr>
             </tbody>
           </table>
           <p class="legend-note">
@@ -212,8 +212,8 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
 
 <section class="speech-box insights-box">
   <h2>Insights Research BTG</h2>
-  <ul class="research-bullets"><li>A Cyrela entregou 2T26 sólido, com receita líquida de R$ 2,5 bi, +18% a/a, margem bruta de 37,3% (+240 bps), margem EBITDA de 20,6% (+200 bps) e LPA de R$ 1,04, +17% a/a, embora 6% abaixo da estimativa por maiores despesas comerciais.</li><li>O ROE anualizado ficou em 16%. No caixa, a geração foi de R$ 285 mi, acima dos R$ 150 mi esperados, apoiada por forte recebimento de recebíveis após R$ 2,2 bi em entregas no trimestre (+95% a/a) e por R$ 100 mi de venda de terreno, com…</li><li>Por segmento, foram R$ 1,24 bi em alta renda, R$ 855 mi em média renda e R$ 1,37 bi em baixa renda. Os lançamentos atingiram R$ 5,0 bi, +20% a/a, distribuídos em 20 empreendimentos, com 32% das unidades lançadas vendidas dentro do…</li></ul>
-  <p class="research-note">Insights BTG · 18/08/2026 · fonte Research BTG.</p>
+  <ul class="research-bullets"><li>A Cyrela reportou 2T26 sólido, com receita líquida de R$ 2,5 bi, +18% a/a, margem bruta de 37,3% (+240 bps), margem EBITDA de 20,6% (+200 bps) e LPA de R$ 1,04, +17% a/a, ainda 6% abaixo da estimativa por maiores despesas comerciais.</li><li>O ROE anualizado foi de 16%. No operacional, a prévia já indicava vendas líquidas de R$ 3,47 bi, +6% a/a, velocidade de vendas de 17%, lançamentos de R$ 5,0 bi, +20% a/a, e 32% das unidades lançadas vendidas no trimestre, com mix de R$…</li><li>O preço-alvo informado é de R$ 40. O perfil de balanço e a execução operacional mantêm espaço para dividendos e recompras, especialmente após a venda da torre corporativa. Para investidores, recomenda-se acompanhar a evolução da…</li></ul>
+  <p class="research-note">Insights BTG · 25/09/2026 · fonte Research BTG.</p>
 </section>
 
 <p class="footer">Material ilustrativo para uso interno. Não constitui oferta, recomendação ou garantia de rentabilidade.</p>
@@ -227,7 +227,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
   var X_MIN=-50,X_MAX=80,Y_MIN=-50,Y_MAX=170;
   var PAD={l:48,t:24,r:48,b:24},VW=600,VH=400;
   var PLOT_W=VW-PAD.l-PAD.r,PLOT_H=VH-PAD.t-PAD.b;
-  var RESEARCH_X=50.8865;
+  var RESEARCH_X=48.1481;
   var L=-20.0, H=48.0, CAP=15.0;
   function structureReturn(x){ if (x < L) return x; if (x < 0) return -x; if (x < H) return 3*x; return CAP; }
   function regimeFor(x){ if (x < L) return 'Abaixo do put KO: acompanha.'; if (x < 0) return 'Queda moderada: |x|.'; if (x < H) return 'Alta: 3×.'; return 'KO alta: teto.'; }

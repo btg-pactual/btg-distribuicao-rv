@@ -133,7 +133,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
     <h2>Research BTG</h2>
     <a class="research-link" href="https://content.btgpactual.com/research/ativo/SMFT3" target="_blank" rel="noopener">Abrir SMFT3 no Research <span class="arrow" aria-hidden="true">→</span></a>
   </div>
-  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 17,32</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 30,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+73,21%</div></div></div><p class="research-note">Spot do fechamento anterior (24/09/2026) · preço-alvo atualizado em 23/09/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
+  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 17,33</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 30,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+73,11%</div></div></div><p class="research-note">Spot do fechamento anterior (25/09/2026) · preço-alvo atualizado em 25/09/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
 </section>
 
 <div class="main">
@@ -147,8 +147,8 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
           <table class="struct-table">
             <thead><tr><th></th><th>R$</th><th>vs spot</th></tr></thead>
             <tbody>
-              <tr><td>Máximo</td><td><strong>27,52</strong></td><td>+58,9%</td></tr>
-              <tr><td>Mínimo</td><td><strong>16,45</strong></td><td>-5,0%</td></tr>
+              <tr><td>Máximo</td><td><strong>27,52</strong></td><td>+58,8%</td></tr>
+              <tr><td>Mínimo</td><td><strong>16,45</strong></td><td>-5,1%</td></tr>
             </tbody>
           </table>
           <p class="legend-note">
@@ -212,8 +212,8 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
 
 <section class="speech-box insights-box">
   <h2>Insights Research BTG</h2>
-  <ul class="research-bullets"><li>A Smart Fit reportou 2T26 sólido, ainda que ligeiramente abaixo das estimativas: receita líquida de R$2,2 bi, alta de 22% a/a, EBITDA de R$712 mi, +24% a/a, com margem de 32,7%, e lucro líquido recorrente ajustado de R$204 mi, abaixo…</li><li>O desempenho foi sustentado por expansão de 20% da base de unidades próprias, alta de 8% no número médio de alunos por academia e avanço de 10% no ticket médio.</li><li>Na prévia do trimestre, o BTG já indicava crescimento de ~24% da receita e ~26% do EBITDA, colocando a companhia entre os destaques positivos do varejo e consumo em um ambiente ainda pressionado por juros altos e consumo seletivo.</li></ul>
-  <p class="research-note">Insights BTG · 23/09/2026 · fonte Research BTG.</p>
+  <ul class="research-bullets"><li>A Smart Fit reportou 2T26 sólido, ainda que ligeiramente abaixo das estimativas: receita líquida de R$2,2 bi, alta de 22% a/a, EBITDA de R$712 mi, +24%, com margem de 32,7%, e lucro líquido recorrente ajustado de R$204 mi, +8%. O avanço…</li><li>A TotalPass chegou a 2,2 mi de clientes, ante 2,0 mi no 1T26, e sua rede parceira superou 47 mil academias e estúdios entre Brasil e México. O segmento Outros, que inclui a TotalPass, cresceu 47% em receita, para R$230 mi, 11% do total…</li><li>Os MAUs da TotalPass cresceram 75% a/a no 2T26. Em capital, a companhia gerou R$2,4 bi de fluxo de caixa operacional nos últimos 12 meses, com conversão de EBITDA de 92%, mas o FCF segue pressionado pelo capex estruturalmente alto, com…</li></ul>
+  <p class="research-note">Insights BTG · 25/09/2026 · fonte Research BTG.</p>
 </section>
 
 <p class="footer">Material ilustrativo para uso interno. Não constitui oferta, recomendação ou garantia de rentabilidade.</p>
@@ -227,7 +227,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
   var X_MIN=-50,X_MAX=90,Y_MIN=-50,Y_MAX=170;
   var PAD={l:48,t:24,r:48,b:24},VW=600,VH=400;
   var PLOT_W=VW-PAD.l-PAD.r,PLOT_H=VH-PAD.t-PAD.b;
-  var RESEARCH_X=73.2102;
+  var RESEARCH_X=73.1102;
   var L=-20.0, H=49.0, CAP=15.0;
   function structureReturn(x){ if (x < L) return x; if (x < 0) return -x; if (x < H) return 3*x; return CAP; }
   function regimeFor(x){ if (x < L) return 'Abaixo do put KO: acompanha.'; if (x < 0) return 'Queda moderada: |x|.'; if (x < H) return 'Alta: 3×.'; return 'KO alta: teto.'; }
