@@ -19,8 +19,8 @@ REPO = ROOT.parent
 if str(REPO) not in sys.path:
     sys.path.insert(0, str(REPO))
 OPS = ROOT / "ops"
-REF = date(2026, 9, 21)  # semana 21.09.26
-PDF_NAME = "Material-Prateleira-Tatica-21092026.pdf"
+REF = date(2026, 9, 28)  # semana 28.09.26
+PDF_NAME = "Material-Prateleira-Tatica-28092026.pdf"
 RESEARCH_REC = "https://content.btgpactual.com/api/research/content-hub/recommendations/ticker/{ticker}?includeInstitutionalData=true"
 RESEARCH_QUOTES = "https://content.btgpactual.com/api/research/research/public/asset/quotes"
 RESEARCH_SUMMARY = "https://content.btgpactual.com/api/research/content-hub-assets/v1/asset/summary/{ticker}"
@@ -278,6 +278,9 @@ SECTOR_FALLBACK = {
     "BOVA11": "Índice (ETF)",
     "SMAL11": "Índice Small Caps (ETF)",
     "MELI34": "Varejo / Marketplace (BDR)",
+    "M1TA34": "Tecnologia (BDR)",
+    "P2LT34": "Tecnologia (BDR)",
+    "SMAB11": "Índice / ETF",
 }
 COMPANY_FALLBACK = {
     "SPCX34": "SPDR S&P 500",
@@ -296,6 +299,9 @@ COMPANY_FALLBACK = {
     "VBBR3": "Vibra Energia",
     "SBSP3": "Sabesp",
     "LREN3": "Lojas Renner",
+    "M1TA34": "Meta Platforms",
+    "P2LT34": "Palantir",
+    "SMAB11": "BTG Absoluto",
 }
 
 
@@ -506,78 +512,79 @@ def research_insights_html(cfg: dict) -> str:
 """
 
 
-# ---- data (fonte: prateleira/operacoes/operacoes.xlsx · aba 21.09.26) ----
+# ---- data (fonte: prateleira/operacoes/operacoes.xlsx · aba 28.09.26) ----
 # NUNCA exibir BID (fee) nem DELTA no HTML — só níveis estruturais / cupom / backtest / preço de compra.
 # (ticker, fixing, strike, ko, bid, backtest_barreira%, prazo_dc)
 # Cupom comercial/gráfico = strike − 100 (lock do SOC); bid = preço da book, não o cupom.
 # prazo_dc = dias corridos típicos do material (20/30/45 dc); fixing = vencimento na book.
-# backtest = % histórico de toque da barreira (último PDF disponível); None = sem janelas (*).
+# backtest = % histórico de toque da barreira (PDF); None = sem janelas (*).
 SOC = [
-    ("AXIA3", date(2026, 11, 4), 106.96, 90.0, 1.20, 25.0, 45),
-    ("SPCX34", date(2026, 10, 8), 103.0, 87.0, 0.98, None, 20),
-    ("TOTS3", date(2026, 10, 20), 104.72, 90.0, 1.70, 42.0, 30),
-    ("B3SA3", date(2026, 10, 20), 105.07, 90.0, 2.30, 23.0, 30),
-    ("TSLA34", date(2026, 10, 19), 103.50, 90.0, 1.50, 46.0, 30),
-    ("CYRE3", date(2026, 10, 21), 105.50, 88.0, 1.50, 30.0, 30),
-    ("VBBR3", date(2026, 11, 5), 106.0, 90.0, 1.30, 11.0, 45),
+    ("AXIA3", date(2026, 11, 11), 106.96, 90.0, 1.10, 25.0, 45),
+    ("TOTS3", date(2026, 10, 27), 104.72, 90.0, 1.70, 42.0, 30),
+    ("B3SA3", date(2026, 10, 27), 105.07, 90.0, 2.30, 23.0, 30),
+    ("CYRE3", date(2026, 10, 28), 105.50, 88.0, 1.91, 30.0, 30),
+    ("VBBR3", date(2026, 11, 12), 106.0, 90.0, 1.17, 11.0, 45),
+    ("M1TA34", date(2026, 11, 9), 107.45, 88.0, 1.50, 46.0, 45),
 ]
 
 # (ticker, fixing, put, call, ki, bid) — bid NÃO vai para a UI
 SMART = [
-    ("ITUB4", date(2027, 9, 17), 90.0, 110.0, 144.32, 5.00),
-    ("AXIA3", date(2027, 9, 17), 90.0, 110.0, 151.78, 4.30),
-    ("PETR4", date(2027, 9, 17), 90.0, 110.0, 151.08, 4.60),
-    ("SPCX34", date(2027, 9, 20), 90.0, 114.0, 190.0, 5.00),
-    ("SPCX34", date(2028, 9, 20), 100.0, 130.0, 261.90, 3.66),
-    ("PETR4", date(2027, 9, 21), 100.0, 110.0, 134.70, 5.00),
-    ("VALE3", date(2028, 9, 21), 110.0, 110.0, 174.35, 7.00),
-    ("AXIA3", date(2028, 9, 21), 110.0, 110.0, 177.35, 7.00),
-    ("ITUB4", date(2028, 9, 18), 90.0, 130.0, 166.0, 6.00),
-    ("PETR4", date(2027, 1, 18), 90.0, 103.0, 135.19, 2.00),
-    ("VALE3", date(2027, 1, 18), 90.0, 103.0, 126.43, 2.00),
-    ("ITUB4", date(2027, 1, 18), 90.0, 103.0, 128.79, 2.00),
-    ("ROXO34", date(2027, 3, 19), 90.0, 104.0, 137.50, 4.00),
-    ("EMBJ3", date(2027, 9, 20), 90.0, 110.0, 148.0, 6.00),
+    ("ITUB4", date(2027, 9, 24), 90.0, 110.0, 144.32, 4.70),
+    ("AXIA3", date(2027, 9, 24), 90.0, 110.0, 151.78, 3.60),
+    ("PETR4", date(2027, 9, 24), 90.0, 110.0, 151.08, 4.60),
+    ("SPCX34", date(2027, 9, 27), 90.0, 114.0, 190.0, 5.00),
+    ("SPCX34", date(2028, 9, 27), 100.0, 130.0, 261.90, 3.08),
+    ("PETR4", date(2027, 9, 28), 100.0, 110.0, 134.70, 5.00),
+    ("VALE3", date(2028, 9, 28), 110.0, 110.0, 174.35, 7.00),
+    ("AXIA3", date(2028, 9, 28), 110.0, 110.0, 177.35, 7.00),
+    ("ITUB4", date(2028, 9, 25), 90.0, 130.0, 166.0, 6.00),
+    ("PETR4", date(2027, 1, 25), 90.0, 103.0, 135.19, 2.00),
+    ("VALE3", date(2027, 1, 25), 90.0, 103.0, 126.43, 2.00),
+    ("ITUB4", date(2027, 1, 25), 90.0, 103.0, 128.79, 1.20),
+    ("ROXO34", date(2027, 3, 29), 90.0, 104.0, 137.50, 4.00),
+    ("EMBJ3", date(2027, 9, 27), 90.0, 110.0, 148.0, 6.14),
+    ("SMAB11", date(2027, 9, 27), 100.0, 110.0, 150.0, 4.00),
+    ("BBAS3", date(2027, 9, 24), 100.0, 110.0, 163.55, 3.00),
 ]
 
 # (ticker, fixing, ko_alta, ko_baixa, bid)
 ACEL = [
-    ("ITLC34", date(2028, 2, 15), 170.0, 40.0, 9.50),
-    ("BBAS3", date(2027, 1, 18), 120.0, 90.0, 2.70),
+    ("ITLC34", date(2028, 2, 22), 170.0, 40.0, 9.50),
+    ("BBAS3", date(2027, 1, 25), 120.0, 90.0, 2.00),
 ]
 
 # (ticker, fixing, sold_call_ki, ko_alta, ko_baixa, bid)
 TRIPLO = [
-    ("ROXO34", date(2027, 9, 20), 115.0, 150.0, 80.0, 4.50),
-    ("ROXO34", date(2027, 3, 19), 106.0, 134.0, 80.0, 2.50),
-    ("NVDC34", date(2027, 9, 20), 115.0, 154.0, 80.0, 4.50),
-    ("GOGL34", date(2027, 9, 20), 115.0, 145.0, 80.0, 4.50),
-    ("LILY34", date(2027, 9, 20), 115.0, 150.0, 80.0, 4.50),
-    ("B3SA3", date(2027, 9, 20), 115.0, 142.0, 80.0, 4.50),
-    ("SMFT3", date(2027, 9, 20), 115.0, 149.0, 80.0, 4.50),
-    ("CYRE3", date(2027, 9, 20), 115.0, 148.0, 80.0, 4.50),
-    ("RENT3", date(2027, 9, 20), 115.0, 142.0, 80.0, 4.50),
-    ("SBSP3", date(2027, 9, 20), 115.0, 136.88, 80.0, 4.50),
+    ("ROXO34", date(2027, 9, 27), 115.0, 150.0, 80.0, 4.50),
+    ("ROXO34", date(2027, 3, 29), 106.0, 134.0, 80.0, 2.50),
+    ("NVDC34", date(2027, 9, 27), 115.0, 154.0, 80.0, 4.50),
+    ("GOGL34", date(2027, 9, 27), 115.0, 145.0, 80.0, 4.50),
+    ("LILY34", date(2027, 9, 27), 115.0, 150.0, 80.0, 4.50),
+    ("B3SA3", date(2027, 9, 27), 115.0, 142.0, 80.0, 4.50),
+    ("SMFT3", date(2027, 9, 27), 115.0, 149.0, 80.0, 4.50),
+    ("CYRE3", date(2027, 9, 27), 115.0, 148.0, 80.0, 4.50),
+    ("RENT3", date(2027, 9, 27), 115.0, 142.0, 80.0, 4.50),
+    ("P2LT34", date(2027, 9, 24), 115.0, 180.0, 80.0, 4.50),
 ]
 
-# Offer Excel 21.09 (refresh): Put KO -3,50%; Put -4,00%; Call Spread -3,00%
-PUT_KO = ("EMBJ3", date(2026, 12, 17), 80.0, 5.50, 3.50)
+# Offer Excel 28.09: Put -2,93%; Call Spread -2,00%
 # (ticker, fixing, put, call_ki_strike, ki, put_ko, put_ko_barrier, bid)
-TWIP = ("GOLD11", date(2027, 9, 20), 100.0, 100.0, 140.0, 100.0, 80.0, 4.51)
+TWIP = ("GOLD11", date(2027, 9, 27), 100.0, 100.0, 140.0, 100.0, 80.0, 4.51)
 # Compra de put: (ticker, fixing, put_strike, cost abs, prazo_pdf)
-PUT_BUY = ("BOVA11", date(2027, 1, 18), 95.0, 4.00, "4 meses")
+PUT_BUY = ("BOVA11", date(2027, 1, 25), 95.0, 2.93, "4 meses")
 # Compra de call spread: (ticker, fixing, buy_call, sell_call, cost abs)
 CALL_SPREAD = [
-    ("BOVA11", date(2026, 10, 28), 105.0, 115.0, 3.00),
+    ("BOVA11", date(2026, 11, 5), 105.0, 115.0, 2.00),
 ]
 # Collar: long put + short call (bid NÃO vai para a UI)
 # (ticker, fixing, put, call, bid, backtest% opcional)
 COLLAR = [
-    ("MELI34", date(2027, 9, 20), 90.0, 127.0, 3.00),
-    ("LREN3", date(2027, 9, 20), 90.0, 125.0, 3.00),
-    ("SMFT3", date(2027, 9, 20), 90.0, 123.0, 3.00),
-    ("ITUB4", date(2027, 3, 19), 90.0, 112.0, 2.70),
-    ("AXIA3", date(2027, 9, 20), 90.0, 124.0, 4.00),
+    ("MELI34", date(2027, 9, 27), 90.0, 127.0, 3.00),
+    ("LREN3", date(2027, 9, 27), 90.0, 125.0, 3.00),
+    ("SMFT3", date(2027, 9, 27), 90.0, 123.0, 3.00),
+    ("ITUB4", date(2027, 3, 25), 90.0, 112.0, 2.70),
+    ("AXIA3", date(2027, 9, 24), 90.0, 124.0, 4.00),
+    ("TSMC34", date(2027, 3, 23), 90.0, 113.23, 3.00),
 ]
 
 CSS = """
@@ -2259,7 +2266,7 @@ def patch_root_index():
             <span class="op-title">Prateleira Tática</span>
             <span class="op-ticker">SEMANAL</span>
           </div>
-          <p class="op-blurb">Hub semanal de operações (SOC, Smart Hedge, Aceleradora, Triplo, Put KO, TWIP, Compra de Put/Call Spread, Collar) + PDF da prateleira.</p>
+          <p class="op-blurb">Hub semanal de operações (SOC, Smart Hedge, Aceleradora, Triplo, TWIP, Compra de Put/Call Spread, Collar) + PDF da prateleira.</p>
           <div class="op-meta">
             <span class="pill">Atualização semanal</span>
             <span class="pill">PDF</span>
@@ -2301,10 +2308,6 @@ def main():
     tri_items = [make_triplo(*r) for r in TRIPLO]
     sections.append(("Triplo Retorno KO", tri_items))
     all_ops.extend(tri_items)
-
-    pk = make_put_ko(*PUT_KO)
-    sections.append(("Put KO com Rebate", [pk]))
-    all_ops.append(pk)
 
     tw = make_twip(*TWIP)
     sections.append(("TWIP", [tw]))
