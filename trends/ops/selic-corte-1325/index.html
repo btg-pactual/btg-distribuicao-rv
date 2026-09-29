@@ -146,20 +146,20 @@
       <div class="meta-pills">
         <div class="pill"><strong>Tipo</strong> Digital Selic</div>
         <div class="pill"><strong>Target</strong> 13,25%</div>
-        <div class="pill"><strong>Custo</strong> R$ 40</div>
+        <div class="pill"><strong>Custo</strong> R$ 43</div>
         <div class="pill"><strong>Payoff</strong> R$ 100</div>
-        <div class="pill"><strong>Upside</strong> +150%</div>
-        <div class="pill"><strong>Risco-retorno</strong> 1:2,5</div>
+        <div class="pill"><strong>Upside</strong> +133%</div>
+        <div class="pill"><strong>Risco-retorno</strong> 1:2,3</div>
         <div class="pill"><strong>Horizonte</strong> Fim/2026</div>
       </div>
     </header>
 
-    <div class="hero-msg">O consenso oscila entre 13,50% e 13,75%. Quem acertar 13,25% (corte adicional ~50 bps vs 13,75%) captura payoff assimétrico: custo R$ 40 → R$ 100 (+150%).</div>
+    <div class="hero-msg">O consenso oscila entre 13,50% e 13,75%. Quem acertar 13,25% (corte adicional ~50 bps vs 13,75%) captura payoff assimétrico: custo R$ 43 → R$ 100 (+133%).</div>
 
     <section class="highlights">
       <div class="hi"><h3>Target</h3><p>13,25%<span>Selic terminal 2026</span></p></div>
-      <div class="hi"><h3>Custo</h3><p>R$ 40<span>por opção adquirida</span></p></div>
-      <div class="hi"><h3>Payoff</h3><p>R$ 100<span>+150% sobre o prêmio</span></p></div>
+      <div class="hi"><h3>Custo</h3><p>R$ 43<span>por opção adquirida</span></p></div>
+      <div class="hi"><h3>Payoff</h3><p>R$ 100<span>+133% sobre o prêmio</span></p></div>
       <div class="hi"><h3>vs 13,75%</h3><p>−50 bps<span>Corte adicional vs cenário-base</span></p></div>
     </section>
 
@@ -183,8 +183,8 @@
         </table>
         <p class="legend-note">
           <strong>B</strong> = Compra · Digital cash-or-nothing sobre Selic terminal 2026.<br />
-          Custo: R$ 40. Lucro líquido no acerto: R$ 60 (+150%).
-          Perda máxima: −R$ 40 (−100% do prêmio).
+          Custo: R$ 43. Lucro líquido no acerto: R$ 57 (+133%).
+          Perda máxima: −R$ 43 (−100% do prêmio).
         </p>
         <div class="thesis">
           <h2>Tese</h2>
@@ -227,10 +227,10 @@
           </svg>
         </div>
         <div class="zones">
-          <div class="zone"><strong>Selic = 13,25%</strong><p>Recebe R$ 100 · lucro líquido R$ 60 (+150%)</p></div>
-          <div class="zone"><strong>Selic ≠ 13,25%</strong><p>Recebe R$ 0 · perda = −R$ 40 (−100% do prêmio)</p></div>
+          <div class="zone"><strong>Selic = 13,25%</strong><p>Recebe R$ 100 · lucro líquido R$ 57 (+133%)</p></div>
+          <div class="zone"><strong>Selic ≠ 13,25%</strong><p>Recebe R$ 0 · perda = −R$ 43 (−100% do prêmio)</p></div>
           <div class="zone"><strong>Observação</strong><p>Cash-or-nothing no nível exato de encerramento 2026</p></div>
-          <div class="zone"><strong>Risco-retorno</strong><p>1:2,5 · upside +150% sobre o custo</p></div>
+          <div class="zone"><strong>Risco-retorno</strong><p>1:2,3 · upside +133% sobre o custo</p></div>
         </div>
       </section>
 
@@ -241,8 +241,8 @@
         <div class="sim-cards">
           <div class="sim-card"><div class="lbl">Selic simulada</div><div class="val" id="selicVal">13,25%</div></div>
           <div class="sim-card"><div class="lbl">Retorno bruto</div><div class="val" id="grossVal">R$ 100</div></div>
-          <div class="sim-card"><div class="lbl">Resultado líquido</div><div class="val pos" id="netVal">+R$ 60</div></div>
-          <div class="sim-card"><div class="lbl">% sobre o prêmio</div><div class="val pos" id="pctVal">+150%</div></div>
+          <div class="sim-card"><div class="lbl">Resultado líquido</div><div class="val pos" id="netVal">+R$ 57</div></div>
+          <div class="sim-card"><div class="lbl">% sobre o prêmio</div><div class="val pos" id="pctVal">+133%</div></div>
         </div>
         <div class="regime" id="regimeText">No target: digital paga R$ 100.</div>
         <div style="margin-top:16px">
@@ -264,7 +264,7 @@
       </p>
       <p class="speech-label">Como encaixa</p>
       <p>
-        Digital com custo R$ 40: se a Selic terminal for 13,25%, recebe R$ 100 (+150%; RR 1:2,5).
+        Digital com custo R$ 43: se a Selic terminal for 13,25%, recebe R$ 100 (+133%; RR 1:2,3).
         Não importa a trajetória — só o nível de encerramento. Ciclo em aberto: a Selic saiu de 15,00%
         e está em 13,75%; novembro e dezembro ainda não estão sinalizados.
       </p>
@@ -290,7 +290,7 @@
   <script>
   (function () {
     var TARGET = 13.25;
-    var CUSTO = 40;
+    var CUSTO = 43;
     var PAYOFF = 100;
     var X_MIN = 12.00, X_MAX = 15.00;
     var PAD = { l: 48, t: 24, r: 48, b: 48 };
