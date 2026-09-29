@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>BTG Trends · Selic Terminal 2026 | BTG Pactual</title>
+  <style>
+    :root {
+      --btg: #0b1f3a;
+      --btg-mid: #163a5f;
+      --btg-blue: #1e4d7b;
+      --link: #1a66b3;
+      --ink: #0b1f3a;
+      --muted: #5c6b7a;
+      --line: #d0d8e2;
+      --bg: #eef2f6;
+      --card: #ffffff;
+      --alert: #b42318;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: Segoe UI, -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif;
+      color: var(--ink); background: var(--bg); min-height: 100vh; line-height: 1.5;
+    }
+    .hero {
+      background: linear-gradient(135deg, var(--btg) 0%, var(--btg-mid) 55%, var(--btg-blue) 100%);
+      color: #fff; padding: 40px 24px 44px;
+    }
+    .hero-inner { max-width: 960px; margin: 0 auto; }
+    .logo-btg {
+      display: inline-block; font-weight: 700; font-size: 13px; letter-spacing: 0.1em;
+      color: #fff; border: 1px solid rgba(255,255,255,0.35); padding: 7px 12px;
+      border-radius: 2px; margin-bottom: 18px;
+    }
+    .back-hero {
+      display: inline-block; margin-bottom: 16px; font-size: 13px; font-weight: 600;
+      color: rgba(255,255,255,0.85); text-decoration: none;
+    }
+    .back-hero:hover { color: #fff; text-decoration: underline; }
+    .hero-row { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; }
+    h1 { font-size: clamp(28px, 4.5vw, 40px); font-weight: 700; letter-spacing: -0.02em; line-height: 1.15; }
+    .lede { margin-top: 14px; font-size: 16px; color: rgba(255,255,255,0.88); max-width: 40em; }
+    .badge {
+      font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+      color: #fff; border: 1px solid rgba(255,255,255,0.35); padding: 8px 12px; border-radius: 2px; white-space: nowrap;
+    }
+    .page { max-width: 960px; margin: 0 auto; padding: 32px 24px 56px; }
+    h2 {
+      font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--btg-blue); margin: 28px 0 14px;
+    }
+    h2:first-of-type { margin-top: 0; }
+    .snapshot {
+      background: var(--card); border: 1px solid var(--line); border-radius: 4px;
+      padding: 18px 22px; margin-bottom: 8px;
+    }
+    .snapshot p { font-size: 15px; color: var(--muted); max-width: 54em; }
+    .ops { list-style: none; display: flex; flex-direction: column; gap: 16px; }
+    .op-block { background: var(--card); border: 1px solid var(--line); border-radius: 4px; overflow: hidden; }
+    .op-bar { height: 6px; background: var(--link); }
+    .op {
+      display: block; text-decoration: none; color: inherit; padding: 22px 22px 18px;
+      transition: background 0.12s ease;
+    }
+    .op:hover, .op:focus-visible { background: #f5f8fc; outline: none; }
+    .op-top { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 8px; }
+    .op-title { font-size: 20px; font-weight: 700; color: var(--btg); }
+    .op-ticker { font-size: 13px; font-weight: 700; color: var(--link); letter-spacing: 0.04em; }
+    .op-blurb { font-size: 15px; color: var(--muted); max-width: 48em; }
+    .op-meta { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 8px; }
+    .pill {
+      background: #eef2f6; border: 1px solid var(--line); border-radius: 2px;
+      padding: 5px 11px; color: var(--btg-mid); font-size: 12px; font-weight: 600;
+    }
+    .op-cta { margin-top: 14px; font-size: 14px; font-weight: 700; color: var(--link); }
+    .pdf-list { display: flex; flex-direction: column; gap: 12px; }
+    .pdf-box {
+      display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+      background: linear-gradient(90deg, #e8f1fb 0%, #ffffff 42%);
+      border: 2px solid #1a66b3; border-radius: 6px; padding: 18px 20px;
+      box-shadow: 0 4px 14px rgba(26,102,179,.12);
+    }
+    .pdf-box-copy { display: flex; flex-direction: column; gap: 6px; min-width: min(100%, 280px); }
+    .pdf-box-kicker {
+      font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #1a66b3;
+    }
+    .pdf-box-title { font-size: 17px; font-weight: 700; color: var(--btg); line-height: 1.25; }
+    .pdf-box-meta { font-size: 13px; color: var(--muted); }
+    .pdf-box-cta {
+      display: inline-flex; align-items: center; gap: 8px; background: #1a66b3; color: #fff !important;
+      font-size: 14px; font-weight: 700; text-decoration: none; padding: 12px 16px; border-radius: 4px; white-space: nowrap;
+    }
+    .pdf-box-cta:hover { background: #15569a; text-decoration: none; }
+    .footer {
+      margin-top: 36px; padding-top: 18px; border-top: 1px solid var(--line);
+      font-size: 13px; color: var(--muted); text-align: center; line-height: 1.55;
+    }
+    .footer strong { display: block; margin-top: 14px; color: var(--alert); font-size: 15px; letter-spacing: 0.02em; }
+    @media (max-width: 640px) {
+      .hero { padding: 28px 16px 32px; }
+      .page { padding: 20px 16px 48px; }
+      .hero-row { flex-direction: column; align-items: flex-start; }
+      .pdf-box-cta { width: 100%; justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-inner">
+      <a class="back-hero" href="../index.html">← Distribuição Renda Variável</a>
+      <div class="logo-btg">BTG PACTUAL</div>
+      <div class="hero-row">
+        <div>
+          <h1>BTG Trends · Selic Terminal 2026</h1>
+          <p class="lede">
+            Duas digitais sobre o nível de encerramento da Selic em 2026 —
+            manutenção em 13,75% (cenário-base BTG) e terminal 13,25% (corte adicional ~50 bps) —
+            com reports de Trends, Mesa e Ata.
+          </p>
+        </div>
+        <div class="badge">Uso interno</div>
+      </div>
+    </div>
+  </header>
+
+  <main class="page">
+    <h2>Como usar</h2>
+    <section class="snapshot">
+      <p>
+        Abra a operação para o payoff interativo (simulador de Selic terminal) e o speech comercial.
+        Os PDFs de Trends e research ficam na seção Reports.
+      </p>
+    </section>
+
+    <h2>Operações</h2>
+    <ul class="ops">
+      <li class="op-block">
+        <div class="op-bar"></div>
+        <a class="op" href="../ops/selic-manutencao-1375/index.html">
+          <div class="op-top">
+            <span class="op-title">Manutenção Selic 13,75%</span>
+            <span class="op-ticker">DIGITAL</span>
+          </div>
+          <p class="op-blurb">PA R$ 43 · payoff R$ 100 · +133% — cenário-base BTG Research (pausa nov+dez).</p>
+          <div class="op-meta">
+            <span class="pill">Target 13,75%</span>
+            <span class="pill">PA R$ 43</span>
+            <span class="pill">Payoff R$ 100</span>
+            <span class="pill">+133%</span>
+            <span class="pill">RR 1:2,3</span>
+          </div>
+          <div class="op-cta">Abrir material →</div>
+        </a>
+      </li>
+      <li class="op-block">
+        <div class="op-bar"></div>
+        <a class="op" href="../ops/selic-corte-1325/index.html">
+          <div class="op-top">
+            <span class="op-title">Terminal 13,25% (corte ~50 bps vs 13,75%)</span>
+            <span class="op-ticker">DIGITAL</span>
+          </div>
+          <p class="op-blurb">PA R$ 40 · payoff R$ 100 · +150% — qualquer path Copom que feche 13,25%.</p>
+          <div class="op-meta">
+            <span class="pill">Target 13,25%</span>
+            <span class="pill">PA R$ 40</span>
+            <span class="pill">Payoff R$ 100</span>
+            <span class="pill">+150%</span>
+            <span class="pill">RR 1:2,5</span>
+          </div>
+          <div class="op-cta">Abrir material →</div>
+        </a>
+      </li>
+    </ul>
+
+    <h2>Reports</h2>
+    <div class="pdf-list">
+      <div class="pdf-box">
+        <div class="pdf-box-copy">
+          <span class="pdf-box-kicker">BTG Trends</span>
+          <span class="pdf-box-title">Trends · Manutenção 13,75%</span>
+          <span class="pdf-box-meta">Operação estruturada · set/2026</span>
+        </div>
+        <a class="pdf-box-cta" href="./reports/btg-trends-selic-1375.pdf" target="_blank" rel="noopener noreferrer">Abrir PDF ↗</a>
+      </div>
+      <div class="pdf-box">
+        <div class="pdf-box-copy">
+          <span class="pdf-box-kicker">BTG Trends</span>
+          <span class="pdf-box-title">Trends · Terminal 13,25%</span>
+          <span class="pdf-box-meta">Operação estruturada · set/2026</span>
+        </div>
+        <a class="pdf-box-cta" href="./reports/btg-trends-selic-1325.pdf" target="_blank" rel="noopener noreferrer">Abrir PDF ↗</a>
+      </div>
+      <div class="pdf-box">
+        <div class="pdf-box-copy">
+          <span class="pdf-box-kicker">Mesa</span>
+          <span class="pdf-box-title">Relatório Mesa · 22/09/2026</span>
+          <span class="pdf-box-meta">Política monetária global e Selic</span>
+        </div>
+        <a class="pdf-box-cta" href="./reports/relatorio-mesa-22092026.pdf" target="_blank" rel="noopener noreferrer">Abrir PDF ↗</a>
+      </div>
+      <div class="pdf-box">
+        <div class="pdf-box-copy">
+          <span class="pdf-box-kicker">Macro Research</span>
+          <span class="pdf-box-title">Política Monetária · Ata 22/09/2026</span>
+          <span class="pdf-box-meta">Ata detalha desaceleração do crédito</span>
+        </div>
+        <a class="pdf-box-cta" href="./reports/politica-monetaria-ata-22092026.pdf" target="_blank" rel="noopener noreferrer">Abrir PDF ↗</a>
+      </div>
+    </div>
+
+    <p class="footer">
+      Material ilustrativo para uso interno. Não constitui oferta, recomendação ou garantia de rentabilidade.
+      <strong>MATERIAL DE USO INTERNO, NÃO ENVIAR AOS CLIENTES</strong>
+    </p>
+  </main>
+</body>
+</html>
