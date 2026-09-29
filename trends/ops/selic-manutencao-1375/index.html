@@ -146,7 +146,7 @@
       <div class="meta-pills">
         <div class="pill"><strong>Tipo</strong> Digital Selic</div>
         <div class="pill"><strong>Target</strong> 13,75%</div>
-        <div class="pill"><strong>PA / custo</strong> R$ 43</div>
+        <div class="pill"><strong>Custo</strong> R$ 43</div>
         <div class="pill"><strong>Payoff</strong> R$ 100</div>
         <div class="pill"><strong>Upside</strong> +133%</div>
         <div class="pill"><strong>Risco-retorno</strong> 1:2,3</div>
@@ -154,11 +154,11 @@
       </div>
     </header>
 
-    <div class="hero-msg">Após o corte de 25 p.b. em setembro, o BTG projeta manutenção nas duas próximas reuniões — encerrando 2026 com Selic em 13,75%. PA R$ 43 → R$ 100 (+133%).</div>
+    <div class="hero-msg">Após o corte de 25 p.b. em setembro, o BTG projeta manutenção nas duas próximas reuniões — encerrando 2026 com Selic em 13,75%. custo R$ 43 → R$ 100 (+133%).</div>
 
     <section class="highlights">
       <div class="hi"><h3>Target</h3><p>13,75%<span>Selic terminal 2026</span></p></div>
-      <div class="hi"><h3>PA (custo)</h3><p>R$ 43<span>por opção adquirida</span></p></div>
+      <div class="hi"><h3>Custo</h3><p>R$ 43<span>por opção adquirida</span></p></div>
       <div class="hi"><h3>Payoff</h3><p>R$ 100<span>+133% sobre o prêmio</span></p></div>
       <div class="hi"><h3>RR</h3><p>1:2,3<span>Relação risco-retorno</span></p></div>
     </section>
@@ -183,7 +183,7 @@
         </table>
         <p class="legend-note">
           <strong>B</strong> = Compra · Digital cash-or-nothing sobre Selic terminal 2026.<br />
-          Custo (PA/offer): R$ 43. Lucro líquido no acerto: R$ 57 (+133%).
+          Custo: R$ 43. Lucro líquido no acerto: R$ 57 (+133%).
           Perda máxima: −R$ 43 (−100% do prêmio).
         </p>
         <div class="thesis">
@@ -230,7 +230,7 @@
           <div class="zone"><strong>Selic = 13,75%</strong><p>Recebe R$ 100 · lucro líquido R$ 57 (+133%)</p></div>
           <div class="zone"><strong>Selic ≠ 13,75%</strong><p>Recebe R$ 0 · perda = −R$ 43 (−100% do prêmio)</p></div>
           <div class="zone"><strong>Observação</strong><p>Cash-or-nothing no nível exato de encerramento 2026</p></div>
-          <div class="zone"><strong>Risco-retorno</strong><p>1:2,3 · upside +133% sobre o PA</p></div>
+          <div class="zone"><strong>Risco-retorno</strong><p>1:2,3 · upside +133% sobre o custo</p></div>
         </div>
       </section>
 
@@ -265,7 +265,7 @@
       <p class="speech-label">Como encaixa</p>
       <p>
         Digital com custo R$ 43: se a Selic terminal for 13,75%, recebe R$ 100 (+133% sobre o prêmio; RR 1:2,3).
-        Se o Copom cortar de novo e o ano fechar em outro nível, a perda fica limitada ao PA.
+        Se o Copom cortar de novo e o ano fechar em outro nível, a perda fica limitada ao custo.
         É a forma limpa de expressar a tese de pausa sem carregar duration de prefixados.
       </p>
       <p class="speech-label">Por que agora</p>
@@ -290,7 +290,7 @@
   <script>
   (function () {
     var TARGET = 13.75;
-    var PA = 43;
+    var CUSTO = 43;
     var PAYOFF = 100;
     var X_MIN = 12.00, X_MAX = 15.00;
     var PAD = { l: 48, t: 24, r: 48, b: 48 };
@@ -321,10 +321,10 @@
       return Math.abs(selic - TARGET) < 0.001 ? PAYOFF : 0;
     }
     function netAt(selic) {
-      return payoffAt(selic) - PA;
+      return payoffAt(selic) - CUSTO;
     }
     function pctAt(selic) {
-      return (netAt(selic) / PA) * 100;
+      return (netAt(selic) / CUSTO) * 100;
     }
 
     function drawChart() {
@@ -407,7 +407,7 @@
 
       document.getElementById("regimeText").textContent = hit
         ? "No target (" + fmtPct(TARGET) + "): digital paga R$ " + PAYOFF + ". Lucro líquido " + fmtMoney(net, true) + " (+" + Math.round(pct) + "% sobre o prêmio)."
-        : "Fora do target: digital expira sem valor. Perda = −R$ " + PA + " (−100% do prêmio).";
+        : "Fora do target: digital expira sem valor. Perda = −R$ " + CUSTO + " (−100% do prêmio).";
 
       var hx = xToPx(selic);
       var hy = yToPx(gross);

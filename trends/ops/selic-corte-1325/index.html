@@ -146,7 +146,7 @@
       <div class="meta-pills">
         <div class="pill"><strong>Tipo</strong> Digital Selic</div>
         <div class="pill"><strong>Target</strong> 13,25%</div>
-        <div class="pill"><strong>PA / custo</strong> R$ 40</div>
+        <div class="pill"><strong>Custo</strong> R$ 40</div>
         <div class="pill"><strong>Payoff</strong> R$ 100</div>
         <div class="pill"><strong>Upside</strong> +150%</div>
         <div class="pill"><strong>Risco-retorno</strong> 1:2,5</div>
@@ -154,11 +154,11 @@
       </div>
     </header>
 
-    <div class="hero-msg">O consenso oscila entre 13,50% e 13,75%. Quem acertar 13,25% (corte adicional ~50 bps vs 13,75%) captura payoff assimétrico: PA R$ 40 → R$ 100 (+150%).</div>
+    <div class="hero-msg">O consenso oscila entre 13,50% e 13,75%. Quem acertar 13,25% (corte adicional ~50 bps vs 13,75%) captura payoff assimétrico: custo R$ 40 → R$ 100 (+150%).</div>
 
     <section class="highlights">
       <div class="hi"><h3>Target</h3><p>13,25%<span>Selic terminal 2026</span></p></div>
-      <div class="hi"><h3>PA (custo)</h3><p>R$ 40<span>por opção adquirida</span></p></div>
+      <div class="hi"><h3>Custo</h3><p>R$ 40<span>por opção adquirida</span></p></div>
       <div class="hi"><h3>Payoff</h3><p>R$ 100<span>+150% sobre o prêmio</span></p></div>
       <div class="hi"><h3>vs 13,75%</h3><p>−50 bps<span>Corte adicional vs cenário-base</span></p></div>
     </section>
@@ -183,7 +183,7 @@
         </table>
         <p class="legend-note">
           <strong>B</strong> = Compra · Digital cash-or-nothing sobre Selic terminal 2026.<br />
-          Custo (PA/offer): R$ 40. Lucro líquido no acerto: R$ 60 (+150%).
+          Custo: R$ 40. Lucro líquido no acerto: R$ 60 (+150%).
           Perda máxima: −R$ 40 (−100% do prêmio).
         </p>
         <div class="thesis">
@@ -230,7 +230,7 @@
           <div class="zone"><strong>Selic = 13,25%</strong><p>Recebe R$ 100 · lucro líquido R$ 60 (+150%)</p></div>
           <div class="zone"><strong>Selic ≠ 13,25%</strong><p>Recebe R$ 0 · perda = −R$ 40 (−100% do prêmio)</p></div>
           <div class="zone"><strong>Observação</strong><p>Cash-or-nothing no nível exato de encerramento 2026</p></div>
-          <div class="zone"><strong>Risco-retorno</strong><p>1:2,5 · upside +150% sobre o PA</p></div>
+          <div class="zone"><strong>Risco-retorno</strong><p>1:2,5 · upside +150% sobre o custo</p></div>
         </div>
       </section>
 
@@ -290,7 +290,7 @@
   <script>
   (function () {
     var TARGET = 13.25;
-    var PA = 40;
+    var CUSTO = 40;
     var PAYOFF = 100;
     var X_MIN = 12.00, X_MAX = 15.00;
     var PAD = { l: 48, t: 24, r: 48, b: 48 };
@@ -321,10 +321,10 @@
       return Math.abs(selic - TARGET) < 0.001 ? PAYOFF : 0;
     }
     function netAt(selic) {
-      return payoffAt(selic) - PA;
+      return payoffAt(selic) - CUSTO;
     }
     function pctAt(selic) {
-      return (netAt(selic) / PA) * 100;
+      return (netAt(selic) / CUSTO) * 100;
     }
 
     function drawChart() {
@@ -407,7 +407,7 @@
 
       document.getElementById("regimeText").textContent = hit
         ? "No target (" + fmtPct(TARGET) + "): digital paga R$ " + PAYOFF + ". Lucro líquido " + fmtMoney(net, true) + " (+" + Math.round(pct) + "% sobre o prêmio)."
-        : "Fora do target: digital expira sem valor. Perda = −R$ " + PA + " (−100% do prêmio).";
+        : "Fora do target: digital expira sem valor. Perda = −R$ " + CUSTO + " (−100% do prêmio).";
 
       var hx = xToPx(selic);
       var hy = yToPx(gross);
