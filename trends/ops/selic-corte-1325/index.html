@@ -163,10 +163,8 @@
           <span class="logo-fx"><span class="dot">DI</span> Trends · Selic</span>
         </div>
         <h1>Selic Terminal 13,25% <span>Corte adicional ~50 bps</span></h1>
-        <p class="subtitle">Digital cash-or-nothing: paga R$ 100 se a Selic fechar 2026 em 13,25% (13,75% − 50 bps). Qualquer combinação de Copom que encerre nesse nível.</p>
+        <p class="subtitle">Digital cash-or-nothing sobre Selic terminal 2026 — target abaixo do consenso.</p>
       </div>
-      <div class="meta-pills">
-        <div class="pill"><strong>Tipo</strong> Digital Selic</div>
         <div class="pill"><strong>Target</strong> 13,25%</div>
         <div class="pill"><strong>Custo</strong> R$ 43</div>
         <div class="pill"><strong>Payoff</strong> R$ 100</div>
@@ -176,34 +174,29 @@
       </div>
     </header>
 
-    <div class="hero-msg">Consenso entre 13,50% e 13,75%. Target 13,25% = ~50 bps a mais de corte vs. o cenário-base.</div>
+    <div class="hero-msg">Target abaixo do consenso (~50 bps a mais de corte vs. cenário-base).</div>
 
-    <section class="highlights">
+    <section class="highlights" style="grid-template-columns:1fr 1fr">
       <div class="hi"><h3>Target</h3><p>13,25%<span>Selic terminal 2026</span></p></div>
-      <div class="hi"><h3>Custo</h3><p>R$ 43<span>por opção adquirida</span></p></div>
-      <div class="hi"><h3>Payoff</h3><p>R$ 100<span>+133% sobre o prêmio</span></p></div>
-      <div class="hi"><h3>Risco-retorno</h3><p>1 para 2,3<span>a cada R$ 1 de risco, até R$ 2,3 de retorno</span></p></div>
+      <div class="hi"><h3>Horizonte</h3><p>Fim/2026<span>Últimas reuniões do ano</span></p></div>
     </section>
 
     <div class="main">
       <aside class="panel">
         <h2>Estrutura</h2>
         <table class="struct-table">
-          <thead><tr><th>Perna</th><th>Condição</th><th>Retorno</th></tr></thead>
+          <thead><tr><th>Cenário</th><th>Resultado</th></tr></thead>
           <tbody>
-            <tr>
-              <td><span class="tag b">B</span> Digital</td>
-              <td>Selic = 13,25%</td>
-              <td><strong>R$ 100</strong></td>
+            <tr class="is-target">
+              <td>Selic = 13,25% <strong>· target</strong></td>
+              <td><strong>Paga R$ 100</strong></td>
             </tr>
             <tr>
-              <td><span class="tag b">B</span> Digital</td>
-              <td>Selic ≠ 13,25%</td>
-              <td><strong>R$ 0</strong></td>
+              <td>Qualquer outro nível</td>
+              <td><strong>Paga R$ 0</strong></td>
             </tr>
           </tbody>
         </table>
-        <p class="legend-note"><strong>B</strong> = compra · digital cash-or-nothing no nível exato de encerramento de 2026.</p>
         <div class="rr-box">
           <h3>Risco-retorno</h3>
           <div class="rr-grid">
@@ -212,12 +205,11 @@
             <div class="rr-item"><div class="lbl">Perda máxima</div><div class="val">−R$ 43</div></div>
             <div class="rr-item"><div class="lbl">Relação</div><div class="val">1 para 2,3</div></div>
           </div>
-          <p class="rr-note">A cada R$ 1 de risco, até R$ 2,3 de retorno se o target bater.</p>
         </div>
         <div class="thesis">
           <h2>Tese</h2>
           <ul>
-            <li>Target <strong>abaixo do consenso</strong> (mercado entre 13,50% e 13,75%).</li>
+            <li>Target <strong>abaixo do consenso</strong> de mercado.</li>
             <li>Equivale a <strong>~50 bps</strong> a mais de corte vs. o cenário-base.</li>
             <li>Paga em <strong>qualquer combinação</strong> de Copom que feche o ano no target.</li>
           </ul>
@@ -253,10 +245,6 @@
             <circle id="hoverDot" r="5" fill="#1a66b3" visibility="hidden"/>
           </svg>
         </div>
-        <div class="zones">
-          <div class="zone"><strong>No target</strong><p>Recebe R$ 100 · líquido +R$ 57 (+133%)</p></div>
-          <div class="zone"><strong>Fora do target</strong><p>Recebe R$ 0 · perde o custo (−R$ 43)</p></div>
-        </div>
       </section>
 
       <aside class="panel panel-sim">
@@ -264,16 +252,14 @@
         <div class="sim-label"><span>Selic terminal 2026</span><output id="selicOut">13,25%</output></div>
         <input type="range" id="selicSlider" min="1200" max="1500" step="25" value="1325" />
         <div class="sim-cards">
-          <div class="sim-card"><div class="lbl">Selic simulada</div><div class="val" id="selicVal">13,25%</div></div>
-          <div class="sim-card"><div class="lbl">Retorno bruto</div><div class="val" id="grossVal">R$ 100</div></div>
           <div class="sim-card"><div class="lbl">Resultado líquido</div><div class="val pos" id="netVal">+R$ 57</div></div>
-          <div class="sim-card"><div class="lbl">% sobre o prêmio</div><div class="val pos" id="pctVal">+133%</div></div>
+          <div class="sim-card"><div class="lbl">% sobre o custo</div><div class="val pos" id="pctVal">+133%</div></div>
         </div>
-        <div class="regime" id="regimeText">No target: digital paga R$ 100.</div>
+        <div class="regime" id="regimeText">No target.</div>
         <div style="margin-top:16px">
           <h2>Pontos-chave</h2>
           <table class="struct-table">
-            <thead><tr><th>Selic</th><th>Bruto</th><th>Líquido</th><th>% prêmio</th></tr></thead>
+            <thead><tr><th>Selic</th><th>Líquido</th><th>% custo</th></tr></thead>
             <tbody id="keyPoints"></tbody>
           </table>
         </div>
@@ -283,29 +269,14 @@
     <section class="speech-box">
       <h2>Speech comercial</h2>
       <p class="speech-label">Para quem</p>
-      <p>
-        Cliente que quer expressar visão de terminal abaixo do consenso: Selic fechando 2026 em 13,25%,
-        ou seja, cerca de 50 bps a menos do que o 13,75% atual / cenário de manutenção.
-      </p>
+      <p>Cliente que vê terminal abaixo do consenso e quer expressar a visão com risco definido.</p>
       <p class="speech-label">Como encaixa</p>
-      <p>
-        Digital com custo R$ 43: se a Selic terminal for 13,25%, recebe R$ 100 (+133%; risco-retorno 1 para 2,3).
-        Não importa a trajetória — só o nível de encerramento. Ciclo em aberto: a Selic saiu de 15,00%
-        e está em 13,75%; novembro e dezembro ainda não estão sinalizados.
-      </p>
-      <p class="speech-label">Por que agora</p>
-      <p>
-        Divergência de mercado entre 13,50% e 13,75%. Acertar 13,25% captura assimetria clara
-        frente ao custo conhecido. Ideal para conversa tática de política monetária com payoff binário.
-      </p>
+      <p>Digital com custo conhecido: paga no target; fora do target, perde só o custo. Assimétrica frente ao consenso.</p>
       <p class="speech-label">Fechamento</p>
-      <p>Material de uso interno — condições oficiais no DIE Admin BTG. Abra o PDF Trends ao lado.</p>
+      <p>Material interno — condições oficiais no DIE Admin BTG.</p>
     </section>
 
-    <p class="footer">
-      Material ilustrativo para uso interno. Payoff digital cash-or-nothing sobre Selic terminal 2026.
-      Não constitui oferta, recomendação ou garantia de rentabilidade.
-    </p>
+    <p class="footer">Material ilustrativo para uso interno. Não constitui oferta, recomendação ou garantia de rentabilidade.</p>
     <p class="footer-alert">
       <strong>MATERIAL DE USO INTERNO, NÃO ENVIAR AOS CLIENTES</strong><br />
       <strong>PARA INFORMAÇÕES OFICIAIS, ACESSAR O DIE DA OPERAÇÃO DISPONIBILIZADO NO ADMIN BTG</strong>
@@ -419,8 +390,6 @@
       var hit = Math.abs(selic - TARGET) < 0.001;
 
       document.getElementById("selicOut").textContent = fmtPct(selic);
-      document.getElementById("selicVal").textContent = fmtPct(selic);
-      document.getElementById("grossVal").textContent = fmtMoney(gross, false);
 
       var netEl = document.getElementById("netVal");
       netEl.textContent = fmtMoney(net, true);
@@ -431,8 +400,8 @@
       pctEl.className = "val " + (pct >= 0 ? "pos" : "neg");
 
       document.getElementById("regimeText").textContent = hit
-        ? "No target (" + fmtPct(TARGET) + "): digital paga R$ " + PAYOFF + ". Lucro líquido " + fmtMoney(net, true) + " (+" + Math.round(pct) + "% sobre o prêmio)."
-        : "Fora do target: digital expira sem valor. Perda = −R$ " + CUSTO + " (−100% do prêmio).";
+        ? "No target — resultado líquido " + fmtMoney(net, true) + "."
+        : "Fora do target — perde o custo.";
 
       var hx = xToPx(selic);
       var hy = yToPx(gross);
@@ -460,7 +429,6 @@
         var mark = hit ? " <strong>· target</strong>" : "";
         tr.innerHTML =
           "<td>" + fmtPct(s) + mark + "</td>" +
-          "<td>" + fmtMoney(gross, false) + "</td>" +
           "<td><strong>" + fmtMoney(net, true) + "</strong></td>" +
           "<td><strong>" + (pct >= 0 ? "+" : "−") + Math.abs(pct).toFixed(0) + "%</strong></td>";
         tbody.appendChild(tr);
