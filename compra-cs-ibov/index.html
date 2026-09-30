@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BTG Pactual · IBOV Call Spread · Superfície de Volatilidade</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ── BTG PACTUAL TOKENS ───────────────────────────────────────────── */
+:root {
+  --bg:            #ffffff;
+  --surface:       #f2f2f2;
+  --surface-2:     #e5e5e5;
+  --fg:            #001e62;
+  --fg-1:          #05132a;
+  --fg-2:          #484848;
+  --fg-3:          #909090;
+  --border:        #e5e5e5;
+  --border-strong: #cacaca;
+  --accent:        #195ab4;
+  --accent-2:      #10408d;
+  --accent-3:      #307ae0;
+  --accent-light:  #d2e5ff;
+  --positive:      #149a5a;
+  --negative:      #ce363f;
+  --table-head:    #10408d;
+  --table-zebra:   #f2f2f2;
+  --btg-1:         #05132a;
+  --btg-2:         #0b2859;
+  --btg-3:         #10408d;
+  --btg-4:         #195ab4;
+  --btg-5:         #307ae0;
+  --btg-6:         #549cff;
+  --btg-9:         #b1d2ff;
+  --btg-10:        #d2e5ff;
+  --font: 'Inter', Arial, sans-serif;
+  --radius: 4px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--fg-1);
+  font-family: var(--font);
+  font-size: 13px;
+  line-height: 1.5;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* ── LAYOUT ─────────────────────────────────────────────────────────── */
+.page { max-width: 1080px; margin: 0 auto; padding: 32px 32px 48px; }
+
+/* ── HEADER ─────────────────────────────────────────────────────────── */
+.hd {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding-bottom: 16px;
+  border-bottom: 2px solid var(--fg);
+  margin-bottom: 20px;
+}
+.hd-left .eyebrow {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 4px;
+}
+.hd-left h1 {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--fg);
+  line-height: 1.15;
+}
+.hd-right {
+  text-align: right;
+  font-size: 11px;
+  color: var(--fg-3);
+  line-height: 2;
+}
+.hd-right strong { color: var(--fg-2); font-weight: 600; }
+
+/* ── TRADE STRIP ────────────────────────────────────────────────────── */
+.strip {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+.sc { padding: 10px 12px; border-right: 1px solid var(--border); background: var(--bg); }
+.sc:last-child { border-right: none; }
+.sc:first-child { background: var(--table-head); }
+.sc:first-child .sc-l, .sc:first-child .sc-v { color: #fff; }
+.sc-l { font-size: 9px; font-weight: 600; letter-spacing: 0.13em; text-transform: uppercase; color: var(--fg-3); margin-bottom: 3px; }
+.sc-v { font-size: 13px; font-weight: 600; color: var(--fg-1); }
+.sc-v.buy { color: var(--accent); }
+.sc-v.sell { color: var(--btg-2); }
+.sc-v.pay { color: var(--positive); }
+
+/* ── MAIN GRID ──────────────────────────────────────────────────────── */
+.layout { display: grid; grid-template-columns: 1fr 310px; gap: 18px; }
+
+/* ── CARDS ──────────────────────────────────────────────────────────── */
+.card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-bottom: 14px;
+}
+.card:last-child { margin-bottom: 0; }
+.ch {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 9px 14px;
+  background: var(--table-head);
+  color: #fff;
+}
+.ct { font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; }
+.cbadge {
+  font-size: 10px;
+  font-weight: 500;
+  padding: 2px 8px;
+  border-radius: 2px;
+  background: rgba(255,255,255,0.18);
+  color: #fff;
+}
+
+/* ── 3D SURFACE CANVAS ──────────────────────────────────────────────── */
+#canvas3d {
+  display: block;
+  width: 100%;
+  height: 360px;
+  background: var(--btg-1);
+  cursor: grab;
+}
+#canvas3d:active { cursor: grabbing; }
+.surface-info {
+  padding: 8px 14px;
+  border-top: 1px solid var(--border);
+  font-size: 11px;
+  color: var(--fg-3);
+  min-height: 34px;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  background: var(--surface);
+}
+.surface-info strong { color: var(--fg-2); }
+.hint-row {
+  padding: 7px 14px;
+  border-top: 1px solid var(--border);
+  font-size: 10px;
+  color: var(--fg-3);
+  background: var(--bg);
+  display: flex;
+  justify-content: space-between;
+}
+
+/* ── LEGS ────────────────────────────────────────────────────────────── */
+.legs { display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid var(--border); }
+.leg { padding: 14px 14px; border-right: 1px solid var(--border); }
+.leg:last-child { border-right: none; }
+.leg-side { font-size: 9px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 2px; }
+.leg-side.buy { color: var(--accent); }
+.leg-side.sell { color: var(--btg-2); }
+.leg-tkr { font-size: 13px; font-weight: 700; color: var(--fg); margin-bottom: 8px; }
+.leg-row { display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 3px; }
+.leg-lbl { color: var(--fg-3); }
+.leg-val { font-weight: 600; color: var(--fg-2); }
+.leg-vol { font-size: 18px; font-weight: 700; margin: 6px 0 2px; }
+.leg-vol.buy { color: var(--accent); }
+.leg-vol.sell { color: var(--btg-2); }
+
+/* ── SKEW ────────────────────────────────────────────────────────────── */
+.skew-box { padding: 12px 14px; border-top: 1px solid var(--border); background: var(--surface); }
+.sk-l { font-size: 9px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--fg-3); margin-bottom: 6px; }
+.sk-val { font-size: 20px; font-weight: 700; color: var(--accent-2); margin-bottom: 6px; }
+.sk-bar { height: 3px; background: var(--border-strong); border-radius: 2px; margin-bottom: 8px; }
+.sk-fill { height: 100%; border-radius: 2px; background: var(--accent); }
+.sk-desc { font-size: 11px; color: var(--fg-3); line-height: 1.6; }
+
+/* ── GREEKS ──────────────────────────────────────────────────────────── */
+.grk { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border-top: 1px solid var(--border); }
+.gi { padding: 11px 14px; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.gi:nth-child(even) { border-right: none; }
+.gi:nth-last-child(-n+2) { border-bottom: none; }
+.gi-l { font-size: 9px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--fg-3); margin-bottom: 3px; }
+.gi-v { font-size: 16px; font-weight: 700; color: var(--fg-1); }
+.gi-v.pos { color: var(--positive); }
+.gi-v.acc { color: var(--accent); }
+
+/* ── PAYOFF SVG ──────────────────────────────────────────────────────── */
+#payoff-svg { display: block; width: 100%; background: var(--bg); }
+
+/* ── VOL TABLE ───────────────────────────────────────────────────────── */
+.vtable-wrap { overflow-x: auto; }
+table.vtable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+table.vtable th {
+  background: var(--table-head);
+  color: #fff;
+  font-weight: 600;
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  padding: 7px 10px;
+  text-align: right;
+  white-space: nowrap;
+  border-right: 1px solid rgba(255,255,255,0.15);
+}
+table.vtable th:first-child { text-align: left; border-right: 1px solid rgba(255,255,255,0.15); }
+table.vtable td {
+  padding: 6px 10px;
+  text-align: right;
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  color: var(--fg-2);
+  white-space: nowrap;
+}
+table.vtable td:first-child { text-align: left; font-weight: 600; color: var(--fg-1); }
+table.vtable tr:nth-child(even) td { background: var(--table-zebra); }
+table.vtable tr.highlight-row td { background: #d2e5ff !important; font-weight: 700; color: var(--btg-2); }
+table.vtable td.highlight-col { background: rgba(25,90,180,0.12) !important; font-weight: 700; color: var(--accent-2); }
+table.vtable tr.highlight-row td.highlight-col { background: rgba(25,90,180,0.28) !important; color: var(--btg-2); font-weight: 800; }
+
+/* ── TESE ────────────────────────────────────────────────────────────── */
+.tese { padding: 12px 14px; }
+.ti { display: flex; gap: 9px; margin-bottom: 9px; font-size: 11px; line-height: 1.65; color: var(--fg-3); }
+.ti:last-child { margin-bottom: 0; }
+.td { width: 3px; min-width: 3px; background: var(--accent); border-radius: 2px; margin-top: 3px; }
+.td.pos { background: var(--positive); }
+.td.neg { background: var(--negative); }
+.td.yel { background: #c79c34; }
+em2 { color: var(--fg-1); font-style: normal; font-weight: 600; }
+
+/* ── FOOTNOTE ────────────────────────────────────────────────────────── */
+.fn {
+  margin-top: 20px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+  font-size: 10px;
+  color: var(--fg-3);
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  line-height: 1.7;
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- HEADER -->
+<div class="hd">
+  <div class="hd-left">
+    <div class="eyebrow">Derivativos · Renda Variável · IBOV Index</div>
+    <h1>Call Spread — Superfície de Volatilidade Implícita</h1>
+  </div>
+  <div class="hd-right">
+    <div><strong>Spot</strong> &nbsp;183.811 &nbsp;|&nbsp; <strong>Ref INDV26</strong> 187.000</div>
+    <div><strong>Vencimento</strong> &nbsp;18 Nov 2026 &nbsp;|&nbsp; <strong>Prazo</strong> 49 dias</div>
+    <div><strong>Modelo</strong> &nbsp;BS-Contínuo · BVOL &nbsp;|&nbsp; <strong>Taxa</strong> 13,597% a.a.</div>
+    <div><strong>Data de referência</strong> &nbsp;30/09/2026 &nbsp;10:44</div>
+  </div>
+</div>
+
+<!-- TRADE STRIP -->
+<div class="strip">
+  <div class="sc">
+    <div class="sc-l">Ativo</div>
+    <div class="sc-v">IBOV</div>
+  </div>
+  <div class="sc">
+    <div class="sc-l">B Call (Compra)</div>
+    <div class="sc-v buy">IBOVK200</div>
+  </div>
+  <div class="sc">
+    <div class="sc-l">Strike compra</div>
+    <div class="sc-v buy">200.000</div>
+  </div>
+  <div class="sc">
+    <div class="sc-l">S Call (Venda)</div>
+    <div class="sc-v sell">IBOVK210</div>
+  </div>
+  <div class="sc">
+    <div class="sc-l">Strike venda</div>
+    <div class="sc-v sell">210.000</div>
+  </div>
+  <div class="sc">
+    <div class="sc-l">Tipo</div>
+    <div class="sc-v">Listed · Europeu</div>
+  </div>
+  <div class="sc">
+    <div class="sc-l">Cliente Paga</div>
+    <div class="sc-v pay">2.600 pts · R$26</div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="layout">
+  <!-- LEFT -->
+  <div>
+
+    <!-- 3D SURFACE -->
+    <div class="card">
+      <div class="ch">
+        <div class="ct">Superfície de Volatilidade Implícita — IBOV · 3D Interativo</div>
+        <div class="cbadge">Arrastar para rotacionar · Scroll para zoom</div>
+      </div>
+      <canvas id="canvas3d"></canvas>
+      <div class="surface-info" id="sinfo">
+        <span>Passe o mouse sobre a superfície para inspecionar os dados</span>
+      </div>
+      <div class="hint-row">
+        <span>Strike 200k (▲ B Call) e 210k (▼ S Call) marcados na superfície</span>
+        <span>Fonte: Bloomberg OVDV · 30/09/2026</span>
+      </div>
+    </div>
+
+    <!-- PAYOFF -->
+    <div class="card">
+      <div class="ch">
+        <div class="ct">Payoff no Vencimento · Call Spread IBOV 200k / 210k</div>
+        <div class="cbadge">Ganho máx: 7.400 pts = R$ 74,00</div>
+      </div>
+      <svg id="payoff-svg" height="160"></svg>
+    </div>
+
+    <!-- VOL TABLE -->
+    <div class="card">
+      <div class="ch">
+        <div class="ct">Tabela de Volatilidade Implícita — Bloomberg OVDV</div>
+        <div class="cbadge">Moneyness % · Listada</div>
+      </div>
+      <div class="vtable-wrap">
+        <table class="vtable" id="vtable"></table>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- RIGHT -->
+  <div>
+
+    <!-- LEGS -->
+    <div class="card">
+      <div class="ch"><div class="ct">Legs da Operação</div></div>
+      <div class="legs">
+        <div class="leg">
+          <div class="leg-side buy">▲ Compra</div>
+          <div class="leg-tkr">IBOVK200</div>
+          <div class="leg-row"><span class="leg-lbl">Strike</span><span class="leg-val">200.000</span></div>
+          <div class="leg-row"><span class="leg-lbl">OTM</span><span class="leg-val">7,73%</span></div>
+          <div class="leg-vol buy">30,795%</div>
+          <div class="leg-row"><span class="leg-lbl">Volatilidade impl.</span></div>
+          <div class="leg-row"><span class="leg-lbl">Ref INDV26</span><span class="leg-val">187.000</span></div>
+          <div class="leg-row"><span class="leg-lbl">Prêmio</span><span class="leg-val">4.550 pts</span></div>
+          <div class="leg-row"><span class="leg-lbl">Delta perna</span><span class="leg-val">32,37%</span></div>
+          <div class="leg-row"><span class="leg-lbl">Gama perna</span><span class="leg-val">3,177%</span></div>
+        </div>
+        <div class="leg">
+          <div class="leg-side sell">▼ Venda</div>
+          <div class="leg-tkr">IBOVK210</div>
+          <div class="leg-row"><span class="leg-lbl">Strike</span><span class="leg-val">210.000</span></div>
+          <div class="leg-row"><span class="leg-lbl">OTM</span><span class="leg-val">13,12%</span></div>
+          <div class="leg-vol sell">30,374%</div>
+          <div class="leg-row"><span class="leg-lbl">Volatilidade impl.</span></div>
+          <div class="leg-row"><span class="leg-lbl">Ref INDV26</span><span class="leg-val">187.000</span></div>
+          <div class="leg-row"><span class="leg-lbl">Prêmio</span><span class="leg-val">1.950 pts</span></div>
+          <div class="leg-row"><span class="leg-lbl">Delta perna</span><span class="leg-val">18,34%</span></div>
+          <div class="leg-row"><span class="leg-lbl">Gama perna</span><span class="leg-val">2,395%</span></div>
+        </div>
+      </div>
+      <div class="skew-box">
+        <div class="sk-l">Diferencial de volatilidade capturado (skew de call)</div>
+        <div class="sk-val">+0,421 pp &nbsp;(30,795% − 30,374%)</div>
+        <div class="sk-bar"><div class="sk-fill" style="width:22%"></div></div>
+        <div class="sk-desc">A leg comprada (200k) carrega vol ligeiramente maior que a leg vendida (210k). O diferencial reduz o custo efetivo da estrutura.</div>
+      </div>
+    </div>
+
+    <!-- GREEKS -->
+    <div class="card">
+      <div class="ch"><div class="ct">Sensibilidades · Spread Líquido</div></div>
+      <div class="grk">
+        <div class="gi"><div class="gi-l">Prêmio</div><div class="gi-v pos">2.600 pts</div></div>
+        <div class="gi"><div class="gi-l">Valor financeiro</div><div class="gi-v pos">R$ 26,00</div></div>
+        <div class="gi"><div class="gi-l">Delta líquido</div><div class="gi-v">14,03%</div></div>
+        <div class="gi"><div class="gi-l">Delta % spot</div><div class="gi-v">50,71%</div></div>
+        <div class="gi"><div class="gi-l">Gama líquida</div><div class="gi-v">0,782%</div></div>
+        <div class="gi"><div class="gi-l">Breakeven</div><div class="gi-v">202.600</div></div>
+      </div>
+    </div>
+
+    <!-- TESE -->
+    <div class="card">
+      <div class="ch"><div class="ct">Tese da Operação</div></div>
+      <div class="tese">
+        <div class="ti"><div class="td"></div><div>Strikes <em2>200.000 e 210.000</em2> estão 8,8% e 14,2% acima do spot (183.811). Ref INDV26: 187.000 (contrato futuro do índice, base de precificação).</div></div>
+        <div class="ti"><div class="td pos"></div><div>Prêmio da estrutura: <em2>2.600 pts (R$ 26,00)</em2> — cada ponto equivale a R$ 0,01.</div></div>
+        <div class="ti"><div class="td pos"></div><div>Ganho máximo de <em2>7.400 pts (R$ 74,00)</em2> se IBOV ≥ 210.000 no fixing de 18/11/2026.</div></div>
+        <div class="ti"><div class="td yel"></div><div>Breakeven em <em2>~202.600 pontos</em2> (+10,3% vs spot / +7,5% vs a termo). Prazo restante: 49 dias corridos.</div></div>
+        <div class="ti"><div class="td neg"></div><div>Perda máxima limitada ao prêmio pago: <em2>2.600 pts (R$ 26,00)</em2> — estrutura de risco definido.</div></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- FOOTNOTE -->
+<div class="fn">
+  <span>Fonte: Bloomberg Terminal · OVDV · Modelo BS-Contínuo · BVOL · Spot 183.811 · Ref INDV26 187.000 · Taxa BRL anual 13,597% · Data de corte: 30/09/2026 10:44</span>
+  <span>Material informativo — não constitui recomendação de investimento · BTG Pactual</span>
+</div>
+
+</div><!-- .page -->
+
+<!-- ════════════════════════════════════════════════════════════════════
+     SCRIPTS
+═════════════════════════════════════════════════════════════════════ -->
+<script>
+// ── VOL DATA (Bloomberg OVDV 30/09/2026) ─────────────────────────────
+// Columns: 80%, 90%, 95%, 97.5%, 100%, 102.5%, 105%, 110%, 120%
+// Strikes:147049,165431,174621,179217,183812,188407,193002,202193,220574
+const COLS = [80.0, 90.0, 95.0, 97.5, 100.0, 102.5, 105.0, 110.0, 120.0];
+const ROWS = [
+  { exp:'1 Oct 2026',  vols:[29.11,28.38,26.24,24.77,23.83,23.82,24.58,26.35,27.35] },
+  { exp:'2 Oct 2026',  vols:[30.05,28.94,27.04,26.00,25.37,25.32,25.79,27.33,28.81] },
+  { exp:'5 Oct 2026',  vols:[48.06,46.91,45.81,45.32,44.90,44.57,44.40,44.73,46.15] },
+  { exp:'6 Oct 2026',  vols:[46.10,44.74,43.66,43.19,42.79,42.44,42.18,42.24,43.39] },
+  { exp:'7 Oct 2026',  vols:[45.98,43.94,42.57,42.02,41.56,41.17,40.88,40.79,41.82] },
+  { exp:'8 Oct 2026',  vols:[42.81,41.00,40.02,39.70,39.51,39.40,39.38,39.77,41.52] },
+  { exp:'9 Oct 2026',  vols:[47.03,43.38,41.39,40.68,40.17,39.85,39.72,40.06,42.10] },
+  { exp:'13 Oct 2026', vols:[36.12,34.69,34.19,34.05,33.95,33.88,33.83,33.88,34.70] },
+  { exp:'14 Oct 2026', vols:[36.53,34.76,34.07,33.84,33.65,33.49,33.35,33.23,33.74] },
+  { exp:'21 Oct 2026', vols:[31.14,30.50,30.29,30.21,30.14,30.06,29.99,29.91,30.15] },
+  { exp:'28 Oct 2026', vols:[30.28,30.07,30.00,29.96,29.91,29.87,29.82,29.77,29.91] },
+  { exp:'4 Nov 2026',  vols:[32.21,31.45,31.27,31.18,31.09,30.97,30.84,30.61,30.59] },
+  { exp:'18 Nov 2026', vols:[33.69,32.12,31.75,31.59,31.42,31.24,31.03,30.61,30.10] },
+  { exp:'16 Dec 2026', vols:[30.27,28.38,27.88,27.67,27.47,27.26,27.05,26.60,25.81] },
+  { exp:'13 Jan 2027', vols:[27.47,26.03,25.59,25.39,25.21,25.03,24.86,24.57,24.35] },
+  { exp:'17 Feb 2027', vols:[25.15,24.59,24.28,24.11,23.95,23.80,23.67,23.49,23.45] },
+  { exp:'17 Mar 2027', vols:[25.00,24.19,23.73,23.50,23.28,23.09,22.92,22.71,22.72] },
+  { exp:'14 Apr 2027', vols:[24.98,24.17,23.72,23.49,23.27,23.07,22.90,22.66,22.62] },
+  { exp:'16 Jun 2027', vols:[24.87,24.15,23.73,23.52,23.31,23.12,22.94,22.66,22.50] },
+  { exp:'14 Jul 2027', vols:[24.83,24.14,23.75,23.55,23.35,23.15,22.98,22.69,22.47] },
+  { exp:'18 Aug 2027', vols:[24.78,24.13,23.76,23.57,23.38,23.20,23.02,22.73,22.46] },
+];
+const TARGET_ROW = 12; // 18 Nov 2026
+// Strike 200k ≈ moneyness 108.8% → closest col = 110% (index 7)
+// Strike 210k ≈ moneyness 114.2% → between 110% and 120%, interpolate
+// For the table highlight, use col index 7 (110%) as nearest to 200k
+const B_COL = 7; // 110% ~ 200k
+const S_COL = 8; // 120% (closest listed to 210k for table purposes)
+
+// ── VOL TABLE ─────────────────────────────────────────────────────────
+function buildTable() {
+  const tbl = document.getElementById('vtable');
+  // Header
+  let html = '<thead><tr><th>Vencimento</th>';
+  COLS.forEach(c => html += `<th>${c.toFixed(1)}%</th>`);
+  html += '</tr></thead><tbody>';
+  ROWS.forEach((row, ri) => {
+    const isTarget = ri === TARGET_ROW;
+    html += `<tr class="${isTarget ? 'highlight-row' : ''}">`;
+    html += `<td>${row.exp}</td>`;
+    row.vols.forEach((v, ci) => {
+      const hl = (ci === B_COL || ci === S_COL) ? ' highlight-col' : '';
+      html += `<td class="${hl}">${v.toFixed(2)}</td>`;
+    });
+    html += '</tr>';
+  });
+  html += '</tbody>';
+  tbl.innerHTML = html;
+}
+buildTable();
+
+// ── PAYOFF ────────────────────────────────────────────────────────────
+function drawPayoff() {
+  const svg = document.getElementById('payoff-svg');
+  const W = svg.parentElement.clientWidth || 720;
+  const H = 160;
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+  svg.setAttribute('width', W);
+  const SPOT = 183811, KB = 200000, KS = 210000, PREM = 2600, MAX = 7400;
+  const pad = {t:18,r:18,b:36,l:52};
+  const cW = W-pad.l-pad.r, cH = H-pad.t-pad.b;
+  const S0 = 170000, S1 = 235000;
+  const P0 = -PREM - 400, P1 = MAX + 400;
+  const xs = v => (v-S0)/(S1-S0)*cW;
+  const ys = v => cH-(v-P0)/(P1-P0)*cH;
+  const ns = 'http://www.w3.org/2000/svg';
+  function mk(tag, attrs, parent) {
+    const e = document.createElementNS(ns,tag);
+    for(const[k,v] of Object.entries(attrs)) e.setAttribute(k,v);
+    if(parent) parent.appendChild(e);
+    return e;
+  }
+  svg.innerHTML='';
+  const g = mk('g',{transform:`translate(${pad.l},${pad.t})`},svg);
+
+  // gridlines & y labels
+  [-PREM,0,MAX/2,MAX].forEach(p=>{
+    const y=ys(p);
+    mk('line',{x1:0,y1:y,x2:cW,y2:y,stroke:'#e5e5e5','stroke-width':1},g);
+    const t=mk('text',{x:-4,y:y+4,'text-anchor':'end','font-size':'9','font-family':'Inter,sans-serif',fill:'#909090'},g);
+    t.textContent=(p===0?'0':(p>0?'+':'')+p.toLocaleString('pt-BR'))+(p!==0?' pts':'');
+  });
+  mk('line',{x1:0,y1:ys(0),x2:cW,y2:ys(0),stroke:'#cacaca','stroke-width':1,'stroke-dasharray':'4 3'},g);
+
+  // path
+  const pts=[];
+  for(let S=S0;S<=S1;S+=500){
+    const pf=Math.min(Math.max(S-KB,0)-Math.max(S-KS,0),KS-KB)-PREM;
+    pts.push([xs(S),ys(pf)]);
+  }
+  const pd=pts.map((p,i)=>(i===0?'M':'L')+p[0].toFixed(1)+','+p[1].toFixed(1)).join(' ');
+  mk('path',{d:pd+` L${xs(S1)},${ys(P0)} L${xs(S0)},${ys(P0)} Z`,fill:'rgba(206,54,63,0.08)',stroke:'none'},g);
+  mk('path',{d:pd,fill:'none',stroke:'#195ab4','stroke-width':2.5,'stroke-linejoin':'round'},g);
+
+  // strikes
+  [[KB,'#195ab4','200k (B)'],[KS,'#10408d','210k (S)']].forEach(([s,col,lbl])=>{
+    const x=xs(s);
+    mk('line',{x1:x,y1:0,x2:x,y2:cH,stroke:col,'stroke-width':1,'stroke-dasharray':'3 3',opacity:'0.7'},g);
+    const t=mk('text',{x,y:-5,'text-anchor':'middle','font-size':'9','font-family':'Inter,sans-serif',fill:col,'font-weight':'600'},g);
+    t.textContent=lbl;
+  });
+  // spot
+  mk('line',{x1:xs(SPOT),y1:0,x2:xs(SPOT),y2:cH,stroke:'#909090','stroke-width':1,'stroke-dasharray':'2 3',opacity:'0.5'},g);
+  const tsp=mk('text',{x:xs(SPOT),y:cH+13,'text-anchor':'middle','font-size':'9','font-family':'Inter,sans-serif',fill:'#909090'},g);
+  tsp.textContent='Spot';
+
+  // breakeven
+  const BE=KB+PREM;
+  mk('circle',{cx:xs(BE),cy:ys(0),r:4,fill:'#c79c34'},g);
+  const tbe=mk('text',{x:xs(BE),y:ys(0)-8,'text-anchor':'middle','font-size':'9','font-family':'Inter,sans-serif',fill:'#c79c34','font-weight':'600'},g);
+  tbe.textContent='BE '+(BE/1000).toFixed(1)+'k';
+
+  // x labels
+  [175000,183811,200000,210000,225000].forEach(s=>{
+    const x=xs(s);
+    if(x<-10||x>cW+10)return;
+    const t=mk('text',{x,y:cH+14,'text-anchor':'middle','font-size':'9','font-family':'Inter,sans-serif',fill:'#909090'},g);
+    t.textContent=(s/1000).toFixed(0)+'k';
+  });
+
+  // gain/loss labels
+  const tg=mk('text',{x:xs(228000),y:ys(MAX)+4,'text-anchor':'end','font-size':'9','font-family':'Inter,sans-serif',fill:'rgba(25,90,180,0.7)'},g);
+  tg.textContent='+7.400 pts (R$74)';
+  const tl=mk('text',{x:xs(176000),y:ys(-PREM)+4,'text-anchor':'start','font-size':'9','font-family':'Inter,sans-serif',fill:'rgba(206,54,63,0.7)'},g);
+  tl.textContent='−2.600 pts (R$26)';
+}
+drawPayoff();
+
+// ── 3D SURFACE ────────────────────────────────────────────────────────
+// Full Bloomberg data mapped to 3D axes:
+// X = maturity (row index 0..20)
+// Z = moneyness (col index 0..8: 80% to 120%)
+// Y = implied vol
+
+(function() {
+  const canvas = document.getElementById('canvas3d');
+  const ctx = canvas.getContext('2d');
+  let W, H;
+
+  function resize() {
+    W = canvas.parentElement.clientWidth;
+    H = 360;
+    canvas.width  = W * devicePixelRatio;
+    canvas.height = H * devicePixelRatio;
+    canvas.style.width  = W + 'px';
+    canvas.style.height = H + 'px';
+    ctx.scale(devicePixelRatio, devicePixelRatio);
+  }
+  resize();
+
+  // Camera state
+  let rotX = 0.42, rotY = -0.55;
+  let scale = 1.0;
+  let dragging = false, lastX, lastY;
+
+  canvas.addEventListener('mousedown', e => { dragging=true; lastX=e.clientX; lastY=e.clientY; });
+  window.addEventListener('mouseup', () => dragging=false);
+  window.addEventListener('mousemove', e => {
+    if (!dragging) return;
+    rotY += (e.clientX - lastX) * 0.008;
+    rotX += (e.clientY - lastY) * 0.005;
+    rotX = Math.max(-0.1, Math.min(1.0, rotX));
+    lastX=e.clientX; lastY=e.clientY;
+    draw();
+  });
+  canvas.addEventListener('wheel', e => {
+    e.preventDefault();
+    scale *= e.deltaY > 0 ? 0.95 : 1.05;
+    scale = Math.max(0.5, Math.min(2.2, scale));
+    draw();
+  }, {passive:false});
+
+  // 3D → 2D projection
+  function project(px, py, pz) {
+    const cx = Math.cos(rotY), sx = Math.sin(rotY);
+    const cy = Math.cos(rotX), sy = Math.sin(rotX);
+    const x2 = cx*px + sx*pz;
+    const z2 = -sx*px + cx*pz;
+    const y2 = cy*py - sy*z2;
+    const z3 = sy*py + cy*z2;
+    const fov = 4.5;
+    const zz = z3 + fov;
+    return [
+      W/2 + (x2/zz) * W * scale * 0.9,
+      H/2 - (y2/zz) * H * scale * 0.75
+    ];
+  }
+
+  // Normalise data to [-1,1] box
+  const nRows = ROWS.length;
+  const nCols = COLS.length;
+  const allVols = ROWS.flatMap(r=>r.vols);
+  const vMin = Math.min(...allVols), vMax = Math.max(...allVols);
+
+  function normX(ri) { return (ri/(nRows-1))*2 - 1; }   // maturity
+  function normZ(ci) { return (ci/(nCols-1))*2 - 1; }   // moneyness
+  function normY(v)  { return ((v-vMin)/(vMax-vMin))*1.2 - 0.4; } // vol height
+
+  // Color: BTG blue ramp mapped to vol level
+  // Low vol → #d2e5ff (light blue), High vol → #05132a (deep navy)
+  // with a midpoint accent
+  function volColor(v, alpha) {
+    const t = (v-vMin)/(vMax-vMin);
+    // low=lightblue, mid=signature blue, high=deep navy
+    let r,g,b;
+    if(t<0.5){
+      const s=t*2;
+      r=Math.round(210-s*(210-25));
+      g=Math.round(229-s*(229-90));
+      b=Math.round(255-s*(255-180));
+    } else {
+      const s=(t-0.5)*2;
+      r=Math.round(25-s*(25-5));
+      g=Math.round(90-s*(90-19));
+      b=Math.round(180-s*(180-42));
+    }
+    return `rgba(${r},${g},${b},${alpha||1})`;
+  }
+
+  // Highlight verts for B and S call
+  // B call: 18 Nov 2026 row=12, 110% col=7 (closest to 200k)
+  // S call: 18 Nov 2026 row=12, 120% col=8 (closest to 210k)
+
+  function draw() {
+    ctx.clearRect(0,0,W,H);
+
+    // dark background
+    ctx.fillStyle = '#05132a';
+    ctx.fillRect(0,0,W,H);
+
+    // Build projected grid
+    const pts = [];
+    for(let ri=0;ri<nRows;ri++){
+      pts[ri]=[];
+      for(let ci=0;ci<nCols;ci++){
+        const v = ROWS[ri].vols[ci];
+        const px = normX(ri), py = normY(v), pz = normZ(ci);
+        pts[ri][ci] = { sc: project(px,py,pz), v, ri, ci };
+      }
+    }
+
+    // Draw quads back-to-front (painter's algorithm via simple sort)
+    const quads = [];
+    for(let ri=0;ri<nRows-1;ri++){
+      for(let ci=0;ci<nCols-1;ci++){
+        const a=pts[ri][ci], b=pts[ri+1][ci], c=pts[ri+1][ci+1], d=pts[ri][ci+1];
+        const avgV=(a.v+b.v+c.v+d.v)/4;
+        const avgZ=(a.sc[1]+b.sc[1]+c.sc[1]+d.sc[1])/4;
+        quads.push({a,b,c,d,avgV,avgZ});
+      }
+    }
+    quads.sort((x,y)=>y.avgZ-x.avgZ);
+
+    for(const q of quads){
+      const {a,b,c,d,avgV}=q;
+      ctx.beginPath();
+      ctx.moveTo(a.sc[0],a.sc[1]);
+      ctx.lineTo(b.sc[0],b.sc[1]);
+      ctx.lineTo(c.sc[0],c.sc[1]);
+      ctx.lineTo(d.sc[0],d.sc[1]);
+      ctx.closePath();
+      ctx.fillStyle = volColor(avgV, 0.90);
+      ctx.fill();
+      ctx.strokeStyle = 'rgba(255,255,255,0.12)';
+      ctx.lineWidth = 0.5;
+      ctx.stroke();
+    }
+
+    // Draw B call marker (18 Nov, 110% col=7)
+    const bPt = pts[TARGET_ROW][B_COL];
+    const sPt = pts[TARGET_ROW][S_COL];
+
+    // Highlight row (18 Nov 2026) — top edge outline
+    ctx.beginPath();
+    for(let ci=0;ci<nCols;ci++){
+      const p=pts[TARGET_ROW][ci].sc;
+      ci===0 ? ctx.moveTo(p[0],p[1]) : ctx.lineTo(p[0],p[1]);
+    }
+    ctx.strokeStyle='rgba(255,255,255,0.5)';
+    ctx.lineWidth=1.5;
+    ctx.stroke();
+
+    // B Call dot
+    ctx.beginPath();
+    ctx.arc(bPt.sc[0], bPt.sc[1], 7, 0, Math.PI*2);
+    ctx.fillStyle='#549cff';
+    ctx.fill();
+    ctx.strokeStyle='#ffffff';
+    ctx.lineWidth=2;
+    ctx.stroke();
+
+    // S Call dot
+    ctx.beginPath();
+    ctx.arc(sPt.sc[0], sPt.sc[1], 7, 0, Math.PI*2);
+    ctx.fillStyle='#b1d2ff';
+    ctx.fill();
+    ctx.strokeStyle='#ffffff';
+    ctx.lineWidth=2;
+    ctx.stroke();
+
+    // Labels B/S
+    ctx.font='bold 11px Inter,sans-serif';
+    ctx.fillStyle='#549cff';
+    ctx.fillText('▲ 200k (B)', bPt.sc[0]+10, bPt.sc[1]+4);
+    ctx.fillStyle='#b1d2ff';
+    ctx.fillText('▼ 210k (S)', sPt.sc[0]+10, sPt.sc[1]+4);
+
+    // Axes labels
+    ctx.fillStyle='rgba(255,255,255,0.35)';
+    ctx.font='10px Inter,sans-serif';
+
+    // Maturity axis (X) — sample a few
+    [0,4,8,12,16,20].forEach(ri=>{
+      if(ri>=nRows)return;
+      const p=pts[ri][0].sc;
+      const lbl=['1out','5out','9out','18nov','13jan','18ago'][Math.floor(ri/4)]||ROWS[ri].exp.split(' ').slice(0,2).join(' ');
+      ctx.fillStyle='rgba(177,210,255,0.5)';
+      ctx.fillText(ROWS[ri].exp.replace(' 2026','').replace(' 2027',''), p[0]-28, p[1]+4);
+    });
+
+    // Moneyness axis (Z) — bottom row
+    COLS.forEach((c,ci)=>{
+      const p=pts[0][ci].sc;
+      ctx.fillStyle='rgba(177,210,255,0.5)';
+      ctx.font='10px Inter,sans-serif';
+      ctx.fillText(c+'%', p[0]-10, p[1]+14);
+    });
+
+    // Vol scale legend (right)
+    const lx=W-60, ly0=H*0.15, ly1=H*0.75;
+    const grad=ctx.createLinearGradient(0,ly0,0,ly1);
+    grad.addColorStop(0,'rgba(5,19,42,1)');
+    grad.addColorStop(0.5,'rgba(25,90,180,1)');
+    grad.addColorStop(1,'rgba(210,229,255,1)');
+    ctx.fillStyle=grad;
+    ctx.fillRect(lx,ly0,10,ly1-ly0);
+    ctx.fillStyle='rgba(177,210,255,0.7)';
+    ctx.font='9px Inter,sans-serif';
+    ctx.fillText(vMax.toFixed(0)+'%', lx+13, ly0+4);
+    ctx.fillText(((vMax+vMin)/2).toFixed(0)+'%', lx+13, (ly0+ly1)/2+4);
+    ctx.fillText(vMin.toFixed(0)+'%', lx+13, ly1);
+    ctx.fillStyle='rgba(177,210,255,0.45)';
+    ctx.font='9px Inter,sans-serif';
+    ctx.fillText('Vol impl.', lx-2, ly0-6);
+  }
+
+  // Mouse hover to show data
+  canvas.addEventListener('mousemove', e => {
+    if(dragging)return;
+    // simple nearest point lookup
+    const rect=canvas.getBoundingClientRect();
+    const mx=e.clientX-rect.left, my=e.clientY-rect.top;
+    let best=Infinity, bri=0, bci=0;
+    const pts2=[];
+    for(let ri=0;ri<nRows;ri++){
+      for(let ci=0;ci<nCols;ci++){
+        const v=ROWS[ri].vols[ci];
+        const px=normX(ri),py=normY(v),pz=normZ(ci);
+        const [sx,sy]=project(px,py,pz);
+        const d=(sx-mx)**2+(sy-my)**2;
+        if(d<best){best=d;bri=ri;bci=ci;}
+      }
+    }
+    if(best<1200){
+      const v=ROWS[bri].vols[bci];
+      const strike=Math.round(183811*COLS[bci]/100);
+      document.getElementById('sinfo').innerHTML=
+        `<strong>${ROWS[bri].exp}</strong> &nbsp;|&nbsp; `+
+        `Moneyness <strong>${COLS[bci].toFixed(1)}%</strong> &nbsp;|&nbsp; `+
+        `Strike aprox. <strong>${strike.toLocaleString('pt-BR')}</strong> &nbsp;|&nbsp; `+
+        `Vol impl. <strong>${v.toFixed(2)}%</strong>`;
+    }
+  });
+
+  draw();
+  window.addEventListener('resize', ()=>{ resize(); draw(); });
+})();
+</script>
+</body>
+</html>
