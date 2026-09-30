@@ -38,9 +38,6 @@
     h1 { font-size: clamp(24px, 3.5vw, 34px); font-weight: 700; letter-spacing: -.02em; }
     h1 span { color: var(--accent); }
     .subtitle { margin-top: 8px; color: var(--muted); font-size: 14px; max-width: 42em; }
-    .meta-pills { display: flex; flex-wrap: wrap; gap: 8px; max-width: 420px; justify-content: flex-end; }
-    .pill { background: #fff; border: 1px solid var(--line); border-radius: 2px; padding: 6px 10px; font-size: 12px; }
-    .pill strong { display: block; font-size: 10px; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); }
     .hero-msg {
       background: linear-gradient(135deg, #0b1f3a 0%, #1e4d7b 100%);
       color: #fff; border-radius: 12px; padding: 16px 20px; margin-bottom: 18px; font-weight: 600;
@@ -81,12 +78,16 @@
     .legend-note { font-size: 12px; color: var(--muted); margin-top: 10px; line-height: 1.45; }
 
     .rr-box {
-      margin-top: 12px; background: #e8f1fb; border: 1px solid #9bb8d9;
-      border-radius: 8px; padding: 12px 14px;
+      margin-top: 14px;
+      background: linear-gradient(180deg, #d6e6f7 0%, #c2d8f0 100%);
+      border: 2px solid #1a66b3;
+      border-radius: 10px;
+      padding: 14px 16px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.45);
     }
     .rr-box h3 {
-      font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
-      color: var(--accent); margin: 0 0 10px;
+      font-size: 12px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase;
+      color: #0b1f3a; margin: 0 0 12px;
     }
     .rr-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
     .rr-item .lbl { font-size: 10px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
@@ -106,9 +107,6 @@
       border-radius: 10px; overflow: hidden;
     }
     .chart-box svg { display: block; width: 100%; height: auto; }
-    .zones { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
-    .zone { background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; font-size: 12px; }
-    .zone strong { display: block; color: var(--accent); margin-bottom: 4px; }
     .sim-label { display: flex; justify-content: space-between; font-size: 13px; font-weight: 600; margin-bottom: 6px; }
     .sim-label output { font-weight: 700; color: var(--ink); }
     input[type=range] { width: 100%; accent-color: var(--accent); margin-bottom: 12px; }
@@ -143,13 +141,11 @@
     @media (max-width: 1100px) {
       .main { grid-template-columns: 1fr; }
       .highlights { grid-template-columns: 1fr 1fr; }
-      .meta-pills { justify-content: flex-start; }
     }
     @media (max-width: 640px) {
       .page { padding: 16px 14px 40px; }
       .topbar { flex-direction: column; }
       .highlights { grid-template-columns: 1fr; }
-      .zones { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -164,13 +160,6 @@
         </div>
         <h1>Selic Terminal 13,25% <span>Corte adicional ~50 bps</span></h1>
         <p class="subtitle">Digital cash-or-nothing sobre Selic terminal 2026 — target abaixo do consenso.</p>
-      </div>
-        <div class="pill"><strong>Target</strong> 13,25%</div>
-        <div class="pill"><strong>Custo</strong> R$ 43</div>
-        <div class="pill"><strong>Payoff</strong> R$ 100</div>
-        <div class="pill"><strong>Upside</strong> +133%</div>
-        <div class="pill"><strong>Risco-retorno</strong> 1 para 2,3</div>
-        <div class="pill"><strong>Horizonte</strong> Fim/2026</div>
       </div>
     </header>
 
@@ -198,7 +187,7 @@
           </tbody>
         </table>
         <div class="rr-box">
-          <h3>Risco-retorno</h3>
+          <h3>Risco retorno</h3>
           <div class="rr-grid">
             <div class="rr-item"><div class="lbl">Custo</div><div class="val">R$ 43</div></div>
             <div class="rr-item"><div class="lbl">No acerto</div><div class="val">+R$ 57 (+133%)</div></div>
@@ -256,13 +245,6 @@
           <div class="sim-card"><div class="lbl">% sobre o custo</div><div class="val pos" id="pctVal">+133%</div></div>
         </div>
         <div class="regime" id="regimeText">No target.</div>
-        <div style="margin-top:16px">
-          <h2>Pontos-chave</h2>
-          <table class="struct-table">
-            <thead><tr><th>Selic</th><th>Líquido</th><th>% custo</th></tr></thead>
-            <tbody id="keyPoints"></tbody>
-          </table>
-        </div>
       </aside>
     </div>
 
@@ -415,26 +397,6 @@
       hd.setAttribute("visibility", "visible");
     }
 
-    function buildKeyPoints() {
-      var levels = [12.00, 12.50, 13.00, 13.25, 13.50, 13.75, 14.00, 14.50, 15.00];
-      var tbody = document.getElementById("keyPoints");
-      tbody.innerHTML = "";
-      levels.forEach(function (s) {
-        var gross = payoffAt(s);
-        var net = netAt(s);
-        var pct = pctAt(s);
-        var tr = document.createElement("tr");
-        var hit = Math.abs(s - TARGET) < 0.001;
-        if (hit) tr.className = "is-target";
-        var mark = hit ? " <strong>· target</strong>" : "";
-        tr.innerHTML =
-          "<td>" + fmtPct(s) + mark + "</td>" +
-          "<td><strong>" + fmtMoney(net, true) + "</strong></td>" +
-          "<td><strong>" + (pct >= 0 ? "+" : "−") + Math.abs(pct).toFixed(0) + "%</strong></td>";
-        tbody.appendChild(tr);
-      });
-    }
-
     var slider = document.getElementById("selicSlider");
     function fromSlider() {
       return parseInt(slider.value, 10) / 100;
@@ -444,7 +406,6 @@
     });
 
     drawChart();
-    buildKeyPoints();
     updateSim(fromSlider());
   })();
   </script>
