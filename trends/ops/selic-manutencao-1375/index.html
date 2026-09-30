@@ -61,6 +61,15 @@
     }
     .struct-table { width: 100%; border-collapse: collapse; font-size: 13px; }
     .struct-table th, .struct-table td { border-bottom: 1px solid var(--line); padding: 8px 6px; text-align: left; }
+    .struct-table tr.is-target td {
+      background: #e8f1fb;
+      border-top: 1px solid #9bb8d9;
+      border-bottom: 1px solid #9bb8d9;
+      font-weight: 700;
+      color: var(--btg);
+    }
+    .struct-table tr.is-target td:first-child { border-radius: 4px 0 0 4px; }
+    .struct-table tr.is-target td:last-child { border-radius: 0 4px 4px 0; }
     .struct-table th {
       font-size: 11px; text-transform: uppercase; color: var(--muted); font-weight: 600;
     }
@@ -430,7 +439,9 @@
         var net = netAt(s);
         var pct = pctAt(s);
         var tr = document.createElement("tr");
-        var mark = Math.abs(s - TARGET) < 0.001 ? " <strong>· target</strong>" : "";
+        var hit = Math.abs(s - TARGET) < 0.001;
+        if (hit) tr.className = "is-target";
+        var mark = hit ? " <strong>· target</strong>" : "";
         tr.innerHTML =
           "<td>" + fmtPct(s) + mark + "</td>" +
           "<td>" + fmtMoney(gross, false) + "</td>" +
