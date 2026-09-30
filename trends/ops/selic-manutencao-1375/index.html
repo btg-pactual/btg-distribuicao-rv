@@ -79,6 +79,19 @@
     }
     .tag.b { background: #e7f6ef; color: var(--success); }
     .legend-note { font-size: 12px; color: var(--muted); margin-top: 10px; line-height: 1.45; }
+
+    .rr-box {
+      margin-top: 12px; background: #e8f1fb; border: 1px solid #9bb8d9;
+      border-radius: 8px; padding: 12px 14px;
+    }
+    .rr-box h3 {
+      font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+      color: var(--accent); margin: 0 0 10px;
+    }
+    .rr-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .rr-item .lbl { font-size: 10px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
+    .rr-item .val { font-size: 14px; font-weight: 700; color: var(--btg); margin-top: 2px; }
+    .rr-note { margin-top: 8px; font-size: 11px; color: var(--muted); line-height: 1.4; }
     .thesis { margin-top: 16px; }
     .thesis ul { margin: 0; padding-left: 18px; font-size: 13px; color: var(--ink); }
     .thesis li { margin-bottom: 6px; }
@@ -163,7 +176,7 @@
       </div>
     </header>
 
-    <div class="hero-msg">Após o corte de 25 p.b. em setembro, o BTG projeta manutenção nas duas próximas reuniões — encerrando 2026 com Selic em 13,75%. custo R$ 43 → R$ 100 (+133%).</div>
+    <div class="hero-msg">Cenário-base BTG: pausa nas duas próximas reuniões — Selic terminal 2026 em 13,75%.</div>
 
     <section class="highlights">
       <div class="hi"><h3>Target</h3><p>13,75%<span>Selic terminal 2026</span></p></div>
@@ -190,18 +203,23 @@
             </tr>
           </tbody>
         </table>
-        <p class="legend-note">
-          <strong>B</strong> = Compra · Digital cash-or-nothing sobre Selic terminal 2026.<br />
-          Custo: R$ 43. Lucro líquido no acerto: R$ 57 (+133%).
-          Perda máxima: −R$ 43 (−100% do prêmio).
-        </p>
+        <p class="legend-note"><strong>B</strong> = compra · digital cash-or-nothing no nível exato de encerramento de 2026.</p>
+        <div class="rr-box">
+          <h3>Risco-retorno</h3>
+          <div class="rr-grid">
+            <div class="rr-item"><div class="lbl">Custo</div><div class="val">R$ 43</div></div>
+            <div class="rr-item"><div class="lbl">No acerto</div><div class="val">+R$ 57 (+133%)</div></div>
+            <div class="rr-item"><div class="lbl">Perda máxima</div><div class="val">−R$ 43</div></div>
+            <div class="rr-item"><div class="lbl">Relação</div><div class="val">1 para 2,3</div></div>
+          </div>
+          <p class="rr-note">A cada R$ 1 de risco, até R$ 2,3 de retorno se o target bater.</p>
+        </div>
         <div class="thesis">
           <h2>Tese</h2>
           <ul>
-            <li>Cenário-base BTG: <strong>pausa em nov+dez</strong>, Selic terminal <strong>13,75%</strong>.</li>
-            <li>Projeção BTG: <strong>12,50%</strong> no fim de 2027.</li>
-            <li>Copom preservou opcionalidade; mercado de trabalho apertado e expectativas ainda desancoradas.</li>
-            <li>Pausa ajuda a ancorar inflação e a incorporar o pós-eleitoral.</li>
+            <li>Cenário-base BTG: <strong>pausa em nov+dez</strong>.</li>
+            <li>Projeção de <strong>12,50%</strong> só no fim de 2027.</li>
+            <li>Copom manteve opcionalidade; trabalho apertado e expectativas ainda desancoradas.</li>
           </ul>
           <p class="legend-note" style="margin-top:12px">
             <a href="/btg-distribuicao-rv/trends/ops/selic-manutencao-1375/btg-trends-selic-1375.pdf" target="_blank" rel="noopener noreferrer">Abrir Trends · Manutenção 13,75% ↗</a>
@@ -236,10 +254,8 @@
           </svg>
         </div>
         <div class="zones">
-          <div class="zone"><strong>Selic = 13,75%</strong><p>Recebe R$ 100 · lucro líquido R$ 57 (+133%)</p></div>
-          <div class="zone"><strong>Selic ≠ 13,75%</strong><p>Recebe R$ 0 · perda = −R$ 43 (−100% do prêmio)</p></div>
-          <div class="zone"><strong>Observação</strong><p>Cash-or-nothing no nível exato de encerramento 2026</p></div>
-          <div class="zone"><strong>Risco-retorno</strong><p>1 para 2,3 · retorno potencial +133% sobre o custo</p></div>
+          <div class="zone"><strong>No target</strong><p>Recebe R$ 100 · líquido +R$ 57 (+133%)</p></div>
+          <div class="zone"><strong>Fora do target</strong><p>Recebe R$ 0 · perde o custo (−R$ 43)</p></div>
         </div>
       </section>
 
