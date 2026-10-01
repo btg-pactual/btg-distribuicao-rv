@@ -97,11 +97,11 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
 .matrix-wrap{margin-top:16px}
 .matrix-wrap h2{margin-top:4px}
 .matrix-note{font-size:11px;color:var(--muted);margin:0 0 10px;line-height:1.4}
-.matrix-table td:nth-child(3){font-variant-numeric:tabular-nums}
-.matrix-table tr.mx-neg td:nth-child(3){color:var(--danger)}
-.matrix-table tr.mx-pos td:nth-child(3){color:var(--success)}
+.matrix-table td:nth-child(2){font-variant-numeric:tabular-nums}
+.matrix-table tr.mx-neg td:nth-child(2){color:var(--danger)}
+.matrix-table tr.mx-pos td:nth-child(2){color:var(--success)}
 .matrix-table tr.mx-best{background:color-mix(in srgb,var(--success) 8%,#fff)}
-.matrix-table tr.mx-best td:nth-child(3){color:var(--success)}
+.matrix-table tr.mx-best td:nth-child(2){color:var(--success)}
 .matrix-table tr.mx-ko{background:color-mix(in srgb,var(--brand) 7%,#fff)}
 .matrix-table .mx-tag{font-size:11px;font-weight:600;color:var(--muted)}
 .matrix-table tr.mx-best .mx-tag{color:var(--success)}
@@ -198,18 +198,17 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
   <div class="regime" id="regimeText">Sem KO: participa da alta menos o preço. Veja também o ganho % só sobre o prêmio.</div>
   
   <div class="matrix-wrap">
-    <h2>Matriz de ganho (só prêmio)</h2>
+    <h2>Se o ativo mover, o que acontece com o prêmio</h2>
     <p class="matrix-note">
-      Retorno <strong>sobre o prêmio pago (3,00%)</strong> =
-      (resultado no nocional ÷ 3,00%) × 100.
-      Pico ITM (antes do KO): <strong>+2,0%</strong> nocional →
-      <strong>+67%</strong> sobre o prêmio.
-      No KO: líquido +0,50% no nocional → <strong>+17%</strong> sobre o prêmio.
+      Você pagou <strong>3,00%</strong> de prêmio. A coluna do meio mostra o ganho ou a perda
+      <strong>em cima desse prêmio</strong>.
+      Melhor caso (antes da barreira): <strong>+67%</strong>.
+      Se bater a barreira: <strong>+17%</strong> (rebate).
     </p>
     <table class="struct-table matrix-table">
-      <thead><tr><th>Spot</th><th>Nocional</th><th>Sobre prêmio</th><th>Regime</th></tr></thead>
+      <thead><tr><th>Variação do ativo</th><th>Resultado no prêmio</th><th>Em uma frase</th></tr></thead>
       <tbody>
-        <tr class="mx-neg"><td>≤ +0%</td><td>-3,0%</td><td><strong>-100%</strong></td><td><span class="mx-tag">OTM · perde o prêmio</span></td></tr><tr><td>+3%</td><td>+0,0%</td><td><strong>+0%</strong></td><td><span class="mx-tag">ITM · empate</span></td></tr><tr class="mx-pos mx-best"><td>+5%</td><td>+2,0%</td><td><strong>+67%</strong></td><td><span class="mx-tag">ITM · pico antes do KO</span></td></tr><tr class="mx-ko mx-pos"><td>≥ +6%</td><td>+0,5%</td><td><strong>+17%</strong></td><td><span class="mx-tag">KO · rebate</span></td></tr>
+        <tr class="mx-neg"><td>0% ou cai</td><td><strong>-100%</strong></td><td><span class="mx-tag">Perde o prêmio</span></td></tr><tr class="mx-neg"><td>+1%</td><td><strong>-67%</strong></td><td><span class="mx-tag">Ainda no prejuízo</span></td></tr><tr class="mx-neg"><td>+2%</td><td><strong>-33%</strong></td><td><span class="mx-tag">Ainda no prejuízo</span></td></tr><tr><td>+3%</td><td><strong>+0%</strong></td><td><span class="mx-tag">Empata</span></td></tr><tr class="mx-pos"><td>+4%</td><td><strong>+33%</strong></td><td><span class="mx-tag">No lucro</span></td></tr><tr class="mx-pos mx-best"><td>+5%</td><td><strong>+67%</strong></td><td><span class="mx-tag">Melhor cenário</span></td></tr><tr class="mx-ko mx-pos"><td>+6% ou mais</td><td><strong>+17%</strong></td><td><span class="mx-tag">Bate a barreira · rebate</span></td></tr>
       </tbody>
     </table>
   </div>
@@ -235,7 +234,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
   var RESEARCH_X=null;
   var KO=6.0, REB=3.5, COST=3.0;
   function structureReturn(x){ if (x >= KO) return REB - COST; return Math.max(x, 0) - COST; }
-  function regimeFor(x){ var rp=(structureReturn(x)/COST)*100; if (x >= KO) return 'KO: rebate líquido +'+(REB-COST).toFixed(2).replace('.',',')+'% no nocional · '+rp.toFixed(0)+'% sobre o prêmio.'; if (x > 0) return 'Call ITM: '+structureReturn(x).toFixed(1).replace('.',',')+'% nocional · '+rp.toFixed(0)+'% sobre o prêmio.'; return 'OTM: −'+COST.toFixed(2).replace('.',',')+'% nocional · −100% sobre o prêmio.'; }
+  function regimeFor(x){ var rp=(structureReturn(x)/COST)*100; if (x >= KO) return 'Barreira: rebate · '+rp.toFixed(0)+'% sobre o prêmio.'; if (x > 0) return 'Alta de '+x.toFixed(0)+'% · '+rp.toFixed(0)+'% sobre o prêmio.'; return 'Ativo sem alta · −100% sobre o prêmio.'; }
   function fmtPct(v,d){ d=d==null?1:d; var s=v.toFixed(d).replace('.',','); return (v>0?'+':'')+s+'%'; }
   function xToSvg(x){ return PAD.l+((x-X_MIN)/(X_MAX-X_MIN))*PLOT_W; }
   function yToSvg(y){ return PAD.t+((Y_MAX-y)/(Y_MAX-Y_MIN))*PLOT_H; }
