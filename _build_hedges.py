@@ -403,6 +403,10 @@ def premium_hub_html(research: dict | None = None) -> str:
       padding: 18px 22px; margin-bottom: 8px;
     }}
     .snapshot p {{ font-size: 15px; color: var(--muted); max-width: 54em; }}
+    .snapshot-lead {{
+      font-size: 17px !important; font-weight: 650; color: var(--ink) !important;
+      line-height: 1.4; max-width: 40em;
+    }}
     .nums {{ margin-top: 12px; display: flex; flex-wrap: wrap; gap: 8px; }}
     .ops {{ list-style: none; display: flex; flex-direction: column; gap: 16px; }}
     .op-block {{ background: var(--card); border: 1px solid var(--line); border-radius: 4px; overflow: hidden; }}
@@ -484,8 +488,7 @@ def premium_hub_html(research: dict | None = None) -> str:
   <main class="page">
     <h2>Como usar</h2>
     <section class="snapshot">
-      <p>
-        Duas operações de prêmio em BOVA11 com material próprio e DIE anexado.
+      <p class="snapshot-lead">
         Abra o factsheet para o payoff interativo; o DIE oficial fica no link de cada card.
       </p>
       {snapshot_extra}
