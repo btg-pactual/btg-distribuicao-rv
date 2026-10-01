@@ -46,7 +46,7 @@ jobs:
                   ops/smart-hedge-* ops/twin-coupon-itub4 ops/collar-* ops/call-spread-* ops/call-ko-* \
                   ops/ptax-* ops/ptax_spot.json \
                   ops/range_52w.json ops/pacb11-put-hedge \
-                  premio-bova11/index.html \
+                  premio-bova11/index.html premio-bova11/charts \
                   prateleira-tatica/index.html
           if git diff --staged --quiet; then
             echo "sem mudança de research/spot/ptax/52w"
