@@ -58,7 +58,7 @@ COLLAR_OPS = [
     },
 ]
 
-# Operações de prêmio Dia D (BOVA11) — DIE em ops/<slug>/
+# Hub próprio premio-bova11/ (não Dia D) — DIE em ops/<slug>/
 PREMIUM_OPS = [
     {
         "slug": "call-spread-bova11",
@@ -134,7 +134,7 @@ def collar_page_html(cfg: dict, prat, research: dict | None = None) -> str:
 
 
 def premium_page_html(cfg: dict, prat, research: dict | None = None) -> str:
-    """Factsheet Call Spread / Call KO (prêmio) → Operações dia D + link DIE."""
+    """Factsheet Call Spread / Call KO (prêmio) → hub premio-bova11 + link DIE."""
     rs = (research or {}).get(cfg["ticker"]) or {}
     kind = cfg["kind"]
     if kind == "call_spread":
@@ -169,7 +169,7 @@ def premium_page_html(cfg: dict, prat, research: dict | None = None) -> str:
         page["range_52w_html"] = _range_52w.range_block_html(
             cfg["ticker"],
             spot=float(spot_ref) if spot_ref is not None else None,
-            as_of_phrase=f"até o Dia D ({as_of})" if as_of else "até o Dia D",
+            as_of_phrase=f"até a ref. ({as_of})" if as_of else "até a ref.",
         )
     except Exception:
         page["range_52w_html"] = ""
@@ -187,9 +187,183 @@ def premium_page_html(cfg: dict, prat, research: dict | None = None) -> str:
     html = prat.op_page(page)
     html = html.replace(
         '<a href="../../index.html">← Prateleira Tática</a>',
-        '<a href="../../prateleira-tatica/index.html">← Operações dia D</a>',
+        '<a href="../../premio-bova11/index.html">← Prêmio BOVA11</a>',
     )
     return html
+
+
+def premium_hub_html(research: dict | None = None) -> str:
+    """Hub dedicado às operações de prêmio BOVA11 (Call Spread + Call KO)."""
+    research = research or {}
+    rs = research.get("BOVA11") or {}
+    ops_html = []
+    for cfg in PREMIUM_OPS:
+        pills = "".join(f'<span class="pill">{p}</span>' for p in cfg["pills"])
+        die = cfg.get("die") or ""
+        die_cta = (
+            f'<a class="die-link" href="../ops/{cfg["slug"]}/{die}" target="_blank" '
+            f'rel="noopener noreferrer">DIE {die.replace(".pdf", "")} ↗</a>'
+            if die
+            else ""
+        )
+        ops_html.append(
+            f"""
+<li class="op-block">
+  <div class="op-bar" style="background:{cfg['brand']}"></div>
+  <a class="op" href="../ops/{cfg['slug']}/index.html">
+    <div class="op-top">
+      <span class="op-title">{cfg['title']}</span>
+      <span class="op-ticker">{cfg['ticker']}</span>
+    </div>
+    <p class="op-blurb">{cfg['blurb']}</p>
+    <div class="op-meta">{pills}</div>
+    <div class="op-cta">Abrir material →</div>
+  </a>
+  {die_cta}
+</li>"""
+        )
+
+    pa_bits = []
+    if rs.get("rec_lbl"):
+        pa_bits.append(str(rs["rec_lbl"]))
+    if rs.get("target") is not None:
+        try:
+            pa_bits.append(f"PA {load_prat().fmt_brl(rs['target'])}")
+        except Exception:
+            pa_bits.append(f"PA {rs['target']}")
+    pills_extra = "".join(f'<span class="pill">{b}</span>' for b in pa_bits)
+    snapshot_extra = f'<div class="nums">{pills_extra}</div>' if pills_extra else ""
+
+    return f"""<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Prêmio BOVA11 · Call Spread e Call KO | BTG Pactual</title>
+  <style>
+    :root {{
+      --btg: #0b1f3a;
+      --btg-mid: #163a5f;
+      --btg-blue: #1e4d7b;
+      --link: #1a66b3;
+      --ink: #0b1f3a;
+      --muted: #5c6b7a;
+      --line: #d0d8e2;
+      --bg: #eef2f6;
+      --card: #ffffff;
+    }}
+    * {{ box-sizing: border-box; margin: 0; padding: 0; }}
+    body {{
+      font-family: Segoe UI, -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif;
+      color: var(--ink); background: var(--bg); min-height: 100vh; line-height: 1.5;
+    }}
+    .hero {{
+      background: linear-gradient(135deg, var(--btg) 0%, var(--btg-mid) 55%, var(--btg-blue) 100%);
+      color: #fff; padding: 40px 24px 44px;
+    }}
+    .hero-inner {{ max-width: 960px; margin: 0 auto; }}
+    .logo-btg {{
+      display: inline-block; font-weight: 700; font-size: 13px; letter-spacing: 0.1em;
+      color: #fff; border: 1px solid rgba(255,255,255,0.35); padding: 7px 12px;
+      border-radius: 2px; margin-bottom: 18px;
+    }}
+    .hero-row {{ display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; }}
+    .brand-line {{
+      font-size: clamp(22px, 3.5vw, 30px); font-weight: 700; letter-spacing: -0.02em;
+      line-height: 1.2; color: #fff; margin-bottom: 8px;
+    }}
+    h1 {{
+      font-size: clamp(16px, 2.4vw, 20px); font-weight: 600; letter-spacing: -0.01em;
+      line-height: 1.3; color: rgba(255,255,255,0.88);
+    }}
+    .badge {{
+      font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+      color: #fff; border: 1px solid rgba(255,255,255,0.35); padding: 8px 12px; border-radius: 2px; white-space: nowrap;
+    }}
+    .page {{ max-width: 960px; margin: 0 auto; padding: 32px 24px 56px; }}
+    h2 {{
+      font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--btg-blue); margin: 28px 0 14px;
+    }}
+    h2:first-of-type {{ margin-top: 0; }}
+    .snapshot {{
+      background: var(--card); border: 1px solid var(--line); border-radius: 4px;
+      padding: 18px 22px; margin-bottom: 8px;
+    }}
+    .snapshot p {{ font-size: 15px; color: var(--muted); max-width: 54em; }}
+    .nums {{ margin-top: 12px; display: flex; flex-wrap: wrap; gap: 8px; }}
+    .ops {{ list-style: none; display: flex; flex-direction: column; gap: 16px; }}
+    .op-block {{ background: var(--card); border: 1px solid var(--line); border-radius: 4px; overflow: hidden; }}
+    .op-bar {{ height: 6px; }}
+    .op {{
+      display: block; text-decoration: none; color: inherit; padding: 22px 22px 18px;
+      transition: background 0.12s ease;
+    }}
+    .op:hover, .op:focus-visible {{ background: #f5f8fc; outline: none; }}
+    .op-top {{ display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 8px; }}
+    .op-title {{ font-size: 20px; font-weight: 700; color: var(--btg); }}
+    .op-ticker {{ font-size: 13px; font-weight: 700; color: var(--link); letter-spacing: 0.04em; }}
+    .op-blurb {{ font-size: 15px; color: var(--muted); max-width: 48em; }}
+    .op-meta {{ margin-top: 12px; display: flex; flex-wrap: wrap; gap: 8px; }}
+    .pill {{
+      background: #eef2f6; border: 1px solid var(--line); border-radius: 2px;
+      padding: 5px 11px; color: var(--btg-mid); font-size: 12px; font-weight: 600;
+    }}
+    .op-cta {{ margin-top: 14px; font-size: 14px; font-weight: 700; color: var(--link); }}
+    .die-link {{
+      display: inline-block; margin: 0 22px 16px; font-size: 13px; font-weight: 700;
+      color: var(--link); text-decoration: none;
+    }}
+    .die-link:hover {{ text-decoration: underline; }}
+    .footer {{
+      margin-top: 36px; padding-top: 18px; border-top: 1px solid var(--line);
+      font-size: 13px; color: var(--muted); text-align: center; line-height: 1.55;
+    }}
+    .footer strong {{ display: block; margin-top: 14px; color: #b42318; font-size: 15px; letter-spacing: 0.02em; }}
+    @media (max-width: 640px) {{
+      .hero {{ padding: 28px 16px 32px; }}
+      .page {{ padding: 20px 16px 48px; }}
+      .hero-row {{ flex-direction: column; align-items: flex-start; }}
+    }}
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="logo-btg">BTG PACTUAL</div>
+      <div class="hero-row">
+        <div>
+          <p class="brand-line">Distribuição Renda Variável</p>
+          <h1>Prêmio BOVA11 · Call Spread e Call KO</h1>
+        </div>
+        <div class="badge">Uso interno</div>
+      </div>
+    </div>
+  </header>
+
+  <main class="page">
+    <h2>Como usar</h2>
+    <section class="snapshot">
+      <p>
+        Duas operações de prêmio em BOVA11 com material próprio e DIE anexado.
+        Abra o factsheet para o payoff interativo; o DIE oficial fica no link de cada card.
+      </p>
+      {snapshot_extra}
+    </section>
+
+    <h2>Operações</h2>
+    <ul class="ops">
+      {''.join(ops_html)}
+    </ul>
+
+    <p class="footer">
+      Material ilustrativo para uso interno. Não constitui oferta, recomendação ou garantia de rentabilidade.
+      <strong>MATERIAL DE USO INTERNO, NÃO ENVIAR AOS CLIENTES</strong>
+    </p>
+  </main>
+</body>
+</html>
+"""
 
 
 def copy_premium_dies() -> None:
@@ -1279,7 +1453,7 @@ def hub_html(research: dict, prat) -> str:
             "Operações de prêmio",
             "cambio",
             "#0d6e6e",
-            "FX, Ibovespa e hedge de duration",
+            "FX e hedge de duration",
             [
                 {
                     "href": "../ops/ptax-call-ko-05-10/index.html",
@@ -1298,24 +1472,6 @@ def hub_html(research: dict, prat) -> str:
                     "blurb": "Call KO 110% · preço 3,1% · rebate 5% · fixing 26/10/2026.",
                     "pills": ["Câmbio", "Fixing 26/10", "Preço 3,1%", "Rebate 5%"],
                     "research": {},
-                },
-                {
-                    "href": "../ops/call-spread-bova11/index.html",
-                    "title": "Call Spread BOVA11 · 105/115",
-                    "ticker": "BOVA11",
-                    "brand": "#1a6b8a",
-                    "blurb": "Compra call 105% + venda 115% · preço 3,3% · teto líquido +6,7% · fixing 11/11/2026.",
-                    "pills": ["Equity / ETF", "Fixing 11/11", "Preço 3,3%", "105/115"],
-                    "research": research.get("BOVA11") or {},
-                },
-                {
-                    "href": "../ops/call-ko-bova11/index.html",
-                    "title": "Call KO c/ Rebate BOVA11 · 106%",
-                    "ticker": "BOVA11",
-                    "brand": "#c0392b",
-                    "blurb": "Call up&out 106% · preço 3,0% · rebate 3,5% (líq. +0,5%) · fixing 07/10/2026.",
-                    "pills": ["Equity / ETF", "Fixing 07/10", "Preço 3,0%", "KO 106%"],
-                    "research": research.get("BOVA11") or {},
                 },
                 {
                     "href": "../ops/pacb11-put-hedge/index.html",
@@ -1450,7 +1606,6 @@ def hub_html(research: dict, prat) -> str:
         {
             "PTAX": "Dólar (PTAX)",
             "PACB11": "ETF Inflação",
-            "BOVA11": "Ibovespa",
             "ITUB4": "Itaú",
         }
     )
@@ -1491,8 +1646,6 @@ def hub_html(research: dict, prat) -> str:
                 bits.append("Call KO · fixing 05/10 e 26/10")
             elif t == "PACB11":
                 bits.append("Put ATM · hedge duration")
-            elif t == "BOVA11":
-                bits.append("Call spread · Call KO rebate")
             else:
                 bits.append(" · ".join(c["ops"][:2]))
         highlight = " · ".join(bits)
@@ -1835,6 +1988,7 @@ if __name__ == "__main__":
     copy_premium_dies()
     for cfg in PREMIUM_OPS:
         write(f"ops/{cfg['slug']}/index.html", premium_page_html(cfg, prat, research))
+    write("premio-bova11/index.html", premium_hub_html(research))
 
     twin_rs = research.get("ITUB4") or {}
     write("ops/twin-coupon-itub4/index.html", twin_coupon_html(prat, twin_rs))

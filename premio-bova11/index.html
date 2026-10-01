@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Prêmio BOVA11 · Call Spread e Call KO | BTG Pactual</title>
+  <style>
+    :root {
+      --btg: #0b1f3a;
+      --btg-mid: #163a5f;
+      --btg-blue: #1e4d7b;
+      --link: #1a66b3;
+      --ink: #0b1f3a;
+      --muted: #5c6b7a;
+      --line: #d0d8e2;
+      --bg: #eef2f6;
+      --card: #ffffff;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: Segoe UI, -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif;
+      color: var(--ink); background: var(--bg); min-height: 100vh; line-height: 1.5;
+    }
+    .hero {
+      background: linear-gradient(135deg, var(--btg) 0%, var(--btg-mid) 55%, var(--btg-blue) 100%);
+      color: #fff; padding: 40px 24px 44px;
+    }
+    .hero-inner { max-width: 960px; margin: 0 auto; }
+    .logo-btg {
+      display: inline-block; font-weight: 700; font-size: 13px; letter-spacing: 0.1em;
+      color: #fff; border: 1px solid rgba(255,255,255,0.35); padding: 7px 12px;
+      border-radius: 2px; margin-bottom: 18px;
+    }
+    .hero-row { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; }
+    .brand-line {
+      font-size: clamp(22px, 3.5vw, 30px); font-weight: 700; letter-spacing: -0.02em;
+      line-height: 1.2; color: #fff; margin-bottom: 8px;
+    }
+    h1 {
+      font-size: clamp(16px, 2.4vw, 20px); font-weight: 600; letter-spacing: -0.01em;
+      line-height: 1.3; color: rgba(255,255,255,0.88);
+    }
+    .badge {
+      font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+      color: #fff; border: 1px solid rgba(255,255,255,0.35); padding: 8px 12px; border-radius: 2px; white-space: nowrap;
+    }
+    .page { max-width: 960px; margin: 0 auto; padding: 32px 24px 56px; }
+    h2 {
+      font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--btg-blue); margin: 28px 0 14px;
+    }
+    h2:first-of-type { margin-top: 0; }
+    .snapshot {
+      background: var(--card); border: 1px solid var(--line); border-radius: 4px;
+      padding: 18px 22px; margin-bottom: 8px;
+    }
+    .snapshot p { font-size: 15px; color: var(--muted); max-width: 54em; }
+    .nums { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 8px; }
+    .ops { list-style: none; display: flex; flex-direction: column; gap: 16px; }
+    .op-block { background: var(--card); border: 1px solid var(--line); border-radius: 4px; overflow: hidden; }
+    .op-bar { height: 6px; }
+    .op {
+      display: block; text-decoration: none; color: inherit; padding: 22px 22px 18px;
+      transition: background 0.12s ease;
+    }
+    .op:hover, .op:focus-visible { background: #f5f8fc; outline: none; }
+    .op-top { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 8px; }
+    .op-title { font-size: 20px; font-weight: 700; color: var(--btg); }
+    .op-ticker { font-size: 13px; font-weight: 700; color: var(--link); letter-spacing: 0.04em; }
+    .op-blurb { font-size: 15px; color: var(--muted); max-width: 48em; }
+    .op-meta { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 8px; }
+    .pill {
+      background: #eef2f6; border: 1px solid var(--line); border-radius: 2px;
+      padding: 5px 11px; color: var(--btg-mid); font-size: 12px; font-weight: 600;
+    }
+    .op-cta { margin-top: 14px; font-size: 14px; font-weight: 700; color: var(--link); }
+    .die-link {
+      display: inline-block; margin: 0 22px 16px; font-size: 13px; font-weight: 700;
+      color: var(--link); text-decoration: none;
+    }
+    .die-link:hover { text-decoration: underline; }
+    .footer {
+      margin-top: 36px; padding-top: 18px; border-top: 1px solid var(--line);
+      font-size: 13px; color: var(--muted); text-align: center; line-height: 1.55;
+    }
+    .footer strong { display: block; margin-top: 14px; color: #b42318; font-size: 15px; letter-spacing: 0.02em; }
+    @media (max-width: 640px) {
+      .hero { padding: 28px 16px 32px; }
+      .page { padding: 20px 16px 48px; }
+      .hero-row { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="logo-btg">BTG PACTUAL</div>
+      <div class="hero-row">
+        <div>
+          <p class="brand-line">Distribuição Renda Variável</p>
+          <h1>Prêmio BOVA11 · Call Spread e Call KO</h1>
+        </div>
+        <div class="badge">Uso interno</div>
+      </div>
+    </div>
+  </header>
+
+  <main class="page">
+    <h2>Como usar</h2>
+    <section class="snapshot">
+      <p>
+        Duas operações de prêmio em BOVA11 com material próprio e DIE anexado.
+        Abra o factsheet para o payoff interativo; o DIE oficial fica no link de cada card.
+      </p>
+      
+    </section>
+
+    <h2>Operações</h2>
+    <ul class="ops">
+      
+<li class="op-block">
+  <div class="op-bar" style="background:#1a6b8a"></div>
+  <a class="op" href="../ops/call-spread-bova11/index.html">
+    <div class="op-top">
+      <span class="op-title">Call Spread BOVA11 · 105/115</span>
+      <span class="op-ticker">BOVA11</span>
+    </div>
+    <p class="op-blurb">Compra call 105% + venda 115% · preço 3,3% · teto líquido +6,7% · fixing 11/11/2026.</p>
+    <div class="op-meta"><span class="pill">Equity / ETF</span><span class="pill">Fixing 11/11</span><span class="pill">Preço 3,3%</span><span class="pill">105/115</span></div>
+    <div class="op-cta">Abrir material →</div>
+  </a>
+  <a class="die-link" href="../ops/call-spread-bova11/DIE-16297762.pdf" target="_blank" rel="noopener noreferrer">DIE DIE-16297762 ↗</a>
+</li>
+<li class="op-block">
+  <div class="op-bar" style="background:#c0392b"></div>
+  <a class="op" href="../ops/call-ko-bova11/index.html">
+    <div class="op-top">
+      <span class="op-title">Call KO c/ Rebate BOVA11 · 106%</span>
+      <span class="op-ticker">BOVA11</span>
+    </div>
+    <p class="op-blurb">Call up&out 106% · preço 3,0% · rebate 3,5% (líq. +0,5%) · fixing 07/10/2026.</p>
+    <div class="op-meta"><span class="pill">Equity / ETF</span><span class="pill">Fixing 07/10</span><span class="pill">Preço 3,0%</span><span class="pill">KO 106%</span></div>
+    <div class="op-cta">Abrir material →</div>
+  </a>
+  <a class="die-link" href="../ops/call-ko-bova11/DIE-16297844.pdf" target="_blank" rel="noopener noreferrer">DIE DIE-16297844 ↗</a>
+</li>
+    </ul>
+
+    <p class="footer">
+      Material ilustrativo para uso interno. Não constitui oferta, recomendação ou garantia de rentabilidade.
+      <strong>MATERIAL DE USO INTERNO, NÃO ENVIAR AOS CLIENTES</strong>
+    </p>
+  </main>
+</body>
+</html>
