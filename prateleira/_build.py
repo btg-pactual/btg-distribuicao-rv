@@ -1252,16 +1252,12 @@ def make_call_ko(t, fixing, ko_pct, rebate, cost):
             return "Empata"
         if p < 0:
             return "Ainda no prejuízo"
-        if abs(x - (ko - 1)) < 0.05:
-            return "Melhor cenário"
         return "No lucro"
 
     def row_cls(x: float) -> str:
         if x >= ko:
             return "mx-ko mx-pos" if (rebate - cost) > 0 else "mx-ko"
         p = prem_at(x)
-        if abs(x - (ko - 1)) < 0.05 and p > 0:
-            return "mx-pos mx-best"
         if p < -0.5:
             return "mx-neg"
         if p > 0.5:
@@ -1295,8 +1291,6 @@ def make_call_ko(t, fixing, ko_pct, rebate, cost):
     ko_net = rebate - cost
     ko_prem = (ko_net / cost) * 100
     ko_net_s = f"{ko_net:.2f}".replace(".", ",")
-    peak_x = max(0.0, ko - 1.0)
-    peak_prem_s = f"{prem_at(peak_x):+.0f}"
 
     matrix_html = f"""
   <div class="matrix-wrap">
@@ -1304,8 +1298,7 @@ def make_call_ko(t, fixing, ko_pct, rebate, cost):
     <p class="matrix-note">
       Você pagou <strong>{cost_s}%</strong> de prêmio. A coluna do meio mostra o ganho ou a perda
       <strong>em cima desse prêmio</strong>.
-      Melhor caso (antes da barreira): <strong>{peak_prem_s}%</strong>.
-      Se bater a barreira: <strong>+{ko_prem:.0f}%</strong> (rebate).
+      Se bater a barreira (+{ko_i}% ou mais): <strong>+{ko_prem:.0f}%</strong> (rebate).
     </p>
     <table class="struct-table matrix-table">
       <thead><tr><th>Variação do ativo</th><th>Resultado no prêmio</th><th>Em uma frase</th></tr></thead>
