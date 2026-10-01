@@ -574,7 +574,11 @@ TWIP = ("GOLD11", date(2027, 9, 27), 100.0, 100.0, 140.0, 100.0, 80.0, 4.51)
 PUT_BUY = ("BOVA11", date(2027, 1, 25), 95.0, 2.93, "4 meses")
 # Compra de call spread: (ticker, fixing, buy_call, sell_call, cost abs)
 CALL_SPREAD = [
-    ("BOVA11", date(2026, 11, 5), 105.0, 115.0, 2.00),
+    ("BOVA11", date(2026, 11, 11), 105.0, 115.0, 3.30),
+]
+# Call KO com rebate: (ticker, fixing, ko_pct, rebate, cost)
+CALL_KO = [
+    ("BOVA11", date(2026, 10, 7), 106.0, 3.5, 3.0),
 ]
 # Collar: long put + short call (bid NÃO vai para a UI)
 # (ticker, fixing, put, call, bid, backtest% opcional)
@@ -2320,6 +2324,10 @@ def main():
     cs_items = [make_call_spread(*r) for r in CALL_SPREAD]
     sections.append(("Compra de Call Spread", cs_items))
     all_ops.extend(cs_items)
+
+    cko_items = [make_call_ko(*r) for r in CALL_KO]
+    sections.append(("Call KO com Rebate", cko_items))
+    all_ops.extend(cko_items)
 
     collar_items = [make_collar(*r) for r in COLLAR]
     sections.append(("Collar", collar_items))

@@ -58,6 +58,42 @@ COLLAR_OPS = [
     },
 ]
 
+# Operações de prêmio Dia D (BOVA11) — DIE em ops/<slug>/
+PREMIUM_OPS = [
+    {
+        "slug": "call-spread-bova11",
+        "kind": "call_spread",
+        "ticker": "BOVA11",
+        "name": "Ibovespa",
+        "brand": "#1a6b8a",
+        "fixing": date(2026, 11, 11),
+        "buy_call": 105.0,
+        "sell_call": 115.0,
+        "cost": 3.3,
+        "die": "DIE-16297762.pdf",
+        "die_src": r"C:\Users\PIMENTPA\Downloads\DIE-16297762.pdf",
+        "title": "Call Spread BOVA11 · 105/115",
+        "blurb": "Compra call 105% + venda 115% · preço 3,3% · teto líquido +6,7% · fixing 11/11/2026.",
+        "pills": ["Equity / ETF", "Fixing 11/11", "Preço 3,3%", "105/115"],
+    },
+    {
+        "slug": "call-ko-bova11",
+        "kind": "call_ko",
+        "ticker": "BOVA11",
+        "name": "Ibovespa",
+        "brand": "#c0392b",
+        "fixing": date(2026, 10, 7),
+        "ko_pct": 106.0,
+        "rebate": 3.5,
+        "cost": 3.0,
+        "die": "DIE-16297844.pdf",
+        "die_src": r"C:\Users\PIMENTPA\Downloads\DIE-16297844.pdf",
+        "title": "Call KO c/ Rebate BOVA11 · 106%",
+        "blurb": "Call up&out 106% · preço 3,0% · rebate 3,5% (líq. +0,5%) · fixing 07/10/2026.",
+        "pills": ["Equity / ETF", "Fixing 07/10", "Preço 3,0%", "KO 106%"],
+    },
+]
+
 
 def collar_page_html(cfg: dict, prat, research: dict | None = None) -> str:
     """Factsheet Collar no estilo prateleira, com voltar → Operações dia D."""
@@ -93,9 +129,82 @@ def collar_page_html(cfg: dict, prat, research: dict | None = None) -> str:
         '<a href="../../index.html">← Prateleira Tática</a>',
         '<a href="../../prateleira-tatica/index.html">← Operações dia D</a>',
     )
-    # slug semanal pode diferir; o destino Dia D usa cfg["slug"]
     _ = slug
     return html
+
+
+def premium_page_html(cfg: dict, prat, research: dict | None = None) -> str:
+    """Factsheet Call Spread / Call KO (prêmio) → Operações dia D + link DIE."""
+    rs = (research or {}).get(cfg["ticker"]) or {}
+    kind = cfg["kind"]
+    if kind == "call_spread":
+        _slug, page = prat.make_call_spread(
+            cfg["ticker"],
+            cfg["fixing"],
+            cfg["buy_call"],
+            cfg["sell_call"],
+            cfg["cost"],
+        )
+    elif kind == "call_ko":
+        _slug, page = prat.make_call_ko(
+            cfg["ticker"],
+            cfg["fixing"],
+            cfg["ko_pct"],
+            cfg["rebate"],
+            cfg["cost"],
+        )
+    else:
+        raise ValueError(f"kind desconhecido: {kind}")
+
+    page["research"] = rs
+    page["research_html"] = prat.research_html({"ticker": cfg["ticker"], "research": rs})
+    page["research_insights_html"] = prat.research_insights_html(
+        {"ticker": cfg["ticker"], "research": rs}
+    )
+    try:
+        import _range_52w
+
+        spot_ref = rs.get("price")
+        as_of = (_range_52w.load().get(cfg["ticker"].upper()) or {}).get("as_of_br") or ""
+        page["range_52w_html"] = _range_52w.range_block_html(
+            cfg["ticker"],
+            spot=float(spot_ref) if spot_ref is not None else None,
+            as_of_phrase=f"até o Dia D ({as_of})" if as_of else "até o Dia D",
+        )
+    except Exception:
+        page["range_52w_html"] = ""
+
+    die_name = cfg.get("die") or ""
+    if die_name:
+        die_html = (
+            f'<p class="legend-note" style="margin-top:12px">'
+            f'<a href="./{die_name}" target="_blank" rel="noopener noreferrer" '
+            f'style="color:#1a66b3;font-weight:700;text-decoration:none">'
+            f"Abrir DIE oficial ({die_name.replace('.pdf','')}) ↗</a></p>"
+        )
+        page["aside_extra_html"] = (page.get("aside_extra_html") or "") + die_html
+
+    html = prat.op_page(page)
+    html = html.replace(
+        '<a href="../../index.html">← Prateleira Tática</a>',
+        '<a href="../../prateleira-tatica/index.html">← Operações dia D</a>',
+    )
+    return html
+
+
+def copy_premium_dies() -> None:
+    import shutil
+
+    for cfg in PREMIUM_OPS:
+        src = Path(cfg.get("die_src") or "")
+        dest_dir = ROOT / "ops" / cfg["slug"]
+        dest_dir.mkdir(parents=True, exist_ok=True)
+        dest = dest_dir / cfg["die"]
+        if src.exists():
+            shutil.copy2(src, dest)
+            print(f"copied die {src.name} -> {dest.relative_to(ROOT)}")
+        elif not dest.exists():
+            print(f"die_missing {src}")
 
 
 def smart_hedge_html(cfg: dict, prat=None) -> str:
@@ -1170,7 +1279,7 @@ def hub_html(research: dict, prat) -> str:
             "Operações de prêmio",
             "cambio",
             "#0d6e6e",
-            "FX e hedge de duration",
+            "FX, Ibovespa e hedge de duration",
             [
                 {
                     "href": "../ops/ptax-call-ko-05-10/index.html",
@@ -1189,6 +1298,24 @@ def hub_html(research: dict, prat) -> str:
                     "blurb": "Call KO 110% · preço 3,1% · rebate 5% · fixing 26/10/2026.",
                     "pills": ["Câmbio", "Fixing 26/10", "Preço 3,1%", "Rebate 5%"],
                     "research": {},
+                },
+                {
+                    "href": "../ops/call-spread-bova11/index.html",
+                    "title": "Call Spread BOVA11 · 105/115",
+                    "ticker": "BOVA11",
+                    "brand": "#1a6b8a",
+                    "blurb": "Compra call 105% + venda 115% · preço 3,3% · teto líquido +6,7% · fixing 11/11/2026.",
+                    "pills": ["Equity / ETF", "Fixing 11/11", "Preço 3,3%", "105/115"],
+                    "research": research.get("BOVA11") or {},
+                },
+                {
+                    "href": "../ops/call-ko-bova11/index.html",
+                    "title": "Call KO c/ Rebate BOVA11 · 106%",
+                    "ticker": "BOVA11",
+                    "brand": "#c0392b",
+                    "blurb": "Call up&out 106% · preço 3,0% · rebate 3,5% (líq. +0,5%) · fixing 07/10/2026.",
+                    "pills": ["Equity / ETF", "Fixing 07/10", "Preço 3,0%", "KO 106%"],
+                    "research": research.get("BOVA11") or {},
                 },
                 {
                     "href": "../ops/pacb11-put-hedge/index.html",
@@ -1323,6 +1450,7 @@ def hub_html(research: dict, prat) -> str:
         {
             "PTAX": "Dólar (PTAX)",
             "PACB11": "ETF Inflação",
+            "BOVA11": "Ibovespa",
             "ITUB4": "Itaú",
         }
     )
@@ -1363,6 +1491,8 @@ def hub_html(research: dict, prat) -> str:
                 bits.append("Call KO · fixing 05/10 e 26/10")
             elif t == "PACB11":
                 bits.append("Put ATM · hedge duration")
+            elif t == "BOVA11":
+                bits.append("Call spread · Call KO rebate")
             else:
                 bits.append(" · ".join(c["ops"][:2]))
         highlight = " · ".join(bits)
@@ -1653,7 +1783,12 @@ OPS = [
 
 if __name__ == "__main__":
     prat = load_prat()
-    tickers = [cfg["ticker"] for cfg in OPS] + [cfg["ticker"] for cfg in COLLAR_OPS] + ["ITUB4"]
+    tickers = (
+        [cfg["ticker"] for cfg in OPS]
+        + [cfg["ticker"] for cfg in COLLAR_OPS]
+        + [cfg["ticker"] for cfg in PREMIUM_OPS]
+        + ["ITUB4"]
+    )
     try:
         research = prat.fetch_research(tickers)
     except Exception as exc:
@@ -1696,6 +1831,10 @@ if __name__ == "__main__":
 
     for cfg in COLLAR_OPS:
         write(f"ops/{cfg['slug']}/index.html", collar_page_html(cfg, prat, research))
+
+    copy_premium_dies()
+    for cfg in PREMIUM_OPS:
+        write(f"ops/{cfg['slug']}/index.html", premium_page_html(cfg, prat, research))
 
     twin_rs = research.get("ITUB4") or {}
     write("ops/twin-coupon-itub4/index.html", twin_coupon_html(prat, twin_rs))
