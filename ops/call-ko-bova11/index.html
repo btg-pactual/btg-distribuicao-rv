@@ -97,6 +97,15 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
 .matrix-wrap{margin-top:16px}
 .matrix-wrap h2{margin-top:4px}
 .matrix-note{font-size:11px;color:var(--muted);margin:0 0 10px;line-height:1.4}
+.matrix-table td:nth-child(3){font-variant-numeric:tabular-nums}
+.matrix-table tr.mx-neg td:nth-child(3){color:var(--danger)}
+.matrix-table tr.mx-pos td:nth-child(3){color:var(--success)}
+.matrix-table tr.mx-best{background:color-mix(in srgb,var(--success) 8%,#fff)}
+.matrix-table tr.mx-best td:nth-child(3){color:var(--success)}
+.matrix-table tr.mx-ko{background:color-mix(in srgb,var(--brand) 7%,#fff)}
+.matrix-table .mx-tag{font-size:11px;font-weight:600;color:var(--muted)}
+.matrix-table tr.mx-best .mx-tag{color:var(--success)}
+.matrix-table tr.mx-ko .mx-tag{color:var(--brand)}
 .sim-card .val.pos{color:var(--success)}
 .sim-card .val.neg{color:var(--danger)}
 .regime{font-size:12px;color:var(--ink);background:#fff7ef;border:1px solid #f0d4b8;border-radius:8px;padding:10px 12px;line-height:1.45}
@@ -193,12 +202,14 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
     <p class="matrix-note">
       Retorno <strong>sobre o prêmio pago (3,00%)</strong> =
       (resultado no nocional ÷ 3,00%) × 100.
+      Pico ITM (antes do KO): <strong>+2,0%</strong> nocional →
+      <strong>+67%</strong> sobre o prêmio.
       No KO: líquido +0,50% no nocional → <strong>+17%</strong> sobre o prêmio.
     </p>
-    <table class="struct-table">
-      <thead><tr><th>Spot</th><th>Nocional</th><th>Sobre prêmio</th><th></th></tr></thead>
+    <table class="struct-table matrix-table">
+      <thead><tr><th>Spot</th><th>Nocional</th><th>Sobre prêmio</th><th>Regime</th></tr></thead>
       <tbody>
-        <tr><td>-10%</td><td>-3,0%</td><td><strong>-100%</strong></td><td>OTM</td></tr><tr><td>+0%</td><td>-3,0%</td><td><strong>-100%</strong></td><td>OTM</td></tr><tr><td>+5%</td><td>+2,0%</td><td><strong>+67%</strong></td><td>ITM</td></tr><tr><td>+6%</td><td>+0,5%</td><td><strong>+17%</strong></td><td>KO · rebate</td></tr><tr><td>+10%</td><td>+0,5%</td><td><strong>+17%</strong></td><td>KO · rebate</td></tr><tr><td>+15%</td><td>+0,5%</td><td><strong>+17%</strong></td><td>KO · rebate</td></tr><tr><td>+30%</td><td>+0,5%</td><td><strong>+17%</strong></td><td>KO · rebate</td></tr><tr><td>+40%</td><td>+0,5%</td><td><strong>+17%</strong></td><td>KO · rebate</td></tr>
+        <tr class="mx-neg"><td>≤ +0%</td><td>-3,0%</td><td><strong>-100%</strong></td><td><span class="mx-tag">OTM · perde o prêmio</span></td></tr><tr><td>+3%</td><td>+0,0%</td><td><strong>+0%</strong></td><td><span class="mx-tag">ITM · empate</span></td></tr><tr class="mx-pos mx-best"><td>+5%</td><td>+2,0%</td><td><strong>+67%</strong></td><td><span class="mx-tag">ITM · pico antes do KO</span></td></tr><tr class="mx-ko mx-pos"><td>≥ +6%</td><td>+0,5%</td><td><strong>+17%</strong></td><td><span class="mx-tag">KO · rebate</span></td></tr>
       </tbody>
     </table>
   </div>

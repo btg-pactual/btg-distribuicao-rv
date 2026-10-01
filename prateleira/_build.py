@@ -684,6 +684,15 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
 .matrix-wrap{margin-top:16px}
 .matrix-wrap h2{margin-top:4px}
 .matrix-note{font-size:11px;color:var(--muted);margin:0 0 10px;line-height:1.4}
+.matrix-table td:nth-child(3){font-variant-numeric:tabular-nums}
+.matrix-table tr.mx-neg td:nth-child(3){color:var(--danger)}
+.matrix-table tr.mx-pos td:nth-child(3){color:var(--success)}
+.matrix-table tr.mx-best{background:color-mix(in srgb,var(--success) 8%,#fff)}
+.matrix-table tr.mx-best td:nth-child(3){color:var(--success)}
+.matrix-table tr.mx-ko{background:color-mix(in srgb,var(--brand) 7%,#fff)}
+.matrix-table .mx-tag{font-size:11px;font-weight:600;color:var(--muted)}
+.matrix-table tr.mx-best .mx-tag{color:var(--success)}
+.matrix-table tr.mx-ko .mx-tag{color:var(--brand)}
 .sim-card .val.pos{color:var(--success)}
 .sim-card .val.neg{color:var(--danger)}
 .regime{font-size:12px;color:var(--ink);background:#fff7ef;border:1px solid #f0d4b8;border-radius:8px;padding:10px 12px;line-height:1.45}
@@ -1233,20 +1242,58 @@ def make_call_ko(t, fixing, ko_pct, rebate, cost):
     def prem_at(x: float) -> float:
         return (net_at(x) / cost) * 100.0
 
-    spots = sorted({-10.0, 0.0, 5.0, 10.0, 15.0, max(0.0, ko - 1), ko, 30.0, 40.0})
-    matrix_rows = []
-    for s in spots:
-        n, p = net_at(s), prem_at(s)
-        note = "KO · rebate" if s >= ko else ("OTM" if s <= 0 else "ITM")
+    def fmt_spot(s: float, *, ge: bool = False, le: bool = False) -> str:
+        if ge:
+            return f"≥ {s:+.0f}%"
+        if le:
+            return f"≤ {s:+.0f}%"
+        # keep one decimal if not integer (e.g. 5,9)
+        if abs(s - round(s)) > 1e-9:
+            return f"{s:+.1f}%".replace(".", ",")
+        return f"{s:+.0f}%"
+
+    def row(spot_lbl: str, x: float, note: str, cls: str = "") -> str:
+        n, p = net_at(x), prem_at(x)
         ns = f"{n:+.1f}".replace(".", ",")
         ps = f"{p:+.0f}"
-        ss = f"{s:+.0f}"
-        matrix_rows.append(
-            f"<tr><td>{ss}%</td><td>{ns}%</td><td><strong>{ps}%</strong></td><td>{note}</td></tr>"
+        tr = f' class="{cls}"' if cls else ""
+        return (
+            f"<tr{tr}><td>{spot_lbl}</td><td>{ns}%</td>"
+            f"<td><strong>{ps}%</strong></td>"
+            f'<td><span class="mx-tag">{note}</span></td></tr>'
         )
+
+    # Cenários didáticos: OTM · break-even · pico ITM · KO (uma linha)
+    peak_x = max(0.0, ko - 1.0)  # 1pp abaixo da barreira
+    be_x = cost  # empate no nocional quando alta ≈ preço
+    mid_itm = min(peak_x, max(be_x, ko * 0.5))
+    scenarios = [
+        (fmt_spot(0.0, le=True), 0.0, "OTM · perde o prêmio", "mx-neg"),
+    ]
+    if mid_itm > 0.05 and abs(mid_itm - peak_x) > 0.4 and abs(mid_itm - be_x) > 0.4:
+        scenarios.append(
+            (fmt_spot(mid_itm), mid_itm, "ITM", "mx-pos" if net_at(mid_itm) > 0 else "")
+        )
+    if abs(be_x - peak_x) > 0.4 and be_x < ko:
+        note_be = "ITM · empate" if abs(net_at(be_x)) < 0.05 else "ITM"
+        cls_be = "mx-pos" if net_at(be_x) > 0.05 else ("" if abs(net_at(be_x)) < 0.05 else "mx-neg")
+        scenarios.append((fmt_spot(be_x), be_x, note_be, cls_be))
+    if peak_x > 0 and peak_x < ko:
+        scenarios.append(
+            (fmt_spot(peak_x), peak_x, "ITM · pico antes do KO", "mx-pos mx-best")
+        )
+    scenarios.append(
+        (fmt_spot(ko, ge=True), ko, "KO · rebate", "mx-ko mx-pos" if (rebate - cost) > 0 else "mx-ko")
+    )
+
+    matrix_rows = [row(*sc) for sc in scenarios]
     ko_net = rebate - cost
     ko_prem = (ko_net / cost) * 100
     ko_net_s = f"{ko_net:.2f}".replace(".", ",")
+    peak_net = net_at(peak_x)
+    peak_prem = prem_at(peak_x)
+    peak_net_s = f"{peak_net:+.1f}".replace(".", ",")
+    peak_prem_s = f"{peak_prem:+.0f}"
 
     matrix_html = f"""
   <div class="matrix-wrap">
@@ -1254,10 +1301,12 @@ def make_call_ko(t, fixing, ko_pct, rebate, cost):
     <p class="matrix-note">
       Retorno <strong>sobre o prêmio pago ({cost_s}%)</strong> =
       (resultado no nocional ÷ {cost_s}%) × 100.
+      Pico ITM (antes do KO): <strong>{peak_net_s}%</strong> nocional →
+      <strong>{peak_prem_s}%</strong> sobre o prêmio.
       No KO: líquido +{ko_net_s}% no nocional → <strong>+{ko_prem:.0f}%</strong> sobre o prêmio.
     </p>
-    <table class="struct-table">
-      <thead><tr><th>Spot</th><th>Nocional</th><th>Sobre prêmio</th><th></th></tr></thead>
+    <table class="struct-table matrix-table">
+      <thead><tr><th>Spot</th><th>Nocional</th><th>Sobre prêmio</th><th>Regime</th></tr></thead>
       <tbody>
         {''.join(matrix_rows)}
       </tbody>
