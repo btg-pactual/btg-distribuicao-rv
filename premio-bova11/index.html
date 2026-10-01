@@ -51,13 +51,13 @@
     }
     h2:first-of-type { margin-top: 0; }
     .snapshot {
-      background: var(--card); border: 1px solid var(--line); border-radius: 4px;
-      padding: 18px 22px; margin-bottom: 8px;
+      background: transparent; border: none; border-radius: 0;
+      padding: 0 0 4px; margin-bottom: 4px;
     }
     .snapshot p { font-size: 15px; color: var(--muted); max-width: 54em; }
     .snapshot-lead {
-      font-size: 17px !important; font-weight: 650; color: var(--ink) !important;
-      line-height: 1.4; max-width: 40em;
+      font-size: 14px !important; font-weight: 600; color: var(--btg-mid) !important;
+      line-height: 1.45; max-width: 42em; margin: 0;
     }
     .nums { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 8px; }
     .ops { list-style: none; display: flex; flex-direction: column; gap: 16px; }
@@ -141,15 +141,10 @@
   </header>
 
   <main class="page">
-    <h2>Como usar</h2>
-    <section class="snapshot">
-      <p class="snapshot-lead">
-        Abra o factsheet para o payoff interativo; o DIE oficial fica no link de cada card.
-      </p>
-      
-    </section>
-
     <h2>Operações</h2>
+    <p class="snapshot-lead" style="margin:-4px 0 14px">
+      Abra o factsheet para o payoff interativo; o DIE oficial fica no link de cada card.
+    </p>
     <ul class="ops">
       
 <li class="op-block">
