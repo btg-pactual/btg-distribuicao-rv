@@ -60,6 +60,60 @@
       line-height: 1.45; max-width: 42em; margin: 0;
     }
     .nums { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 8px; }
+    .insight-entry {
+      background: var(--card); border: 1px solid var(--line); border-radius: 6px;
+      padding: 18px 20px 16px; margin: 0 0 22px; border-top: 4px solid #1a6b8a;
+    }
+    .insight-head {
+      display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+    .insight-kicker {
+      font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+      color: #1a6b8a; margin: 0 0 6px;
+    }
+    .insight-title {
+      font-size: 18px; font-weight: 700; color: var(--btg); margin: 0 0 4px;
+      letter-spacing: -0.01em; text-transform: none;
+    }
+    .insight-sub { font-size: 13px; color: var(--muted); margin: 0; max-width: 42em; }
+    .insight-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+    .insight-cta {
+      display: inline-flex; align-items: center; background: #1a66b3; color: #fff !important;
+      font-size: 13px; font-weight: 700; text-decoration: none; padding: 10px 14px; border-radius: 4px;
+      border: 1px solid #1a66b3;
+    }
+    .insight-cta:hover { background: #15569a; }
+    .insight-cta.ghost {
+      background: #fff; color: #1a66b3 !important;
+    }
+    .insight-cta.ghost:hover { background: #f5f8fc; }
+    .insight-grid {
+      display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-bottom: 12px;
+    }
+    .insight-stat {
+      background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 12px 12px 10px;
+    }
+    .insight-stat .insight-lbl {
+      display: block; font-size: 10px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 4px;
+    }
+    .insight-stat strong { display: block; font-size: 22px; font-weight: 700; line-height: 1.1; }
+    .insight-stat.up strong { color: #0f7a4a; }
+    .insight-stat.down strong { color: #c0392b; }
+    .insight-stat .insight-meta { display: block; font-size: 11px; color: var(--muted); margin-top: 4px; line-height: 1.35; }
+    .insight-bullets {
+      margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 6px;
+    }
+    .insight-bullets li {
+      font-size: 13px; color: var(--ink); line-height: 1.4;
+      padding-left: 14px; position: relative;
+    }
+    .insight-bullets li::before {
+      content: ""; position: absolute; left: 0; top: 7px; width: 5px; height: 5px;
+      border-radius: 50%; background: #1a6b8a;
+    }
+    .insight-by { font-size: 11px; color: var(--muted); margin: 12px 0 0; }
     .ops { list-style: none; display: flex; flex-direction: column; gap: 16px; }
     .op-block { background: var(--card); border: 1px solid var(--line); border-radius: 4px; overflow: hidden; }
     .op-bar { height: 6px; }
@@ -123,6 +177,7 @@
       .page { padding: 20px 16px 48px; }
       .hero-row { flex-direction: column; align-items: flex-start; }
       .at-levels { grid-template-columns: 1fr; }
+      .insight-grid { grid-template-columns: 1fr 1fr; }
     }
   </style>
 </head>
@@ -141,6 +196,51 @@
   </header>
 
   <main class="page">
+    
+<section class="insight-entry" aria-label="Insights Pós-Eleição">
+  <div class="insight-head">
+    <div>
+      <p class="insight-kicker">Research · Análise Técnica · 01/10/2026</p>
+      <h2 class="insight-title">Trend Insights · Estatísticas Pós-Eleição</h2>
+      <p class="insight-sub">Ibovespa do último pregão antes da votação ao primeiro pregão depois · turnos 2002–2022</p>
+    </div>
+    <div class="insight-actions">
+      <a class="insight-cta" href="./reports/Trend-Insights-Estatisticas-Pos-Eleicao.pdf" target="_blank" rel="noopener noreferrer">Abrir PDF ↗</a>
+      <a class="insight-cta ghost" href="https://content.btgpactual.com/research/home/analise-tecnica/relatorio/6abef6765a2606707e77cbe4/Trend-Insights-Estatisticas-Pos-Eleicao" target="_blank" rel="noopener noreferrer">Research ↗</a>
+    </div>
+  </div>
+  <div class="insight-grid">
+    <div class="insight-stat up">
+      <span class="insight-lbl">1º turno · média</span>
+      <strong>+3,02%</strong>
+      <span class="insight-meta">aber. sexta → fech. segunda · 5 altas em 6</span>
+    </div>
+    <div class="insight-stat up">
+      <span class="insight-lbl">1º turno · média</span>
+      <strong>+2,07%</strong>
+      <span class="insight-meta">fech. sexta → fech. segunda · 5 altas em 6</span>
+    </div>
+    <div class="insight-stat down">
+      <span class="insight-lbl">2º turno · média</span>
+      <strong>−0,33%</strong>
+      <span class="insight-meta">aber. sexta → fech. segunda · 2 altas em 6</span>
+    </div>
+    <div class="insight-stat down">
+      <span class="insight-lbl">2º turno · média</span>
+      <strong>−1,32%</strong>
+      <span class="insight-meta">fech. sexta → fech. segunda · 2 altas em 6</span>
+    </div>
+  </div>
+  <ul class="insight-bullets">
+    <li>Nos <b>primeiros turnos</b>, o Ibovespa subiu em cinco de seis eleições; exceção 2002.</li>
+    <li>Nos <b>segundos turnos</b>, caiu em quatro de seis eventos.</li>
+    <li>Partir da abertura de sexta elevou as médias em cerca de <b>1 p.p.</b>, sem mudar o nº de altas.</li>
+    <li>Amostra pequena (6 por turno): descreve o passado — <b>não</b> indica probabilidade futura.</li>
+  </ul>
+  <p class="insight-by">Lucas Costa, CMT · Gabriela Sporch · BTG Pactual Research</p>
+</section>
+
+
     <h2>Operações</h2>
     <p class="snapshot-lead" style="margin:-4px 0 14px">
       Abra o factsheet para o payoff interativo; o DIE oficial fica no link de cada card.
