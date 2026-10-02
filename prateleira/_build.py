@@ -578,7 +578,7 @@ CALL_SPREAD = [
 ]
 # Call KO com rebate: (ticker, fixing, ko_pct, rebate, cost)
 CALL_KO = [
-    ("BOVA11", date(2026, 10, 7), 106.0, 3.5, 3.0),
+    ("BOVA11", date(2026, 10, 8), 106.0, 3.5, 3.0),
 ]
 # Collar: long put + short call (bid NÃO vai para a UI)
 # (ticker, fixing, put, call, bid, backtest% opcional)
@@ -1228,6 +1228,7 @@ def make_triplo(t, fixing, sold, ko_h, ko_l, _bid):
 
 def make_call_ko(t, fixing, ko_pct, rebate, cost):
     prazo = months_label(fixing)
+    fix_lbl = fixing.strftime("%d/%m")
     ko = ko_pct - 100
     slug = slugify("call-ko-rebate", t, prazo.replace(" ", ""))
     cost_s = fmt_money_pct(cost).rstrip("%")
@@ -1319,9 +1320,9 @@ def make_call_ko(t, fixing, ko_pct, rebate, cost):
             f"Call up-and-out {t}: participa da alta até a barreira; no KO recebe rebate. "
             f"Matriz também em retorno % só sobre o prêmio ({cost_s}%)."
         ),
-        "pills": [("Ativo", t), ("Prazo", prazo), ("KO", ko_lbl), ("Rebate", reb_s), ("Preço", f"{cost_s}%")],
+        "pills": [("Ativo", t), ("Fixing", fix_lbl), ("KO", ko_lbl), ("Rebate", reb_s), ("Preço", f"{cost_s}%")],
         "highlights": [
-            ("Prazo", prazo, ""),
+            ("Fixing", fix_lbl, fixing.strftime("%d/%m/%Y")),
             ("Sem KO", f"Alta − {cost_s}%", "Call ATM no nocional"),
             ("No KO", f"+{ko_net_s}%", f"+{ko_prem:.0f}% sobre o prêmio"),
             ("Risco", "−100%", "Sobre o prêmio (OTM)"),
@@ -1338,7 +1339,7 @@ def make_call_ko(t, fixing, ko_pct, rebate, cost):
         ],
         "regime0": "Sem KO: participa da alta menos o preço. Veja também o ganho % só sobre o prêmio.",
         "speech": [
-            ("Para quem", f"Cliente construtivo em {t} no curto prazo ({prazo}) que quer call com rebate se KO."),
+            ("Para quem", f"Cliente construtivo em {t} com fixing {fix_lbl} que quer call com rebate se KO."),
             (
                 "Como encaixa",
                 f"Call KO {ko_lbl} · rebate {reb_s} · preço {cost_s}%. "
