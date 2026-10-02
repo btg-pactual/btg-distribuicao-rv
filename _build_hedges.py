@@ -61,22 +61,6 @@ COLLAR_OPS = [
 # Hub próprio premio-bova11/ (não Dia D) — DIE em ops/<slug>/
 PREMIUM_OPS = [
     {
-        "slug": "call-spread-bova11",
-        "kind": "call_spread",
-        "ticker": "BOVA11",
-        "name": "Ibovespa",
-        "brand": "#1a6b8a",
-        "fixing": date(2026, 11, 11),
-        "buy_call": 105.0,
-        "sell_call": 115.0,
-        "cost": 3.3,
-        "die": "DIE-16297762.pdf",
-        "die_src": r"C:\Users\PIMENTPA\Downloads\DIE-16297762.pdf",
-        "title": "Call Spread BOVA11 · 105/115",
-        "blurb": "Compra call 105% + venda 115% · preço 3,3% · teto líquido +6,7% · fixing 11/11/2026.",
-        "pills": ["Equity / ETF", "Fixing 11/11", "Preço 3,3%", "105/115"],
-    },
-    {
         "slug": "call-ko-bova11",
         "kind": "call_ko",
         "ticker": "BOVA11",
@@ -91,6 +75,22 @@ PREMIUM_OPS = [
         "title": "Call KO c/ Rebate BOVA11 · 106%",
         "blurb": "Call up&out 106% · preço 3,0% · rebate 3,5% (líq. +0,5%) · fixing 07/10/2026.",
         "pills": ["Equity / ETF", "Fixing 07/10", "Preço 3,0%", "KO 106%"],
+    },
+    {
+        "slug": "call-spread-bova11",
+        "kind": "call_spread",
+        "ticker": "BOVA11",
+        "name": "Ibovespa",
+        "brand": "#1a6b8a",
+        "fixing": date(2026, 11, 11),
+        "buy_call": 105.0,
+        "sell_call": 115.0,
+        "cost": 3.3,
+        "die": "DIE-16297762.pdf",
+        "die_src": r"C:\Users\PIMENTPA\Downloads\DIE-16297762.pdf",
+        "title": "Call Spread BOVA11 · 105/115",
+        "blurb": "Compra call 105% + venda 115% · preço 3,3% · teto líquido +6,7% · fixing 11/11/2026.",
+        "pills": ["Equity / ETF", "Fixing 11/11", "Preço 3,3%", "105/115"],
     },
 ]
 
