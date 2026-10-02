@@ -97,6 +97,15 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
 .matrix-wrap{margin-top:16px}
 .matrix-wrap h2{margin-top:4px}
 .matrix-note{font-size:11px;color:var(--muted);margin:0 0 10px;line-height:1.4}
+.matrix-table td:nth-child(2){font-variant-numeric:tabular-nums}
+.matrix-table tr.mx-neg td:nth-child(2){color:var(--danger)}
+.matrix-table tr.mx-pos td:nth-child(2){color:var(--success)}
+.matrix-table tr.mx-best{background:color-mix(in srgb,var(--success) 8%,#fff)}
+.matrix-table tr.mx-best td:nth-child(2){color:var(--success)}
+.matrix-table tr.mx-ko{background:color-mix(in srgb,var(--brand) 7%,#fff)}
+.matrix-table .mx-tag{font-size:11px;font-weight:600;color:var(--muted)}
+.matrix-table tr.mx-best .mx-tag{color:var(--success)}
+.matrix-table tr.mx-ko .mx-tag{color:var(--brand)}
 .sim-card .val.pos{color:var(--success)}
 .sim-card .val.neg{color:var(--danger)}
 .regime{font-size:12px;color:var(--ink);background:#fff7ef;border:1px solid #f0d4b8;border-radius:8px;padding:10px 12px;line-height:1.45}
@@ -133,7 +142,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
     <h2>Research BTG</h2>
     <a class="research-link" href="https://content.btgpactual.com/research/ativo/B3SA3" target="_blank" rel="noopener">Abrir B3SA3 no Research <span class="arrow" aria-hidden="true">→</span></a>
   </div>
-  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 18,34</div></div><div><div class="lbl">Recomendação</div><div class="val hold">Neutro</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 19,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+3,60%</div></div></div><p class="research-note">Spot do fechamento anterior (30/09/2026) · preço-alvo atualizado em 23/09/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
+  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 18,51</div></div><div><div class="lbl">Recomendação</div><div class="val hold">Neutro</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 19,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+2,65%</div></div></div><p class="research-note">Spot do fechamento anterior (01/10/2026) · preço-alvo atualizado em 01/10/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
 </section>
 
 <div class="main">
@@ -147,7 +156,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
           <table class="struct-table">
             <thead><tr><th></th><th>R$</th><th>vs spot</th></tr></thead>
             <tbody>
-              <tr><td>Máximo</td><td><strong>20,33</strong></td><td>+10,9%</td></tr>
+              <tr><td>Máximo</td><td><strong>20,33</strong></td><td>+9,8%</td></tr>
               <tr><td>Mínimo</td><td><strong>0,00</strong></td><td>-100,0%</td></tr>
             </tbody>
           </table>
@@ -212,8 +221,8 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
 
 <section class="speech-box insights-box">
   <h2>Insights Research BTG</h2>
-  <ul class="research-bullets"><li>A B3 reportou no 2T26 lucro líquido de R$ 1,70 bi, alta de 15% t/t e 28% a/a, mas sustentado por itens não recorrentes.</li><li>No operacional, a receita líquida foi de R$ 2,77 bi, -4% t/t e +9% a/a, e o EBITDA ajustado somou R$ 1,94 bi, -6% t/t e +6% a/a, com margem de 70,1%, enquanto o lucro recorrente de R$ 1,38 bi caiu 8% t/t e ficou ~4% abaixo da…</li><li>Despesas totais chegaram a R$ 976 mi, +6% t/t e +16% a/a, pressionadas por pessoal e R$ 40,5 mi em custos extraordinários ligados à mudança de diretoria. O lucro reportado também foi beneficiado por resultado financeiro de R$ 139 mi…</li></ul>
-  <p class="research-note">Insights BTG · 23/09/2026 · fonte Research BTG.</p>
+  <ul class="research-bullets"><li>No 2T26, a B3 reportou receita líquida de R$2,77 bi e EBITDA ajustado de R$1,94 bi, com margem de 70,1%.</li><li>O EBITDA caiu 6% t/t, mas subiu 6% a/a, enquanto o lucro líquido recorrente foi de R$1,38 bi, -8% t/t e +8% a/a, refletindo desaceleração operacional apesar da resiliência dos negócios recorrentes, que cresceram 17% a/a, com destaque…</li><li>ETFs de renda fixa avançam 120% a/a e já superam os de ações em AuM na B3. A companhia também vê espaço em títulos públicos, emissões corporativas, dados, recebíveis e produtos globais, enquanto a concorrência segue mais visível em…</li></ul>
+  <p class="research-note">Insights BTG · 01/10/2026 · fonte Research BTG.</p>
 </section>
 
 <p class="footer">Material ilustrativo para uso interno. Não constitui oferta, recomendação ou garantia de rentabilidade.</p>
@@ -227,7 +236,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
   var X_MIN=-30,X_MAX=40,Y_MIN=-30,Y_MAX=15;
   var PAD={l:48,t:24,r:48,b:24},VW=600,VH=400;
   var PLOT_W=VW-PAD.l-PAD.r,PLOT_H=VH-PAD.t-PAD.b;
-  var RESEARCH_X=3.5987;
+  var RESEARCH_X=2.6472;
   var KO_VAR=-10.0, CUPON=5.07;
   function structureReturn(x){ if (x <= KO_VAR) return x; return CUPON; }
   function regimeFor(x){ if (x <= KO_VAR) return 'KO: acompanha o ativo.'; return 'Cupom SOC +5.07%.'; }

@@ -97,6 +97,15 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
 .matrix-wrap{margin-top:16px}
 .matrix-wrap h2{margin-top:4px}
 .matrix-note{font-size:11px;color:var(--muted);margin:0 0 10px;line-height:1.4}
+.matrix-table td:nth-child(2){font-variant-numeric:tabular-nums}
+.matrix-table tr.mx-neg td:nth-child(2){color:var(--danger)}
+.matrix-table tr.mx-pos td:nth-child(2){color:var(--success)}
+.matrix-table tr.mx-best{background:color-mix(in srgb,var(--success) 8%,#fff)}
+.matrix-table tr.mx-best td:nth-child(2){color:var(--success)}
+.matrix-table tr.mx-ko{background:color-mix(in srgb,var(--brand) 7%,#fff)}
+.matrix-table .mx-tag{font-size:11px;font-weight:600;color:var(--muted)}
+.matrix-table tr.mx-best .mx-tag{color:var(--success)}
+.matrix-table tr.mx-ko .mx-tag{color:var(--brand)}
 .sim-card .val.pos{color:var(--success)}
 .sim-card .val.neg{color:var(--danger)}
 .regime{font-size:12px;color:var(--ink);background:#fff7ef;border:1px solid #f0d4b8;border-radius:8px;padding:10px 12px;line-height:1.45}
@@ -133,7 +142,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
     <h2>Research BTG</h2>
     <a class="research-link" href="https://content.btgpactual.com/research/ativo/PETR4" target="_blank" rel="noopener">Abrir PETR4 no Research <span class="arrow" aria-hidden="true">→</span></a>
   </div>
-  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 49,12</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 62,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+26,22%</div></div></div><p class="research-note">Spot do fechamento anterior (30/09/2026) · preço-alvo atualizado em 30/09/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
+  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 49,77</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 62,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+24,57%</div></div></div><p class="research-note">Spot do fechamento anterior (01/10/2026) · preço-alvo atualizado em 30/09/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
 </section>
 
 <div class="main">
@@ -147,7 +156,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
           <table class="struct-table">
             <thead><tr><th></th><th>R$</th><th>vs spot</th></tr></thead>
             <tbody>
-              <tr><td>Máximo</td><td><strong>50,70</strong></td><td>+3,2%</td></tr>
+              <tr><td>Máximo</td><td><strong>50,70</strong></td><td>+1,9%</td></tr>
               <tr><td>Mínimo</td><td><strong>0,00</strong></td><td>-100,0%</td></tr>
             </tbody>
           </table>
@@ -227,7 +236,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
   var X_MIN=-50,X_MAX=80,Y_MIN=-50,Y_MAX=80;
   var PAD={l:48,t:24,r:48,b:24},VW=600,VH=400;
   var PLOT_W=VW-PAD.l-PAD.r,PLOT_H=VH-PAD.t-PAD.b;
-  var RESEARCH_X=26.2215;
+  var RESEARCH_X=24.5730;
   var PUT=100.0, CALL=110.0, KI=134.7;
   function structureReturn(x){ var st=100+x; var r=st+Math.max(PUT-st,0)-(st>=KI?Math.max(st-CALL,0):0)-100; return r; }
   function regimeFor(x){ var st=100+x; if(st>=KI) return 'KI: teto +10%.'; if(x<=(PUT-100)) return 'Piso da put.'; return 'Participa 1:1.'; }

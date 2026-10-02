@@ -97,6 +97,15 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
 .matrix-wrap{margin-top:16px}
 .matrix-wrap h2{margin-top:4px}
 .matrix-note{font-size:11px;color:var(--muted);margin:0 0 10px;line-height:1.4}
+.matrix-table td:nth-child(2){font-variant-numeric:tabular-nums}
+.matrix-table tr.mx-neg td:nth-child(2){color:var(--danger)}
+.matrix-table tr.mx-pos td:nth-child(2){color:var(--success)}
+.matrix-table tr.mx-best{background:color-mix(in srgb,var(--success) 8%,#fff)}
+.matrix-table tr.mx-best td:nth-child(2){color:var(--success)}
+.matrix-table tr.mx-ko{background:color-mix(in srgb,var(--brand) 7%,#fff)}
+.matrix-table .mx-tag{font-size:11px;font-weight:600;color:var(--muted)}
+.matrix-table tr.mx-best .mx-tag{color:var(--success)}
+.matrix-table tr.mx-ko .mx-tag{color:var(--brand)}
 .sim-card .val.pos{color:var(--success)}
 .sim-card .val.neg{color:var(--danger)}
 .regime{font-size:12px;color:var(--ink);background:#fff7ef;border:1px solid #f0d4b8;border-radius:8px;padding:10px 12px;line-height:1.45}
@@ -133,7 +142,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
     <h2>Research BTG</h2>
     <a class="research-link" href="https://content.btgpactual.com/research/ativo/MELI34" target="_blank" rel="noopener">Abrir MELI34 no Research <span class="arrow" aria-hidden="true">→</span></a>
   </div>
-  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 74,15</div></div></div><p class="research-note">Spot do fechamento anterior (30/09/2026) · sem preço-alvo publicado para este ticker · atualizado às 18h30 · fonte Research BTG.</p>
+  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 73,35</div></div></div><p class="research-note">Spot do fechamento anterior (01/10/2026) · sem preço-alvo publicado para este ticker · atualizado às 18h30 · fonte Research BTG.</p>
 </section>
 
 <div class="main">
@@ -147,7 +156,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
           <table class="struct-table">
             <thead><tr><th></th><th>R$</th><th>vs spot</th></tr></thead>
             <tbody>
-              <tr><td>Máximo</td><td><strong>110,88</strong></td><td>+49,5%</td></tr>
+              <tr><td>Máximo</td><td><strong>108,69</strong></td><td>+48,2%</td></tr>
               <tr><td>Mínimo</td><td><strong>0,00</strong></td><td>-100,0%</td></tr>
             </tbody>
           </table>
