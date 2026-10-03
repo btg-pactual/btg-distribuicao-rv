@@ -142,7 +142,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
     <h2>Research BTG</h2>
     <a class="research-link" href="https://content.btgpactual.com/research/ativo/RENT3" target="_blank" rel="noopener">Abrir RENT3 no Research <span class="arrow" aria-hidden="true">→</span></a>
   </div>
-  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 40,03</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 63,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+57,38%</div></div></div><p class="research-note">Spot do fechamento anterior (01/10/2026) · preço-alvo atualizado em 14/09/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
+  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 41,48</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 63,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+51,88%</div></div></div><p class="research-note">Spot do fechamento anterior (02/10/2026) · preço-alvo atualizado em 02/10/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
 </section>
 
 <div class="main">
@@ -156,8 +156,8 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
           <table class="struct-table">
             <thead><tr><th></th><th>R$</th><th>vs spot</th></tr></thead>
             <tbody>
-              <tr><td>Máximo</td><td><strong>53,35</strong></td><td>+33,3%</td></tr>
-              <tr><td>Mínimo</td><td><strong>0,00</strong></td><td>-100,0%</td></tr>
+              <tr><td>Máximo</td><td><strong>53,35</strong></td><td>+28,6%</td></tr>
+              <tr><td>Mínimo</td><td><strong>31,74</strong></td><td>-23,5%</td></tr>
             </tbody>
           </table>
           <p class="legend-note">
@@ -221,8 +221,8 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
 
 <section class="speech-box insights-box">
   <h2>Insights Research BTG</h2>
-  <ul class="research-bullets"><li>No 2T26, a Localiza entregou receita líquida de R$12,3 bi, EBITDA de R$3,8 bi e lucro líquido de R$1,0 bi, com altas de 25%, 14% e 31% a/a, respectivamente, e desempenho acima das estimativas, embora com pressão em Seminovos. Em…</li><li>O spread de ROIC ajustado subiu para 6,1%. Em Seminovos, a receita foi de R$7,1 bi com 92 mil veículos vendidos, mas a margem EBITDA caiu para 1,9%, de 3,1% no 1T26, por mix pior e custos de expansão no varejo. A prévia apontava receita…</li><li>O spread caiu de 0,8 p.p. para 0,1 p.p. O perfil da frota ofertada também melhorou, com 74% dos carros abaixo de 45 mil km e 81% concentrados em modelos 2024/25 e 2025/26. Em valuation, a ação negocia perto de 9,0x–9,7x P/L 2026E, com…</li></ul>
-  <p class="research-note">Insights BTG · 14/09/2026 · fonte Research BTG.</p>
+  <ul class="research-bullets"><li>No 2T26, a Localiza reportou receita líquida de R$12,3 bi, EBITDA de R$3,8 bi e lucro líquido de R$1,0 bi, com altas de 25%, 14% e 31% a/a, respectivamente, além de spread de ROIC ajustado de 6,1%, ante 5,9% no 1T26.</li><li>O desempenho de locação foi sólido: em RAC, volumes cresceram 7% a/a, a diária média foi a R$154, a utilização ficou em 82% e a margem EBITDA em 68%; em Gestão de Frotas, volumes subiram 1%, a diária média foi a R$109 e a margem EBITDA…</li><li>O principal ponto de atenção ficou em Seminovos, com 92 mil veículos vendidos e receita de R$7,1 bi, mas margem EBITDA de 1,9%, abaixo de 3,1% no trimestre anterior, pressionada por mix, expansão do varejo e rebranding.</li></ul>
+  <p class="research-note">Insights BTG · 02/10/2026 · fonte Research BTG.</p>
 </section>
 
 <p class="footer">Material ilustrativo para uso interno. Não constitui oferta, recomendação ou garantia de rentabilidade.</p>
@@ -236,7 +236,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
   var X_MIN=-50,X_MAX=80,Y_MIN=-50,Y_MAX=150;
   var PAD={l:48,t:24,r:48,b:24},VW=600,VH=400;
   var PLOT_W=VW-PAD.l-PAD.r,PLOT_H=VH-PAD.t-PAD.b;
-  var RESEARCH_X=57.3820;
+  var RESEARCH_X=51.8804;
   var L=-20.0, H=42.0, CAP=15.0;
   function structureReturn(x){ if (x < L) return x; if (x < 0) return -x; if (x < H) return 3*x; return CAP; }
   function regimeFor(x){ if (x < L) return 'Abaixo do put KO: acompanha.'; if (x < 0) return 'Queda moderada: |x|.'; if (x < H) return 'Alta: 3×.'; return 'KO alta: teto.'; }
