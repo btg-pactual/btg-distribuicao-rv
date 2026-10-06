@@ -142,7 +142,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
     <h2>Research BTG</h2>
     <a class="research-link" href="https://content.btgpactual.com/research/ativo/VALE3" target="_blank" rel="noopener">Abrir VALE3 no Research <span class="arrow" aria-hidden="true">→</span></a>
   </div>
-  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 72,10</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 90,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+24,83%</div></div></div><p class="research-note">Spot do fechamento anterior (02/10/2026) · preço-alvo atualizado em 02/10/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
+  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 71,40</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 90,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+26,05%</div></div></div><p class="research-note">Spot do fechamento anterior (05/10/2026) · preço-alvo atualizado em 05/10/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
 </section>
 
 <div class="main">
@@ -156,8 +156,8 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
           <table class="struct-table">
             <thead><tr><th></th><th>R$</th><th>vs spot</th></tr></thead>
             <tbody>
-              <tr><td>Máximo</td><td><strong>91,62</strong></td><td>+27,1%</td></tr>
-              <tr><td>Mínimo</td><td><strong>58,08</strong></td><td>-19,4%</td></tr>
+              <tr><td>Máximo</td><td><strong>91,62</strong></td><td>+28,3%</td></tr>
+              <tr><td>Mínimo</td><td><strong>0,00</strong></td><td>-100,0%</td></tr>
             </tbody>
           </table>
           <p class="legend-note">
@@ -221,8 +221,8 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
 
 <section class="speech-box insights-box">
   <h2>Insights Research BTG</h2>
-  <ul class="research-bullets"><li>A Vale reportou no 2T26 EBITDA de US$4,1 bi, 6% acima da estimativa do BTG, com ferrosos em US$3,1 bi, pelotas em US$416 mi e VBM em US$1,3 bi, apoiada por preços realizados mais fortes em finos, pelotas e cobre e por execução sólida em…</li><li>O FCFE foi de US$1,5 bi, equivalente a yield anualizado de ~9%. Na prévia do trimestre, as vendas de minério de ferro e pelotas somaram 77,7 Mt, alta de 3% a/a e 16% t/t, com produção de 84,3 Mt, preço realizado de US$95/t em finos e…</li><li>Em cobre, as vendas atingiram 97,6 mil t e a produção 98,4 mil t, com preço realizado de US$14.062/t, enquanto o níquel entregou 44,4 mil t em vendas. Entre os principais KPIs e mensagens operacionais, o guidance de custo C1 do minério…</li></ul>
-  <p class="research-note">Insights BTG · 02/10/2026 · fonte Research BTG.</p>
+  <ul class="research-bullets"><li>A Vale reportou 2T26 acima do esperado, com EBITDA consolidado de US$4,1 bi, apoiado por preços realizados mais fortes em minério de ferro, pelotas e cobre e por uma VBM mais robusta.</li><li>Em ferrosos, o EBITDA foi de US$3,1 bi, com vendas de finos de 69,9 Mt a US$95/t, enquanto a VBM entregou US$1,3 bi, com cobre em 97,6–98,4 kt entre vendas e produção. Na prévia do 3T26, a leitura ficou mais fraca: o BTG apontou receita…</li><li>O custo C1 do trimestre ficou em US$27,7/t, mas o guidance de 2026 subiu para US$22,5–23,5/t, com custo total de US$58–62/t.</li></ul>
+  <p class="research-note">Insights BTG · 05/10/2026 · fonte Research BTG.</p>
 </section>
 
 <p class="footer">Material ilustrativo para uso interno. Não constitui oferta, recomendação ou garantia de rentabilidade.</p>
@@ -236,7 +236,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
   var X_MIN=-50,X_MAX=80,Y_MIN=-50,Y_MAX=80;
   var PAD={l:48,t:24,r:48,b:24},VW=600,VH=400;
   var PLOT_W=VW-PAD.l-PAD.r,PLOT_H=VH-PAD.t-PAD.b;
-  var RESEARCH_X=24.8266;
+  var RESEARCH_X=26.0504;
   var PUT=90.0, CALL=103.0, KI=126.43;
   function structureReturn(x){ var st=100+x; var r=st+Math.max(PUT-st,0)-(st>=KI?Math.max(st-CALL,0):0)-100; return r; }
   function regimeFor(x){ var st=100+x; if(st>=KI) return 'KI: teto +3%.'; if(x<=(PUT-100)) return 'Piso da put.'; return 'Participa 1:1.'; }

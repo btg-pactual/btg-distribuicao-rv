@@ -142,7 +142,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
     <h2>Research BTG</h2>
     <a class="research-link" href="https://content.btgpactual.com/research/ativo/BBAS3" target="_blank" rel="noopener">Abrir BBAS3 no Research <span class="arrow" aria-hidden="true">→</span></a>
   </div>
-  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 23,72</div></div><div><div class="lbl">Recomendação</div><div class="val hold">Neutro</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 19,00</div></div><div><div class="lbl">Potencial</div><div class="val sell">-19,90%</div></div></div><p class="research-note">Spot do fechamento anterior (02/10/2026) · preço-alvo atualizado em 23/09/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
+  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 26,33</div></div><div><div class="lbl">Recomendação</div><div class="val hold">Neutro</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 19,00</div></div><div><div class="lbl">Potencial</div><div class="val sell">-27,84%</div></div></div><p class="research-note">Spot do fechamento anterior (05/10/2026) · preço-alvo atualizado em 05/10/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
 </section>
 
 <div class="main">
@@ -156,8 +156,8 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
           <table class="struct-table">
             <thead><tr><th></th><th>R$</th><th>vs spot</th></tr></thead>
             <tbody>
-              <tr><td>Máximo</td><td><strong>27,81</strong></td><td>+17,2%</td></tr>
-              <tr><td>Mínimo</td><td><strong>17,79</strong></td><td>-25,0%</td></tr>
+              <tr><td>Máximo</td><td><strong>27,81</strong></td><td>+5,6%</td></tr>
+              <tr><td>Mínimo</td><td><strong>0,00</strong></td><td>-100,0%</td></tr>
             </tbody>
           </table>
           <p class="legend-note">
@@ -221,8 +221,8 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
 
 <section class="speech-box insights-box">
   <h2>Insights Research BTG</h2>
-  <ul class="research-bullets"><li>No 2T26, o Banco do Brasil reportou lucro líquido gerencial de R$3,9 bi, com ROE de 8%, NII de R$29,3 bi e carteira de crédito de R$1,2 tri, mas o trimestre foi marcado por piora relevante da qualidade dos ativos e pressão sobre capital.</li><li>As provisões, incluindo descontos, somaram R$20,3 bi, a inadimplência acima de 90 dias subiu 56 bps t/t para 5,6% e o índice de cobertura caiu para 148%; a formação de novos créditos inadimplentes avançou 41% t/t para R$21,7 bi, com…</li><li>No capital, o CET1 recuou para 13,9%, o patrimônio líquido caiu para R$189,2 bi e o patrimônio tangível encolheu 15% t/t, para R$90,4 bi, pressionado também pelo aumento de ativos fiscais diferidos.</li></ul>
-  <p class="research-note">Insights BTG · 23/09/2026 · fonte Research BTG.</p>
+  <ul class="research-bullets"><li>O 2T26 do Banco do Brasil trouxe lucro líquido gerencial de R$3,9 bi, com ROE de 8%, NII de R$29,3 bi e carteira de crédito de R$1,2 tri, mas o trimestre foi marcado por deterioração relevante da qualidade dos ativos e pressão sobre capital.</li><li>As provisões, incluindo descontos, somaram R$20,3 bi, a inadimplência acima de 90 dias subiu para 5,6%, a cobertura caiu para 148% e a formação de novos créditos inadimplentes avançou para R$21,7 bi; em PF, a inadimplência de 90 dias…</li><li>No agro, a inadimplência acima de 30 dias chegou a 9,0% e a de 90 dias a 6,3%, enquanto o patrimônio tangível caiu 15% t/t, para R$90,4 bi, e o CET1 recuou para 13,9%.</li></ul>
+  <p class="research-note">Insights BTG · 05/10/2026 · fonte Research BTG.</p>
 </section>
 
 <p class="footer">Material ilustrativo para uso interno. Não constitui oferta, recomendação ou garantia de rentabilidade.</p>
@@ -236,7 +236,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
   var X_MIN=-50,X_MAX=88,Y_MIN=-50,Y_MAX=88;
   var PAD={l:48,t:24,r:48,b:24},VW=600,VH=400;
   var PLOT_W=VW-PAD.l-PAD.r,PLOT_H=VH-PAD.t-PAD.b;
-  var RESEARCH_X=-19.8988;
+  var RESEARCH_X=-27.8390;
   var PUT=100.0, CALL=110.0, KI=163.55;
   function structureReturn(x){ var st=100+x; var r=st+Math.max(PUT-st,0)-(st>=KI?Math.max(st-CALL,0):0)-100; return r; }
   function regimeFor(x){ var st=100+x; if(st>=KI) return 'KI: teto +10%.'; if(x<=(PUT-100)) return 'Piso da put.'; return 'Participa 1:1.'; }
