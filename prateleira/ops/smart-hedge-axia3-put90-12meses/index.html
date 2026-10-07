@@ -142,7 +142,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
     <h2>Research BTG</h2>
     <a class="research-link" href="https://content.btgpactual.com/research/ativo/AXIA3" target="_blank" rel="noopener">Abrir AXIA3 no Research <span class="arrow" aria-hidden="true">→</span></a>
   </div>
-  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 61,38</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 74,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+20,56%</div></div></div><p class="research-note">Spot do fechamento anterior (05/10/2026) · preço-alvo atualizado em 09/09/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
+  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 59,48</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 74,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+24,41%</div></div></div><p class="research-note">Spot do fechamento anterior (06/10/2026) · preço-alvo atualizado em 06/10/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
 </section>
 
 <div class="main">
@@ -156,7 +156,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
           <table class="struct-table">
             <thead><tr><th></th><th>R$</th><th>vs spot</th></tr></thead>
             <tbody>
-              <tr><td>Máximo</td><td><strong>67,84</strong></td><td>+10,5%</td></tr>
+              <tr><td>Máximo</td><td><strong>67,84</strong></td><td>+14,1%</td></tr>
               <tr><td>Mínimo</td><td><strong>0,00</strong></td><td>-100,0%</td></tr>
             </tbody>
           </table>
@@ -221,8 +221,8 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
 
 <section class="speech-box insights-box">
   <h2>Insights Research BTG</h2>
-  <ul class="research-bullets"><li>No 2T26, a Axia reportou EBITDA ajustado de R$6,4 bi, alta de 11,9% a/a, ligeiramente abaixo da estimativa de R$6,7 bi e em linha com o consenso de R$6,4–6,5 bi.</li><li>A receita líquida subiu 4,3%, para R$10,0 bi, e o lucro líquido ajustado avançou 34,9%, para R$1,7 bi. Entre os principais pontos do trimestre, a companhia anunciou mais R$3,7 bi em resgates de Axia7, somando R$7,7 bi no 1S26 após os…</li><li>Essa estratégia acumulava alpha de 5,1% desde 24 de julho de 2026. O caso de investimento segue apoiado em baixa alavancagem, forte capacidade de distribuição de caixa e execução do mecanismo de resgate, ainda em fase inicial por se…</li></ul>
-  <p class="research-note">Insights BTG · 09/09/2026 · fonte Research BTG.</p>
+  <ul class="research-bullets"><li>No 2T26, a Axia reportou EBITDA ajustado de R$6,4 bi, alta de 11,9% a/a, em linha com o consenso de R$6,4–6,5 bi, mas abaixo da estimativa do BTG de R$6,7 bi.</li><li>A receita líquida subiu 4,3%, para R$10,0 bi, e o lucro líquido ajustado avançou 34,9%, para R$1,7 bi. Em capital, o principal destaque foi o anúncio de mais R$3,7 bi em resgates de Axia7, elevando o total anunciado no 1S26 para R$7,7…</li><li>A leitura é de forte geração de caixa e potencial para novas distribuições ao longo de 2026, com preferência da companhia por resgatar PNCs em vez de ampliar dividendos no preço atual, além da indicação de dividendo mínimo no 4T. No…</li></ul>
+  <p class="research-note">Insights BTG · 06/10/2026 · fonte Research BTG.</p>
 </section>
 
 <p class="footer">Material ilustrativo para uso interno. Não constitui oferta, recomendação ou garantia de rentabilidade.</p>
@@ -236,7 +236,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
   var X_MIN=-50,X_MAX=80,Y_MIN=-50,Y_MAX=80;
   var PAD={l:48,t:24,r:48,b:24},VW=600,VH=400;
   var PLOT_W=VW-PAD.l-PAD.r,PLOT_H=VH-PAD.t-PAD.b;
-  var RESEARCH_X=20.5604;
+  var RESEARCH_X=24.4116;
   var PUT=90.0, CALL=110.0, KI=151.78;
   function structureReturn(x){ var st=100+x; var r=st+Math.max(PUT-st,0)-(st>=KI?Math.max(st-CALL,0):0)-100; return r; }
   function regimeFor(x){ var st=100+x; if(st>=KI) return 'KI: teto +10%.'; if(x<=(PUT-100)) return 'Piso da put.'; return 'Participa 1:1.'; }
