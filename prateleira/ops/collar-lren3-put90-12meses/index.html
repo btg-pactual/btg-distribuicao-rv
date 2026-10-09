@@ -142,7 +142,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
     <h2>Research BTG</h2>
     <a class="research-link" href="https://content.btgpactual.com/research/ativo/LREN3" target="_blank" rel="noopener">Abrir LREN3 no Research <span class="arrow" aria-hidden="true">→</span></a>
   </div>
-  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 13,43</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 20,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+48,92%</div></div></div><p class="research-note">Spot do fechamento anterior (07/10/2026) · preço-alvo atualizado em 05/10/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
+  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 13,50</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 20,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+48,15%</div></div></div><p class="research-note">Spot do fechamento anterior (08/10/2026) · preço-alvo atualizado em 08/10/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
 </section>
 
 <div class="main">
@@ -156,7 +156,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
           <table class="struct-table">
             <thead><tr><th></th><th>R$</th><th>vs spot</th></tr></thead>
             <tbody>
-              <tr><td>Máximo</td><td><strong>16,25</strong></td><td>+21,0%</td></tr>
+              <tr><td>Máximo</td><td><strong>16,25</strong></td><td>+20,4%</td></tr>
               <tr><td>Mínimo</td><td><strong>0,00</strong></td><td>-100,0%</td></tr>
             </tbody>
           </table>
@@ -232,8 +232,8 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
 
 <section class="speech-box insights-box">
   <h2>Insights Research BTG</h2>
-  <ul class="research-bullets"><li>A Lojas Renner reportou 2T26 abaixo das expectativas, com receita líquida de varejo de R$3,69 bi, alta de 1,1% a/a e ~3% abaixo do estimado, SSS de 0,5% e EBITDA consolidado ajustado de R$845 mi, estável a/a, enquanto o EBITDA do varejo…</li><li>A fraqueza veio mais de vendas do que de rentabilidade, em um ambiente de consumo mais fraco e concorrência internacional mais intensa. Na prévia do trimestre, a expectativa era de crescimento de 4% da receita líquida de varejo, SSS de…</li><li>No setor, negocia a ~6,5–6,7x P/L 2027 e DY próximo de ~10%, enquanto a geração de caixa segue como ponto forte, com conversão de fluxo de caixa operacional de 98% e FCFF/EBITDA de 61% nos 12 meses até o 2T26. A tese segue apoiada em…</li></ul>
-  <p class="research-note">Insights BTG · 05/10/2026 · fonte Research BTG.</p>
+  <ul class="research-bullets"><li>A Lojas Renner reportou 2T26 abaixo do esperado, com EBITDA consolidado ajustado de R$ 845 mi, estável a/a e aquém das estimativas, enquanto o EBITDA do varejo pós-IFRS16 somou R$ 791 mi, alta de 2,3%, com margem de 21,4%.</li><li>A receita líquida de varejo ficou em R$ 3,69 bi, alta de 1,1%, com SSS de 0,5%, refletindo consumo mais fraco, efeito de calendário e concorrência internacional, embora a margem bruta tenha avançado para 57,5% e o GMV digital tenha…</li><li>A inadimplência entre 90 e 540 dias subiu para 24,1% e a relação entre 1 e 540 dias foi a 32,2%, mantendo a leitura de postura conservadora, mas com piora de qualidade a monitorar. O principal evento foi o corte do guidance de…</li></ul>
+  <p class="research-note">Insights BTG · 08/10/2026 · fonte Research BTG.</p>
 </section>
 
 <p class="footer">Material ilustrativo para uso interno. Não constitui oferta, recomendação ou garantia de rentabilidade.</p>
@@ -247,7 +247,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
   var X_MIN=-50,X_MAX=60,Y_MIN=-50,Y_MAX=50;
   var PAD={l:48,t:24,r:48,b:24},VW=600,VH=400;
   var PLOT_W=VW-PAD.l-PAD.r,PLOT_H=VH-PAD.t-PAD.b;
-  var RESEARCH_X=48.9203;
+  var RESEARCH_X=48.1481;
   var PUT=90.0, CALL=125.0, CDI_PERIOD=13.345137;
   function structureReturn(x){ var st=100+x; return st+Math.max(PUT-st,0)-Math.max(st-CALL,0)-100; }
   function regimeFor(x){ if (x <= PUT-100) return 'Piso da put.'; if (x >= CALL-100) return 'Teto da call.'; return 'Participa 1:1.'; }
