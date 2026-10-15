@@ -142,7 +142,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
     <h2>Research BTG</h2>
     <a class="research-link" href="https://content.btgpactual.com/research/ativo/SMFT3" target="_blank" rel="noopener">Abrir SMFT3 no Research <span class="arrow" aria-hidden="true">→</span></a>
   </div>
-  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 24,85</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 30,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+20,72%</div></div></div><p class="research-note">Spot do fechamento anterior (13/10/2026) · preço-alvo atualizado em 09/10/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
+  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 24,52</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 30,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+22,35%</div></div></div><p class="research-note">Spot do fechamento anterior (14/10/2026) · preço-alvo atualizado em 14/10/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
 </section>
 
 <div class="main">
@@ -156,8 +156,8 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
           <table class="struct-table">
             <thead><tr><th></th><th>R$</th><th>vs spot</th></tr></thead>
             <tbody>
-              <tr><td>Máximo</td><td><strong>27,39</strong></td><td>+10,2%</td></tr>
-              <tr><td>Mínimo</td><td><strong>16,45</strong></td><td>-33,8%</td></tr>
+              <tr><td>Máximo</td><td><strong>27,39</strong></td><td>+11,7%</td></tr>
+              <tr><td>Mínimo</td><td><strong>16,45</strong></td><td>-32,9%</td></tr>
             </tbody>
           </table>
           <p class="legend-note">
@@ -232,8 +232,8 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
 
 <section class="speech-box insights-box">
   <h2>Insights Research BTG</h2>
-  <ul class="research-bullets"><li>A Smart Fit reportou 2T26 sólido, ainda que levemente abaixo do esperado no lucro: receita líquida de R$ 2,2 bi, +22% a/a, EBITDA de R$ 712 mi, +24%, com margem de 32,7% (+50 bps), apoiados por expansão de 20% da base de unidades…</li><li>O lucro líquido recorrente ajustado ficou em R$ 204 mi, abaixo dos R$ 246 mi projetados. Para o 3T26, a prévia setorial aponta receita em alta de 25% a/a e EBITDA +27%, com expansão de 70 bps na margem EBITDA pré-IFRS16, sustentados por…</li><li>A rede parceira somou ~47 mil academias, sendo 37 mil no Brasil no 2T26 e 39,3 mil em setembro, enquanto o segmento Outros, que inclui o TotalPass, cresceu 47% em receita, para R$ 230 mi, com margem bruta caixa de 84,7%. O monitoramento…</li></ul>
-  <p class="research-note">Insights BTG · 09/10/2026 · fonte Research BTG.</p>
+  <ul class="research-bullets"><li>A Smart Fit reportou 2T26 sólido, ainda que ligeiramente abaixo das estimativas: receita líquida de R$2,2 bi, +22% a/a, EBITDA de R$712 mi, +24%, com margem de 32,7% (+50 bps), enquanto o lucro líquido recorrente ajustado ficou em R$204…</li><li>A rede parceira superou 47 mil academias e estúdios, e a participação de mercado do TotalPass Brasil chegou a 35% em junho de 2026, ante 27% um ano antes. No monitor de setembro, porém, o ticket médio ponderado do TotalPass Brasil caiu…</li><li>Ainda assim, a rede disponível cresceu para 39,3 mil academias (+2,6%). Em capital e caixa, a alavancagem encerrou o 2T26 em ~1,8x Dívida Líquida/EBITDA, acima da preferência de longo prazo de &lt;1,5x, e a conversão de caixa operacional…</li></ul>
+  <p class="research-note">Insights BTG · 14/10/2026 · fonte Research BTG.</p>
 </section>
 
 <p class="footer">Material ilustrativo para uso interno. Não constitui oferta, recomendação ou garantia de rentabilidade.</p>
@@ -247,7 +247,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
   var X_MIN=-50,X_MAX=50,Y_MIN=-50,Y_MAX=50;
   var PAD={l:48,t:24,r:48,b:24},VW=600,VH=400;
   var PLOT_W=VW-PAD.l-PAD.r,PLOT_H=VH-PAD.t-PAD.b;
-  var RESEARCH_X=20.7243;
+  var RESEARCH_X=22.3491;
   var PUT=90.0, CALL=123.0, CDI_PERIOD=13.345137;
   function structureReturn(x){ var st=100+x; return st+Math.max(PUT-st,0)-Math.max(st-CALL,0)-100; }
   function regimeFor(x){ if (x <= PUT-100) return 'Piso da put.'; if (x >= CALL-100) return 'Teto da call.'; return 'Participa 1:1.'; }

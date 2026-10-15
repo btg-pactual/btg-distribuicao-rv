@@ -142,7 +142,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
     <h2>Research BTG</h2>
     <a class="research-link" href="https://content.btgpactual.com/research/ativo/LREN3" target="_blank" rel="noopener">Abrir LREN3 no Research <span class="arrow" aria-hidden="true">→</span></a>
   </div>
-  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 13,85</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 20,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+44,40%</div></div></div><p class="research-note">Spot do fechamento anterior (13/10/2026) · preço-alvo atualizado em 09/10/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
+  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 13,79</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 20,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+45,03%</div></div></div><p class="research-note">Spot do fechamento anterior (14/10/2026) · preço-alvo atualizado em 14/10/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
 </section>
 
 <div class="main">
@@ -156,8 +156,8 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
           <table class="struct-table">
             <thead><tr><th></th><th>R$</th><th>vs spot</th></tr></thead>
             <tbody>
-              <tr><td>Máximo</td><td><strong>16,25</strong></td><td>+17,3%</td></tr>
-              <tr><td>Mínimo</td><td><strong>10,48</strong></td><td>-24,3%</td></tr>
+              <tr><td>Máximo</td><td><strong>16,25</strong></td><td>+17,8%</td></tr>
+              <tr><td>Mínimo</td><td><strong>10,48</strong></td><td>-24,0%</td></tr>
             </tbody>
           </table>
           <p class="legend-note">
@@ -232,8 +232,8 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
 
 <section class="speech-box insights-box">
   <h2>Insights Research BTG</h2>
-  <ul class="research-bullets"><li>A Lojas Renner reportou 2T26 abaixo do esperado, com receita líquida de varejo de R$ 3,69 bi, alta de 1,1% a/a e ~3% abaixo das estimativas, SSS de 0,5% e EBITDA consolidado ajustado de R$ 845 mi, estável a/a, enquanto o EBITDA do…</li><li>O GMV digital cresceu 13,1% e atingiu penetração de 16,9%. Para o 3T26, a prévia aponta receita de varejo ainda fraca, com alta de ~1% a/a, SSS estável, margem EBITDA pré-IFRS16 de ~10% e EBITDA de ~R$ 322 mi. Na Realize, o lucro…</li><li>A carteira de crédito recuou 1% a/a para R$ 6,44 bi, a receita de serviços financeiros caiu 2% para R$ 509 mi, a inadimplência de 90–540 dias subiu para 24,1% e a de 1–540 dias foi a 32,2%, refletindo postura conservadora em crédito. O…</li></ul>
-  <p class="research-note">Insights BTG · 09/10/2026 · fonte Research BTG.</p>
+  <ul class="research-bullets"><li>A Lojas Renner reportou 2T26 abaixo das expectativas, com receita líquida de varejo de R$3,69 bi, alta de 1,1% a/a e cerca de 3% abaixo do esperado, SSS de 0,5% e EBITDA consolidado ajustado de R$845 mi, estável a/a, enquanto o EBITDA…</li><li>O GMV digital cresceu 13,1%, com penetração de 16,9%. Para o 3T26, a prévia setorial do BTG indicava receita de varejo ainda fraca, em alta de 1% a/a, SSS estável, margem EBITDA pré-IFRS16 de 10% e EBITDA de R$322 mi, além de lucro…</li><li>A inadimplência entre 90 e 540 dias subiu para 24,1% e a de 1 a 540 dias foi a 32,2%, com perdas de crédito de R$299 mi e provisão estável em R$1,39 bi. O principal evento foi o corte do guidance de crescimento da receita de varejo de…</li></ul>
+  <p class="research-note">Insights BTG · 14/10/2026 · fonte Research BTG.</p>
 </section>
 
 <p class="footer">Material ilustrativo para uso interno. Não constitui oferta, recomendação ou garantia de rentabilidade.</p>
@@ -247,7 +247,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
   var X_MIN=-50,X_MAX=60,Y_MIN=-50,Y_MAX=50;
   var PAD={l:48,t:24,r:48,b:24},VW=600,VH=400;
   var PLOT_W=VW-PAD.l-PAD.r,PLOT_H=VH-PAD.t-PAD.b;
-  var RESEARCH_X=44.4043;
+  var RESEARCH_X=45.0326;
   var PUT=90.0, CALL=125.0, CDI_PERIOD=13.345137;
   function structureReturn(x){ var st=100+x; return st+Math.max(PUT-st,0)-Math.max(st-CALL,0)-100; }
   function regimeFor(x){ if (x <= PUT-100) return 'Piso da put.'; if (x >= CALL-100) return 'Teto da call.'; return 'Participa 1:1.'; }
