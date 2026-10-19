@@ -20,8 +20,8 @@ if str(REPO) not in sys.path:
     sys.path.insert(0, str(REPO))
 OPS = ROOT / "ops"
 REF = date(2026, 10, 19)  # semana 19.10.26
-# PDF 19.10 ainda não chegou; hub usa o material 28.09 até nova versão.
-PDF_NAME = "Material-Prateleira-Tatica-28092026.pdf"
+# PDF 19.10 ainda não chegou — não publicar o material da semana anterior.
+PDF_NAME = ""
 RESEARCH_REC = "https://content.btgpactual.com/api/research/content-hub/recommendations/ticker/{ticker}?includeInstitutionalData=true"
 RESEARCH_QUOTES = "https://content.btgpactual.com/api/research/research/public/asset/quotes"
 RESEARCH_SUMMARY = "https://content.btgpactual.com/api/research/content-hub-assets/v1/asset/summary/{ticker}"
@@ -124,24 +124,25 @@ def slugify(*parts: str) -> str:
 
 
 def copy_pdf() -> bool:
-    """Copia o PDF da pasta operacoes/ (preferência) ou Downloads."""
+    """Copia o PDF da semana (operacoes/ ou Downloads). Sem PDF atual, tira o antigo do hub."""
+    if not PDF_NAME:
+        for old in ROOT.glob("Material-Prateleira-Tatica-*.pdf"):
+            old.unlink(missing_ok=True)
+        return False
     ops_dir = ROOT / "operacoes"
     week_tag = REF.strftime("%d%m%Y")  # 14092026
     cands: list[Path] = []
     if ops_dir.exists():
         cands = [p for p in ops_dir.glob("Material Prateleira*.pdf") if week_tag in p.name]
-        if not cands:
-            cands = list(ops_dir.glob("Material Prateleira*.pdf"))
     if not cands:
         downloads = Path(r"C:\Users\PIMENTPA\Downloads")
         cands = [p for p in downloads.glob("Material Prateleira*.pdf") if week_tag in p.name]
-        if not cands:
-            cands = list(downloads.glob("Material Prateleira*.pdf"))
     if not cands:
+        for old in ROOT.glob("Material-Prateleira-Tatica-*.pdf"):
+            old.unlink(missing_ok=True)
         return False
     dest = ROOT / PDF_NAME
     shutil.copy2(sorted(cands, key=lambda p: p.stat().st_mtime, reverse=True)[0], dest)
-    # Remove PDFs de semanas anteriores no hub
     for old in ROOT.glob("Material-Prateleira-Tatica-*.pdf"):
         if old.name != PDF_NAME:
             old.unlink(missing_ok=True)
@@ -2088,6 +2089,17 @@ def hub_html(sections: list[tuple[str, list[tuple[str, dict]]]]) -> str:
 
     cats = "\n".join(cat_cards)
     body = "\n".join(company_sections + sections_html)
+    pdf_box = ""
+    if PDF_NAME:
+        pdf_box = f"""
+  <div class="pdf-box">
+    <div class="pdf-box-copy">
+      <span class="pdf-box-kicker">Material PDF</span>
+      <span class="pdf-box-title">Prateleira Tática · {REF.strftime('%d/%m/%Y')}</span>
+      <span class="pdf-box-meta">Atualização semanal — abra o PDF</span>
+    </div>
+    <a class="pdf-box-cta" href="./{PDF_NAME}" target="_blank" rel="noopener noreferrer">Abrir PDF ↗</a>
+  </div>"""
     return f"""<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -2181,14 +2193,7 @@ h1{{font-size:clamp(28px,4.5vw,40px);font-weight:700;letter-spacing:-.02em;line-
   </div>
 </header>
 <main class="page">
-  <div class="pdf-box">
-    <div class="pdf-box-copy">
-      <span class="pdf-box-kicker">Material PDF</span>
-      <span class="pdf-box-title">Prateleira Tática · {REF.strftime('%d/%m/%Y')}</span>
-      <span class="pdf-box-meta">Atualização semanal — abra o PDF</span>
-    </div>
-    <a class="pdf-box-cta" href="./{PDF_NAME}" target="_blank" rel="noopener noreferrer">Abrir PDF ↗</a>
-  </div>
+  {pdf_box}
   <div id="homeBlock">
     {spotlights}
     <div class="products-head">
