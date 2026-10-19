@@ -19,7 +19,8 @@ REPO = ROOT.parent
 if str(REPO) not in sys.path:
     sys.path.insert(0, str(REPO))
 OPS = ROOT / "ops"
-REF = date(2026, 9, 28)  # semana 28.09.26
+REF = date(2026, 10, 19)  # semana 19.10.26
+# PDF 19.10 ainda não chegou; hub usa o material 28.09 até nova versão.
 PDF_NAME = "Material-Prateleira-Tatica-28092026.pdf"
 RESEARCH_REC = "https://content.btgpactual.com/api/research/content-hub/recommendations/ticker/{ticker}?includeInstitutionalData=true"
 RESEARCH_QUOTES = "https://content.btgpactual.com/api/research/research/public/asset/quotes"
@@ -281,6 +282,7 @@ SECTOR_FALLBACK = {
     "M1TA34": "Tecnologia (BDR)",
     "P2LT34": "Tecnologia (BDR)",
     "SMAB11": "Índice / ETF",
+    "AMZO34": "Varejo / Tecnologia (BDR)",
 }
 COMPANY_FALLBACK = {
     "SPCX34": "SPDR S&P 500",
@@ -302,6 +304,16 @@ COMPANY_FALLBACK = {
     "M1TA34": "Meta Platforms",
     "P2LT34": "Palantir",
     "SMAB11": "BTG Absoluto",
+    "AMZO34": "Amazon",
+    "BRAV3": "Brava Energia",
+    "ASAI3": "Assaí",
+    "MOVI3": "Movida",
+    "MGLU3": "Magazine Luiza",
+    "GGBR4": "Gerdau",
+    "WEGE3": "WEG",
+    "EQTL3": "Equatorial",
+    "TEND3": "Construtora Tenda",
+    "PRIO3": "Prio",
 }
 
 
@@ -512,84 +524,70 @@ def research_insights_html(cfg: dict) -> str:
 """
 
 
-# ---- data (fonte: prateleira/operacoes/operacoes.xlsx · aba 28.09.26) ----
+# ---- data (fonte: prateleira/operacoes/operacoes.xlsx · aba 19.10.26) ----
 # NUNCA exibir BID (fee) nem DELTA no HTML — só níveis estruturais / cupom / backtest / preço de compra.
 # (ticker, fixing, strike, ko, bid, backtest_barreira%, prazo_dc)
 # Cupom comercial/gráfico = strike − 100 (lock do SOC); bid = preço da book, não o cupom.
 # prazo_dc = dias corridos típicos do material (20/30/45 dc); fixing = vencimento na book.
-# backtest = % histórico de toque da barreira (PDF); None = sem janelas (*).
+# backtest = % histórico de toque da barreira (PDF); None = sem janelas / PDF pendente.
 SOC = [
-    ("AXIA3", date(2026, 11, 11), 106.96, 90.0, 1.10, 25.0, 45),
-    ("TOTS3", date(2026, 10, 27), 104.72, 90.0, 1.70, 42.0, 30),
-    ("B3SA3", date(2026, 10, 27), 105.07, 90.0, 2.30, 23.0, 30),
-    ("CYRE3", date(2026, 10, 28), 105.50, 88.0, 1.91, 30.0, 30),
-    ("VBBR3", date(2026, 11, 12), 106.0, 90.0, 1.17, 11.0, 45),
-    ("M1TA34", date(2026, 11, 9), 107.45, 88.0, 1.50, 46.0, 45),
+    ("TOTS3", date(2026, 11, 17), 104.72, 90.0, 3.60, 42.0, 30),
+    ("B3SA3", date(2026, 11, 17), 105.07, 90.0, 3.90, 23.0, 30),
+    ("EMBJ3", date(2026, 11, 16), 103.56, 90.0, 1.05, None, 30),
+    ("TEND3", date(2026, 11, 13), 110.06, 90.0, 1.00, 29.0, 25),
+    ("TOTS3", date(2026, 11, 13), 106.29, 90.0, 1.00, None, 25),
+    ("BRAV3", date(2026, 11, 30), 106.18, 90.0, 1.00, None, 45),
+    ("WEGE3", date(2026, 11, 30), 104.50, 90.0, 1.00, None, 45),
+    ("GGBR4", date(2026, 11, 16), 104.50, 90.0, 1.00, None, 30),
+    ("AMZO34", date(2026, 11, 16), 104.00, 90.0, 1.00, None, 30),
+    ("ITUB4", date(2026, 11, 16), 104.50, 90.0, 1.00, None, 30),
 ]
 
 # (ticker, fixing, put, call, ki, bid) — bid NÃO vai para a UI
 SMART = [
-    ("ITUB4", date(2027, 9, 24), 90.0, 110.0, 144.32, 4.70),
-    ("AXIA3", date(2027, 9, 24), 90.0, 110.0, 151.78, 3.60),
-    ("PETR4", date(2027, 9, 24), 90.0, 110.0, 151.08, 4.60),
-    ("SPCX34", date(2027, 9, 27), 90.0, 114.0, 190.0, 5.00),
-    ("SPCX34", date(2028, 9, 27), 100.0, 130.0, 261.90, 3.08),
-    ("PETR4", date(2027, 9, 28), 100.0, 110.0, 134.70, 5.00),
-    ("VALE3", date(2028, 9, 28), 110.0, 110.0, 174.35, 7.00),
-    ("AXIA3", date(2028, 9, 28), 110.0, 110.0, 177.35, 7.00),
-    ("ITUB4", date(2028, 9, 25), 90.0, 130.0, 166.0, 6.00),
-    ("PETR4", date(2027, 1, 25), 90.0, 103.0, 135.19, 2.00),
-    ("VALE3", date(2027, 1, 25), 90.0, 103.0, 126.43, 2.00),
-    ("ITUB4", date(2027, 1, 25), 90.0, 103.0, 128.79, 1.20),
-    ("ROXO34", date(2027, 3, 29), 90.0, 104.0, 137.50, 4.00),
-    ("EMBJ3", date(2027, 9, 27), 90.0, 110.0, 148.0, 6.14),
-    ("SMAB11", date(2027, 9, 27), 100.0, 110.0, 150.0, 4.00),
-    ("BBAS3", date(2027, 9, 24), 100.0, 110.0, 163.55, 3.00),
-]
-
-# (ticker, fixing, ko_alta, ko_baixa, bid)
-ACEL = [
-    ("ITLC34", date(2028, 2, 22), 170.0, 40.0, 9.50),
-    ("BBAS3", date(2027, 1, 25), 120.0, 90.0, 2.00),
+    ("ITUB4", date(2027, 10, 15), 90.0, 110.0, 144.32, 4.70),
+    ("PETR4", date(2027, 10, 15), 90.0, 110.0, 151.08, 4.20),
+    ("BBAS3", date(2027, 10, 15), 100.0, 110.0, 163.55, 3.00),
+    ("PRIO3", date(2027, 4, 13), 90.0, 104.0, 145.0, 3.00),
+    ("PETR4", date(2027, 4, 13), 90.0, 104.0, 132.0, 3.00),
+    ("ITUB4", date(2027, 4, 13), 90.0, 104.0, 126.0, 3.00),
+    ("B3SA3", date(2027, 4, 13), 90.0, 104.0, 142.0, 3.00),
+    ("CYRE3", date(2027, 4, 13), 90.0, 104.0, 140.0, 3.00),
 ]
 
 # (ticker, fixing, sold_call_ki, ko_alta, ko_baixa, bid)
 TRIPLO = [
-    ("ROXO34", date(2027, 9, 27), 115.0, 150.0, 80.0, 4.50),
-    ("ROXO34", date(2027, 3, 29), 106.0, 134.0, 80.0, 2.50),
-    ("NVDC34", date(2027, 9, 27), 115.0, 154.0, 80.0, 4.50),
-    ("GOGL34", date(2027, 9, 27), 115.0, 145.0, 80.0, 4.50),
-    ("LILY34", date(2027, 9, 27), 115.0, 150.0, 80.0, 4.50),
-    ("B3SA3", date(2027, 9, 27), 115.0, 142.0, 80.0, 4.50),
-    ("SMFT3", date(2027, 9, 27), 115.0, 149.0, 80.0, 4.50),
-    ("CYRE3", date(2027, 9, 27), 115.0, 148.0, 80.0, 4.50),
-    ("RENT3", date(2027, 9, 27), 115.0, 142.0, 80.0, 4.50),
-    ("P2LT34", date(2027, 9, 24), 115.0, 180.0, 80.0, 4.50),
+    ("NVDC34", date(2027, 10, 18), 115.0, 154.0, 80.0, 3.00),
+    ("GOGL34", date(2027, 10, 18), 115.0, 145.0, 80.0, 4.50),
+    ("RENT3", date(2027, 10, 18), 115.0, 142.0, 80.0, 4.50),
 ]
 
-# Offer Excel 28.09: Put -2,93%; Call Spread -2,00%
-# (ticker, fixing, put, call_ki_strike, ki, put_ko, put_ko_barrier, bid)
-TWIP = ("GOLD11", date(2027, 9, 27), 100.0, 100.0, 140.0, 100.0, 80.0, 4.51)
-# Compra de put: (ticker, fixing, put_strike, cost abs, prazo_pdf)
-PUT_BUY = ("BOVA11", date(2027, 1, 25), 95.0, 2.93, "4 meses")
+# Offer Excel 19.10 (células % → abs)
 # Compra de call spread: (ticker, fixing, buy_call, sell_call, cost abs)
 CALL_SPREAD = [
-    ("BOVA11", date(2026, 11, 11), 105.0, 115.0, 3.30),
+    ("BOVA11", date(2026, 11, 26), 105.0, 115.0, 3.10),
+    ("SMAL11", date(2026, 12, 14), 105.0, 115.0, 4.84),
+    ("BOVA11", date(2026, 12, 14), 105.0, 120.0, 4.60),
 ]
-# Call KO com rebate: (ticker, fixing, ko_pct, rebate, cost)
-CALL_KO = [
-    ("BOVA11", date(2026, 10, 8), 106.0, 3.5, 3.0),
-]
-# Collar: long put + short call (bid NÃO vai para a UI)
-# (ticker, fixing, put, call, bid, backtest% opcional)
+# Collar: (ticker, fixing, put, call, bid, backtest% opcional)
 COLLAR = [
-    ("MELI34", date(2027, 9, 27), 90.0, 127.0, 3.00),
-    ("LREN3", date(2027, 9, 27), 90.0, 125.0, 3.00),
-    ("SMFT3", date(2027, 9, 27), 90.0, 123.0, 3.00),
-    ("ITUB4", date(2027, 3, 25), 90.0, 112.0, 2.70),
-    ("AXIA3", date(2027, 9, 24), 90.0, 124.0, 4.00),
-    ("TSMC34", date(2027, 3, 23), 90.0, 113.23, 3.00),
+    ("ITUB4", date(2027, 4, 15), 90.0, 112.0, 2.70),
+    ("AXIA3", date(2027, 10, 15), 90.0, 124.0, 2.00),
+    ("PETR4", date(2027, 4, 15), 90.0, 116.83, 1.70),
+    ("PETR4", date(2027, 10, 15), 90.0, 124.0, 2.50),
+    ("ITUB4", date(2027, 10, 15), 90.0, 119.35, 3.14),
+    ("MGLU3", date(2027, 1, 13), 90.0, 110.0, 2.00),
+    ("B3SA3", date(2027, 1, 13), 90.0, 111.0, 2.00),
+    ("EQTL3", date(2027, 1, 13), 90.0, 108.0, 2.00),
 ]
+# Call KO: (ticker, fixing, ko_pct, rebate, cost/offer abs)
+CALL_KO = [
+    ("ASAI3", date(2026, 12, 15), 118.0, 5.50, 3.50),
+    ("MOVI3", date(2026, 12, 15), 125.0, 5.50, 3.50),
+    ("RENT3", date(2026, 12, 15), 117.0, 5.50, 3.50),
+]
+# POP: (ticker, fixing, call_strike, put_strike)
+POP = ("SMAL11", date(2027, 10, 15), 100.0, 100.0)
 
 CSS = """
 :root {
@@ -684,15 +682,6 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
 .matrix-wrap{margin-top:16px}
 .matrix-wrap h2{margin-top:4px}
 .matrix-note{font-size:11px;color:var(--muted);margin:0 0 10px;line-height:1.4}
-.matrix-table td:nth-child(2){font-variant-numeric:tabular-nums}
-.matrix-table tr.mx-neg td:nth-child(2){color:var(--danger)}
-.matrix-table tr.mx-pos td:nth-child(2){color:var(--success)}
-.matrix-table tr.mx-best{background:color-mix(in srgb,var(--success) 8%,#fff)}
-.matrix-table tr.mx-best td:nth-child(2){color:var(--success)}
-.matrix-table tr.mx-ko{background:color-mix(in srgb,var(--brand) 7%,#fff)}
-.matrix-table .mx-tag{font-size:11px;font-weight:600;color:var(--muted)}
-.matrix-table tr.mx-best .mx-tag{color:var(--success)}
-.matrix-table tr.mx-ko .mx-tag{color:var(--brand)}
 .sim-card .val.pos{color:var(--success)}
 .sim-card .val.neg{color:var(--danger)}
 .regime{font-size:12px;color:var(--ink);background:#fff7ef;border:1px solid #f0d4b8;border-radius:8px;padding:10px 12px;line-height:1.45}
@@ -1228,7 +1217,6 @@ def make_triplo(t, fixing, sold, ko_h, ko_l, _bid):
 
 def make_call_ko(t, fixing, ko_pct, rebate, cost):
     prazo = months_label(fixing)
-    fix_lbl = fixing.strftime("%d/%m")
     ko = ko_pct - 100
     slug = slugify("call-ko-rebate", t, prazo.replace(" ", ""))
     cost_s = fmt_money_pct(cost).rstrip("%")
@@ -1243,66 +1231,31 @@ def make_call_ko(t, fixing, ko_pct, rebate, cost):
     def prem_at(x: float) -> float:
         return (net_at(x) / cost) * 100.0
 
-    def plain_note(x: float) -> str:
-        if x >= ko:
-            return "Bate a barreira · rebate"
-        if x <= 0:
-            return "Perde o prêmio"
-        p = prem_at(x)
-        if abs(p) < 1:
-            return "Empata"
-        if p < 0:
-            return "Ainda no prejuízo"
-        return "No lucro"
-
-    def row_cls(x: float) -> str:
-        if x >= ko:
-            return "mx-ko mx-pos" if (rebate - cost) > 0 else "mx-ko"
-        p = prem_at(x)
-        if p < -0.5:
-            return "mx-neg"
-        if p > 0.5:
-            return "mx-pos"
-        return ""
-
-    # Cenários: 0% e +1% … até a barreira (ex.: 1–6%)
-    ko_i = int(round(ko))
-    xs = [0.0] + [float(i) for i in range(1, ko_i)] + [float(ko)]
-    # dedupe / sort
-    xs = sorted(set(round(x, 4) for x in xs))
-
+    spots = sorted({-10.0, 0.0, 5.0, 10.0, 15.0, max(0.0, ko - 1), ko, 30.0, 40.0})
     matrix_rows = []
-    for x in xs:
-        p = prem_at(x)
+    for s in spots:
+        n, p = net_at(s), prem_at(s)
+        note = "KO · rebate" if s >= ko else ("OTM" if s <= 0 else "ITM")
+        ns = f"{n:+.1f}".replace(".", ",")
         ps = f"{p:+.0f}"
-        if x <= 0:
-            spot_lbl = "0% ou cai"
-        elif abs(x - ko) < 1e-9:
-            spot_lbl = f"+{ko_i}% ou mais"
-        else:
-            spot_lbl = f"+{x:.0f}%"
-        cls = row_cls(x)
-        tr = f' class="{cls}"' if cls else ""
+        ss = f"{s:+.0f}"
         matrix_rows.append(
-            f"<tr{tr}><td>{spot_lbl}</td>"
-            f"<td><strong>{ps}%</strong></td>"
-            f'<td><span class="mx-tag">{plain_note(x)}</span></td></tr>'
+            f"<tr><td>{ss}%</td><td>{ns}%</td><td><strong>{ps}%</strong></td><td>{note}</td></tr>"
         )
-
     ko_net = rebate - cost
     ko_prem = (ko_net / cost) * 100
     ko_net_s = f"{ko_net:.2f}".replace(".", ",")
 
     matrix_html = f"""
   <div class="matrix-wrap">
-    <h2>Se o ativo mover, o que acontece com o prêmio</h2>
+    <h2>Matriz de ganho (só prêmio)</h2>
     <p class="matrix-note">
-      Você pagou <strong>{cost_s}%</strong> de prêmio. A coluna do meio mostra o ganho ou a perda
-      <strong>em cima desse prêmio</strong>.
-      Se bater a barreira (+{ko_i}% ou mais): <strong>+{ko_prem:.0f}%</strong> (rebate).
+      Retorno <strong>sobre o prêmio pago ({cost_s}%)</strong> =
+      (resultado no nocional ÷ {cost_s}%) × 100.
+      No KO: líquido +{ko_net_s}% no nocional → <strong>+{ko_prem:.0f}%</strong> sobre o prêmio.
     </p>
-    <table class="struct-table matrix-table">
-      <thead><tr><th>Variação do ativo</th><th>Resultado no prêmio</th><th>Em uma frase</th></tr></thead>
+    <table class="struct-table">
+      <thead><tr><th>Spot</th><th>Nocional</th><th>Sobre prêmio</th><th></th></tr></thead>
       <tbody>
         {''.join(matrix_rows)}
       </tbody>
@@ -1320,9 +1273,9 @@ def make_call_ko(t, fixing, ko_pct, rebate, cost):
             f"Call up-and-out {t}: participa da alta até a barreira; no KO recebe rebate. "
             f"Matriz também em retorno % só sobre o prêmio ({cost_s}%)."
         ),
-        "pills": [("Ativo", t), ("Fixing", fix_lbl), ("KO", ko_lbl), ("Rebate", reb_s), ("Preço", f"{cost_s}%")],
+        "pills": [("Ativo", t), ("Prazo", prazo), ("KO", ko_lbl), ("Rebate", reb_s), ("Preço", f"{cost_s}%")],
         "highlights": [
-            ("Fixing", fix_lbl, fixing.strftime("%d/%m/%Y")),
+            ("Prazo", prazo, ""),
             ("Sem KO", f"Alta − {cost_s}%", "Call ATM no nocional"),
             ("No KO", f"+{ko_net_s}%", f"+{ko_prem:.0f}% sobre o prêmio"),
             ("Risco", "−100%", "Sobre o prêmio (OTM)"),
@@ -1339,7 +1292,7 @@ def make_call_ko(t, fixing, ko_pct, rebate, cost):
         ],
         "regime0": "Sem KO: participa da alta menos o preço. Veja também o ganho % só sobre o prêmio.",
         "speech": [
-            ("Para quem", f"Cliente construtivo em {t} com fixing {fix_lbl} que quer call com rebate se KO."),
+            ("Para quem", f"Cliente construtivo em {t} no curto prazo ({prazo}) que quer call com rebate se KO."),
             (
                 "Como encaixa",
                 f"Call KO {ko_lbl} · rebate {reb_s} · preço {cost_s}%. "
@@ -1360,9 +1313,9 @@ def make_call_ko(t, fixing, ko_pct, rebate, cost):
         "js_fn": "if (x >= KO) return REB - COST; return Math.max(x, 0) - COST;",
         "js_regime": (
             "var rp=(structureReturn(x)/COST)*100; "
-            "if (x >= KO) return 'Barreira: rebate · '+rp.toFixed(0)+'% sobre o prêmio.'; "
-            "if (x > 0) return 'Alta de '+x.toFixed(0)+'% · '+rp.toFixed(0)+'% sobre o prêmio.'; "
-            "return 'Ativo sem alta · −100% sobre o prêmio.';"
+            "if (x >= KO) return 'KO: rebate líquido +'+(REB-COST).toFixed(2).replace('.',',')+'% no nocional · '+rp.toFixed(0)+'% sobre o prêmio.'; "
+            "if (x > 0) return 'Call ITM: '+structureReturn(x).toFixed(1).replace('.',',')+'% nocional · '+rp.toFixed(0)+'% sobre o prêmio.'; "
+            "return 'OTM: −'+COST.toFixed(2).replace('.',',')+'% nocional · −100% sobre o prêmio.';"
         ),
     }
 
@@ -1703,7 +1656,8 @@ def make_call_spread(t, fixing, buy_call, sell_call, cost):
     hi = sell_call - 100
     width = hi - lo
     max_net = width - cost
-    slug = slugify("call-spread", t, prazo.replace(" ", ""))
+    # Inclui teto no slug p/ diferenciar BOVA11 105/115 vs 105/120 no mesmo prazo.
+    slug = slugify("call-spread", t, f"cap{int(round(sell_call))}", prazo.replace(" ", ""))
 
     def net_at(x: float) -> float:
         if x <= lo:
@@ -1980,21 +1934,6 @@ SECTION_META = {
         "blurb": "Call up-and-out com rebate se bater a barreira.",
         "color": "#c0392b",
     },
-    "Put KO com Rebate": {
-        "id": "put-ko",
-        "blurb": "Put down-and-out com rebate se bater a barreira.",
-        "color": "#2f6b5a",
-    },
-    "TWIP": {
-        "id": "twip",
-        "blurb": "Twin Win Protected — |x| entre barreiras, 0% fora.",
-        "color": "#b8860b",
-    },
-    "Compra de Put": {
-        "id": "compra-put",
-        "blurb": "Put comprada — proteção ou tática de queda.",
-        "color": "#2c5f7c",
-    },
     "Compra de Call Spread": {
         "id": "call-spread",
         "blurb": "Call comprada + call vendida — alta com teto e custo definido.",
@@ -2004,6 +1943,11 @@ SECTION_META = {
         "id": "collar",
         "blurb": "Put comprada + call vendida — piso e teto no ativo.",
         "color": "#4a6b3a",
+    },
+    "POP": {
+        "id": "pop",
+        "blurb": "Proteção na queda + participação parcial (50%) na alta.",
+        "color": "#0a6e8a",
     },
 }
 
@@ -2315,7 +2259,7 @@ def patch_root_index():
             <span class="op-title">Prateleira Tática</span>
             <span class="op-ticker">SEMANAL</span>
           </div>
-          <p class="op-blurb">Hub semanal de operações (SOC, Smart Hedge, Aceleradora, Triplo, TWIP, Compra de Put/Call Spread, Collar) + PDF da prateleira.</p>
+          <p class="op-blurb">Hub semanal de operações (SOC, Smart Hedge, Triplo, Call Spread, Collar, Call KO, POP) + PDF da prateleira.</p>
           <div class="op-meta">
             <span class="pill">Atualização semanal</span>
             <span class="pill">PDF</span>
@@ -2350,33 +2294,25 @@ def main():
     sections.append(("Smart Hedge", sh_items))
     all_ops.extend(sh_items)
 
-    acel_items = [make_acel(*r) for r in ACEL]
-    sections.append(("Aceleradora Dinâmica", acel_items))
-    all_ops.extend(acel_items)
-
     tri_items = [make_triplo(*r) for r in TRIPLO]
     sections.append(("Triplo Retorno KO", tri_items))
     all_ops.extend(tri_items)
-
-    tw = make_twip(*TWIP)
-    sections.append(("TWIP", [tw]))
-    all_ops.append(tw)
-
-    pb = make_put_buy(*PUT_BUY)
-    sections.append(("Compra de Put", [pb]))
-    all_ops.append(pb)
 
     cs_items = [make_call_spread(*r) for r in CALL_SPREAD]
     sections.append(("Compra de Call Spread", cs_items))
     all_ops.extend(cs_items)
 
-    cko_items = [make_call_ko(*r) for r in CALL_KO]
-    sections.append(("Call KO com Rebate", cko_items))
-    all_ops.extend(cko_items)
-
     collar_items = [make_collar(*r) for r in COLLAR]
     sections.append(("Collar", collar_items))
     all_ops.extend(collar_items)
+
+    ck_items = [make_call_ko(*r) for r in CALL_KO]
+    sections.append(("Call KO com Rebate", ck_items))
+    all_ops.extend(ck_items)
+
+    pop = make_pop(*POP)
+    sections.append(("POP", [pop]))
+    all_ops.append(pop)
 
     tickers = [cfg["ticker"] for _, cfg in all_ops]
     try:
