@@ -589,6 +589,11 @@ CALL_KO = [
 ]
 # POP: (ticker, fixing, call_strike, put_strike)
 POP = ("SMAL11", date(2027, 10, 15), 100.0, 100.0)
+# One Touch de Alta: (ticker, fixing, barrier_pct, rebate, cost/offer abs)
+# Fonte: One Touch De Alta - Final (PDF 20/10) — barreira discreta no fixing.
+ONE_TOUCH = [
+    ("BOVA11", date(2026, 10, 30), 107.0, 5.0, 2.0),
+]
 
 CSS = """
 :root {
@@ -1863,6 +1868,7 @@ def make_collar(t, fixing, put, call, _bid, backtest=None):
 
 
 def make_ot(t, fixing, barrier_pct, rebate, cost):
+    """Call up-and-out discreta no fixing: rebate se fechar ≥ barreira; senão −preço."""
     prazo = months_label(fixing)
     barrier = barrier_pct - 100
     slug = slugify("one-touch", t, prazo.replace(" ", ""))
@@ -1872,40 +1878,51 @@ def make_ot(t, fixing, barrier_pct, rebate, cost):
     net = rebate - cost
     net_s = f"{net:.2f}".replace(".", ",")
     bvar = f"{barrier:.2f}".rstrip("0").rstrip(".").replace(".", ",")
+    fixing_br = fixing.strftime("%d/%m/%Y")
     return slug, {
         "title": f"One Touch Alta {t}",
         "h1": "One Touch de Alta",
         "ticker": t,
         "dot": "OT",
         "brand": "#1e4d7b",
-        "subtitle": "Paga rebate se o ativo atingir a barreira de alta; caso contrário, perde só o preço.",
+        "subtitle": (
+            f"Call up-and-out discreta em {t}: se o fechamento no fixing ≥ {b_lbl}, "
+            f"recebe rebate líquido +{net_s}%; caso contrário, perde só o preço ({cost_s})."
+        ),
         "pills": [("Ativo", t), ("Prazo", prazo), ("Barreira", b_lbl), ("Rebate", reb_s), ("Preço", cost_s)],
         "highlights": [
-            ("Prazo", prazo, ""),
-            (f"Se tocar +{bvar}%", f"+{net_s}%", "Rebate − preço"),
-            ("Se não tocar", f"−{cost_s}", "Preço"),
-            ("Barreira", b_lbl, "One touch"),
+            ("Prazo", prazo, f"Fixing {fixing_br}"),
+            (f"Se ≥ +{bvar}%", f"+{net_s}%", "Rebate − preço"),
+            ("Se < barreira", f"−{cost_s}", "Preço"),
+            ("Barreira", b_lbl, "Discreta no fixing"),
         ],
         "struct": [
-            ('<span class="tag b">B</span> Call KO', f"{b_lbl} · barreira {b_lbl}"),
+            ('<span class="tag b">B</span> Call KO', f"{b_lbl} · barreira discreta {b_lbl}"),
             ("Rebate", reb_s),
             ("Preço (offer)", cost_s),
         ],
         "zones": [
-            (f"< +{bvar}%", f"Não tocou: −{cost_s}."),
-            (f"≥ +{bvar}%", f"One touch: +{net_s}%."),
-            ("Ideia", "Aposta tática de alta com custo baixo."),
+            (f"< +{bvar}%", f"Barreira não atingida no fixing: −{cost_s}."),
+            (f"≥ +{bvar}%", f"Barreira atingida: +{net_s}% (ganho máximo)."),
+            ("Ideia", "Aposta tática de alta com custo definido e ganho limitado."),
         ],
-        "regime0": "Abaixo da barreira: −preço.",
+        "regime0": "Abaixo da barreira no fixing: −preço.",
         "speech": [
-            ("Para quem", f"Cliente tático em {t} ({prazo}) que espera alta suficiente para tocar +{bvar}%."),
-            ("Como encaixa", f"One touch {b_lbl} · rebate {reb_s} · preço {cost_s}."),
+            (
+                "Para quem",
+                f"Cliente tático em {t} ({prazo}) que espera alta ≥ +{bvar}% até o fixing ({fixing_br}).",
+            ),
+            (
+                "Como encaixa",
+                f"One touch de alta · barreira discreta {b_lbl} · rebate {reb_s} · preço {cost_s} · "
+                f"ganho máximo +{net_s}% se KO no fixing; senão −{cost_s}.",
+            ),
             ("Fechamento", "Material de uso interno — condições no DIE."),
         ],
         "struct_lbl": "One Touch (nocional)",
         "js_const": f"var B={barrier}, REB={rebate}, COST={cost};",
         "js_fn": "if (x >= B) return REB - COST; return -COST;",
-        "js_regime": "if (x >= B) return 'One touch: rebate líquido.'; return 'Não tocou: −preço.';",
+        "js_regime": "if (x >= B) return 'Barreira no fixing: rebate líquido.'; return 'Não atingiu: −preço.';",
     }
 
 
@@ -1949,6 +1966,11 @@ SECTION_META = {
         "id": "pop",
         "blurb": "Proteção na queda + participação parcial (50%) na alta.",
         "color": "#0a6e8a",
+    },
+    "One Touch de Alta": {
+        "id": "one-touch",
+        "blurb": "Rebate se o ativo fechar na/acima da barreira no fixing; senão, só o preço.",
+        "color": "#1e4d7b",
     },
 }
 
@@ -2264,7 +2286,7 @@ def patch_root_index():
             <span class="op-title">Prateleira Tática</span>
             <span class="op-ticker">SEMANAL</span>
           </div>
-          <p class="op-blurb">Hub semanal de operações (SOC, Smart Hedge, Triplo, Call Spread, Collar, Call KO, POP) + PDF da prateleira.</p>
+          <p class="op-blurb">Hub semanal de operações (SOC, Smart Hedge, Triplo, Call Spread, Collar, Call KO, POP, One Touch) + PDF da prateleira.</p>
           <div class="op-meta">
             <span class="pill">Atualização semanal</span>
             <span class="pill">PDF</span>
@@ -2318,6 +2340,10 @@ def main():
     pop = make_pop(*POP)
     sections.append(("POP", [pop]))
     all_ops.append(pop)
+
+    ot_items = [make_ot(*r) for r in ONE_TOUCH]
+    sections.append(("One Touch de Alta", ot_items))
+    all_ops.extend(ot_items)
 
     tickers = [cfg["ticker"] for _, cfg in all_ops]
     try:
