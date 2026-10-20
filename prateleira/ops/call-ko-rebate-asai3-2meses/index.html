@@ -133,7 +133,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
     <h2>Research BTG</h2>
     <a class="research-link" href="https://content.btgpactual.com/research/ativo/ASAI3" target="_blank" rel="noopener">Abrir ASAI3 no Research <span class="arrow" aria-hidden="true">→</span></a>
   </div>
-  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 13,42</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 16,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+19,23%</div></div></div><p class="research-note">Spot do fechamento anterior (19/10/2026) · preço-alvo atualizado em 14/10/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
+  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 13,39</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 16,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+19,49%</div></div></div><p class="research-note">Spot do fechamento anterior (19/10/2026) · preço-alvo atualizado em 19/10/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
 </section>
 
 <div class="main">
@@ -147,8 +147,8 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
           <table class="struct-table">
             <thead><tr><th></th><th>R$</th><th>vs spot</th></tr></thead>
             <tbody>
-              <tr><td>Máximo</td><td><strong>13,80</strong></td><td>+2,8%</td></tr>
-              <tr><td>Mínimo</td><td><strong>6,91</strong></td><td>-48,5%</td></tr>
+              <tr><td>Máximo</td><td><strong>13,80</strong></td><td>+3,1%</td></tr>
+              <tr><td>Mínimo</td><td><strong>6,91</strong></td><td>-48,4%</td></tr>
             </tbody>
           </table>
           <p class="legend-note">
@@ -227,8 +227,8 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
 
 <section class="speech-box insights-box">
   <h2>Insights Research BTG</h2>
-  <ul class="research-bullets"><li>No 2T26, o Assaí reportou receita líquida de R$19,2 bi, alta de 0,9% a/a, SSS de 0,9% e EBITDA ajustado pré-IFRS16 de R$1,07 bi, praticamente estável a/a, com margem de 5,6% e leve pressão operacional em um ambiente ainda fraco para a…</li><li>A margem bruta, porém, avançou 40 bps, para 17,1%, apoiada por maturação das lojas, gestão de preços e maior penetração de serviços, enquanto o tráfego superou 40 mi de clientes por mês e o ganho de market share em mesmas lojas foi de…</li><li>No setor, o atacarejo cresceu só 1,6% em setembro, com preços +3,3% e unidades -1,7%, reforçando que a melhora segue mais dependente de preço do que de demanda. O balanço continua no centro da tese: a alavancagem caiu para 2,37x dívida…</li></ul>
-  <p class="research-note">Insights BTG · 14/10/2026 · fonte Research BTG.</p>
+  <ul class="research-bullets"><li>No 2T26, o Assaí entregou receita líquida de R$19,2 bi, alta de 0,9% a/a, com SSS de 0,9% e EBITDA ajustado pré-IFRS16 de R$1,07 bi, margem de 5,6%, cerca de 3% abaixo da estimativa, em um ambiente ainda pressionado para a baixa renda.</li><li>A margem bruta ex-créditos tributários avançou 40 bps, para 17,1%, apoiada por maturação das lojas, gestão de preços e maior penetração de serviços, enquanto o tráfego superou 40 milhões de clientes por mês e o ganho de market share nas…</li><li>No atacarejo, o Radar da Scanntech mostrou vendas de setembro em alta de 1,6% a/a, com preços +3,3% e unidades -1,7%, reforçando que a melhora segue mais dependente de preço do que de demanda. No balanço, a alavancagem caiu para 2,37x…</li></ul>
+  <p class="research-note">Insights BTG · 19/10/2026 · fonte Research BTG.</p>
 </section>
 
 <p class="footer">Material ilustrativo para uso interno. Não constitui oferta, recomendação ou garantia de rentabilidade.</p>
@@ -242,7 +242,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
   var X_MIN=-50,X_MAX=80,Y_MIN=-50,Y_MAX=80;
   var PAD={l:48,t:24,r:48,b:24},VW=600,VH=400;
   var PLOT_W=VW-PAD.l-PAD.r,PLOT_H=VH-PAD.t-PAD.b;
-  var RESEARCH_X=19.2250;
+  var RESEARCH_X=19.4922;
   var KO=18.0, REB=5.5, COST=3.5;
   function structureReturn(x){ if (x >= KO) return REB - COST; return Math.max(x, 0) - COST; }
   function regimeFor(x){ var rp=(structureReturn(x)/COST)*100; if (x >= KO) return 'KO: rebate líquido +'+(REB-COST).toFixed(2).replace('.',',')+'% no nocional · '+rp.toFixed(0)+'% sobre o prêmio.'; if (x > 0) return 'Call ITM: '+structureReturn(x).toFixed(1).replace('.',',')+'% nocional · '+rp.toFixed(0)+'% sobre o prêmio.'; return 'OTM: −'+COST.toFixed(2).replace('.',',')+'% nocional · −100% sobre o prêmio.'; }
