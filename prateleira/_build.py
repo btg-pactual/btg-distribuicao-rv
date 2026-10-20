@@ -1905,12 +1905,13 @@ def make_ot(t, fixing, barrier_pct, rebate, cost):
   <div class="matrix-wrap">
     <h2>Matriz de ganho (só prêmio)</h2>
     <p class="matrix-note">
-      Retorno <strong>sobre o prêmio pago ({cost_s}%)</strong> =
-      (resultado no nocional ÷ {cost_s}%) × 100.
-      Na barreira: líquido +{net_s}% no nocional → <strong>{prem_hit_s}%</strong> sobre o prêmio.
+      Prêmio pago: <strong>{cost_s}%</strong>.
+      Se bater a barreira, o resultado é <strong>+{net_s}%</strong> — isso equivale a
+      <strong>{prem_hit_s}%</strong> sobre o prêmio (ganhou {net_s} em cada {cost_s} pagos).
+      Se não bater, perde o prêmio inteiro (<strong>−100%</strong>).
     </p>
     <table class="struct-table">
-      <thead><tr><th>Spot</th><th>Nocional</th><th>Sobre prêmio</th><th></th></tr></thead>
+      <thead><tr><th>Spot</th><th>Resultado</th><th>Rentab. do prêmio</th><th></th></tr></thead>
       <tbody>
         {''.join(matrix_rows)}
       </tbody>
@@ -1925,9 +1926,9 @@ def make_ot(t, fixing, barrier_pct, rebate, cost):
         "dot": "OT",
         "brand": "#1e4d7b",
         "subtitle": (
-            f"Call up-and-out discreta em {t}: se o fechamento no fixing ≥ {b_lbl}, "
-            f"recebe rebate líquido +{net_s}% ({prem_hit_s}% sobre o prêmio); "
-            f"caso contrário, −100% do prêmio ({cost_s}%)."
+            f"Call up-and-out discreta em {t}: paga {cost_s}% de prêmio. "
+            f"Se fechar ≥ {b_lbl} no fixing, ganha +{net_s}% "
+            f"(rentabilidade de {prem_hit_s}% sobre o prêmio). Se não, perde o prêmio."
         ),
         "pills": [
             ("Ativo", t),
