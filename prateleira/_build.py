@@ -1869,9 +1869,10 @@ def make_collar(t, fixing, put, call, _bid, backtest=None):
 
 def make_ot(t, fixing, barrier_pct, rebate, cost):
     """Call up-and-out discreta no fixing: rebate se fechar ≥ barreira; senão −preço."""
-    prazo = months_label(fixing)
+    prazo_dc = max(1, (fixing - REF).days)
+    prazo = f"{prazo_dc}dc"
     barrier = barrier_pct - 100
-    slug = slugify("one-touch", t, prazo.replace(" ", ""))
+    slug = slugify("one-touch", t, prazo)
     b_lbl = fmt_lvl(barrier_pct)
     reb_s = fmt_money_pct(rebate)
     cost_s = fmt_money_pct(cost)
@@ -1889,7 +1890,14 @@ def make_ot(t, fixing, barrier_pct, rebate, cost):
             f"Call up-and-out discreta em {t}: se o fechamento no fixing ≥ {b_lbl}, "
             f"recebe rebate líquido +{net_s}%; caso contrário, perde só o preço ({cost_s})."
         ),
-        "pills": [("Ativo", t), ("Prazo", prazo), ("Barreira", b_lbl), ("Rebate", reb_s), ("Preço", cost_s)],
+        "pills": [
+            ("Ativo", t),
+            ("Prazo", prazo),
+            ("Vencimento", fixing_br),
+            ("Barreira", b_lbl),
+            ("Rebate", reb_s),
+            ("Preço", cost_s),
+        ],
         "highlights": [
             ("Prazo", prazo, f"Fixing {fixing_br}"),
             (f"Se ≥ +{bvar}%", f"+{net_s}%", "Rebate − preço"),
