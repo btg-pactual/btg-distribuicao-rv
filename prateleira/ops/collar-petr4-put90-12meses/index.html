@@ -124,9 +124,9 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
     <h1>Collar <span>PETR4</span></h1>
     <p class="subtitle">Collar sobre PETR4: piso na put 90% e teto na call 124%; entre os strikes acompanha o ativo 1:1.</p>
   </div>
-  <div class="meta-pills"><div class="pill"><strong>Ativo</strong> PETR4</div><div class="pill"><strong>Prazo</strong> 12 meses</div><div class="pill"><strong>Vencimento</strong> 19/10/2027</div><div class="pill"><strong>Put</strong> 90%</div><div class="pill"><strong>Call</strong> 124%</div><div class="pill"><strong>Piso</strong> -10%</div><div class="pill"><strong>Teto</strong> +24%</div><div class="pill"><strong>CDI per.</strong> 13,31%</div></div>
+  <div class="meta-pills"><div class="pill"><strong>Ativo</strong> PETR4</div><div class="pill"><strong>Prazo</strong> 12 meses</div><div class="pill"><strong>Vencimento</strong> 19/10/2027</div><div class="pill"><strong>Put</strong> 90%</div><div class="pill"><strong>Call</strong> 124%</div><div class="pill"><strong>Piso</strong> -10%</div><div class="pill"><strong>Teto</strong> +24%</div><div class="pill"><strong>CDI per.</strong> 13,27%</div></div>
 </header>
-<section class="highlights"><div class="hi"><h3>Prazo</h3><p>12 meses<span>Vencimento 19/10/2027</span></p></div><div class="hi"><h3>Piso</h3><p>-10%<span>Put 90%</span></p></div><div class="hi"><h3>Teto</h3><p>+24%<span>Call 124%</span></p></div><div class="hi"><h3>CDI per.</h3><p>13,31%<span>Proxy Selic BTG</span></p></div></section>
+<section class="highlights"><div class="hi"><h3>Prazo</h3><p>12 meses<span>Vencimento 19/10/2027</span></p></div><div class="hi"><h3>Piso</h3><p>-10%<span>Put 90%</span></p></div><div class="hi"><h3>Teto</h3><p>+24%<span>Call 124%</span></p></div><div class="hi"><h3>CDI per.</h3><p>13,27%<span>Proxy Selic BTG</span></p></div></section>
 
 <section class="research">
   <div class="research-head">
@@ -152,7 +152,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
             </tbody>
           </table>
           <p class="legend-note">
-            Máx./mín. dos últimos ~12 meses (até a ref. 19/10/2026).
+            Máx./mín. dos últimos ~12 meses (até a ref. 20/10/2026).
             Fonte: Yahoo Finance PETR4.SA.
           </p>
         </div>
@@ -165,7 +165,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
       <tbody><tr><td>Q4/26</td><td><strong>13,75</strong></td></tr><tr><td>Q1/27</td><td><strong>13,75</strong></td></tr><tr><td>Q2/27</td><td><strong>13,50</strong></td></tr><tr><td>Q3/27</td><td><strong>12,50</strong></td></tr><tr><td>Q4/27</td><td><strong>12,50</strong></td></tr></tbody>
     </table>
     <p class="legend-note">
-      CDI estimado até 19/10/2027: <strong>13,31%</strong> (proxy Selic Research BTG, Actual/365).
+      CDI estimado até 19/10/2027: <strong>13,27%</strong> (proxy Selic Research BTG, Actual/365).
       No simulador, <strong>% do CDI</strong> = retorno da estrutura ÷ CDI do período.
     </p>
   </div>
@@ -218,7 +218,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
 </div>
 <section class="speech-box">
   <h2>Speech comercial</h2>
-  <p class="speech-label">Para quem</p><p>Cliente com visão em PETR4 (12 meses) que aceita teto em troca de proteção.</p><p class="speech-label">Como encaixa</p><p>Collar · put 90% · call 124% · prazo 12 meses (venc. 19/10/2027). CDI estimado no período 13,31% (Selic Research BTG).</p><p class="speech-label">Fechamento</p><p>Material de uso interno — condições no DIE.</p>
+  <p class="speech-label">Para quem</p><p>Cliente com visão em PETR4 (12 meses) que aceita teto em troca de proteção.</p><p class="speech-label">Como encaixa</p><p>Collar · put 90% · call 124% · prazo 12 meses (venc. 19/10/2027). CDI estimado no período 13,27% (Selic Research BTG).</p><p class="speech-label">Fechamento</p><p>Material de uso interno — condições no DIE.</p>
 </section>
 
 <section class="speech-box insights-box">
@@ -239,7 +239,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
   var PAD={l:48,t:24,r:48,b:24},VW=600,VH=400;
   var PLOT_W=VW-PAD.l-PAD.r,PLOT_H=VH-PAD.t-PAD.b;
   var RESEARCH_X=11.6647;
-  var PUT=90.0, CALL=124.0, CDI_PERIOD=13.309660;
+  var PUT=90.0, CALL=124.0, CDI_PERIOD=13.269672;
   function structureReturn(x){ var st=100+x; return st+Math.max(PUT-st,0)-Math.max(st-CALL,0)-100; }
   function regimeFor(x){ if (x <= PUT-100) return 'Piso da put.'; if (x >= CALL-100) return 'Teto da call.'; return 'Participa 1:1.'; }
   function fmtPct(v,d){ d=d==null?1:d; var s=v.toFixed(d).replace('.',','); return (v>0?'+':'')+s+'%'; }

@@ -19,9 +19,8 @@ REPO = ROOT.parent
 if str(REPO) not in sys.path:
     sys.path.insert(0, str(REPO))
 OPS = ROOT / "ops"
-REF = date(2026, 10, 19)  # semana 19.10.26
-# PDF 19.10 ainda não chegou — não publicar o material da semana anterior.
-PDF_NAME = ""
+REF = date(2026, 10, 20)  # material Trade Ideas 20/10/2026 (aba Excel 19.10.26)
+PDF_NAME = "Material-Prateleira-Tatica-20102026.pdf"
 RESEARCH_REC = "https://content.btgpactual.com/api/research/content-hub/recommendations/ticker/{ticker}?includeInstitutionalData=true"
 RESEARCH_QUOTES = "https://content.btgpactual.com/api/research/research/public/asset/quotes"
 RESEARCH_SUMMARY = "https://content.btgpactual.com/api/research/content-hub-assets/v1/asset/summary/{ticker}"
@@ -130,19 +129,39 @@ def copy_pdf() -> bool:
             old.unlink(missing_ok=True)
         return False
     ops_dir = ROOT / "operacoes"
-    week_tag = REF.strftime("%d%m%Y")  # 14092026
+    downloads = Path(r"C:\Users\PIMENTPA\Downloads")
+    week_tag = REF.strftime("%d%m%Y")  # 20102026
+    patterns = (
+        f"*{week_tag}*Prateleira*.pdf",
+        f"*Prateleira*{week_tag}*.pdf",
+        f"Trade Ideas*{week_tag}*.pdf",
+        f"Material Prateleira*{week_tag}*.pdf",
+        "Material Prateleira*.pdf",
+        "Trade Ideas*Prateleira*.pdf",
+    )
     cands: list[Path] = []
-    if ops_dir.exists():
-        cands = [p for p in ops_dir.glob("Material Prateleira*.pdf") if week_tag in p.name]
-    if not cands:
-        downloads = Path(r"C:\Users\PIMENTPA\Downloads")
-        cands = [p for p in downloads.glob("Material Prateleira*.pdf") if week_tag in p.name]
-    if not cands:
+    for folder in (ops_dir, downloads):
+        if not folder.exists():
+            continue
+        for pat in patterns:
+            cands.extend(folder.glob(pat))
+    # Preferência: nome com a data da semana
+    tagged = [p for p in cands if week_tag in p.name]
+    pool = tagged or cands
+    if not pool:
         for old in ROOT.glob("Material-Prateleira-Tatica-*.pdf"):
             old.unlink(missing_ok=True)
         return False
+    src = sorted(pool, key=lambda p: p.stat().st_mtime, reverse=True)[0]
     dest = ROOT / PDF_NAME
-    shutil.copy2(sorted(cands, key=lambda p: p.stat().st_mtime, reverse=True)[0], dest)
+    shutil.copy2(src, dest)
+    if ops_dir.exists():
+        arch = ops_dir / src.name
+        try:
+            if src.resolve() != arch.resolve():
+                shutil.copy2(src, arch)
+        except OSError:
+            pass
     for old in ROOT.glob("Material-Prateleira-Tatica-*.pdf"):
         if old.name != PDF_NAME:
             old.unlink(missing_ok=True)
@@ -529,17 +548,17 @@ def research_insights_html(cfg: dict) -> str:
 # NUNCA exibir BID (fee) nem DELTA no HTML — só níveis estruturais / cupom / backtest / preço de compra.
 # (ticker, fixing, strike, ko, bid, backtest_barreira%, prazo_dc)
 # Cupom comercial/gráfico = strike − 100 (lock do SOC); bid = preço da book, não o cupom.
-# prazo_dc = dias corridos até o fixing (REF→fixing); backtest = PDF (None enquanto material 19/10 pendente).
+# prazo_dc = dias do material Trade Ideas 20/10; backtest de barreira não vem nesse PDF (None).
 SOC = [
-    ("TOTS3", date(2026, 11, 19), 112.49, 88.0, 1.50, None, 31),
-    ("B3SA3", date(2026, 11, 19), 114.56, 88.0, 1.70, None, 31),
-    ("EMBJ3", date(2026, 11, 18), 103.56, 90.0, 1.05, None, 30),
-    ("TEND3", date(2026, 11, 19), 113.29, 88.0, 1.80, None, 31),
-    ("BRAV3", date(2026, 12, 3), 106.85, 90.0, 1.20, None, 45),
-    ("WEGE3", date(2026, 12, 2), 104.50, 90.0, 1.00, None, 44),
-    ("GGBR4", date(2026, 11, 18), 104.50, 90.0, 1.00, None, 30),
-    ("AMZO34", date(2026, 11, 18), 104.00, 90.0, 1.00, None, 30),
-    ("ITUB4", date(2026, 11, 18), 104.50, 90.0, 1.00, None, 30),
+    ("TOTS3", date(2026, 11, 19), 112.49, 88.0, 1.50, None, 30),
+    ("B3SA3", date(2026, 11, 19), 114.56, 88.0, 1.50, None, 30),
+    ("EMBJ3", date(2026, 11, 18), 103.56, 90.0, 1.05, None, 29),
+    ("TEND3", date(2026, 11, 19), 113.29, 88.0, 1.50, None, 30),
+    ("BRAV3", date(2026, 12, 3), 106.85, 90.0, 1.00, None, 44),
+    ("WEGE3", date(2026, 12, 2), 104.50, 90.0, 1.00, None, 43),
+    ("GGBR4", date(2026, 11, 18), 104.50, 90.0, 1.00, None, 29),
+    ("AMZO34", date(2026, 11, 18), 104.00, 90.0, 1.00, None, 29),
+    ("ITUB4", date(2026, 11, 18), 104.50, 90.0, 1.00, None, 29),
 ]
 
 # (ticker, fixing, put, call, ki, bid) — bid NÃO vai para a UI
@@ -585,8 +604,8 @@ CALL_KO = [
     ("MOVI3", date(2026, 12, 17), 102.0, 125.0, 5.50, 4.50),
     ("RENT3", date(2026, 12, 17), 102.0, 117.0, 5.50, 4.50),
 ]
-# POP: (ticker, fixing, call_strike, put_strike) — não está na aba; mantido
-POP = ("SMAL11", date(2027, 10, 15), 100.0, 100.0)
+# POP: (ticker, fixing, call_strike, put_strike) — Trade Ideas 20/10
+POP = ("SMAL11", date(2027, 10, 19), 100.0, 100.0)
 # One Touch de Alta: (ticker, fixing, barrier_pct, rebate, cost/offer abs)
 # Fonte: One Touch De Alta - Final (PDF 20/10) — barreira discreta no fixing.
 ONE_TOUCH = [
