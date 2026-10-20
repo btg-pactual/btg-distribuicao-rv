@@ -1875,11 +1875,49 @@ def make_ot(t, fixing, barrier_pct, rebate, cost):
     slug = slugify("one-touch", t, prazo)
     b_lbl = fmt_lvl(barrier_pct)
     reb_s = fmt_money_pct(rebate)
-    cost_s = fmt_money_pct(cost)
+    cost_s = fmt_money_pct(cost).rstrip("%")
     net = rebate - cost
     net_s = f"{net:.2f}".replace(".", ",")
+    prem_hit = (net / cost) * 100.0
+    prem_hit_s = f"{prem_hit:+.0f}"
     bvar = f"{barrier:.2f}".rstrip("0").rstrip(".").replace(".", ",")
     fixing_br = fixing.strftime("%d/%m/%Y")
+
+    def net_at(x: float) -> float:
+        return net if x >= barrier else -cost
+
+    def prem_at(x: float) -> float:
+        return (net_at(x) / cost) * 100.0
+
+    just_below = max(0.0, barrier - 0.01)
+    spots = sorted({-10.0, 0.0, 5.0, just_below, barrier, 10.0, 15.0, 20.0})
+    matrix_rows = []
+    for s in spots:
+        n, p = net_at(s), prem_at(s)
+        note = "Barreira · rebate" if s >= barrier else "Não atingiu"
+        ns = f"{n:+.2f}".replace(".", ",")
+        ps = f"{p:+.0f}"
+        ss = f"{s:+.2f}".rstrip("0").rstrip(".").replace(".", ",")
+        matrix_rows.append(
+            f"<tr><td>{ss}%</td><td>{ns}%</td><td><strong>{ps}%</strong></td><td>{note}</td></tr>"
+        )
+    matrix_html = f"""
+  <div class="matrix-wrap">
+    <h2>Matriz de ganho (só prêmio)</h2>
+    <p class="matrix-note">
+      Retorno <strong>sobre o prêmio pago ({cost_s}%)</strong> =
+      (resultado no nocional ÷ {cost_s}%) × 100.
+      Na barreira: líquido +{net_s}% no nocional → <strong>{prem_hit_s}%</strong> sobre o prêmio.
+    </p>
+    <table class="struct-table">
+      <thead><tr><th>Spot</th><th>Nocional</th><th>Sobre prêmio</th><th></th></tr></thead>
+      <tbody>
+        {''.join(matrix_rows)}
+      </tbody>
+    </table>
+  </div>
+"""
+
     return slug, {
         "title": f"One Touch Alta {t}",
         "h1": "One Touch de Alta",
@@ -1888,7 +1926,8 @@ def make_ot(t, fixing, barrier_pct, rebate, cost):
         "brand": "#1e4d7b",
         "subtitle": (
             f"Call up-and-out discreta em {t}: se o fechamento no fixing ≥ {b_lbl}, "
-            f"recebe rebate líquido +{net_s}%; caso contrário, perde só o preço ({cost_s})."
+            f"recebe rebate líquido +{net_s}% ({prem_hit_s}% sobre o prêmio); "
+            f"caso contrário, −100% do prêmio ({cost_s}%)."
         ),
         "pills": [
             ("Ativo", t),
@@ -1896,25 +1935,31 @@ def make_ot(t, fixing, barrier_pct, rebate, cost):
             ("Vencimento", fixing_br),
             ("Barreira", b_lbl),
             ("Rebate", reb_s),
-            ("Preço", cost_s),
+            ("Preço", f"{cost_s}%"),
         ],
         "highlights": [
             ("Prazo", prazo, f"Fixing {fixing_br}"),
-            (f"Se ≥ +{bvar}%", f"+{net_s}%", "Rebate − preço"),
-            ("Se < barreira", f"−{cost_s}", "Preço"),
+            (f"Se ≥ +{bvar}%", f"+{net_s}%", f"{prem_hit_s}% sobre o prêmio"),
+            ("Se < barreira", "−100%", f"Sobre o prêmio ({cost_s}%)"),
             ("Barreira", b_lbl, "Discreta no fixing"),
         ],
         "struct": [
             ('<span class="tag b">B</span> Call KO', f"{b_lbl} · barreira discreta {b_lbl}"),
             ("Rebate", reb_s),
-            ("Preço (offer)", cost_s),
+            ("Preço (offer)", f"{cost_s}%"),
         ],
         "zones": [
-            (f"< +{bvar}%", f"Barreira não atingida no fixing: −{cost_s}."),
-            (f"≥ +{bvar}%", f"Barreira atingida: +{net_s}% (ganho máximo)."),
-            ("Ideia", "Aposta tática de alta com custo definido e ganho limitado."),
+            (
+                f"< +{bvar}%",
+                f"Barreira não atingida: −{cost_s}% no nocional = −100% sobre o prêmio.",
+            ),
+            (
+                f"≥ +{bvar}%",
+                f"Barreira atingida: +{net_s}% no nocional → {prem_hit_s}% sobre o prêmio.",
+            ),
+            ("Ideia", "Aposta tática de alta com custo definido e ganho limitado sobre o prêmio."),
         ],
-        "regime0": "Abaixo da barreira no fixing: −preço.",
+        "regime0": "Abaixo da barreira no fixing: −100% sobre o prêmio. Veja a matriz só prêmio.",
         "speech": [
             (
                 "Para quem",
@@ -1922,15 +1967,27 @@ def make_ot(t, fixing, barrier_pct, rebate, cost):
             ),
             (
                 "Como encaixa",
-                f"One touch de alta · barreira discreta {b_lbl} · rebate {reb_s} · preço {cost_s} · "
-                f"ganho máximo +{net_s}% se KO no fixing; senão −{cost_s}.",
+                f"One touch de alta · barreira discreta {b_lbl} · rebate {reb_s} · preço {cost_s}%. "
+                f"Na barreira: +{net_s}% no nocional = {prem_hit_s}% sobre o prêmio. "
+                f"Se não atingir: −100% do prêmio.",
             ),
             ("Fechamento", "Material de uso interno — condições no DIE."),
         ],
+        "sim_extra_html": (
+            f'<div class="sim-card wide">'
+            f'<div class="lbl">Retorno sobre o prêmio ({cost_s}%)</div>'
+            f'<div class="val" id="premVal">−100%</div>'
+            f"</div>"
+        ),
+        "matrix_html": matrix_html,
         "struct_lbl": "One Touch (nocional)",
         "js_const": f"var B={barrier}, REB={rebate}, COST={cost};",
         "js_fn": "if (x >= B) return REB - COST; return -COST;",
-        "js_regime": "if (x >= B) return 'Barreira no fixing: rebate líquido.'; return 'Não atingiu: −preço.';",
+        "js_regime": (
+            "var rp=(structureReturn(x)/COST)*100; "
+            "if (x >= B) return 'Barreira no fixing: +'+(REB-COST).toFixed(2).replace('.',',')+'% nocional · '+rp.toFixed(0)+'% sobre o prêmio.'; "
+            "return 'Não atingiu: −'+COST.toFixed(2).replace('.',',')+'% nocional · −100% sobre o prêmio.';"
+        ),
     }
 
 
