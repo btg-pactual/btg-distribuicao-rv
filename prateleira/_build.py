@@ -2203,7 +2203,7 @@ def hub_html(sections: list[tuple[str, list[tuple[str, dict]]]]) -> str:
 <section class="spotlights" id="spotlights" aria-label="Empresas e destaques">
   <div class="spot-head">
     <h2>Empresas com operação</h2>
-    <p>Toque para ver todas as operações da empresa.</p>
+    <p>Selecione o ativo para ver as estruturas disponíveis.</p>
   </div>
   <div class="spot-grid">{''.join(spot_cards)}</div>
 </section>"""
@@ -2215,11 +2215,11 @@ def hub_html(sections: list[tuple[str, list[tuple[str, dict]]]]) -> str:
         pdf_box = f"""
   <div class="pdf-box">
     <div class="pdf-box-copy">
-      <span class="pdf-box-kicker">Material PDF</span>
-      <span class="pdf-box-title">Prateleira Tática · {REF.strftime('%d/%m/%Y')}</span>
-      <span class="pdf-box-meta">Atualização semanal — abra o PDF</span>
+      <span class="pdf-box-kicker">Material da semana</span>
+      <span class="pdf-box-title">Trade Ideas · {REF.strftime('%d/%m/%Y')}</span>
+      <span class="pdf-box-meta">PDF completo da Prateleira Tática</span>
     </div>
-    <a class="pdf-box-cta" href="./{PDF_NAME}" target="_blank" rel="noopener noreferrer">Abrir PDF ↗</a>
+    <a class="pdf-box-cta" href="./{PDF_NAME}" target="_blank" rel="noopener noreferrer">Abrir PDF</a>
   </div>"""
     return f"""<!DOCTYPE html>
 <html lang="pt-BR">
@@ -2227,90 +2227,103 @@ def hub_html(sections: list[tuple[str, list[tuple[str, dict]]]]) -> str:
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>Prateleira Tática — Distribuição Renda Variável | BTG Pactual</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet"/>
 <style>
-:root{{--btg:#0b1f3a;--btg-mid:#163a5f;--btg-blue:#1e4d7b;--link:#1a66b3;--ink:#0b1f3a;--muted:#5c6b7a;--line:#d0d8e2;--bg:#eef2f6;--card:#ffffff}}
+:root{{
+  --btg:#0a1628;--btg-mid:#132a45;--btg-blue:#1a3a5c;--accent:#c4a35a;--link:#1a5f9e;
+  --ink:#0a1628;--muted:#5a6a7c;--line:#d5dde8;--bg:#f3f5f8;--card:#ffffff;
+  --font-ui:"Source Sans 3",system-ui,sans-serif;--font-display:"Source Serif 4",Georgia,"Times New Roman",serif;
+}}
 *{{box-sizing:border-box;margin:0;padding:0}}
-body{{font-family:Segoe UI,-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);min-height:100vh;line-height:1.45}}
-.hero{{background:linear-gradient(135deg,var(--btg) 0%,var(--btg-mid) 55%,var(--btg-blue) 100%);color:#fff;padding:36px 24px 40px}}
-.hero-inner{{max-width:960px;margin:0 auto}}
-.logo-btg{{display:inline-block;font-weight:700;font-size:12px;letter-spacing:.1em;border:1px solid rgba(255,255,255,.35);padding:7px 12px;border-radius:2px;margin-bottom:22px}}
-.hero-row{{display:flex;justify-content:space-between;align-items:flex-end;gap:24px}}
-h1{{font-size:clamp(28px,4.5vw,40px);font-weight:700;letter-spacing:-.02em;line-height:1.15}}
-.lede{{margin-top:12px;font-size:15px;color:rgba(255,255,255,.82);max-width:42em}}
-.lede-strong{{display:inline;font-size:18px;font-weight:700;color:#fff}}
-.badge{{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border:1px solid rgba(255,255,255,.35);padding:8px 12px;border-radius:2px;white-space:nowrap}}
-.page{{max-width:960px;margin:0 auto;padding:28px 24px 56px}}
-.pdf-box{{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;background:linear-gradient(90deg,#e8f1fb 0%,#ffffff 42%);border:2px solid #1a66b3;border-radius:6px;padding:18px 20px;margin-bottom:22px;box-shadow:0 4px 14px rgba(26,102,179,.12)}}
-.pdf-box-copy{{display:flex;flex-direction:column;gap:6px;min-width:min(100%,280px)}}
-.pdf-box-kicker{{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#1a66b3}}
-.pdf-box-title{{font-size:18px;font-weight:700;color:var(--btg);line-height:1.25}}
+body{{font-family:var(--font-ui);color:var(--ink);background:
+  radial-gradient(1200px 480px at 12% -10%,rgba(26,58,92,.08),transparent 55%),
+  radial-gradient(900px 420px at 100% 0%,rgba(196,163,90,.06),transparent 50%),
+  var(--bg);min-height:100vh;line-height:1.45;-webkit-font-smoothing:antialiased}}
+.hero{{position:relative;color:#fff;padding:44px 24px 48px;overflow:hidden;background:linear-gradient(160deg,var(--btg) 0%,var(--btg-mid) 48%,var(--btg-blue) 100%)}}
+.hero::before{{content:"";position:absolute;inset:0;background:
+  linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px) 0 0/48px 48px,
+  linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px) 0 0/48px 48px;opacity:.7;pointer-events:none}}
+.hero::after{{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:linear-gradient(90deg,var(--accent),transparent 55%)}}
+.hero-inner{{position:relative;z-index:1;max-width:1040px;margin:0 auto}}
+.hero-top{{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:28px}}
+.logo-btg{{font-family:var(--font-ui);font-weight:700;font-size:clamp(22px,3.2vw,32px);letter-spacing:.04em;text-transform:uppercase;line-height:1;color:#fff}}
+.badge{{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;border:1px solid rgba(255,255,255,.28);padding:8px 12px;border-radius:2px;white-space:nowrap;color:rgba(255,255,255,.9)}}
+.hero-kicker{{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:10px}}
+h1{{font-family:var(--font-display);font-size:clamp(30px,4.8vw,44px);font-weight:600;letter-spacing:-.02em;line-height:1.12;max-width:14ch}}
+.lede{{margin-top:14px;font-size:16px;font-weight:400;color:rgba(255,255,255,.78);max-width:36em}}
+.page{{max-width:1040px;margin:0 auto;padding:32px 24px 64px}}
+.pdf-box{{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;background:var(--card);border:1px solid var(--line);border-left:3px solid var(--btg);padding:18px 22px;margin-bottom:28px;animation:rise .45s ease both}}
+.pdf-box-copy{{display:flex;flex-direction:column;gap:4px;min-width:min(100%,280px)}}
+.pdf-box-kicker{{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}}
+.pdf-box-title{{font-family:var(--font-display);font-size:20px;font-weight:600;color:var(--btg);line-height:1.25}}
 .pdf-box-meta{{font-size:13px;color:var(--muted)}}
-.pdf-box-cta{{display:inline-flex;align-items:center;gap:8px;background:#1a66b3;color:#fff !important;font-size:14px;font-weight:700;text-decoration:none;padding:12px 16px;border-radius:4px;white-space:nowrap}}
-.pdf-box-cta:hover{{background:#15569a;text-decoration:none}}
-.pdf-box-cta span{{font-size:16px;line-height:1}}
+.pdf-box-cta{{display:inline-flex;align-items:center;gap:8px;background:var(--btg);color:#fff !important;font-size:13px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;text-decoration:none;padding:12px 18px;border-radius:2px;white-space:nowrap;transition:background .15s ease}}
+.pdf-box-cta:hover{{background:var(--btg-mid);text-decoration:none}}
 @media (max-width:640px){{.pdf-box{{padding:16px}}.pdf-box-cta{{width:100%;justify-content:center}}}}
-.spotlights{{margin-bottom:28px}}
-.spot-head{{margin-bottom:14px}}
-.spot-head h2{{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--btg-blue);margin-bottom:4px}}
-.spot-head p{{font-size:14px;color:var(--muted)}}
-.spot-grid{{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}}
-.spot{{appearance:none;border:1px solid var(--line);background:var(--card);border-radius:6px;padding:12px 14px;text-align:left;cursor:pointer;display:flex;gap:10px;align-items:flex-start;transition:transform .12s ease,box-shadow .12s ease,border-color .12s}}
-.spot:hover,.spot:focus-visible{{transform:translateY(-1px);box-shadow:0 6px 16px rgba(11,31,58,.07);border-color:color-mix(in srgb,var(--spot) 45%,var(--line));outline:none}}
-.spot-dot{{width:8px;height:8px;border-radius:50%;background:var(--spot);margin-top:5px;flex-shrink:0}}
+.spotlights{{margin-bottom:36px;animation:rise .5s ease .05s both}}
+.spot-head,.products-head{{margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--line)}}
+.spot-head h2,.products-head h2,.cat-section h2{{font-family:var(--font-ui);font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--btg-blue);margin-bottom:4px}}
+.spot-head p,.products-head p{{font-size:14px;color:var(--muted)}}
+.spot-grid{{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}}
+.spot{{appearance:none;border:1px solid var(--line);border-left:3px solid var(--spot);background:var(--card);border-radius:2px;padding:14px 14px 14px 12px;text-align:left;cursor:pointer;display:flex;gap:10px;align-items:flex-start;transition:transform .18s ease,box-shadow .18s ease,border-color .18s}}
+.spot:hover,.spot:focus-visible{{transform:translateY(-2px);box-shadow:0 10px 28px rgba(10,22,40,.08);outline:none}}
+.spot.active{{box-shadow:0 0 0 2px color-mix(in srgb,var(--spot) 35%,transparent)}}
+.spot-dot{{display:none}}
 .spot-body{{display:flex;flex-direction:column;gap:2px;min-width:0}}
 .spot-name{{font-size:14px;font-weight:700;color:var(--btg);line-height:1.25}}
-.spot-ticker{{font-size:11px;font-weight:700;letter-spacing:.04em;color:var(--spot)}}
+.spot-ticker{{font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--spot)}}
 .spot-sector{{font-size:11px;color:var(--muted);line-height:1.3;margin-top:2px}}
-.spot-hi{{font-size:12px;color:var(--ink);margin-top:4px;line-height:1.35}}
+.spot-hi{{font-size:12px;color:var(--ink);margin-top:6px;line-height:1.35;font-weight:500}}
 .spot-ops{{font-size:11px;color:var(--muted);line-height:1.3}}
-.products-head{{margin:8px 0 14px}}
-.products-head h2{{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--btg-blue);margin-bottom:4px}}
-.products-head p{{font-size:14px;color:var(--muted)}}
-.cat-grid{{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-bottom:8px}}
-.cat-card{{appearance:none;border:1px solid var(--line);background:var(--card);border-radius:6px;overflow:hidden;text-align:left;cursor:pointer;padding:0;display:flex;flex-direction:column;transition:transform .12s ease,box-shadow .12s ease,border-color .12s}}
-.cat-card:hover,.cat-card:focus-visible{{transform:translateY(-2px);box-shadow:0 8px 20px rgba(11,31,58,.08);border-color:#b8c6d6;outline:none}}
+.products-head{{margin:4px 0 16px;animation:rise .5s ease .1s both}}
+.cat-grid{{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-bottom:8px;animation:rise .55s ease .12s both}}
+.cat-card{{appearance:none;border:1px solid var(--line);background:var(--card);border-radius:2px;overflow:hidden;text-align:left;cursor:pointer;padding:0;display:flex;flex-direction:column;transition:transform .18s ease,box-shadow .18s ease,border-color .18s}}
+.cat-card:hover,.cat-card:focus-visible{{transform:translateY(-2px);box-shadow:0 12px 28px rgba(10,22,40,.08);border-color:#b7c4d4;outline:none}}
 .cat-card.active{{border-color:var(--cat);box-shadow:0 0 0 2px color-mix(in srgb,var(--cat) 28%,transparent)}}
-.cat-bar{{display:block;height:6px;background:var(--cat)}}
-.cat-body{{display:flex;flex-direction:column;gap:6px;padding:16px 18px 18px}}
-.cat-title{{font-size:17px;font-weight:700;color:var(--btg)}}
-.cat-count{{font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--cat)}}
-.cat-blurb{{font-size:13px;color:var(--muted);line-height:1.4}}
+.cat-bar{{display:block;height:3px;background:var(--cat)}}
+.cat-body{{display:flex;flex-direction:column;gap:6px;padding:18px 20px 20px}}
+.cat-title{{font-family:var(--font-display);font-size:19px;font-weight:600;color:var(--btg)}}
+.cat-count{{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--cat)}}
+.cat-blurb{{font-size:13px;color:var(--muted);line-height:1.45}}
 .cat-tickers{{font-size:11px;color:#7a8796;line-height:1.35;margin-top:2px}}
-.cat-section-head{{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:8px 0 14px}}
-.cat-section h2{{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--btg-blue);margin:0}}
-.cat-back{{appearance:none;border:1px solid var(--line);background:#fff;color:var(--link);font-size:12px;font-weight:700;padding:8px 12px;border-radius:4px;cursor:pointer}}
-.cat-back:hover{{background:#f5f8fc}}
-.ops{{list-style:none;display:flex;flex-direction:column;gap:16px}}
-.op-block{{background:var(--card);border:1px solid var(--line);border-radius:4px;overflow:hidden}}
-.op-bar{{height:6px}}
+.cat-section-head{{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:8px 0 16px;padding-bottom:12px;border-bottom:1px solid var(--line)}}
+.cat-section h2{{margin:0}}
+.cat-back{{appearance:none;border:1px solid var(--line);background:#fff;color:var(--link);font-family:var(--font-ui);font-size:12px;font-weight:700;padding:8px 14px;border-radius:2px;cursor:pointer;transition:background .15s}}
+.cat-back:hover{{background:#f0f4f8}}
+.ops{{list-style:none;display:flex;flex-direction:column;gap:14px}}
+.op-block{{background:var(--card);border:1px solid var(--line);border-radius:2px;overflow:hidden;transition:box-shadow .18s ease}}
+.op-block:hover{{box-shadow:0 8px 24px rgba(10,22,40,.06)}}
+.op-bar{{height:3px}}
 .op{{display:block;text-decoration:none;color:inherit;padding:20px 22px 18px;transition:background .12s}}
-.op:hover,.op:focus-visible{{background:#f5f8fc;outline:none}}
+.op:hover,.op:focus-visible{{background:#f7f9fb;outline:none}}
 .op-top{{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:8px}}
-.op-title{{font-size:18px;font-weight:700;color:var(--btg)}}
-.op-ticker{{font-size:12px;font-weight:700;color:var(--link);letter-spacing:.04em}}
+.op-title{{font-family:var(--font-display);font-size:19px;font-weight:600;color:var(--btg)}}
+.op-ticker{{font-size:12px;font-weight:700;color:var(--link);letter-spacing:.05em}}
 .op-blurb{{font-size:14px;color:var(--muted);max-width:48em}}
 .op-meta{{margin-top:12px;display:flex;flex-wrap:wrap;gap:8px}}
-.pill{{background:#eef2f6;border:1px solid var(--line);border-radius:2px;padding:4px 10px;color:var(--btg-mid);font-size:11px;font-weight:600}}
-.op-cta{{margin-top:12px;font-size:12px;font-weight:700;color:var(--link)}}
-.footer{{margin-top:32px;padding-top:16px;border-top:1px solid var(--line);font-size:11px;color:var(--muted);text-align:center;line-height:1.55}}
-.footer-alert{{margin-top:16px;text-align:center;font-size:15px;font-weight:700;color:#c0392b;line-height:1.55}}
+.pill{{background:#eef2f7;border:1px solid var(--line);border-radius:2px;padding:4px 10px;color:var(--btg-mid);font-size:11px;font-weight:600}}
+.op-cta{{margin-top:14px;font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--link)}}
+.footer{{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);font-size:11px;color:var(--muted);text-align:center;line-height:1.55}}
+.footer-alert{{margin-top:18px;text-align:center;font-size:13px;font-weight:700;letter-spacing:.02em;color:#a32020;line-height:1.55;padding:14px 16px;border:1px solid rgba(163,32,32,.25);background:rgba(163,32,32,.04)}}
 .footer-alert strong{{font-weight:700}}
+@keyframes rise{{from{{opacity:0;transform:translateY(8px)}}to{{opacity:1;transform:none}}}}
 @media (max-width:900px){{.spot-grid{{grid-template-columns:repeat(3,minmax(0,1fr))}}}}
 @media (max-width:720px){{.cat-grid{{grid-template-columns:1fr}}.spot-grid{{grid-template-columns:repeat(2,minmax(0,1fr))}}}}
-@media (max-width:640px){{.hero{{padding:28px 16px 32px}}.page{{padding:20px 16px 48px}}.hero-row{{flex-direction:column;align-items:flex-start}}.cat-section-head{{flex-direction:column;align-items:flex-start}}}}
+@media (max-width:640px){{.hero{{padding:32px 16px 36px}}.page{{padding:22px 16px 48px}}.hero-top{{flex-direction:column;align-items:flex-start}}.cat-section-head{{flex-direction:column;align-items:flex-start}}}}
 </style>
 </head>
 <body>
 <header class="hero">
   <div class="hero-inner">
-    <div class="logo-btg">BTG PACTUAL</div>
-    <div class="hero-row">
-      <div>
-        <h1>Prateleira Tática</h1>
-        <p class="lede"><span class="lede-strong">Distribuição Renda Variável</span></p>
-      </div>
+    <div class="hero-top">
+      <div class="logo-btg">BTG Pactual</div>
       <div class="badge">Uso interno</div>
     </div>
+    <p class="hero-kicker">Distribuição · Renda Variável</p>
+    <h1>Prateleira Tática</h1>
+    <p class="lede">Hub semanal de operações estruturadas — escolha pelo ativo ou pelo tipo de estrutura.</p>
   </div>
 </header>
 <main class="page">
