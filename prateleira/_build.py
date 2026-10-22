@@ -23,8 +23,19 @@ REF = date(2026, 10, 20)  # material Trade Ideas 20/10/2026 (aba Excel 19.10.26)
 PDF_NAME = "Material-Prateleira-Tatica-20102026.pdf"
 
 # Destaques manuais do Overview — preencher quando pedido.
-# Ex.: {"title": "SOC TOTS3", "blurb": "…", "href": "./ops/soc-tots3/"}
-OVERVIEW_DESTAQUES: list[dict] = []
+# Ex.: {"title": "SOC TOTS3", "blurb": "…", "href": "./ops/soc-tots3-30dc/"}
+OVERVIEW_DESTAQUES: list[dict] = [
+    {
+        "title": "SOC TOTS3",
+        "blurb": "Cupom 12,49% · Proteção 12% · Prazo 30dc",
+        "href": "./ops/soc-tots3-30dc/",
+    },
+    {
+        "title": "SOC B3SA3",
+        "blurb": "Cupom 8% · Proteção 12% · Prazo 20dc",
+        "href": "./ops/soc-b3sa3-20dc/",
+    },
+]
 RESEARCH_REC = "https://content.btgpactual.com/api/research/content-hub/recommendations/ticker/{ticker}?includeInstitutionalData=true"
 RESEARCH_QUOTES = "https://content.btgpactual.com/api/research/research/public/asset/quotes"
 RESEARCH_SUMMARY = "https://content.btgpactual.com/api/research/content-hub-assets/v1/asset/summary/{ticker}"
@@ -555,6 +566,8 @@ def research_insights_html(cfg: dict) -> str:
 # prazo_dc = dias do material Trade Ideas 20/10; backtest de barreira não vem nesse PDF (None).
 SOC = [
     ("TOTS3", date(2026, 11, 19), 112.49, 88.0, 1.50, None, 30),
+    # Extra (destaque): cupom 8% / proteção 12% / 20dc — além do SOC B3 da aba Excel
+    ("B3SA3", date(2026, 11, 9), 108.0, 88.0, None, None, 20),
     ("B3SA3", date(2026, 11, 19), 114.56, 88.0, 1.50, None, 30),
     ("EMBJ3", date(2026, 11, 18), 103.56, 90.0, 1.05, None, 29),
     ("TEND3", date(2026, 11, 19), 113.29, 88.0, 1.50, None, 30),
