@@ -2032,47 +2032,47 @@ def make_ot(t, fixing, barrier_pct, rebate, cost):
 SECTION_META = {
     "SOC": {
         "id": "soc",
-        "blurb": "Stock or Coupon — cupom se a barreira não for atingida.",
+        "blurb": "Stock or Coupon: recebe cupom se a barreira não for atingida; senão, entrega o ativo.",
         "color": "#0d6e6e",
     },
     "Smart Hedge": {
         "id": "smart-hedge",
-        "blurb": "Piso na queda, 1:1 até a barreira KI.",
+        "blurb": "Proteção com piso na queda e participação 1:1 até a barreira KI.",
         "color": "#007e33",
     },
     "Aceleradora Dinâmica": {
         "id": "aceleradora",
-        "blurb": "2× na alta até a call vendida; se atingir, call KO vira pó (0%). Proteção parcial.",
-        "color": "#5a4a8a",
+        "blurb": "2× na alta até a call vendida; se atingir o KO, a call vira pó. Proteção parcial.",
+        "color": "#1e4d7b",
     },
     "Triplo Retorno KO": {
         "id": "triplo",
-        "blurb": "3× na alta, ganho na queda moderada, teto no KO.",
-        "color": "#820ad1",
+        "blurb": "Alavancagem 3× na alta, ganho também na queda moderada, com teto no KO.",
+        "color": "#1a5f9e",
     },
     "Call KO com Rebate": {
         "id": "call-ko",
-        "blurb": "Call up-and-out com rebate se bater a barreira.",
+        "blurb": "Call up-and-out: se bater a barreira, recebe rebate; senão, payoff de call.",
         "color": "#c0392b",
     },
     "Compra de Call Spread": {
         "id": "call-spread",
-        "blurb": "Call comprada + call vendida — alta com teto e custo definido.",
+        "blurb": "Call comprada + call vendida — exposição à alta com teto e custo definido.",
         "color": "#1a6b8a",
     },
     "Collar": {
         "id": "collar",
-        "blurb": "Put comprada + call vendida — piso e teto no ativo.",
+        "blurb": "Put comprada + call vendida — define piso e teto sobre a posição no ativo.",
         "color": "#4a6b3a",
     },
     "POP": {
         "id": "pop",
-        "blurb": "Proteção na queda + participação parcial (50%) na alta.",
+        "blurb": "Proteção na queda com participação parcial (50%) na alta do ativo.",
         "color": "#0a6e8a",
     },
     "One Touch de Alta": {
         "id": "one-touch",
-        "blurb": "Rebate se o ativo fechar na/acima da barreira no fixing; senão, só o preço.",
+        "blurb": "Paga rebate se fechar na/acima da barreira no fixing; caso contrário, só o prêmio.",
         "color": "#1e4d7b",
     },
 }
@@ -2127,10 +2127,15 @@ body{font-family:var(--font);color:var(--ink);background:var(--bg);min-height:10
 .sec-head:first-child{margin-top:8px}
 .sec-head h2{font-size:18px;font-weight:700;color:var(--ink)}
 .sec-head p{font-size:13px;color:var(--muted);margin-top:2px}
-.tabs{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 16px}
-.tab{appearance:none;border:1px solid #d1d5db;background:#fff;color:#374151;font:inherit;font-size:12px;font-weight:500;padding:6px 12px;border-radius:2px;cursor:pointer}
-.tab:hover{border-color:#9ca3af}
-.tab.active,.cat-card.active{background:var(--navy);border-color:var(--navy);color:#fff}
+.cat-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:8px 0 16px}
+.cat-card{appearance:none;border:1px solid var(--line);border-left:3px solid var(--cat,var(--navy));background:var(--card);color:inherit;font:inherit;text-align:left;padding:0;border-radius:2px;cursor:pointer;display:flex;flex-direction:column;transition:border-color .15s,background .15s}
+.cat-card:hover,.cat-card:focus-visible{background:#f7f9fc;border-color:#c5ced9;outline:none}
+.cat-card.active{background:#eef3fb;border-color:var(--navy);box-shadow:inset 0 0 0 1px var(--navy)}
+.cat-card-body{padding:16px 18px 18px;display:flex;flex-direction:column;gap:6px}
+.cat-card-top{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.cat-card-title{font-size:15px;font-weight:700;color:var(--ink)}
+.cat-card-count{font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--navy);white-space:nowrap}
+.cat-card-blurb{font-size:13px;color:var(--muted);line-height:1.45}
 .table-wrap{background:var(--card);border:1px solid var(--line);border-radius:2px;overflow:auto}
 .data-table{width:100%;border-collapse:collapse;font-size:13px}
 .data-table thead th{text-align:left;font-size:11px;font-weight:500;color:var(--muted);letter-spacing:.02em;padding:10px 14px;border-bottom:1px solid var(--line);white-space:nowrap;background:#fafbfc}
@@ -2192,6 +2197,7 @@ body{font-family:var(--font);color:var(--ink);background:var(--bg);min-height:10
   .col-sec,.col-ops{display:none}
   .data-table thead th:nth-child(3),.data-table thead th:nth-child(7){display:none}
   .ov-grid{grid-template-columns:1fr}
+  .cat-grid{grid-template-columns:1fr}
   .topbar{height:auto;min-height:58px;padding:12px 16px;flex-wrap:wrap;gap:6px}
   .topbar-brand{font-size:17px}
   .topbar-brand span{font-size:14px;display:inline}
@@ -2243,7 +2249,15 @@ def _collect_hub_data(sections: list[tuple[str, list[tuple[str, dict]]]]):
         n = len(items)
         n_ops += n
         cat_cards.append(
-            f"""<button type="button" class="tab cat-card" data-target="{sid}" title="{html_esc(meta['blurb'])}">{title} · {n}</button>"""
+            f"""<button type="button" class="cat-card" data-target="{sid}" style="--cat:{meta['color']}">
+  <span class="cat-card-body">
+    <span class="cat-card-top">
+      <span class="cat-card-title">{html_esc(title)}</span>
+      <span class="cat-card-count">{n} operaç{'ão' if n == 1 else 'ões'}</span>
+    </span>
+    <span class="cat-card-blurb">{html_esc(meta['blurb'])}</span>
+  </span>
+</button>"""
         )
         ops = []
         for slug, cfg in items:
@@ -2588,7 +2602,7 @@ def estruturas_html(sections: list[tuple[str, list[tuple[str, dict]]]]) -> str:
         <h2>Tipos de estrutura</h2>
         <p>Selecione o produto para ver as operações.</p>
       </div>
-      <div class="tabs" id="catGrid">{cats}</div>
+      <div class="cat-grid" id="catGrid">{cats}</div>
     </div>
     {body}
     {_hub_footer()}
