@@ -265,9 +265,11 @@ def premium_page_html(cfg: dict, prat, research: dict | None = None) -> str:
             cfg["cost"],
         )
     elif kind == "call_ko":
+        # make_call_ko(t, fixing, call_strike, ko_pct, rebate, cost) — strike default ATM 100%
         _slug, page = prat.make_call_ko(
             cfg["ticker"],
             cfg["fixing"],
+            cfg.get("call_strike", 100.0),
             cfg["ko_pct"],
             cfg["rebate"],
             cfg["cost"],
