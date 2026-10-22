@@ -2078,18 +2078,19 @@ def _op_list_item(slug: str, cfg: dict) -> str:
     extra = ""
     rs = cfg.get("research") or {}
     if rs.get("rec_lbl"):
-        extra += f'<span class="pill">Research: {rs["rec_lbl"]}</span>'
+        extra += f'<span class="pill">{rs["rec_lbl"]}</span>'
     if rs.get("target") is not None:
-        extra += f'<span class="pill">PA: {fmt_brl(rs["target"])}</span>'
-    pills = " ".join(f'<span class="pill">{k}: {v}</span>' for k, v in cfg["pills"]) + extra
+        extra += f'<span class="pill">PA {fmt_brl(rs["target"])}</span>'
+    pills = " ".join(f'<span class="pill">{k}: {v}</span>' for k, v in cfg["pills"][:4]) + extra
     return f"""
 <li class="op-block">
-  <div class="op-bar" style="background:{cfg['brand']}"></div>
   <a class="op" href="./ops/{slug}/index.html">
-    <div class="op-top"><span class="op-title">{cfg['h1']} {cfg['ticker']}</span><span class="op-ticker">{cfg['ticker']}</span></div>
+    <div class="op-top">
+      <span class="op-title">{cfg['h1']} {cfg['ticker']}</span>
+      <span class="op-ticker">{cfg['ticker']}</span>
+    </div>
     <p class="op-blurb">{cfg['subtitle']}</p>
     <div class="op-meta">{pills}</div>
-    <div class="op-cta">Abrir material →</div>
   </a>
 </li>"""
 
@@ -2104,18 +2105,8 @@ def hub_html(sections: list[tuple[str, list[tuple[str, dict]]]]) -> str:
         sid = meta["id"]
         color = meta["color"]
         n = len(items)
-        tickers = ", ".join(dict.fromkeys(cfg["ticker"] for _, cfg in items))
         cat_cards.append(
-            f"""
-<button type="button" class="cat-card" data-target="{sid}" style="--cat:{color}">
-  <span class="cat-bar"></span>
-  <span class="cat-body">
-    <span class="cat-title">{title}</span>
-    <span class="cat-count">{n} operaç{'ão' if n == 1 else 'ões'}</span>
-    <span class="cat-blurb">{meta['blurb']}</span>
-    <span class="cat-tickers">{tickers}</span>
-  </span>
-</button>"""
+            f"""<button type="button" class="tab cat-card" data-target="{sid}" title="{html_esc(meta['blurb'])}">{title} · {n}</button>"""
         )
 
         ops = []
@@ -2146,81 +2137,78 @@ def hub_html(sections: list[tuple[str, list[tuple[str, dict]]]]) -> str:
             f"""
 <section class="cat-section" id="{sid}" hidden>
   <div class="cat-section-head">
-    <h2>{title}</h2>
-    <button type="button" class="cat-back" data-back>← Voltar aos cards</button>
+    <h2>{title} · {n} operaç{'ão' if n == 1 else 'ões'}</h2>
+    <button type="button" class="cat-back" data-back>← Voltar</button>
   </div>
   <ul class="ops">{''.join(ops)}</ul>
 </section>"""
         )
 
-    # Cards iniciais por empresa + seções agregadas por ticker.
-    spot_cards = []
+    # Tabela de empresas (estilo Research Portal) + seções por ticker.
+    spot_rows = []
     company_sections = []
     for t, c in companies.items():
         rs = c["research"] or {}
-        bits = []
-        if rs.get("rec_lbl"):
-            bits.append(rs["rec_lbl"])
-        if rs.get("target") is not None:
-            bits.append(f"PA {fmt_brl(rs['target'])}")
+        sector = (rs.get("sector") or SECTOR_FALLBACK.get(t) or "—").strip() or "—"
+        rec = rs.get("rec_lbl") or "—"
+        pa = fmt_brl(rs["target"]) if rs.get("target") is not None else "—"
+        up_html = "—"
         if rs.get("upside") is not None:
             up = rs["upside"]
-            bits.append(("+" if up > 0 else "") + f"{up:.1f}".replace(".", ",") + "%")
-        if not bits:
-            bits.append(" · ".join(c["ops_titles"][:2]))
-        highlight = " · ".join(bits)
-        sector = (rs.get("sector") or SECTOR_FALLBACK.get(t) or "").strip()
-        sector_html = f'<span class="spot-sector">{html_esc(sector)}</span>' if sector else ""
+            cls = "up" if up > 0 else ("down" if up < 0 else "")
+            arrow = " ↑" if up > 0 else (" ↓" if up < 0 else "")
+            up_lbl = ("+" if up > 0 else "") + f"{up:.1f}".replace(".", ",") + "%" + arrow
+            up_html = f'<span class="chg {cls}">{up_lbl}</span>'
         ops_lbl = " · ".join(c["ops_titles"])
         co_id = "co-" + slugify(t)
         n_ops = len(c["items"])
-        spot_cards.append(
+        spot_rows.append(
             f"""
-<button type="button" class="spot" data-target="{co_id}" style="--spot:{c['brand']}">
-  <span class="spot-dot" aria-hidden="true"></span>
-  <span class="spot-body">
-    <span class="spot-name">{html_esc(c['name'])}</span>
-    <span class="spot-ticker">{html_esc(t)}</span>
-    {sector_html}
-    <span class="spot-hi">{html_esc(highlight)}</span>
-    <span class="spot-ops">{html_esc(ops_lbl)}</span>
-  </span>
-</button>"""
+<tr class="spot" data-target="{co_id}" tabindex="0" role="button">
+  <td class="col-co"><span class="co-name">{html_esc(c['name'])}</span></td>
+  <td class="col-tk">{html_esc(t)}</td>
+  <td class="col-sec">{html_esc(sector)}</td>
+  <td class="col-rec">{html_esc(rec)}</td>
+  <td class="col-pa">{pa}</td>
+  <td class="col-up">{up_html}</td>
+  <td class="col-ops">{html_esc(ops_lbl)}</td>
+</tr>"""
         )
         co_ops = "".join(_op_list_item(slug, cfg) for slug, cfg, _title in c["items"])
         company_sections.append(
             f"""
 <section class="cat-section" id="{co_id}" hidden>
   <div class="cat-section-head">
-    <h2>{html_esc(c['name'])} · {html_esc(t)}{f' · {html_esc(sector)}' if sector else ''} · {n_ops} operaç{'ão' if n_ops == 1 else 'ões'}</h2>
-    <button type="button" class="cat-back" data-back>← Voltar aos cards</button>
+    <h2>{html_esc(c['name'])} · {html_esc(t)} · {n_ops} operaç{'ão' if n_ops == 1 else 'ões'}</h2>
+    <button type="button" class="cat-back" data-back>← Voltar</button>
   </div>
   <ul class="ops">{co_ops}</ul>
 </section>"""
         )
 
     spotlights = f"""
-<section class="spotlights" id="spotlights" aria-label="Empresas e destaques">
-  <div class="spot-head">
+<section class="spotlights" id="spotlights" aria-label="Empresas com operação">
+  <div class="sec-head">
     <h2>Empresas com operação</h2>
-    <p>Selecione o ativo para ver as estruturas disponíveis.</p>
+    <p>Clique na linha para abrir as estruturas do ativo.</p>
   </div>
-  <div class="spot-grid">{''.join(spot_cards)}</div>
+  <div class="table-wrap">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Empresa</th><th>Ticker</th><th>Setor</th><th>Research</th><th>PA</th><th>Upside</th><th>Estruturas</th>
+        </tr>
+      </thead>
+      <tbody>{''.join(spot_rows)}</tbody>
+    </table>
+  </div>
 </section>"""
 
     cats = "\n".join(cat_cards)
     body = "\n".join(company_sections + sections_html)
-    pdf_box = ""
+    pdf_cta = ""
     if PDF_NAME:
-        pdf_box = f"""
-  <div class="pdf-box">
-    <div class="pdf-box-copy">
-      <span class="pdf-box-kicker">Material da semana</span>
-      <span class="pdf-box-title">Trade Ideas · {REF.strftime('%d/%m/%Y')}</span>
-      <span class="pdf-box-meta">PDF completo da Prateleira Tática</span>
-    </div>
-    <a class="pdf-box-cta" href="./{PDF_NAME}" target="_blank" rel="noopener noreferrer">Abrir PDF</a>
-  </div>"""
+        pdf_cta = f'<a class="btn-primary" href="./{PDF_NAME}" target="_blank" rel="noopener noreferrer">Abrir PDF · {REF.strftime("%d/%m/%Y")}</a>'
     return f"""<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -2229,126 +2217,125 @@ def hub_html(sections: list[tuple[str, list[tuple[str, dict]]]]) -> str:
 <title>Prateleira Tática — Distribuição Renda Variável | BTG Pactual</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet"/>
 <style>
 :root{{
-  --btg:#0a1628;--btg-mid:#132a45;--btg-blue:#1a3a5c;--accent:#c4a35a;--link:#1a5f9e;
-  --ink:#0a1628;--muted:#5a6a7c;--line:#d5dde8;--bg:#f3f5f8;--card:#ffffff;
-  --font-ui:"Source Sans 3",system-ui,sans-serif;--font-display:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --navy:#1D428A;--navy-deep:#0F2A5C;--ink:#1a1a1a;--muted:#6b7280;--line:#e5e7eb;
+  --bg:#F5F7F9;--card:#ffffff;--link:#1D428A;--up:#0d7a3f;--down:#c0392b;
+  --font:"Roboto",system-ui,-apple-system,sans-serif;
 }}
 *{{box-sizing:border-box;margin:0;padding:0}}
-body{{font-family:var(--font-ui);color:var(--ink);background:
-  radial-gradient(1200px 480px at 12% -10%,rgba(26,58,92,.08),transparent 55%),
-  radial-gradient(900px 420px at 100% 0%,rgba(196,163,90,.06),transparent 50%),
-  var(--bg);min-height:100vh;line-height:1.45;-webkit-font-smoothing:antialiased}}
-.hero{{position:relative;color:#fff;padding:44px 24px 48px;overflow:hidden;background:linear-gradient(160deg,var(--btg) 0%,var(--btg-mid) 48%,var(--btg-blue) 100%)}}
-.hero::before{{content:"";position:absolute;inset:0;background:
-  linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px) 0 0/48px 48px,
-  linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px) 0 0/48px 48px;opacity:.7;pointer-events:none}}
-.hero::after{{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:linear-gradient(90deg,var(--accent),transparent 55%)}}
-.hero-inner{{position:relative;z-index:1;max-width:1040px;margin:0 auto}}
-.hero-top{{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:28px}}
-.logo-btg{{font-family:var(--font-ui);font-weight:700;font-size:clamp(22px,3.2vw,32px);letter-spacing:.04em;text-transform:uppercase;line-height:1;color:#fff}}
-.badge{{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;border:1px solid rgba(255,255,255,.28);padding:8px 12px;border-radius:2px;white-space:nowrap;color:rgba(255,255,255,.9)}}
-.hero-kicker{{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:10px}}
-h1{{font-family:var(--font-display);font-size:clamp(30px,4.8vw,44px);font-weight:600;letter-spacing:-.02em;line-height:1.12;max-width:14ch}}
-.lede{{margin-top:14px;font-size:16px;font-weight:400;color:rgba(255,255,255,.78);max-width:36em}}
-.page{{max-width:1040px;margin:0 auto;padding:32px 24px 64px}}
-.pdf-box{{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;background:var(--card);border:1px solid var(--line);border-left:3px solid var(--btg);padding:18px 22px;margin-bottom:28px;animation:rise .45s ease both}}
-.pdf-box-copy{{display:flex;flex-direction:column;gap:4px;min-width:min(100%,280px)}}
-.pdf-box-kicker{{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}}
-.pdf-box-title{{font-family:var(--font-display);font-size:20px;font-weight:600;color:var(--btg);line-height:1.25}}
-.pdf-box-meta{{font-size:13px;color:var(--muted)}}
-.pdf-box-cta{{display:inline-flex;align-items:center;gap:8px;background:var(--btg);color:#fff !important;font-size:13px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;text-decoration:none;padding:12px 18px;border-radius:2px;white-space:nowrap;transition:background .15s ease}}
-.pdf-box-cta:hover{{background:var(--btg-mid);text-decoration:none}}
-@media (max-width:640px){{.pdf-box{{padding:16px}}.pdf-box-cta{{width:100%;justify-content:center}}}}
-.spotlights{{margin-bottom:36px;animation:rise .5s ease .05s both}}
-.spot-head,.products-head{{margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--line)}}
-.spot-head h2,.products-head h2,.cat-section h2{{font-family:var(--font-ui);font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--btg-blue);margin-bottom:4px}}
-.spot-head p,.products-head p{{font-size:14px;color:var(--muted)}}
-.spot-grid{{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}}
-.spot{{appearance:none;border:1px solid var(--line);border-left:3px solid var(--spot);background:var(--card);border-radius:2px;padding:14px 14px 14px 12px;text-align:left;cursor:pointer;display:flex;gap:10px;align-items:flex-start;transition:transform .18s ease,box-shadow .18s ease,border-color .18s}}
-.spot:hover,.spot:focus-visible{{transform:translateY(-2px);box-shadow:0 10px 28px rgba(10,22,40,.08);outline:none}}
-.spot.active{{box-shadow:0 0 0 2px color-mix(in srgb,var(--spot) 35%,transparent)}}
-.spot-dot{{display:none}}
-.spot-body{{display:flex;flex-direction:column;gap:2px;min-width:0}}
-.spot-name{{font-size:14px;font-weight:700;color:var(--btg);line-height:1.25}}
-.spot-ticker{{font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--spot)}}
-.spot-sector{{font-size:11px;color:var(--muted);line-height:1.3;margin-top:2px}}
-.spot-hi{{font-size:12px;color:var(--ink);margin-top:6px;line-height:1.35;font-weight:500}}
-.spot-ops{{font-size:11px;color:var(--muted);line-height:1.3}}
-.products-head{{margin:4px 0 16px;animation:rise .5s ease .1s both}}
-.cat-grid{{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-bottom:8px;animation:rise .55s ease .12s both}}
-.cat-card{{appearance:none;border:1px solid var(--line);background:var(--card);border-radius:2px;overflow:hidden;text-align:left;cursor:pointer;padding:0;display:flex;flex-direction:column;transition:transform .18s ease,box-shadow .18s ease,border-color .18s}}
-.cat-card:hover,.cat-card:focus-visible{{transform:translateY(-2px);box-shadow:0 12px 28px rgba(10,22,40,.08);border-color:#b7c4d4;outline:none}}
-.cat-card.active{{border-color:var(--cat);box-shadow:0 0 0 2px color-mix(in srgb,var(--cat) 28%,transparent)}}
-.cat-bar{{display:block;height:3px;background:var(--cat)}}
-.cat-body{{display:flex;flex-direction:column;gap:6px;padding:18px 20px 20px}}
-.cat-title{{font-family:var(--font-display);font-size:19px;font-weight:600;color:var(--btg)}}
-.cat-count{{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--cat)}}
-.cat-blurb{{font-size:13px;color:var(--muted);line-height:1.45}}
-.cat-tickers{{font-size:11px;color:#7a8796;line-height:1.35;margin-top:2px}}
-.cat-section-head{{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:8px 0 16px;padding-bottom:12px;border-bottom:1px solid var(--line)}}
-.cat-section h2{{margin:0}}
-.cat-back{{appearance:none;border:1px solid var(--line);background:#fff;color:var(--link);font-family:var(--font-ui);font-size:12px;font-weight:700;padding:8px 14px;border-radius:2px;cursor:pointer;transition:background .15s}}
-.cat-back:hover{{background:#f0f4f8}}
-.ops{{list-style:none;display:flex;flex-direction:column;gap:14px}}
-.op-block{{background:var(--card);border:1px solid var(--line);border-radius:2px;overflow:hidden;transition:box-shadow .18s ease}}
-.op-block:hover{{box-shadow:0 8px 24px rgba(10,22,40,.06)}}
-.op-bar{{height:3px}}
-.op{{display:block;text-decoration:none;color:inherit;padding:20px 22px 18px;transition:background .12s}}
-.op:hover,.op:focus-visible{{background:#f7f9fb;outline:none}}
-.op-top{{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:8px}}
-.op-title{{font-family:var(--font-display);font-size:19px;font-weight:600;color:var(--btg)}}
-.op-ticker{{font-size:12px;font-weight:700;color:var(--link);letter-spacing:.05em}}
-.op-blurb{{font-size:14px;color:var(--muted);max-width:48em}}
-.op-meta{{margin-top:12px;display:flex;flex-wrap:wrap;gap:8px}}
-.pill{{background:#eef2f7;border:1px solid var(--line);border-radius:2px;padding:4px 10px;color:var(--btg-mid);font-size:11px;font-weight:600}}
-.op-cta{{margin-top:14px;font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--link)}}
-.footer{{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);font-size:11px;color:var(--muted);text-align:center;line-height:1.55}}
-.footer-alert{{margin-top:18px;text-align:center;font-size:13px;font-weight:700;letter-spacing:.02em;color:#a32020;line-height:1.55;padding:14px 16px;border:1px solid rgba(163,32,32,.25);background:rgba(163,32,32,.04)}}
-.footer-alert strong{{font-weight:700}}
-@keyframes rise{{from{{opacity:0;transform:translateY(8px)}}to{{opacity:1;transform:none}}}}
-@media (max-width:900px){{.spot-grid{{grid-template-columns:repeat(3,minmax(0,1fr))}}}}
-@media (max-width:720px){{.cat-grid{{grid-template-columns:1fr}}.spot-grid{{grid-template-columns:repeat(2,minmax(0,1fr))}}}}
-@media (max-width:640px){{.hero{{padding:32px 16px 36px}}.page{{padding:22px 16px 48px}}.hero-top{{flex-direction:column;align-items:flex-start}}.cat-section-head{{flex-direction:column;align-items:flex-start}}}}
+body{{font-family:var(--font);color:var(--ink);background:var(--bg);min-height:100vh;line-height:1.45;-webkit-font-smoothing:antialiased}}
+.topbar{{background:var(--navy);color:#fff;padding:0 24px;height:52px;display:flex;align-items:center;justify-content:space-between}}
+.topbar-brand{{font-size:15px;font-weight:700;letter-spacing:.02em;text-transform:lowercase}}
+.topbar-brand span{{font-weight:400;opacity:.85;margin-left:6px;font-size:13px;text-transform:none;letter-spacing:0}}
+.topbar-right{{font-size:12px;opacity:.85}}
+.layout{{display:flex;min-height:calc(100vh - 52px)}}
+.sidebar{{width:200px;flex-shrink:0;background:#eef1f5;border-right:1px solid var(--line);padding:16px 0;display:flex;flex-direction:column}}
+.nav-item{{display:block;width:100%;text-align:left;appearance:none;border:0;background:transparent;padding:10px 20px;font:inherit;font-size:13px;font-weight:500;color:#374151;cursor:pointer;border-left:3px solid transparent}}
+.nav-item:hover{{background:rgba(255,255,255,.55)}}
+.nav-item.active{{background:#fff;color:var(--navy);border-left-color:var(--navy);font-weight:700}}
+.main{{flex:1;min-width:0;padding:28px 32px 56px}}
+.page-head{{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:20px;flex-wrap:wrap}}
+.page-head h1{{font-size:28px;font-weight:700;color:var(--ink);letter-spacing:-.01em}}
+.page-head .sub{{margin-top:4px;font-size:14px;color:var(--muted)}}
+.btn-primary{{display:inline-flex;align-items:center;background:var(--navy);color:#fff !important;font-size:13px;font-weight:700;text-decoration:none;padding:10px 16px;border:0;border-radius:2px;white-space:nowrap;cursor:pointer}}
+.btn-primary:hover{{background:var(--navy-deep);text-decoration:none}}
+.sec-head{{margin:28px 0 12px}}
+.sec-head h2{{font-size:18px;font-weight:700;color:var(--ink)}}
+.sec-head p{{font-size:13px;color:var(--muted);margin-top:2px}}
+.tabs{{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 16px}}
+.tab{{appearance:none;border:1px solid #d1d5db;background:#fff;color:#374151;font:inherit;font-size:12px;font-weight:500;padding:6px 12px;border-radius:2px;cursor:pointer}}
+.tab:hover{{border-color:#9ca3af}}
+.tab.active,.cat-card.active{{background:var(--navy);border-color:var(--navy);color:#fff}}
+.table-wrap{{background:var(--card);border:1px solid var(--line);border-radius:2px;overflow:auto}}
+.data-table{{width:100%;border-collapse:collapse;font-size:13px}}
+.data-table thead th{{text-align:left;font-size:11px;font-weight:500;color:var(--muted);letter-spacing:.02em;padding:10px 14px;border-bottom:1px solid var(--line);white-space:nowrap;background:#fafbfc}}
+.data-table thead th+th{{border-left:1px solid #eef0f3}}
+.data-table tbody td{{padding:12px 14px;border-bottom:1px solid #f0f2f5;vertical-align:middle}}
+.data-table tbody tr:last-child td{{border-bottom:0}}
+.data-table tbody tr:nth-child(even){{background:#fafbfc}}
+.data-table tbody tr.spot{{cursor:pointer}}
+.data-table tbody tr.spot:hover{{background:#eef3fb}}
+.data-table tbody tr.spot.active{{background:#e8eef8}}
+.co-name{{color:var(--link);font-weight:500}}
+.col-tk{{font-weight:700;letter-spacing:.02em;color:#374151}}
+.col-ops{{color:var(--muted);font-size:12px;max-width:220px}}
+.chg.up{{color:var(--up);font-weight:600}}
+.chg.down{{color:var(--down);font-weight:600}}
+.cat-section-head{{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:4px 0 16px;padding-bottom:12px;border-bottom:1px solid var(--line)}}
+.cat-section h2{{font-size:18px;font-weight:700;margin:0}}
+.cat-back{{appearance:none;border:1px solid #d1d5db;background:#fff;color:var(--link);font:inherit;font-size:12px;font-weight:700;padding:8px 14px;border-radius:2px;cursor:pointer}}
+.cat-back:hover{{background:#f3f4f6}}
+.ops{{list-style:none;display:flex;flex-direction:column}}
+.op-block{{border-bottom:1px solid var(--line);background:var(--card)}}
+.op-block:first-child{{border-top:1px solid var(--line)}}
+.op{{display:block;text-decoration:none;color:inherit;padding:16px 18px}}
+.op:hover{{background:#f7f9fb}}
+.op-top{{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:4px}}
+.op-title{{font-size:15px;font-weight:700;color:var(--ink)}}
+.op-ticker{{font-size:12px;font-weight:700;color:var(--link)}}
+.op-blurb{{font-size:13px;color:var(--muted);max-width:52em}}
+.op-meta{{margin-top:10px;display:flex;flex-wrap:wrap;gap:6px}}
+.pill{{background:#f3f4f6;border:1px solid var(--line);border-radius:2px;padding:3px 8px;color:#374151;font-size:11px;font-weight:500}}
+.footer{{margin-top:40px;padding-top:16px;border-top:1px solid var(--line);font-size:11px;color:var(--muted);text-align:center;line-height:1.55}}
+.footer-alert{{margin-top:14px;text-align:center;font-size:12px;font-weight:700;color:#a32020;line-height:1.55;padding:12px 14px;border:1px solid rgba(163,32,32,.25);background:rgba(163,32,32,.04)}}
+@media (max-width:860px){{
+  .layout{{flex-direction:column}}
+  .sidebar{{width:100%;flex-direction:row;overflow-x:auto;padding:8px;border-right:0;border-bottom:1px solid var(--line)}}
+  .nav-item{{border-left:0;border-bottom:2px solid transparent;white-space:nowrap;padding:8px 12px}}
+  .nav-item.active{{border-bottom-color:var(--navy)}}
+  .main{{padding:20px 16px 48px}}
+  .col-sec,.col-ops{{display:none}}
+  .data-table thead th:nth-child(3),.data-table thead th:nth-child(7){{display:none}}
+}}
 </style>
 </head>
 <body>
-<header class="hero">
-  <div class="hero-inner">
-    <div class="hero-top">
-      <div class="logo-btg">BTG Pactual</div>
-      <div class="badge">Uso interno</div>
-    </div>
-    <p class="hero-kicker">Distribuição · Renda Variável</p>
-    <h1>Prateleira Tática</h1>
-    <p class="lede">Hub semanal de operações estruturadas — escolha pelo ativo ou pelo tipo de estrutura.</p>
-  </div>
+<header class="topbar">
+  <div class="topbar-brand">btg pactual <span>prateleira tática</span></div>
+  <div class="topbar-right">Distribuição · Renda Variável · Uso interno</div>
 </header>
-<main class="page">
-  {pdf_box}
-  <div id="homeBlock">
-    {spotlights}
-    <div class="products-head">
-      <h2>Tipos de estrutura</h2>
-      <p>Ou escolha pelo produto.</p>
+<div class="layout">
+  <nav class="sidebar" aria-label="Navegação">
+    <button type="button" class="nav-item active" data-nav="home">Overview</button>
+    <button type="button" class="nav-item" data-nav="spotlights">Empresas</button>
+    <button type="button" class="nav-item" data-nav="products">Estruturas</button>
+  </nav>
+  <main class="main">
+    <div class="page-head">
+      <div>
+        <h1>Overview</h1>
+        <p class="sub">Hub semanal de operações estruturadas · ref. {REF.strftime('%d/%m/%Y')}</p>
+      </div>
+      {pdf_cta}
     </div>
-    <div class="cat-grid" id="catGrid">{cats}</div>
-  </div>
-  {body}
-  <p class="footer">Material ilustrativo para uso interno. Não constitui oferta, recomendação ou garantia de rentabilidade.</p>
-  <p class="footer-alert">
-    <strong>MATERIAL DE USO INTERNO, NÃO ENVIAR AOS CLIENTES</strong><br />
-    <strong>PARA INFORMAÇÕES OFICIAIS, ACESSAR O DIE DA OPERAÇÃO DISPONIBILIZADO NO ADMIN BTG</strong>
-  </p>
-</main>
+    <div id="homeBlock">
+      {spotlights}
+      <div class="sec-head" id="products">
+        <h2>Tipos de estrutura</h2>
+        <p>Filtre pelo produto para ver as operações da semana.</p>
+      </div>
+      <div class="tabs" id="catGrid">{cats}</div>
+    </div>
+    {body}
+    <p class="footer">Material ilustrativo para uso interno. Não constitui oferta, recomendação ou garantia de rentabilidade.</p>
+    <p class="footer-alert">
+      <strong>MATERIAL DE USO INTERNO, NÃO ENVIAR AOS CLIENTES</strong><br />
+      <strong>PARA INFORMAÇÕES OFICIAIS, ACESSAR O DIE DA OPERAÇÃO DISPONIBILIZADO NO ADMIN BTG</strong>
+    </p>
+  </main>
+</div>
 <script>
 (function(){{
   var home=document.getElementById('homeBlock');
   var cards=[].slice.call(document.querySelectorAll('.cat-card'));
   var spots=[].slice.call(document.querySelectorAll('.spot'));
   var sections=[].slice.call(document.querySelectorAll('.cat-section'));
+  var navs=[].slice.call(document.querySelectorAll('[data-nav]'));
+  function setNav(which){{
+    navs.forEach(function(n){{ n.classList.toggle('active', n.getAttribute('data-nav')===which); }});
+  }}
   function show(id){{
     cards.forEach(function(c){{ c.classList.toggle('active', c.getAttribute('data-target')===id); }});
     spots.forEach(function(s){{ s.classList.toggle('active', s.getAttribute('data-target')===id); }});
@@ -2358,11 +2345,13 @@ h1{{font-family:var(--font-display);font-size:clamp(30px,4.8vw,44px);font-weight
     }});
     if(id){{
       home.style.display='none';
+      setNav(id.indexOf('co-')===0 ? 'spotlights' : 'products');
       var el=document.getElementById(id);
       if(el) el.scrollIntoView({{behavior:'smooth',block:'start'}});
       history.replaceState(null,'','#'+id);
     }} else {{
       home.style.display='';
+      setNav('home');
       history.replaceState(null,'',location.pathname);
       window.scrollTo({{top:0,behavior:'smooth'}});
     }}
@@ -2372,9 +2361,27 @@ h1{{font-family:var(--font-display);font-size:clamp(30px,4.8vw,44px);font-weight
   }});
   spots.forEach(function(s){{
     s.addEventListener('click',function(){{ show(s.getAttribute('data-target')); }});
+    s.addEventListener('keydown',function(e){{
+      if(e.key==='Enter' || e.key===' '){{ e.preventDefault(); show(s.getAttribute('data-target')); }}
+    }});
   }});
   document.querySelectorAll('[data-back]').forEach(function(b){{
     b.addEventListener('click',function(){{ show(null); }});
+  }});
+  navs.forEach(function(n){{
+    n.addEventListener('click',function(){{
+      var w=n.getAttribute('data-nav');
+      show(null);
+      if(w==='spotlights'){{
+        var el=document.getElementById('spotlights');
+        if(el) el.scrollIntoView({{behavior:'smooth',block:'start'}});
+        setNav('spotlights');
+      }} else if(w==='products'){{
+        var el=document.getElementById('products');
+        if(el) el.scrollIntoView({{behavior:'smooth',block:'start'}});
+        setNav('products');
+      }}
+    }});
   }});
   var hash=(location.hash||'').replace('#','');
   if(hash && document.getElementById(hash)) show(hash);
