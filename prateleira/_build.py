@@ -21,6 +21,10 @@ if str(REPO) not in sys.path:
 OPS = ROOT / "ops"
 REF = date(2026, 10, 20)  # material Trade Ideas 20/10/2026 (aba Excel 19.10.26)
 PDF_NAME = "Material-Prateleira-Tatica-20102026.pdf"
+
+# Destaques manuais do Overview — preencher quando pedido.
+# Ex.: {"title": "SOC TOTS3", "blurb": "…", "href": "./ops/soc-tots3/"}
+OVERVIEW_DESTAQUES: list[dict] = []
 RESEARCH_REC = "https://content.btgpactual.com/api/research/content-hub/recommendations/ticker/{ticker}?includeInstitutionalData=true"
 RESEARCH_QUOTES = "https://content.btgpactual.com/api/research/research/public/asset/quotes"
 RESEARCH_SUMMARY = "https://content.btgpactual.com/api/research/content-hub-assets/v1/asset/summary/{ticker}"
@@ -2095,20 +2099,152 @@ def _op_list_item(slug: str, cfg: dict) -> str:
 </li>"""
 
 
-def hub_html(sections: list[tuple[str, list[tuple[str, dict]]]]) -> str:
+def _hub_css() -> str:
+    return """
+:root{
+  --navy:#1D428A;--navy-deep:#0F2A5C;--ink:#1a1a1a;--muted:#6b7280;--line:#e5e7eb;
+  --bg:#F5F7F9;--card:#ffffff;--link:#1D428A;--up:#0d7a3f;--down:#c0392b;
+  --font:"Roboto",system-ui,-apple-system,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font);color:var(--ink);background:var(--bg);min-height:100vh;line-height:1.45;-webkit-font-smoothing:antialiased}
+.topbar{background:var(--navy);color:#fff;padding:0 28px;height:58px;display:flex;align-items:center;justify-content:space-between}
+.topbar-brand{font-size:19px;font-weight:700;letter-spacing:.02em;text-transform:lowercase}
+.topbar-brand span{font-weight:400;opacity:.9;margin-left:8px;font-size:16px;text-transform:none;letter-spacing:0}
+.topbar-right{font-size:14px;opacity:.9;font-weight:500}
+.layout{display:flex;min-height:calc(100vh - 58px)}
+.sidebar{width:200px;flex-shrink:0;background:#eef1f5;border-right:1px solid var(--line);padding:16px 0;display:flex;flex-direction:column}
+.nav-item{display:block;width:100%;text-align:left;appearance:none;border:0;background:transparent;padding:10px 20px;font:inherit;font-size:13px;font-weight:500;color:#374151;cursor:pointer;border-left:3px solid transparent;text-decoration:none}
+.nav-item:hover{background:rgba(255,255,255,.55);text-decoration:none;color:#374151}
+.nav-item.active{background:#fff;color:var(--navy);border-left-color:var(--navy);font-weight:700}
+.main{flex:1;min-width:0;padding:28px 32px 56px}
+.page-head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:20px;flex-wrap:wrap}
+.page-head h1{font-size:28px;font-weight:700;color:var(--ink);letter-spacing:-.01em}
+.page-head .sub{margin-top:4px;font-size:14px;color:var(--muted)}
+.btn-primary{display:inline-flex;align-items:center;background:var(--navy);color:#fff !important;font-size:13px;font-weight:700;text-decoration:none;padding:10px 16px;border:0;border-radius:2px;white-space:nowrap;cursor:pointer}
+.btn-primary:hover{background:var(--navy-deep);text-decoration:none}
+.sec-head{margin:28px 0 12px}
+.sec-head:first-child{margin-top:8px}
+.sec-head h2{font-size:18px;font-weight:700;color:var(--ink)}
+.sec-head p{font-size:13px;color:var(--muted);margin-top:2px}
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 16px}
+.tab{appearance:none;border:1px solid #d1d5db;background:#fff;color:#374151;font:inherit;font-size:12px;font-weight:500;padding:6px 12px;border-radius:2px;cursor:pointer}
+.tab:hover{border-color:#9ca3af}
+.tab.active,.cat-card.active{background:var(--navy);border-color:var(--navy);color:#fff}
+.table-wrap{background:var(--card);border:1px solid var(--line);border-radius:2px;overflow:auto}
+.data-table{width:100%;border-collapse:collapse;font-size:13px}
+.data-table thead th{text-align:left;font-size:11px;font-weight:500;color:var(--muted);letter-spacing:.02em;padding:10px 14px;border-bottom:1px solid var(--line);white-space:nowrap;background:#fafbfc}
+.data-table thead th+th{border-left:1px solid #eef0f3}
+.data-table tbody td{padding:12px 14px;border-bottom:1px solid #f0f2f5;vertical-align:middle}
+.data-table tbody tr:last-child td{border-bottom:0}
+.data-table tbody tr:nth-child(even){background:#fafbfc}
+.data-table tbody tr.spot{cursor:pointer}
+.data-table tbody tr.spot:hover{background:#eef3fb}
+.data-table tbody tr.spot.active{background:#e8eef8}
+.co-name{color:var(--link);font-weight:500}
+.col-tk{font-weight:700;letter-spacing:.02em;color:#374151}
+.col-ops{color:var(--muted);font-size:12px;max-width:220px}
+.chg.up{color:var(--up);font-weight:600}
+.chg.down{color:var(--down);font-weight:600}
+.cat-section-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:4px 0 16px;padding-bottom:12px;border-bottom:1px solid var(--line)}
+.cat-section h2{font-size:18px;font-weight:700;margin:0}
+.cat-back{appearance:none;border:1px solid #d1d5db;background:#fff;color:var(--link);font:inherit;font-size:12px;font-weight:700;padding:8px 14px;border-radius:2px;cursor:pointer}
+.cat-back:hover{background:#f3f4f6}
+.ops{list-style:none;display:flex;flex-direction:column}
+.op-block{border-bottom:1px solid var(--line);background:var(--card)}
+.op-block:first-child{border-top:1px solid var(--line)}
+.op{display:block;text-decoration:none;color:inherit;padding:16px 18px}
+.op:hover{background:#f7f9fb}
+.op-top{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:4px}
+.op-title{font-size:15px;font-weight:700;color:var(--ink)}
+.op-ticker{font-size:12px;font-weight:700;color:var(--link)}
+.op-blurb{font-size:13px;color:var(--muted);max-width:52em}
+.op-meta{margin-top:10px;display:flex;flex-wrap:wrap;gap:6px}
+.pill{background:#f3f4f6;border:1px solid var(--line);border-radius:2px;padding:3px 8px;color:#374151;font-size:11px;font-weight:500}
+.footer{margin-top:40px;padding-top:16px;border-top:1px solid var(--line);font-size:11px;color:var(--muted);text-align:center;line-height:1.55}
+.footer-alert{margin-top:14px;text-align:center;font-size:12px;font-weight:700;color:#a32020;line-height:1.55;padding:12px 14px;border:1px solid rgba(163,32,32,.25);background:rgba(163,32,32,.04)}
+.ov-grid{display:grid;grid-template-columns:180px 1fr;gap:20px;align-items:start;margin-top:8px}
+.ov-stat{background:var(--card);border:1px solid var(--line);border-radius:2px;padding:22px 20px;text-align:center}
+.ov-stat-n{font-size:40px;font-weight:700;color:var(--navy);line-height:1}
+.ov-stat-l{margin-top:8px;font-size:13px;color:var(--muted);font-weight:500}
+.ov-panel{background:var(--card);border:1px solid var(--line);border-radius:2px;padding:18px 20px}
+.ov-panel h2{font-size:15px;font-weight:700;margin-bottom:14px;color:var(--ink)}
+.pie-wrap{display:flex;gap:28px;align-items:center;flex-wrap:wrap}
+.pie-svg{width:160px;height:160px;flex-shrink:0}
+.pie-legend{list-style:none;display:flex;flex-direction:column;gap:6px;font-size:13px;color:#374151}
+.pie-legend li{display:flex;align-items:center;gap:8px}
+.pie-swatch{width:10px;height:10px;border-radius:1px;flex-shrink:0}
+.pie-count{margin-left:auto;padding-left:16px;color:var(--muted);font-weight:500}
+.ov-empty{font-size:13px;color:var(--muted);padding:8px 0 4px}
+.destaque-list{list-style:none}
+.destaque-list li{border-top:1px solid var(--line)}
+.destaque-list li:first-child{border-top:0}
+.destaque-list a{display:block;padding:12px 0;text-decoration:none;color:inherit}
+.destaque-list a:hover{color:var(--link)}
+.destaque-title{font-size:14px;font-weight:700}
+.destaque-blurb{font-size:13px;color:var(--muted);margin-top:2px}
+@media (max-width:860px){
+  .layout{flex-direction:column}
+  .sidebar{width:100%;flex-direction:row;overflow-x:auto;padding:8px;border-right:0;border-bottom:1px solid var(--line)}
+  .nav-item{border-left:0;border-bottom:2px solid transparent;white-space:nowrap;padding:8px 12px}
+  .nav-item.active{border-bottom-color:var(--navy)}
+  .main{padding:20px 16px 48px}
+  .col-sec,.col-ops{display:none}
+  .data-table thead th:nth-child(3),.data-table thead th:nth-child(7){display:none}
+  .ov-grid{grid-template-columns:1fr}
+  .topbar{height:auto;min-height:58px;padding:12px 16px;flex-wrap:wrap;gap:6px}
+  .topbar-brand{font-size:17px}
+  .topbar-brand span{font-size:14px;display:inline}
+  .topbar-right{font-size:12px}
+}
+"""
+
+
+def _pdf_cta(prefix: str = "./") -> str:
+    if not PDF_NAME:
+        return ""
+    return (
+        f'<a class="btn-primary" href="{prefix}{PDF_NAME}" target="_blank" '
+        f'rel="noopener noreferrer">Abrir PDF · {REF.strftime("%d/%m/%Y")}</a>'
+    )
+
+
+def _hub_sidebar(active: str) -> str:
+    def item(key: str, href: str, label: str) -> str:
+        cls = "nav-item active" if active == key else "nav-item"
+        return f'<a class="{cls}" href="{href}">{label}</a>'
+
+    return f"""
+  <nav class="sidebar" aria-label="Navegação">
+    {item("overview", "./index.html", "Overview")}
+    {item("empresas", "./empresas.html", "Empresas")}
+    {item("estruturas", "./empresas.html#products", "Estruturas")}
+  </nav>"""
+
+
+def _hub_footer() -> str:
+    return """
+    <p class="footer">Material ilustrativo para uso interno. Não constitui oferta, recomendação ou garantia de rentabilidade.</p>
+    <p class="footer-alert">
+      <strong>MATERIAL DE USO INTERNO, NÃO ENVIAR AOS CLIENTES</strong><br />
+      <strong>PARA INFORMAÇÕES OFICIAIS, ACESSAR O DIE DA OPERAÇÃO DISPONIBILIZADO NO ADMIN BTG</strong>
+    </p>"""
+
+
+def _collect_hub_data(sections: list[tuple[str, list[tuple[str, dict]]]]):
     cat_cards = []
     sections_html = []
     companies: dict[str, dict] = {}
+    n_ops = 0
 
     for title, items in sections:
         meta = SECTION_META.get(title, {"id": slugify(title), "blurb": title, "color": "#1e4d7b"})
         sid = meta["id"]
-        color = meta["color"]
         n = len(items)
+        n_ops += n
         cat_cards.append(
             f"""<button type="button" class="tab cat-card" data-target="{sid}" title="{html_esc(meta['blurb'])}">{title} · {n}</button>"""
         )
-
         ops = []
         for slug, cfg in items:
             ops.append(_op_list_item(slug, cfg))
@@ -2132,7 +2268,6 @@ def hub_html(sections: list[tuple[str, list[tuple[str, dict]]]]) -> str:
                 entry["research"] = rs
                 if rs.get("company"):
                     entry["name"] = rs["company"]
-
         sections_html.append(
             f"""
 <section class="cat-section" id="{sid}" hidden>
@@ -2143,8 +2278,141 @@ def hub_html(sections: list[tuple[str, list[tuple[str, dict]]]]) -> str:
   <ul class="ops">{''.join(ops)}</ul>
 </section>"""
         )
+    return cat_cards, sections_html, companies, n_ops
 
-    # Tabela de empresas (estilo Research Portal) + seções por ticker.
+
+def _sector_counts(companies: dict[str, dict]) -> list[tuple[str, int]]:
+    from collections import Counter
+
+    c: Counter[str] = Counter()
+    for co in companies.values():
+        rs = co.get("research") or {}
+        sector = (rs.get("sector") or SECTOR_FALLBACK.get(co["ticker"]) or "Outros").strip() or "Outros"
+        c[sector] += len(co["items"])
+    return sorted(c.items(), key=lambda x: (-x[1], x[0]))
+
+
+def _sector_pie_svg(counts: list[tuple[str, int]]) -> str:
+    colors = [
+        "#1D428A",
+        "#3d6bb3",
+        "#6b8fc4",
+        "#0F2A5C",
+        "#64748b",
+        "#475569",
+        "#94a3b8",
+        "#334155",
+        "#1e3a5f",
+        "#5a7aa8",
+    ]
+    total = sum(n for _, n in counts) or 1
+    if not counts:
+        return '<p class="ov-empty">Sem dados de setor nesta semana.</p>'
+
+    # SVG donut/pie via conic-style paths
+    cx = cy = 80
+    r = 70
+    paths = []
+    legend = []
+    angle = -90.0  # start at top
+    for i, (name, n) in enumerate(counts):
+        frac = n / total
+        sweep = frac * 360.0
+        color = colors[i % len(colors)]
+        if frac >= 0.999:
+            # full circle
+            paths.append(
+                f'<circle cx="{cx}" cy="{cy}" r="{r}" fill="{color}"/>'
+            )
+        else:
+            a0 = math.radians(angle)
+            a1 = math.radians(angle + sweep)
+            x0, y0 = cx + r * math.cos(a0), cy + r * math.sin(a0)
+            x1, y1 = cx + r * math.cos(a1), cy + r * math.sin(a1)
+            large = 1 if sweep > 180 else 0
+            d = f"M {cx} {cy} L {x0:.3f} {y0:.3f} A {r} {r} 0 {large} 1 {x1:.3f} {y1:.3f} Z"
+            paths.append(f'<path d="{d}" fill="{color}"/>')
+        angle += sweep
+        legend.append(
+            f'<li><span class="pie-swatch" style="background:{color}"></span>'
+            f"{html_esc(name)}<span class=\"pie-count\">{n}</span></li>"
+        )
+    return f"""
+<div class="pie-wrap">
+  <svg class="pie-svg" viewBox="0 0 160 160" aria-hidden="true">{''.join(paths)}</svg>
+  <ul class="pie-legend">{''.join(legend)}</ul>
+</div>"""
+
+
+def overview_html(sections: list[tuple[str, list[tuple[str, dict]]]]) -> str:
+    _cats, _secs, companies, n_ops = _collect_hub_data(sections)
+    pie = _sector_pie_svg(_sector_counts(companies))
+    if OVERVIEW_DESTAQUES:
+        items = []
+        for d in OVERVIEW_DESTAQUES:
+            href = html_esc(d.get("href") or "#")
+            title = html_esc(d.get("title") or "")
+            blurb = html_esc(d.get("blurb") or "")
+            items.append(
+                f'<li><a href="{href}"><div class="destaque-title">{title}</div>'
+                f'<div class="destaque-blurb">{blurb}</div></a></li>'
+            )
+        destaques = f'<ul class="destaque-list">{"".join(items)}</ul>'
+    else:
+        destaques = '<p class="ov-empty">—</p>'
+
+    return f"""<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Overview — Prateleira Tática | BTG Pactual</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet"/>
+<style>{_hub_css()}</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-brand">btg pactual <span>prateleira tática</span></div>
+  <div class="topbar-right">Distribuição · Renda Variável · Uso interno</div>
+</header>
+<div class="layout">
+  {_hub_sidebar("overview")}
+  <main class="main">
+    <div class="page-head">
+      <div>
+        <h1>Overview</h1>
+        <p class="sub">Resumo da semana · ref. {REF.strftime('%d/%m/%Y')}</p>
+      </div>
+      {_pdf_cta()}
+    </div>
+    <div class="ov-grid">
+      <div class="ov-stat">
+        <div class="ov-stat-n">{n_ops}</div>
+        <div class="ov-stat-l">operações na prateleira</div>
+      </div>
+      <div class="ov-panel">
+        <h2>Operações por setor</h2>
+        {pie}
+      </div>
+    </div>
+    <div class="sec-head">
+      <h2>Principais operações</h2>
+      <p>Destaques da semana (definição manual).</p>
+    </div>
+    <div class="ov-panel">{destaques}</div>
+    {_hub_footer()}
+  </main>
+</div>
+</body>
+</html>
+"""
+
+
+def hub_html(sections: list[tuple[str, list[tuple[str, dict]]]]) -> str:
+    cat_cards, sections_html, companies, _n_ops = _collect_hub_data(sections)
+
     spot_rows = []
     company_sections = []
     for t, c in companies.items():
@@ -2161,7 +2429,7 @@ def hub_html(sections: list[tuple[str, list[tuple[str, dict]]]]) -> str:
             up_html = f'<span class="chg {cls}">{up_lbl}</span>'
         ops_lbl = " · ".join(c["ops_titles"])
         co_id = "co-" + slugify(t)
-        n_ops = len(c["items"])
+        n_ops_co = len(c["items"])
         spot_rows.append(
             f"""
 <tr class="spot" data-target="{co_id}" tabindex="0" role="button">
@@ -2179,7 +2447,7 @@ def hub_html(sections: list[tuple[str, list[tuple[str, dict]]]]) -> str:
             f"""
 <section class="cat-section" id="{co_id}" hidden>
   <div class="cat-section-head">
-    <h2>{html_esc(c['name'])} · {html_esc(t)} · {n_ops} operaç{'ão' if n_ops == 1 else 'ões'}</h2>
+    <h2>{html_esc(c['name'])} · {html_esc(t)} · {n_ops_co} operaç{'ão' if n_ops_co == 1 else 'ões'}</h2>
     <button type="button" class="cat-back" data-back>← Voltar</button>
   </div>
   <ul class="ops">{co_ops}</ul>
@@ -2206,90 +2474,17 @@ def hub_html(sections: list[tuple[str, list[tuple[str, dict]]]]) -> str:
 
     cats = "\n".join(cat_cards)
     body = "\n".join(company_sections + sections_html)
-    pdf_cta = ""
-    if PDF_NAME:
-        pdf_cta = f'<a class="btn-primary" href="./{PDF_NAME}" target="_blank" rel="noopener noreferrer">Abrir PDF · {REF.strftime("%d/%m/%Y")}</a>'
+
     return f"""<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Prateleira Tática — Distribuição Renda Variável | BTG Pactual</title>
+<title>Empresas — Prateleira Tática | BTG Pactual</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet"/>
-<style>
-:root{{
-  --navy:#1D428A;--navy-deep:#0F2A5C;--ink:#1a1a1a;--muted:#6b7280;--line:#e5e7eb;
-  --bg:#F5F7F9;--card:#ffffff;--link:#1D428A;--up:#0d7a3f;--down:#c0392b;
-  --font:"Roboto",system-ui,-apple-system,sans-serif;
-}}
-*{{box-sizing:border-box;margin:0;padding:0}}
-body{{font-family:var(--font);color:var(--ink);background:var(--bg);min-height:100vh;line-height:1.45;-webkit-font-smoothing:antialiased}}
-.topbar{{background:var(--navy);color:#fff;padding:0 24px;height:52px;display:flex;align-items:center;justify-content:space-between}}
-.topbar-brand{{font-size:15px;font-weight:700;letter-spacing:.02em;text-transform:lowercase}}
-.topbar-brand span{{font-weight:400;opacity:.85;margin-left:6px;font-size:13px;text-transform:none;letter-spacing:0}}
-.topbar-right{{font-size:12px;opacity:.85}}
-.layout{{display:flex;min-height:calc(100vh - 52px)}}
-.sidebar{{width:200px;flex-shrink:0;background:#eef1f5;border-right:1px solid var(--line);padding:16px 0;display:flex;flex-direction:column}}
-.nav-item{{display:block;width:100%;text-align:left;appearance:none;border:0;background:transparent;padding:10px 20px;font:inherit;font-size:13px;font-weight:500;color:#374151;cursor:pointer;border-left:3px solid transparent}}
-.nav-item:hover{{background:rgba(255,255,255,.55)}}
-.nav-item.active{{background:#fff;color:var(--navy);border-left-color:var(--navy);font-weight:700}}
-.main{{flex:1;min-width:0;padding:28px 32px 56px}}
-.page-head{{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:20px;flex-wrap:wrap}}
-.page-head h1{{font-size:28px;font-weight:700;color:var(--ink);letter-spacing:-.01em}}
-.page-head .sub{{margin-top:4px;font-size:14px;color:var(--muted)}}
-.btn-primary{{display:inline-flex;align-items:center;background:var(--navy);color:#fff !important;font-size:13px;font-weight:700;text-decoration:none;padding:10px 16px;border:0;border-radius:2px;white-space:nowrap;cursor:pointer}}
-.btn-primary:hover{{background:var(--navy-deep);text-decoration:none}}
-.sec-head{{margin:28px 0 12px}}
-.sec-head h2{{font-size:18px;font-weight:700;color:var(--ink)}}
-.sec-head p{{font-size:13px;color:var(--muted);margin-top:2px}}
-.tabs{{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 16px}}
-.tab{{appearance:none;border:1px solid #d1d5db;background:#fff;color:#374151;font:inherit;font-size:12px;font-weight:500;padding:6px 12px;border-radius:2px;cursor:pointer}}
-.tab:hover{{border-color:#9ca3af}}
-.tab.active,.cat-card.active{{background:var(--navy);border-color:var(--navy);color:#fff}}
-.table-wrap{{background:var(--card);border:1px solid var(--line);border-radius:2px;overflow:auto}}
-.data-table{{width:100%;border-collapse:collapse;font-size:13px}}
-.data-table thead th{{text-align:left;font-size:11px;font-weight:500;color:var(--muted);letter-spacing:.02em;padding:10px 14px;border-bottom:1px solid var(--line);white-space:nowrap;background:#fafbfc}}
-.data-table thead th+th{{border-left:1px solid #eef0f3}}
-.data-table tbody td{{padding:12px 14px;border-bottom:1px solid #f0f2f5;vertical-align:middle}}
-.data-table tbody tr:last-child td{{border-bottom:0}}
-.data-table tbody tr:nth-child(even){{background:#fafbfc}}
-.data-table tbody tr.spot{{cursor:pointer}}
-.data-table tbody tr.spot:hover{{background:#eef3fb}}
-.data-table tbody tr.spot.active{{background:#e8eef8}}
-.co-name{{color:var(--link);font-weight:500}}
-.col-tk{{font-weight:700;letter-spacing:.02em;color:#374151}}
-.col-ops{{color:var(--muted);font-size:12px;max-width:220px}}
-.chg.up{{color:var(--up);font-weight:600}}
-.chg.down{{color:var(--down);font-weight:600}}
-.cat-section-head{{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:4px 0 16px;padding-bottom:12px;border-bottom:1px solid var(--line)}}
-.cat-section h2{{font-size:18px;font-weight:700;margin:0}}
-.cat-back{{appearance:none;border:1px solid #d1d5db;background:#fff;color:var(--link);font:inherit;font-size:12px;font-weight:700;padding:8px 14px;border-radius:2px;cursor:pointer}}
-.cat-back:hover{{background:#f3f4f6}}
-.ops{{list-style:none;display:flex;flex-direction:column}}
-.op-block{{border-bottom:1px solid var(--line);background:var(--card)}}
-.op-block:first-child{{border-top:1px solid var(--line)}}
-.op{{display:block;text-decoration:none;color:inherit;padding:16px 18px}}
-.op:hover{{background:#f7f9fb}}
-.op-top{{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:4px}}
-.op-title{{font-size:15px;font-weight:700;color:var(--ink)}}
-.op-ticker{{font-size:12px;font-weight:700;color:var(--link)}}
-.op-blurb{{font-size:13px;color:var(--muted);max-width:52em}}
-.op-meta{{margin-top:10px;display:flex;flex-wrap:wrap;gap:6px}}
-.pill{{background:#f3f4f6;border:1px solid var(--line);border-radius:2px;padding:3px 8px;color:#374151;font-size:11px;font-weight:500}}
-.footer{{margin-top:40px;padding-top:16px;border-top:1px solid var(--line);font-size:11px;color:var(--muted);text-align:center;line-height:1.55}}
-.footer-alert{{margin-top:14px;text-align:center;font-size:12px;font-weight:700;color:#a32020;line-height:1.55;padding:12px 14px;border:1px solid rgba(163,32,32,.25);background:rgba(163,32,32,.04)}}
-@media (max-width:860px){{
-  .layout{{flex-direction:column}}
-  .sidebar{{width:100%;flex-direction:row;overflow-x:auto;padding:8px;border-right:0;border-bottom:1px solid var(--line)}}
-  .nav-item{{border-left:0;border-bottom:2px solid transparent;white-space:nowrap;padding:8px 12px}}
-  .nav-item.active{{border-bottom-color:var(--navy)}}
-  .main{{padding:20px 16px 48px}}
-  .col-sec,.col-ops{{display:none}}
-  .data-table thead th:nth-child(3),.data-table thead th:nth-child(7){{display:none}}
-}}
-</style>
+<style>{_hub_css()}</style>
 </head>
 <body>
 <header class="topbar">
@@ -2297,18 +2492,14 @@ body{{font-family:var(--font);color:var(--ink);background:var(--bg);min-height:1
   <div class="topbar-right">Distribuição · Renda Variável · Uso interno</div>
 </header>
 <div class="layout">
-  <nav class="sidebar" aria-label="Navegação">
-    <button type="button" class="nav-item active" data-nav="home">Overview</button>
-    <button type="button" class="nav-item" data-nav="spotlights">Empresas</button>
-    <button type="button" class="nav-item" data-nav="products">Estruturas</button>
-  </nav>
+  {_hub_sidebar("empresas")}
   <main class="main">
     <div class="page-head">
       <div>
-        <h1>Overview</h1>
-        <p class="sub">Hub semanal de operações estruturadas · ref. {REF.strftime('%d/%m/%Y')}</p>
+        <h1>Empresas</h1>
+        <p class="sub">Operações estruturadas da semana · ref. {REF.strftime('%d/%m/%Y')}</p>
       </div>
-      {pdf_cta}
+      {_pdf_cta()}
     </div>
     <div id="homeBlock">
       {spotlights}
@@ -2319,11 +2510,7 @@ body{{font-family:var(--font);color:var(--ink);background:var(--bg);min-height:1
       <div class="tabs" id="catGrid">{cats}</div>
     </div>
     {body}
-    <p class="footer">Material ilustrativo para uso interno. Não constitui oferta, recomendação ou garantia de rentabilidade.</p>
-    <p class="footer-alert">
-      <strong>MATERIAL DE USO INTERNO, NÃO ENVIAR AOS CLIENTES</strong><br />
-      <strong>PARA INFORMAÇÕES OFICIAIS, ACESSAR O DIE DA OPERAÇÃO DISPONIBILIZADO NO ADMIN BTG</strong>
-    </p>
+    {_hub_footer()}
   </main>
 </div>
 <script>
@@ -2332,9 +2519,11 @@ body{{font-family:var(--font);color:var(--ink);background:var(--bg);min-height:1
   var cards=[].slice.call(document.querySelectorAll('.cat-card'));
   var spots=[].slice.call(document.querySelectorAll('.spot'));
   var sections=[].slice.call(document.querySelectorAll('.cat-section'));
-  var navs=[].slice.call(document.querySelectorAll('[data-nav]'));
+  var navEmp=document.querySelector('a.nav-item[href="./empresas.html"]');
+  var navEst=document.querySelector('a.nav-item[href="./empresas.html#products"]');
   function setNav(which){{
-    navs.forEach(function(n){{ n.classList.toggle('active', n.getAttribute('data-nav')===which); }});
+    if(navEmp) navEmp.classList.toggle('active', which==='empresas');
+    if(navEst) navEst.classList.toggle('active', which==='estruturas');
   }}
   function show(id){{
     cards.forEach(function(c){{ c.classList.toggle('active', c.getAttribute('data-target')===id); }});
@@ -2345,14 +2534,14 @@ body{{font-family:var(--font);color:var(--ink);background:var(--bg);min-height:1
     }});
     if(id){{
       home.style.display='none';
-      setNav(id.indexOf('co-')===0 ? 'spotlights' : 'products');
+      setNav(id.indexOf('co-')===0 ? 'empresas' : 'estruturas');
       var el=document.getElementById(id);
       if(el) el.scrollIntoView({{behavior:'smooth',block:'start'}});
       history.replaceState(null,'','#'+id);
     }} else {{
       home.style.display='';
-      setNav('home');
-      history.replaceState(null,'',location.pathname);
+      setNav(location.hash==='#products' ? 'estruturas' : 'empresas');
+      history.replaceState(null,'',location.pathname+(location.hash==='#products'?'#products':''));
       window.scrollTo({{top:0,behavior:'smooth'}});
     }}
   }}
@@ -2368,23 +2557,16 @@ body{{font-family:var(--font);color:var(--ink);background:var(--bg);min-height:1
   document.querySelectorAll('[data-back]').forEach(function(b){{
     b.addEventListener('click',function(){{ show(null); }});
   }});
-  navs.forEach(function(n){{
-    n.addEventListener('click',function(){{
-      var w=n.getAttribute('data-nav');
-      show(null);
-      if(w==='spotlights'){{
-        var el=document.getElementById('spotlights');
-        if(el) el.scrollIntoView({{behavior:'smooth',block:'start'}});
-        setNav('spotlights');
-      }} else if(w==='products'){{
-        var el=document.getElementById('products');
-        if(el) el.scrollIntoView({{behavior:'smooth',block:'start'}});
-        setNav('products');
-      }}
-    }});
-  }});
   var hash=(location.hash||'').replace('#','');
-  if(hash && document.getElementById(hash)) show(hash);
+  if(hash==='products'){{
+    setNav('estruturas');
+    var el=document.getElementById('products');
+    if(el) setTimeout(function(){{ el.scrollIntoView({{behavior:'smooth',block:'start'}}); }}, 50);
+  }} else if(hash && document.getElementById(hash)) {{
+    show(hash);
+  }} else {{
+    setNav('empresas');
+  }}
 }})();
 </script>
 </body>
@@ -2521,7 +2703,8 @@ def main():
         d.mkdir(parents=True, exist_ok=True)
         (d / "index.html").write_text(op_page(cfg), encoding="utf-8")
 
-    (ROOT / "index.html").write_text(hub_html(sections), encoding="utf-8")
+    (ROOT / "index.html").write_text(overview_html(sections), encoding="utf-8")
+    (ROOT / "empresas.html").write_text(hub_html(sections), encoding="utf-8")
     patch_root_index()
     print("ops", len(all_ops))
     for slug, cfg in all_ops[:5]:
