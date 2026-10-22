@@ -2425,8 +2425,7 @@ def overview_html(sections: list[tuple[str, list[tuple[str, dict]]]]) -> str:
       </div>
     </div>
     <div class="sec-head">
-      <h2>Principais operações</h2>
-      <p>Destaques da semana (definição manual).</p>
+      <h2>Destaques</h2>
     </div>
     <div class="ov-panel">{destaques}</div>
     {_hub_footer()}
