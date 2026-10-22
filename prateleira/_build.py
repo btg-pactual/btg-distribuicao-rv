@@ -729,8 +729,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
 .speech-box h2{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--brand);margin-bottom:14px}
 .speech-label{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--brand);margin:14px 0 6px}
 .speech-box p{font-size:14px;color:var(--ink);max-width:70em}
-.footer{margin:28px 0 0;font-size:11px;color:var(--muted);text-align:center;line-height:1.55}
-.footer-alert{display:block;margin:24px 0 0;text-align:center;font-size:15px;font-weight:700;color:var(--danger);line-height:1.55;padding:14px 16px;border:1px solid rgba(163,32,32,.25);background:rgba(163,32,32,.04)}
+.footer-alert{display:block;margin:28px 0 0;text-align:center;font-size:15px;font-weight:700;color:var(--danger);line-height:1.55;padding:14px 16px;border:1px solid rgba(163,32,32,.25);background:rgba(163,32,32,.04)}
 .footer-alert strong{font-weight:700}
 @media (max-width:1100px){.main{grid-template-columns:1fr}.research-grid{grid-template-columns:1fr 1fr}}
 @media (max-width:640px){.page{padding:16px 14px 40px}.topbar{flex-direction:column}.meta-pills{justify-content:flex-start}.highlights{grid-template-columns:1fr}.zones{grid-template-columns:1fr}}
@@ -847,7 +846,6 @@ def op_page(cfg: dict) -> str:
   {speech}
 </section>
 {cfg.get('research_insights_html', '')}
-<p class="footer">Material ilustrativo para uso interno. Não constitui oferta, recomendação ou garantia de rentabilidade.</p>
 <p class="footer-alert">
   <strong>MATERIAL DE USO INTERNO, NÃO ENVIAR AOS CLIENTES</strong><br />
   <strong>PARA INFORMAÇÕES OFICIAIS, ACESSAR O DIE DA OPERAÇÃO DISPONIBILIZADO NO ADMIN BTG</strong>
@@ -2179,8 +2177,7 @@ body{font-family:var(--font);color:var(--ink);background:var(--bg);min-height:10
 .op-blurb{font-size:13px;color:var(--muted);max-width:52em}
 .op-meta{margin-top:10px;display:flex;flex-wrap:wrap;gap:6px}
 .pill{background:#f3f4f6;border:1px solid var(--line);border-radius:2px;padding:3px 8px;color:#374151;font-size:11px;font-weight:500}
-.footer{margin:40px 0 0;padding:16px 0 0;border-top:1px solid var(--line);font-size:11px;color:var(--muted);text-align:center;line-height:1.55}
-.footer-alert{display:block;margin:24px 0 0;text-align:center;font-size:12px;font-weight:700;color:#a32020;line-height:1.55;padding:14px 16px;border:1px solid rgba(163,32,32,.25);background:rgba(163,32,32,.04)}
+.footer-alert{display:block;margin:40px 0 0;text-align:center;font-size:12px;font-weight:700;color:#a32020;line-height:1.55;padding:14px 16px;border:1px solid rgba(163,32,32,.25);background:rgba(163,32,32,.04)}
 .ov-grid{display:grid;grid-template-columns:180px 1fr;gap:20px;align-items:start;margin-top:8px}
 .ov-stat{background:var(--card);border:1px solid var(--line);border-radius:2px;padding:22px 20px;text-align:center}
 .ov-stat-n{font-size:40px;font-weight:700;color:var(--navy);line-height:1}
@@ -2243,7 +2240,6 @@ def _hub_sidebar(active: str) -> str:
 
 def _hub_footer() -> str:
     return """
-    <p class="footer">Material ilustrativo para uso interno. Não constitui oferta, recomendação ou garantia de rentabilidade.</p>
     <p class="footer-alert">
       <strong>MATERIAL DE USO INTERNO, NÃO ENVIAR AOS CLIENTES</strong><br />
       <strong>PARA INFORMAÇÕES OFICIAIS, ACESSAR O DIE DA OPERAÇÃO DISPONIBILIZADO NO ADMIN BTG</strong>
