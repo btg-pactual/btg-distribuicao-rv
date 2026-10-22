@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Estruturas — Prateleira Tática | BTG Pactual</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --navy:#1D428A;--navy-deep:#0F2A5C;--ink:#1a1a1a;--muted:#6b7280;--line:#e5e7eb;
+  --bg:#F5F7F9;--card:#ffffff;--link:#1D428A;--up:#0d7a3f;--down:#c0392b;
+  --font:"Roboto",system-ui,-apple-system,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font);color:var(--ink);background:var(--bg);min-height:100vh;line-height:1.45;-webkit-font-smoothing:antialiased}
+.topbar{background:var(--navy);color:#fff;padding:0 28px;height:58px;display:flex;align-items:center;justify-content:space-between}
+.topbar-brand{font-size:19px;font-weight:700;letter-spacing:.02em;text-transform:lowercase}
+.topbar-brand span{font-weight:400;opacity:.9;margin-left:8px;font-size:16px;text-transform:none;letter-spacing:0}
+.topbar-right{font-size:14px;opacity:.9;font-weight:500}
+.layout{display:flex;min-height:calc(100vh - 58px)}
+.sidebar{width:200px;flex-shrink:0;background:#eef1f5;border-right:1px solid var(--line);padding:16px 0;display:flex;flex-direction:column}
+.nav-item{display:block;width:100%;text-align:left;appearance:none;border:0;background:transparent;padding:10px 20px;font:inherit;font-size:13px;font-weight:500;color:#374151;cursor:pointer;border-left:3px solid transparent;text-decoration:none}
+.nav-item:hover{background:rgba(255,255,255,.55);text-decoration:none;color:#374151}
+.nav-item.active{background:#fff;color:var(--navy);border-left-color:var(--navy);font-weight:700}
+.main{flex:1;min-width:0;padding:28px 32px 56px}
+.page-head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:20px;flex-wrap:wrap}
+.page-head h1{font-size:28px;font-weight:700;color:var(--ink);letter-spacing:-.01em}
+.page-head .sub{margin-top:4px;font-size:14px;color:var(--muted)}
+.btn-primary{display:inline-flex;align-items:center;background:var(--navy);color:#fff !important;font-size:13px;font-weight:700;text-decoration:none;padding:10px 16px;border:0;border-radius:2px;white-space:nowrap;cursor:pointer}
+.btn-primary:hover{background:var(--navy-deep);text-decoration:none}
+.sec-head{margin:28px 0 12px}
+.sec-head:first-child{margin-top:8px}
+.sec-head h2{font-size:18px;font-weight:700;color:var(--ink)}
+.sec-head p{font-size:13px;color:var(--muted);margin-top:2px}
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 16px}
+.tab{appearance:none;border:1px solid #d1d5db;background:#fff;color:#374151;font:inherit;font-size:12px;font-weight:500;padding:6px 12px;border-radius:2px;cursor:pointer}
+.tab:hover{border-color:#9ca3af}
+.tab.active,.cat-card.active{background:var(--navy);border-color:var(--navy);color:#fff}
+.table-wrap{background:var(--card);border:1px solid var(--line);border-radius:2px;overflow:auto}
+.data-table{width:100%;border-collapse:collapse;font-size:13px}
+.data-table thead th{text-align:left;font-size:11px;font-weight:500;color:var(--muted);letter-spacing:.02em;padding:10px 14px;border-bottom:1px solid var(--line);white-space:nowrap;background:#fafbfc}
+.data-table thead th+th{border-left:1px solid #eef0f3}
+.data-table tbody td{padding:12px 14px;border-bottom:1px solid #f0f2f5;vertical-align:middle}
+.data-table tbody tr:last-child td{border-bottom:0}
+.data-table tbody tr:nth-child(even){background:#fafbfc}
+.data-table tbody tr.spot{cursor:pointer}
+.data-table tbody tr.spot:hover{background:#eef3fb}
+.data-table tbody tr.spot.active{background:#e8eef8}
+.co-name{color:var(--link);font-weight:500}
+.col-tk{font-weight:700;letter-spacing:.02em;color:#374151}
+.col-ops{color:var(--muted);font-size:12px;max-width:220px}
+.chg.up{color:var(--up);font-weight:600}
+.chg.down{color:var(--down);font-weight:600}
+.cat-section-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:4px 0 16px;padding-bottom:12px;border-bottom:1px solid var(--line)}
+.cat-section h2{font-size:18px;font-weight:700;margin:0}
+.cat-back{appearance:none;border:1px solid #d1d5db;background:#fff;color:var(--link);font:inherit;font-size:12px;font-weight:700;padding:8px 14px;border-radius:2px;cursor:pointer}
+.cat-back:hover{background:#f3f4f6}
+.ops{list-style:none;display:flex;flex-direction:column}
+.op-block{border-bottom:1px solid var(--line);background:var(--card)}
+.op-block:first-child{border-top:1px solid var(--line)}
+.op{display:block;text-decoration:none;color:inherit;padding:16px 18px}
+.op:hover{background:#f7f9fb}
+.op-top{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:4px}
+.op-title{font-size:15px;font-weight:700;color:var(--ink)}
+.op-ticker{font-size:12px;font-weight:700;color:var(--link)}
+.op-blurb{font-size:13px;color:var(--muted);max-width:52em}
+.op-meta{margin-top:10px;display:flex;flex-wrap:wrap;gap:6px}
+.pill{background:#f3f4f6;border:1px solid var(--line);border-radius:2px;padding:3px 8px;color:#374151;font-size:11px;font-weight:500}
+.footer{margin-top:40px;padding-top:16px;border-top:1px solid var(--line);font-size:11px;color:var(--muted);text-align:center;line-height:1.55}
+.footer-alert{margin-top:14px;text-align:center;font-size:12px;font-weight:700;color:#a32020;line-height:1.55;padding:12px 14px;border:1px solid rgba(163,32,32,.25);background:rgba(163,32,32,.04)}
+.ov-grid{display:grid;grid-template-columns:180px 1fr;gap:20px;align-items:start;margin-top:8px}
+.ov-stat{background:var(--card);border:1px solid var(--line);border-radius:2px;padding:22px 20px;text-align:center}
+.ov-stat-n{font-size:40px;font-weight:700;color:var(--navy);line-height:1}
+.ov-stat-l{margin-top:8px;font-size:13px;color:var(--muted);font-weight:500}
+.ov-panel{background:var(--card);border:1px solid var(--line);border-radius:2px;padding:18px 20px}
+.ov-panel h2{font-size:15px;font-weight:700;margin-bottom:14px;color:var(--ink)}
+.pie-wrap{display:flex;gap:28px;align-items:center;flex-wrap:wrap}
+.pie-svg{width:160px;height:160px;flex-shrink:0}
+.pie-legend{list-style:none;display:flex;flex-direction:column;gap:6px;font-size:13px;color:#374151}
+.pie-legend li{display:flex;align-items:center;gap:8px}
+.pie-swatch{width:10px;height:10px;border-radius:1px;flex-shrink:0}
+.pie-count{margin-left:auto;padding-left:16px;color:var(--muted);font-weight:500}
+.ov-empty{font-size:13px;color:var(--muted);padding:8px 0 4px}
+.destaque-list{list-style:none}
+.destaque-list li{border-top:1px solid var(--line)}
+.destaque-list li:first-child{border-top:0}
+.destaque-list a{display:block;padding:12px 0;text-decoration:none;color:inherit}
+.destaque-list a:hover{color:var(--link)}
+.destaque-title{font-size:14px;font-weight:700}
+.destaque-blurb{font-size:13px;color:var(--muted);margin-top:2px}
+@media (max-width:860px){
+  .layout{flex-direction:column}
+  .sidebar{width:100%;flex-direction:row;overflow-x:auto;padding:8px;border-right:0;border-bottom:1px solid var(--line)}
+  .nav-item{border-left:0;border-bottom:2px solid transparent;white-space:nowrap;padding:8px 12px}
+  .nav-item.active{border-bottom-color:var(--navy)}
+  .main{padding:20px 16px 48px}
+  .col-sec,.col-ops{display:none}
+  .data-table thead th:nth-child(3),.data-table thead th:nth-child(7){display:none}
+  .ov-grid{grid-template-columns:1fr}
+  .topbar{height:auto;min-height:58px;padding:12px 16px;flex-wrap:wrap;gap:6px}
+  .topbar-brand{font-size:17px}
+  .topbar-brand span{font-size:14px;display:inline}
+  .topbar-right{font-size:12px}
+}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-brand">btg pactual <span>prateleira tática</span></div>
+  <div class="topbar-right">Distribuição · Renda Variável · Uso interno</div>
+</header>
+<div class="layout">
+  
+  <nav class="sidebar" aria-label="Navegação">
+    <a class="nav-item" href="./index.html">Overview</a>
+    <a class="nav-item" href="./empresas.html">Empresas</a>
+    <a class="nav-item active" href="./estruturas.html">Estruturas</a>
+  </nav>
+  <main class="main">
+    <div class="page-head">
+      <div>
+        <h1>Estruturas</h1>
+        <p class="sub">Tipos de produto da semana · ref. 20/10/2026</p>
+      </div>
+      <a class="btn-primary" href="./Material-Prateleira-Tatica-20102026.pdf" target="_blank" rel="noopener noreferrer">Abrir PDF · 20/10/2026</a>
+    </div>
+    <div id="homeBlock">
+      <div class="sec-head">
+        <h2>Tipos de estrutura</h2>
+        <p>Selecione o produto para ver as operações.</p>
+      </div>
+      <div class="tabs" id="catGrid"><button type="button" class="tab cat-card" data-target="soc" title="Stock or Coupon — cupom se a barreira não for atingida.">SOC · 9</button>
+<button type="button" class="tab cat-card" data-target="smart-hedge" title="Piso na queda, 1:1 até a barreira KI.">Smart Hedge · 8</button>
+<button type="button" class="tab cat-card" data-target="triplo" title="3× na alta, ganho na queda moderada, teto no KO.">Triplo Retorno KO · 3</button>
+<button type="button" class="tab cat-card" data-target="call-spread" title="Call comprada + call vendida — alta com teto e custo definido.">Compra de Call Spread · 3</button>
+<button type="button" class="tab cat-card" data-target="collar" title="Put comprada + call vendida — piso e teto no ativo.">Collar · 8</button>
+<button type="button" class="tab cat-card" data-target="call-ko" title="Call up-and-out com rebate se bater a barreira.">Call KO com Rebate · 3</button>
+<button type="button" class="tab cat-card" data-target="pop" title="Proteção na queda + participação parcial (50%) na alta.">POP · 1</button>
+<button type="button" class="tab cat-card" data-target="one-touch" title="Rebate se o ativo fechar na/acima da barreira no fixing; senão, só o preço.">One Touch de Alta · 1</button></div>
+    </div>
+    
+<section class="cat-section" id="soc" hidden>
+  <div class="cat-section-head">
+    <h2>SOC · 9 operações</h2>
+    <button type="button" class="cat-back" data-back>← Voltar</button>
+  </div>
+  <ul class="ops">
+<li class="op-block">
+  <a class="op" href="./ops/soc-tots3-30dc/index.html">
+    <div class="op-top">
+      <span class="op-title">SOC TOTS3</span>
+      <span class="op-ticker">TOTS3</span>
+    </div>
+    <p class="op-blurb">Stock or Coupon sobre TOTS3: cupom se a barreira de queda não for atingida; se KO, acompanha o ativo.</p>
+    <div class="op-meta"><span class="pill">Ativo: TOTS3</span> <span class="pill">Prazo: 30dc</span> <span class="pill">Vencimento: 19/11/2026</span> <span class="pill">Strike: 112.49%</span><span class="pill">Compra</span><span class="pill">PA R$ 55,00</span></div>
+  </a>
+</li>
+<li class="op-block">
+  <a class="op" href="./ops/soc-b3sa3-30dc/index.html">
+    <div class="op-top">
+      <span class="op-title">SOC B3SA3</span>
+      <span class="op-ticker">B3SA3</span>
+    </div>
+    <p class="op-blurb">Stock or Coupon sobre B3SA3: cupom se a barreira de queda não for atingida; se KO, acompanha o ativo.</p>
+    <div class="op-meta"><span class="pill">Ativo: B3SA3</span> <span class="pill">Prazo: 30dc</span> <span class="pill">Vencimento: 19/11/2026</span> <span class="pill">Strike: 114.56%</span><span class="pill">Neutro</span><span class="pill">PA R$ 19,00</span></div>
+  </a>
+</li>
+<li class="op-block">
+  <a class="op" href="./ops/soc-embj3-29dc/index.html">
+    <div class="op-top">
+      <span class="op-title">SOC EMBJ3</span>
+      <span class="op-ticker">EMBJ3</span>
+    </div>
+    <p class="op-blurb">Stock or Coupon sobre EMBJ3: cupom se a barreira de queda não for atingida; se KO, acompanha o ativo.</p>
+    <div class="op-meta"><span class="pill">Ativo: EMBJ3</span> <span class="pill">Prazo: 29dc</span> <span class="pill">Vencimento: 18/11/2026</span> <span class="pill">Strike: 103.56%</span><span class="pill">Compra</span><span class="pill">PA R$ 126,00</span></div>
+  </a>
+</li>
+<li class="op-block">
+  <a class="op" href="./ops/soc-tend3-30dc/index.html">
+    <div class="op-top">
+      <span class="op-title">SOC TEND3</span>
+      <span class="op-ticker">TEND3</span>
+    </div>
+    <p class="op-blurb">Stock or Coupon sobre TEND3: cupom se a barreira de queda não for atingida; se KO, acompanha o ativo.</p>
+    <div class="op-meta"><span class="pill">Ativo: TEND3</span> <span class="pill">Prazo: 30dc</span> <span class="pill">Vencimento: 19/11/2026</span> <span class="pill">Strike: 113.29%</span><span class="pill">Compra</span><span class="pill">PA R$ 45,00</span></div>
+  </a>
+</li>
+<li class="op-block">
+  <a class="op" href="./ops/soc-brav3-44dc/index.html">
+    <div class="op-top">
+      <span class="op-title">SOC BRAV3</span>
+      <span class="op-ticker">BRAV3</span>
+    </div>
+    <p class="op-blurb">Stock or Coupon sobre BRAV3: cupom se a barreira de queda não for atingida; se KO, acompanha o ativo.</p>
+    <div class="op-meta"><span class="pill">Ativo: BRAV3</span> <span class="pill">Prazo: 44dc</span> <span class="pill">Vencimento: 03/12/2026</span> <span class="pill">Strike: 106.85%</span><span class="pill">Compra</span><span class="pill">PA R$ 23,00</span></div>
+  </a>
+</li>
+<li class="op-block">
+  <a class="op" href="./ops/soc-wege3-43dc/index.html">
+    <div class="op-top">
+      <span class="op-title">SOC WEGE3</span>
+      <span class="op-ticker">WEGE3</span>
+    </div>
+    <p class="op-blurb">Stock or Coupon sobre WEGE3: cupom se a barreira de queda não for atingida; se KO, acompanha o ativo.</p>
+    <div class="op-meta"><span class="pill">Ativo: WEGE3</span> <span class="pill">Prazo: 43dc</span> <span class="pill">Vencimento: 02/12/2026</span> <span class="pill">Strike: 104.50%</span><span class="pill">Compra</span><span class="pill">PA R$ 65,00</span></div>
+  </a>
+</li>
+<li class="op-block">
+  <a class="op" href="./ops/soc-ggbr4-29dc/index.html">
+    <div class="op-top">
+      <span class="op-title">SOC GGBR4</span>
+      <span class="op-ticker">GGBR4</span>
+    </div>
+    <p class="op-blurb">Stock or Coupon sobre GGBR4: cupom se a barreira de queda não for atingida; se KO, acompanha o ativo.</p>
+    <div class="op-meta"><span class="pill">Ativo: GGBR4</span> <span class="pill">Prazo: 29dc</span> <span class="pill">Vencimento: 18/11/2026</span> <span class="pill">Strike: 104.50%</span><span class="pill">Compra</span><span class="pill">PA R$ 28,00</span></div>
+  </a>
+</li>
+<li class="op-block">
+  <a class="op" href="./ops/soc-amzo34-29dc/index.html">
+    <div class="op-top">
+      <span class="op-title">SOC AMZO34</span>
+      <span class="op-ticker">AMZO34</span>
+    </div>
+    <p class="op-blurb">Stock or Coupon sobre AMZO34: cupom se a barreira de queda não for atingida; se KO, acompanha o ativo.</p>
+    <div class="op-meta"><span class="pill">Ativo: AMZO34</span> <span class="pill">Prazo: 29dc</span> <span class="pill">Vencimento: 18/11/2026</span> <span class="pill">Strike: 104.00%</span></div>
+  </a>
+</li>
+<li class="op-block">
+  <a class="op" href="./ops/soc-itub4-29dc/index.html">
+    <div class="op-top">
+      <span class="op-title">SOC ITUB4</span>
+      <span class="op-ticker">ITUB4</span>
+    </div>
+    <p class="op-blurb">Stock or Coupon sobre ITUB4: cupom se a barreira de queda não for atingida; se KO, acompanha o ativo.</p>
+    <div class="op-meta"><span class="pill">Ativo: ITUB4</span> <span class="pill">Prazo: 29dc</span> <span class="pill">Vencimento: 18/11/2026</span> <span class="pill">Strike: 104.50%</span><span class="pill">Compra</span><span class="pill">PA R$ 54,00</span></div>
+  </a>
+</li></ul>
+</section>
+
+<section class="cat-section" id="smart-hedge" hidden>
+  <div class="cat-section-head">
+    <h2>Smart Hedge · 8 operações</h2>
+    <button type="button" class="cat-back" data-back>← Voltar</button>
+  </div>
+  <ul class="ops">
+<li class="op-block">
+  <a class="op" href="./ops/smart-hedge-itub4-put90-12meses/index.html">
+    <div class="op-top">
+      <span class="op-title">Smart Hedge ITUB4</span>
+      <span class="op-ticker">ITUB4</span>
+    </div>
+    <p class="op-blurb">Smart Hedge sobre ITUB4: piso na queda, participação 1:1 até a barreira KI; se KI, retorno limitado ao strike da call.</p>
+    <div class="op-meta"><span class="pill">Ativo: ITUB4</span> <span class="pill">Prazo: 12 meses</span> <span class="pill">Put: 90%</span> <span class="pill">Call: 110%</span><span class="pill">Compra</span><span class="pill">PA R$ 54,00</span></div>
+  </a>
+</li>
+<li class="op-block">
+  <a class="op" href="./ops/smart-hedge-petr4-put90-12meses/index.html">
+    <div class="op-top">
+      <span class="op-title">Smart Hedge PETR4</span>
+      <span class="op-ticker">PETR4</span>
+    </div>
+    <p class="op-blurb">Smart Hedge sobre PETR4: piso na queda, participação 1:1 até a barreira KI; se KI, retorno limitado ao strike da call.</p>
+    <div class="op-meta"><span class="pill">Ativo: PETR4</span> <span class="pill">Prazo: 12 meses</span> <span class="pill">Put: 90%</span> <span class="pill">Call: 110%</span><span class="pill">Compra</span><span class="pill">PA R$ 65,00</span></div>
+  </a>
+</li>
+<li class="op-block">
+  <a class="op" href="./ops/smart-hedge-bbas3-put100-12meses/index.html">
+    <div class="op-top">
+      <span class="op-title">Smart Hedge BBAS3</span>
+      <span class="op-ticker">BBAS3</span>
+    </div>
+    <p class="op-blurb">Smart Hedge sobre BBAS3: piso na queda, participação 1:1 até a barreira KI; se KI, retorno limitado ao strike da call.</p>
+    <div class="op-meta"><span class="pill">Ativo: BBAS3</span> <span class="pill">Prazo: 12 meses</span> <span class="pill">Put: 100%</span> <span class="pill">Call: 110%</span><span class="pill">Neutro</span><span class="pill">PA R$ 19,00</span></div>
+  </a>
+</li>
+<li class="op-block">
+  <a class="op" href="./ops/smart-hedge-prio3-put90-6meses/index.html">
+    <div class="op-top">
+      <span class="op-title">Smart Hedge PRIO3</span>
+      <span class="op-ticker">PRIO3</span>
+    </div>
+    <p class="op-blurb">Smart Hedge sobre PRIO3: piso na queda, participação 1:1 até a barreira KI; se KI, retorno limitado ao strike da call.</p>
+    <div class="op-meta"><span class="pill">Ativo: PRIO3</span> <span class="pill">Prazo: 6 meses</span> <span class="pill">Put: 90%</span> <span class="pill">Call: 104%</span><span class="pill">Compra</span><span class="pill">PA R$ 73,00</span></div>
+  </a>
+</li>
+<li class="op-block">
+  <a class="op" href="./ops/smart-hedge-petr4-put90-6meses/index.html">
+    <div class="op-top">
+      <span class="op-title">Smart Hedge PETR4</span>
+      <span class="op-ticker">PETR4</span>
+    </div>
+    <p class="op-blurb">Smart Hedge sobre PETR4: piso na queda, participação 1:1 até a barreira KI; se KI, retorno limitado ao strike da call.</p>
+    <div class="op-meta"><span class="pill">Ativo: PETR4</span> <span class="pill">Prazo: 6 meses</span> <span class="pill">Put: 90%</span> <span class="pill">Call: 104%</span><span class="pill">Compra</span><span class="pill">PA R$ 65,00</span></div>
+  </a>
+</li>
+<li class="op-block">
+  <a class="op" href="./ops/smart-hedge-itub4-put90-6meses/index.html">
+    <div class="op-top">
+      <span class="op-title">Smart Hedge ITUB4</span>
+      <span class="op-ticker">ITUB4</span>
+    </div>
+    <p class="op-blurb">Smart Hedge sobre ITUB4: piso na queda, participação 1:1 até a barreira KI; se KI, retorno limitado ao strike da call.</p>
+    <div class="op-meta"><span class="pill">Ativo: ITUB4</span> <span class="pill">Prazo: 6 meses</span> <span class="pill">Put: 90%</span> <span class="pill">Call: 104%</span><span class="pill">Compra</span><span class="pill">PA R$ 54,00</span></div>
+  </a>
+</li>
+<li class="op-block">
+  <a class="op" href="./ops/smart-hedge-b3sa3-put90-6meses/index.html">
+    <div class="op-top">
+      <span class="op-title">Smart Hedge B3SA3</span>
+      <span class="op-ticker">B3SA3</span>
+    </div>
+    <p class="op-blurb">Smart Hedge sobre B3SA3: piso na queda, participação 1:1 até a barreira KI; se KI, retorno limitado ao strike da call.</p>
+    <div class="op-meta"><span class="pill">Ativo: B3SA3</span> <span class="pill">Prazo: 6 meses</span> <span class="pill">Put: 90%</span> <span class="pill">Call: 104%</span><span class="pill">Neutro</span><span class="pill">PA R$ 19,00</span></div>
+  </a>
+</li>
+<li class="op-block">
+  <a class="op" href="./ops/smart-hedge-cyre3-put90-6meses/index.html">
+    <div class="op-top">
+      <span class="op-title">Smart Hedge CYRE3</span>
+      <span class="op-ticker">CYRE3</span>
+    </div>
+    <p class="op-blurb">Smart Hedge sobre CYRE3: piso na queda, participação 1:1 até a barreira KI; se KI, retorno limitado ao strike da call.</p>
+    <div class="op-meta"><span class="pill">Ativo: CYRE3</span> <span class="pill">Prazo: 6 meses</span> <span class="pill">Put: 90%</span> <span class="pill">Call: 104%</span><span class="pill">Compra</span><span class="pill">PA R$ 40,00</span></div>
+  </a>
+</li></ul>
+</section>
+
+<section class="cat-section" id="triplo" hidden>
+  <div class="cat-section-head">
+    <h2>Triplo Retorno KO · 3 operações</h2>
+    <button type="button" class="cat-back" data-back>← Voltar</button>
+  </div>
+  <ul class="ops">
+<li class="op-block">
+  <a class="op" href="./ops/triplo-nvdc34-ki154-12meses/index.html">
+    <div class="op-top">
+      <span class="op-title">Triplo Retorno KO NVDC34</span>
+      <span class="op-ticker">NVDC34</span>
+    </div>
+    <p class="op-blurb">3× na alta até a barreira, ganho na queda moderada, teto se KO de alta.</p>
+    <div class="op-meta"><span class="pill">Ativo: NVDC34</span> <span class="pill">Prazo: 12 meses</span> <span class="pill">Teto: +15%</span> <span class="pill">KO alta: 154%</span></div>
+  </a>
+</li>
+<li class="op-block">
+  <a class="op" href="./ops/triplo-gogl34-ki145-12meses/index.html">
+    <div class="op-top">
+      <span class="op-title">Triplo Retorno KO GOGL34</span>
+      <span class="op-ticker">GOGL34</span>
+    </div>
+    <p class="op-blurb">3× na alta até a barreira, ganho na queda moderada, teto se KO de alta.</p>
+    <div class="op-meta"><span class="pill">Ativo: GOGL34</span> <span class="pill">Prazo: 12 meses</span> <span class="pill">Teto: +15%</span> <span class="pill">KO alta: 145%</span></div>
+  </a>
+</li>
+<li class="op-block">
+  <a class="op" href="./ops/triplo-rent3-ki142-12meses/index.html">
+    <div class="op-top">
+      <span class="op-title">Triplo Retorno KO RENT3</span>
+      <span class="op-ticker">RENT3</span>
+    </div>
+    <p class="op-blurb">3× na alta até a barreira, ganho na queda moderada, teto se KO de alta.</p>
+    <div class="op-meta"><span class="pill">Ativo: RENT3</span> <span class="pill">Prazo: 12 meses</span> <span class="pill">Teto: +15%</span> <span class="pill">KO alta: 142%</span><span class="pill">Compra</span><span class="pill">PA R$ 63,00</span></div>
+  </a>
+</li></ul>
+</section>
+
+<section class="cat-section" id="call-spread" hidden>
+  <div class="cat-section-head">
+    <h2>Compra de Call Spread · 3 operações</h2>
+    <button type="button" class="cat-back" data-back>← Voltar</button>
+  </div>
+  <ul class="ops">
+<li class="op-block">
+  <a class="op" href="./ops/call-spread-bova11-cap115-1mes/index.html">
+    <div class="op-top">
+      <span class="op-title">Compra de Call Spread BOVA11</span>
+      <span class="op-ticker">BOVA11</span>
+    </div>
+    <p class="op-blurb">Call spread BOVA11: compra call 105% + venda call 115%. Participa da alta entre os strikes; teto +10,00% bruto.</p>
+    <div class="op-meta"><span class="pill">Ativo: BOVA11</span> <span class="pill">Prazo: 1 mês</span> <span class="pill">Call comprada: 105%</span> <span class="pill">Call vendida: 115%</span></div>
+  </a>
+</li>
+<li class="op-block">
+  <a class="op" href="./ops/call-spread-smal11-cap115-2meses/index.html">
+    <div class="op-top">
+      <span class="op-title">Compra de Call Spread SMAL11</span>
+      <span class="op-ticker">SMAL11</span>
+    </div>
+    <p class="op-blurb">Call spread SMAL11: compra call 105% + venda call 115%. Participa da alta entre os strikes; teto +10,00% bruto.</p>
+    <div class="op-meta"><span class="pill">Ativo: SMAL11</span> <span class="pill">Prazo: 2 meses</span> <span class="pill">Call comprada: 105%</span> <span class="pill">Call vendida: 115%</span></div>
+  </a>
+</li>
+<li class="op-block">
+  <a class="op" href="./ops/call-spread-bova11-cap120-2meses/index.html">
+    <div class="op-top">
+      <span class="op-title">Compra de Call Spread BOVA11</span>
+      <span class="op-ticker">BOVA11</span>
+    </div>
+    <p class="op-blurb">Call spread BOVA11: compra call 105% + venda call 120%. Participa da alta entre os strikes; teto +15,00% bruto.</p>
+    <div class="op-meta"><span class="pill">Ativo: BOVA11</span> <span class="pill">Prazo: 2 meses</span> <span class="pill">Call comprada: 105%</span> <span class="pill">Call vendida: 120%</span></div>
+  </a>
+</li></ul>
+</section>
+
+<section class="cat-section" id="collar" hidden>
+  <div class="cat-section-head">
+    <h2>Collar · 8 operações</h2>
+    <button type="button" class="cat-back" data-back>← Voltar</button>
+  </div>
+  <ul class="ops">
+<li class="op-block">
+  <a class="op" href="./ops/collar-itub4-put90-6meses/index.html">
+    <div class="op-top">
+      <span class="op-title">Collar ITUB4</span>
+      <span class="op-ticker">ITUB4</span>
+    </div>
+    <p class="op-blurb">Collar sobre ITUB4: piso na put 90% e teto na call 112%; entre os strikes acompanha o ativo 1:1.</p>
+    <div class="op-meta"><span class="pill">Ativo: ITUB4</span> <span class="pill">Prazo: 6 meses</span> <span class="pill">Vencimento: 19/04/2027</span> <span class="pill">Put: 90%</span><span class="pill">Compra</span><span class="pill">PA R$ 54,00</span></div>
+  </a>
+</li>
+<li class="op-block">
+  <a class="op" href="./ops/collar-axia3-put90-12meses/index.html">
+    <div class="op-top">
+      <span class="op-title">Collar AXIA3</span>
+      <span class="op-ticker">AXIA3</span>
+    </div>
+    <p class="op-blurb">Collar sobre AXIA3: piso na put 90% e teto na call 124%; entre os strikes acompanha o ativo 1:1.</p>
+    <div class="op-meta"><span class="pill">Ativo: AXIA3</span> <span class="pill">Prazo: 12 meses</span> <span class="pill">Vencimento: 19/10/2027</span> <span class="pill">Put: 90%</span><span class="pill">Compra</span><span class="pill">PA R$ 74,00</span></div>
+  </a>
+</li>
+<li class="op-block">
+  <a class="op" href="./ops/collar-petr4-put90-6meses/index.html">
+    <div class="op-top">
+      <span class="op-title">Collar PETR4</span>
+      <span class="op-ticker">PETR4</span>
+    </div>
+    <p class="op-blurb">Collar sobre PETR4: piso na put 90% e teto na call 116,83%; entre os strikes acompanha o ativo 1:1.</p>
+    <div class="op-meta"><span class="pill">Ativo: PETR4</span> <span class="pill">Prazo: 6 meses</span> <span class="pill">Vencimento: 19/04/2027</span> <span class="pill">Put: 90%</span><span class="pill">Compra</span><span class="pill">PA R$ 65,00</span></div>
+  </a>
+</li>
+<li class="op-block">
+  <a class="op" href="./ops/collar-petr4-put90-12meses/index.html">
+    <div class="op-top">
+      <span class="op-title">Collar PETR4</span>
+      <span class="op-ticker">PETR4</span>
+    </div>
+    <p class="op-blurb">Collar sobre PETR4: piso na put 90% e teto na call 124%; entre os strikes acompanha o ativo 1:1.</p>
+    <div class="op-meta"><span class="pill">Ativo: PETR4</span> <span class="pill">Prazo: 12 meses</span> <span class="pill">Vencimento: 19/10/2027</span> <span class="pill">Put: 90%</span><span class="pill">Compra</span><span class="pill">PA R$ 65,00</span></div>
+  </a>
+</li>
+<li class="op-block">
+  <a class="op" href="./ops/collar-itub4-put90-12meses/index.html">
+    <div class="op-top">
+      <span class="op-title">Collar ITUB4</span>
+      <span class="op-ticker">ITUB4</span>
+    </div>
+    <p class="op-blurb">Collar sobre ITUB4: piso na put 90% e teto na call 119,35%; entre os strikes acompanha o ativo 1:1.</p>
+    <div class="op-meta"><span class="pill">Ativo: ITUB4</span> <span class="pill">Prazo: 12 meses</span> <span class="pill">Vencimento: 19/10/2027</span> <span class="pill">Put: 90%</span><span class="pill">Compra</span><span class="pill">PA R$ 54,00</span></div>
+  </a>
+</li>
+<li class="op-block">
+  <a class="op" href="./ops/collar-mglu3-put90-3meses/index.html">
+    <div class="op-top">
+      <span class="op-title">Collar MGLU3</span>
+      <span class="op-ticker">MGLU3</span>
+    </div>
+    <p class="op-blurb">Collar sobre MGLU3: piso na put 90% e teto na call 110%; entre os strikes acompanha o ativo 1:1.</p>
+    <div class="op-meta"><span class="pill">Ativo: MGLU3</span> <span class="pill">Prazo: 3 meses</span> <span class="pill">Vencimento: 15/01/2027</span> <span class="pill">Put: 90%</span><span class="pill">Compra</span><span class="pill">PA R$ 12,00</span></div>
+  </a>
+</li>
+<li class="op-block">
+  <a class="op" href="./ops/collar-b3sa3-put90-3meses/index.html">
+    <div class="op-top">
+      <span class="op-title">Collar B3SA3</span>
+      <span class="op-ticker">B3SA3</span>
+    </div>
+    <p class="op-blurb">Collar sobre B3SA3: piso na put 90% e teto na call 111%; entre os strikes acompanha o ativo 1:1.</p>
+    <div class="op-meta"><span class="pill">Ativo: B3SA3</span> <span class="pill">Prazo: 3 meses</span> <span class="pill">Vencimento: 15/01/2027</span> <span class="pill">Put: 90%</span><span class="pill">Neutro</span><span class="pill">PA R$ 19,00</span></div>
+  </a>
+</li>
+<li class="op-block">
+  <a class="op" href="./ops/collar-eqtl3-put90-3meses/index.html">
+    <div class="op-top">
+      <span class="op-title">Collar EQTL3</span>
+      <span class="op-ticker">EQTL3</span>
+    </div>
+    <p class="op-blurb">Collar sobre EQTL3: piso na put 90% e teto na call 108%; entre os strikes acompanha o ativo 1:1.</p>
+    <div class="op-meta"><span class="pill">Ativo: EQTL3</span> <span class="pill">Prazo: 3 meses</span> <span class="pill">Vencimento: 15/01/2027</span> <span class="pill">Put: 90%</span><span class="pill">Compra</span><span class="pill">PA R$ 56,00</span></div>
+  </a>
+</li></ul>
+</section>
+
+<section class="cat-section" id="call-ko" hidden>
+  <div class="cat-section-head">
+    <h2>Call KO com Rebate · 3 operações</h2>
+    <button type="button" class="cat-back" data-back>← Voltar</button>
+  </div>
+  <ul class="ops">
+<li class="op-block">
+  <a class="op" href="./ops/call-ko-rebate-asai3-2meses/index.html">
+    <div class="op-top">
+      <span class="op-title">Call KO com Rebate ASAI3</span>
+      <span class="op-ticker">ASAI3</span>
+    </div>
+    <p class="op-blurb">Call up-and-out ASAI3 strike 102%: participa da alta até a barreira; no KO recebe rebate. Prêmio 4,50% → no KO rentabilidade de +22% sobre o prêmio.</p>
+    <div class="op-meta"><span class="pill">Ativo: ASAI3</span> <span class="pill">Prazo: 2 meses</span> <span class="pill">Strike: 102%</span> <span class="pill">KO: 118%</span><span class="pill">Compra</span><span class="pill">PA R$ 16,00</span></div>
+  </a>
+</li>
+<li class="op-block">
+  <a class="op" href="./ops/call-ko-rebate-movi3-2meses/index.html">
+    <div class="op-top">
+      <span class="op-title">Call KO com Rebate MOVI3</span>
+      <span class="op-ticker">MOVI3</span>
+    </div>
+    <p class="op-blurb">Call up-and-out MOVI3 strike 102%: participa da alta até a barreira; no KO recebe rebate. Prêmio 4,50% → no KO rentabilidade de +22% sobre o prêmio.</p>
+    <div class="op-meta"><span class="pill">Ativo: MOVI3</span> <span class="pill">Prazo: 2 meses</span> <span class="pill">Strike: 102%</span> <span class="pill">KO: 125%</span><span class="pill">Compra</span><span class="pill">PA R$ 12,00</span></div>
+  </a>
+</li>
+<li class="op-block">
+  <a class="op" href="./ops/call-ko-rebate-rent3-2meses/index.html">
+    <div class="op-top">
+      <span class="op-title">Call KO com Rebate RENT3</span>
+      <span class="op-ticker">RENT3</span>
+    </div>
+    <p class="op-blurb">Call up-and-out RENT3 strike 102%: participa da alta até a barreira; no KO recebe rebate. Prêmio 4,50% → no KO rentabilidade de +22% sobre o prêmio.</p>
+    <div class="op-meta"><span class="pill">Ativo: RENT3</span> <span class="pill">Prazo: 2 meses</span> <span class="pill">Strike: 102%</span> <span class="pill">KO: 117%</span><span class="pill">Compra</span><span class="pill">PA R$ 63,00</span></div>
+  </a>
+</li></ul>
+</section>
+
+<section class="cat-section" id="pop" hidden>
+  <div class="cat-section-head">
+    <h2>POP · 1 operação</h2>
+    <button type="button" class="cat-back" data-back>← Voltar</button>
+  </div>
+  <ul class="ops">
+<li class="op-block">
+  <a class="op" href="./ops/pop-smal11-12meses/index.html">
+    <div class="op-top">
+      <span class="op-title">POP SMAL11</span>
+      <span class="op-ticker">SMAL11</span>
+    </div>
+    <p class="op-blurb">Protected Ownership Participation sobre SMAL11: proteção total na queda (put 100%) e participação parcial na alta (call vendida 100% em metade da posição).</p>
+    <div class="op-meta"><span class="pill">Ativo: SMAL11</span> <span class="pill">Prazo: 12 meses</span> <span class="pill">Put: 100%</span> <span class="pill">Call 0,5×: 100%</span></div>
+  </a>
+</li></ul>
+</section>
+
+<section class="cat-section" id="one-touch" hidden>
+  <div class="cat-section-head">
+    <h2>One Touch de Alta · 1 operação</h2>
+    <button type="button" class="cat-back" data-back>← Voltar</button>
+  </div>
+  <ul class="ops">
+<li class="op-block">
+  <a class="op" href="./ops/one-touch-bova11-10dc/index.html">
+    <div class="op-top">
+      <span class="op-title">One Touch de Alta BOVA11</span>
+      <span class="op-ticker">BOVA11</span>
+    </div>
+    <p class="op-blurb">Call up-and-out discreta em BOVA11: paga 2,00% de prêmio. Se fechar ≥ 107% no fixing, ganha +3,00% (rentabilidade de +150% sobre o prêmio). Se não, perde o prêmio.</p>
+    <div class="op-meta"><span class="pill">Ativo: BOVA11</span> <span class="pill">Prazo: 10dc</span> <span class="pill">Vencimento: 30/10/2026</span> <span class="pill">Barreira: 107%</span></div>
+  </a>
+</li></ul>
+</section>
+    
+    <p class="footer">Material ilustrativo para uso interno. Não constitui oferta, recomendação ou garantia de rentabilidade.</p>
+    <p class="footer-alert">
+      <strong>MATERIAL DE USO INTERNO, NÃO ENVIAR AOS CLIENTES</strong><br />
+      <strong>PARA INFORMAÇÕES OFICIAIS, ACESSAR O DIE DA OPERAÇÃO DISPONIBILIZADO NO ADMIN BTG</strong>
+    </p>
+  </main>
+</div>
+<script>
+(function(){
+  var home=document.getElementById('homeBlock');
+  var triggers=[].slice.call(document.querySelectorAll('.cat-card'));
+  var sections=[].slice.call(document.querySelectorAll('.cat-section'));
+  function show(id){
+    triggers.forEach(function(t){ t.classList.toggle('active', t.getAttribute('data-target')===id); });
+    sections.forEach(function(s){
+      var on=s.id===id;
+      if(on) s.removeAttribute('hidden'); else s.setAttribute('hidden','');
+    });
+    if(id){
+      home.style.display='none';
+      var el=document.getElementById(id);
+      if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
+      history.replaceState(null,'','#'+id);
+    } else {
+      home.style.display='';
+      history.replaceState(null,'',location.pathname);
+      window.scrollTo({top:0,behavior:'smooth'});
+    }
+  }
+  triggers.forEach(function(t){
+    t.addEventListener('click',function(){ show(t.getAttribute('data-target')); });
+    t.addEventListener('keydown',function(e){
+      if(e.key==='Enter' || e.key===' '){ e.preventDefault(); show(t.getAttribute('data-target')); }
+    });
+  });
+  document.querySelectorAll('[data-back]').forEach(function(b){
+    b.addEventListener('click',function(){ show(null); });
+  });
+  var hash=(location.hash||'').replace('#','');
+  if(hash && document.getElementById(hash)) show(hash);
+})();
+</script>
+</body>
+</html>

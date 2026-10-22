@@ -2218,7 +2218,7 @@ def _hub_sidebar(active: str) -> str:
   <nav class="sidebar" aria-label="Navegação">
     {item("overview", "./index.html", "Overview")}
     {item("empresas", "./empresas.html", "Empresas")}
-    {item("estruturas", "./empresas.html#products", "Estruturas")}
+    {item("estruturas", "./estruturas.html", "Estruturas")}
   </nav>"""
 
 
@@ -2410,8 +2410,47 @@ def overview_html(sections: list[tuple[str, list[tuple[str, dict]]]]) -> str:
 """
 
 
+def _drill_script(trigger_sel: str) -> str:
+    """JS: click rows/tabs → show matching .cat-section; back restores #homeBlock."""
+    return f"""
+(function(){{
+  var home=document.getElementById('homeBlock');
+  var triggers=[].slice.call(document.querySelectorAll('{trigger_sel}'));
+  var sections=[].slice.call(document.querySelectorAll('.cat-section'));
+  function show(id){{
+    triggers.forEach(function(t){{ t.classList.toggle('active', t.getAttribute('data-target')===id); }});
+    sections.forEach(function(s){{
+      var on=s.id===id;
+      if(on) s.removeAttribute('hidden'); else s.setAttribute('hidden','');
+    }});
+    if(id){{
+      home.style.display='none';
+      var el=document.getElementById(id);
+      if(el) el.scrollIntoView({{behavior:'smooth',block:'start'}});
+      history.replaceState(null,'','#'+id);
+    }} else {{
+      home.style.display='';
+      history.replaceState(null,'',location.pathname);
+      window.scrollTo({{top:0,behavior:'smooth'}});
+    }}
+  }}
+  triggers.forEach(function(t){{
+    t.addEventListener('click',function(){{ show(t.getAttribute('data-target')); }});
+    t.addEventListener('keydown',function(e){{
+      if(e.key==='Enter' || e.key===' '){{ e.preventDefault(); show(t.getAttribute('data-target')); }}
+    }});
+  }});
+  document.querySelectorAll('[data-back]').forEach(function(b){{
+    b.addEventListener('click',function(){{ show(null); }});
+  }});
+  var hash=(location.hash||'').replace('#','');
+  if(hash && document.getElementById(hash)) show(hash);
+}})();
+"""
+
+
 def hub_html(sections: list[tuple[str, list[tuple[str, dict]]]]) -> str:
-    cat_cards, sections_html, companies, _n_ops = _collect_hub_data(sections)
+    _cat_cards, _sections_html, companies, _n_ops = _collect_hub_data(sections)
 
     spot_rows = []
     company_sections = []
@@ -2472,8 +2511,7 @@ def hub_html(sections: list[tuple[str, list[tuple[str, dict]]]]) -> str:
   </div>
 </section>"""
 
-    cats = "\n".join(cat_cards)
-    body = "\n".join(company_sections + sections_html)
+    body = "\n".join(company_sections)
 
     return f"""<!DOCTYPE html>
 <html lang="pt-BR">
@@ -2497,15 +2535,58 @@ def hub_html(sections: list[tuple[str, list[tuple[str, dict]]]]) -> str:
     <div class="page-head">
       <div>
         <h1>Empresas</h1>
-        <p class="sub">Operações estruturadas da semana · ref. {REF.strftime('%d/%m/%Y')}</p>
+        <p class="sub">Operações por ativo · ref. {REF.strftime('%d/%m/%Y')}</p>
       </div>
       {_pdf_cta()}
     </div>
     <div id="homeBlock">
       {spotlights}
-      <div class="sec-head" id="products">
+    </div>
+    {body}
+    {_hub_footer()}
+  </main>
+</div>
+<script>{_drill_script('.spot')}</script>
+</body>
+</html>
+"""
+
+
+def estruturas_html(sections: list[tuple[str, list[tuple[str, dict]]]]) -> str:
+    cat_cards, sections_html, _companies, _n_ops = _collect_hub_data(sections)
+    cats = "\n".join(cat_cards)
+    body = "\n".join(sections_html)
+
+    return f"""<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Estruturas — Prateleira Tática | BTG Pactual</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet"/>
+<style>{_hub_css()}</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-brand">btg pactual <span>prateleira tática</span></div>
+  <div class="topbar-right">Distribuição · Renda Variável · Uso interno</div>
+</header>
+<div class="layout">
+  {_hub_sidebar("estruturas")}
+  <main class="main">
+    <div class="page-head">
+      <div>
+        <h1>Estruturas</h1>
+        <p class="sub">Tipos de produto da semana · ref. {REF.strftime('%d/%m/%Y')}</p>
+      </div>
+      {_pdf_cta()}
+    </div>
+    <div id="homeBlock">
+      <div class="sec-head">
         <h2>Tipos de estrutura</h2>
-        <p>Filtre pelo produto para ver as operações da semana.</p>
+        <p>Selecione o produto para ver as operações.</p>
       </div>
       <div class="tabs" id="catGrid">{cats}</div>
     </div>
@@ -2513,62 +2594,7 @@ def hub_html(sections: list[tuple[str, list[tuple[str, dict]]]]) -> str:
     {_hub_footer()}
   </main>
 </div>
-<script>
-(function(){{
-  var home=document.getElementById('homeBlock');
-  var cards=[].slice.call(document.querySelectorAll('.cat-card'));
-  var spots=[].slice.call(document.querySelectorAll('.spot'));
-  var sections=[].slice.call(document.querySelectorAll('.cat-section'));
-  var navEmp=document.querySelector('a.nav-item[href="./empresas.html"]');
-  var navEst=document.querySelector('a.nav-item[href="./empresas.html#products"]');
-  function setNav(which){{
-    if(navEmp) navEmp.classList.toggle('active', which==='empresas');
-    if(navEst) navEst.classList.toggle('active', which==='estruturas');
-  }}
-  function show(id){{
-    cards.forEach(function(c){{ c.classList.toggle('active', c.getAttribute('data-target')===id); }});
-    spots.forEach(function(s){{ s.classList.toggle('active', s.getAttribute('data-target')===id); }});
-    sections.forEach(function(s){{
-      var on=s.id===id;
-      if(on) s.removeAttribute('hidden'); else s.setAttribute('hidden','');
-    }});
-    if(id){{
-      home.style.display='none';
-      setNav(id.indexOf('co-')===0 ? 'empresas' : 'estruturas');
-      var el=document.getElementById(id);
-      if(el) el.scrollIntoView({{behavior:'smooth',block:'start'}});
-      history.replaceState(null,'','#'+id);
-    }} else {{
-      home.style.display='';
-      setNav(location.hash==='#products' ? 'estruturas' : 'empresas');
-      history.replaceState(null,'',location.pathname+(location.hash==='#products'?'#products':''));
-      window.scrollTo({{top:0,behavior:'smooth'}});
-    }}
-  }}
-  cards.forEach(function(c){{
-    c.addEventListener('click',function(){{ show(c.getAttribute('data-target')); }});
-  }});
-  spots.forEach(function(s){{
-    s.addEventListener('click',function(){{ show(s.getAttribute('data-target')); }});
-    s.addEventListener('keydown',function(e){{
-      if(e.key==='Enter' || e.key===' '){{ e.preventDefault(); show(s.getAttribute('data-target')); }}
-    }});
-  }});
-  document.querySelectorAll('[data-back]').forEach(function(b){{
-    b.addEventListener('click',function(){{ show(null); }});
-  }});
-  var hash=(location.hash||'').replace('#','');
-  if(hash==='products'){{
-    setNav('estruturas');
-    var el=document.getElementById('products');
-    if(el) setTimeout(function(){{ el.scrollIntoView({{behavior:'smooth',block:'start'}}); }}, 50);
-  }} else if(hash && document.getElementById(hash)) {{
-    show(hash);
-  }} else {{
-    setNav('empresas');
-  }}
-}})();
-</script>
+<script>{_drill_script('.cat-card')}</script>
 </body>
 </html>
 """
@@ -2705,6 +2731,7 @@ def main():
 
     (ROOT / "index.html").write_text(overview_html(sections), encoding="utf-8")
     (ROOT / "empresas.html").write_text(hub_html(sections), encoding="utf-8")
+    (ROOT / "estruturas.html").write_text(estruturas_html(sections), encoding="utf-8")
     patch_root_index()
     print("ops", len(all_ops))
     for slug, cfg in all_ops[:5]:
