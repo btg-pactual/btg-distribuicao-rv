@@ -19,23 +19,12 @@ REPO = ROOT.parent
 if str(REPO) not in sys.path:
     sys.path.insert(0, str(REPO))
 OPS = ROOT / "ops"
-REF = date(2026, 10, 20)  # material Trade Ideas 20/10/2026 (aba Excel 19.10.26)
-PDF_NAME = "Material-Prateleira-Tatica-20102026.pdf"
+REF = date(2026, 10, 28)  # aba Excel 28.10.26 — PDF da semana ainda não publicado
+PDF_NAME = ""  # remover PDF antigo; novo em breve
 
 # Destaques manuais do Overview — preencher quando pedido.
 # Ex.: {"title": "SOC TOTS3", "blurb": "…", "href": "./ops/soc-tots3-30dc/"}
-OVERVIEW_DESTAQUES: list[dict] = [
-    {
-        "title": "SOC TOTS3",
-        "blurb": "Cupom 12,49% · Proteção 12% · Prazo 30dc",
-        "href": "./ops/soc-tots3-30dc/",
-    },
-    {
-        "title": "SOC B3SA3",
-        "blurb": "Cupom 8% · Proteção 12% · Prazo 20dc",
-        "href": "./ops/soc-b3sa3-20dc/",
-    },
-]
+OVERVIEW_DESTAQUES: list[dict] = []
 RESEARCH_REC = "https://content.btgpactual.com/api/research/content-hub/recommendations/ticker/{ticker}?includeInstitutionalData=true"
 RESEARCH_QUOTES = "https://content.btgpactual.com/api/research/research/public/asset/quotes"
 RESEARCH_SUMMARY = "https://content.btgpactual.com/api/research/content-hub-assets/v1/asset/summary/{ticker}"
@@ -318,6 +307,11 @@ SECTOR_FALLBACK = {
     "P2LT34": "Tecnologia (BDR)",
     "SMAB11": "Índice / ETF",
     "AMZO34": "Varejo / Tecnologia (BDR)",
+    "AURA33": "Mineração / Ouro",
+    "MBRF3": "Alimentos",
+    "VIVT3": "Telecom",
+    "RADL3": "Varejo / Farmácia",
+    "SUZB3": "Papel & Celulose",
 }
 COMPANY_FALLBACK = {
     "SPCX34": "SPDR S&P 500",
@@ -347,6 +341,11 @@ COMPANY_FALLBACK = {
     "GGBR4": "Gerdau",
     "WEGE3": "WEG",
     "EQTL3": "Equatorial",
+    "AURA33": "Aura Minerals",
+    "MBRF3": "BRF",
+    "VIVT3": "Vivo / Telefônica",
+    "RADL3": "Raia Drogasil",
+    "SUZB3": "Suzano",
     "TEND3": "Construtora Tenda",
     "PRIO3": "Prio",
 }
@@ -559,74 +558,40 @@ def research_insights_html(cfg: dict) -> str:
 """
 
 
-# ---- data (fonte: prateleira/operacoes/operacoes.xlsx · aba 19.10.26) ----
+# ---- data (fonte: prateleira/operacoes/operacoes.xlsx · aba 28.10.26) ----
 # NUNCA exibir BID (fee) nem DELTA no HTML — só níveis estruturais / cupom / backtest / preço de compra.
 # (ticker, fixing, strike, ko, bid, backtest_barreira%, prazo_dc)
 # Cupom comercial/gráfico = strike − 100 (lock do SOC); bid = preço da book, não o cupom.
-# prazo_dc = dias do material Trade Ideas 20/10; backtest de barreira não vem nesse PDF (None).
 SOC = [
-    ("TOTS3", date(2026, 11, 19), 112.49, 88.0, 1.50, None, 30),
-    # Extra (destaque): cupom 8% / proteção 12% / 20dc — além do SOC B3 da aba Excel
-    ("B3SA3", date(2026, 11, 9), 108.0, 88.0, None, None, 20),
-    ("B3SA3", date(2026, 11, 19), 114.56, 88.0, 1.50, None, 30),
-    ("EMBJ3", date(2026, 11, 18), 103.56, 90.0, 1.05, None, 29),
-    ("TEND3", date(2026, 11, 19), 113.29, 88.0, 1.50, None, 30),
-    ("BRAV3", date(2026, 12, 3), 106.85, 90.0, 1.00, None, 44),
-    ("WEGE3", date(2026, 12, 2), 104.50, 90.0, 1.00, None, 43),
-    ("GGBR4", date(2026, 11, 18), 104.50, 90.0, 1.00, None, 29),
-    ("AMZO34", date(2026, 11, 18), 104.00, 90.0, 1.00, None, 29),
-    ("ITUB4", date(2026, 11, 18), 104.50, 90.0, 1.00, None, 29),
+    ("MBRF3", date(2026, 11, 27), 105.97, 90.0, 1.00, None, None),
+    ("AURA33", date(2026, 11, 27), 110.0, 88.0, 1.50, None, None),
+    ("VIVT3", date(2026, 12, 14), 104.55, 90.0, 1.00, None, None),
+    ("WEGE3", date(2026, 12, 14), 104.05, 90.0, 1.00, None, None),
 ]
 
-# (ticker, fixing, put, call, ki, bid) — bid NÃO vai para a UI
-SMART = [
-    ("ITUB4", date(2027, 10, 19), 90.0, 110.0, 144.32, 4.70),
-    ("PETR4", date(2027, 10, 19), 90.0, 110.0, 151.08, 5.00),
-    ("BBAS3", date(2027, 10, 19), 100.0, 110.0, 163.55, 3.00),
-    ("PRIO3", date(2027, 4, 15), 90.0, 104.0, 145.0, 3.00),
-    ("PETR4", date(2027, 4, 15), 90.0, 104.0, 132.0, 3.00),
-    ("ITUB4", date(2027, 4, 15), 90.0, 104.0, 126.0, 3.00),
-    ("B3SA3", date(2027, 4, 15), 90.0, 104.0, 142.0, 3.00),
-    ("CYRE3", date(2027, 4, 15), 90.0, 104.0, 140.0, 3.00),
+# Sem Smart Hedge / Triplo / CS / Collar / POP / One Touch nesta aba.
+SMART: list = []
+TRIPLO: list = []
+CALL_SPREAD: list = []
+COLLAR: list = []
+POP = None
+ONE_TOUCH: list = []
+
+# Aceleradora KO com Ativo: (ticker, fixing, buy_call, ko, sell_call, bid)
+ACEL_KO = [
+    ("ITUB4", date(2027, 2, 25), 102.0, 115.48, 115.48, 1.00),
+    ("AXIA3", date(2027, 2, 25), 102.0, 116.33, 116.33, 1.00),
+    ("PRIO3", date(2027, 1, 26), 100.0, 116.0, 116.0, 2.85),
+    ("EMBJ3", date(2027, 1, 26), 100.0, 116.0, 116.0, 1.45),
 ]
 
-# (ticker, fixing, sold_call_ki, ko_alta, ko_baixa, bid)
-TRIPLO = [
-    ("NVDC34", date(2027, 10, 20), 115.0, 154.0, 80.0, 3.00),
-    ("GOGL34", date(2027, 10, 20), 115.0, 145.0, 80.0, 4.50),
-    ("RENT3", date(2027, 10, 20), 115.0, 142.0, 80.0, 4.50),
-]
-
-# Offer Excel: célula decimal (−0,048) → abs × 100
-# Compra de call spread: (ticker, fixing, buy_call, sell_call, cost abs)
-CALL_SPREAD = [
-    ("BOVA11", date(2026, 11, 30), 105.0, 115.0, 4.80),
-    ("SMAL11", date(2026, 12, 16), 105.0, 115.0, 4.80),
-    ("BOVA11", date(2026, 12, 16), 105.0, 120.0, 4.20),
-]
-# Collar: (ticker, fixing, put, call, bid, backtest% opcional)
-COLLAR = [
-    ("ITUB4", date(2027, 4, 19), 90.0, 112.0, 2.70),
-    ("AXIA3", date(2027, 10, 19), 90.0, 124.0, 2.00),
-    ("PETR4", date(2027, 4, 19), 90.0, 116.83, 1.70),
-    ("PETR4", date(2027, 10, 19), 90.0, 124.0, 2.50),
-    ("ITUB4", date(2027, 10, 19), 90.0, 119.35, 3.14),
-    ("MGLU3", date(2027, 1, 15), 90.0, 110.0, 2.00),
-    ("B3SA3", date(2027, 1, 15), 90.0, 111.0, 2.00),
-    ("EQTL3", date(2027, 1, 15), 90.0, 108.0, 2.00),
-]
 # Call KO: (ticker, fixing, call_strike, ko_pct, rebate, cost/offer abs)
+# Offer Excel −4,50% → abs 4.50
 CALL_KO = [
-    ("ASAI3", date(2026, 12, 17), 102.0, 118.0, 5.50, 4.50),
-    ("MOVI3", date(2026, 12, 17), 102.0, 125.0, 5.50, 4.50),
-    ("RENT3", date(2026, 12, 17), 102.0, 117.0, 5.50, 4.50),
-]
-# POP: (ticker, fixing, call_strike, put_strike) — Trade Ideas 20/10
-POP = ("SMAL11", date(2027, 10, 19), 100.0, 100.0)
-# One Touch de Alta: (ticker, fixing, barrier_pct, rebate, cost/offer abs)
-# Fonte: One Touch De Alta - Final (PDF 20/10) — barreira discreta no fixing.
-ONE_TOUCH = [
-    ("BOVA11", date(2026, 10, 30), 107.0, 5.0, 2.0),
+    ("EMBJ3", date(2026, 12, 28), 100.0, 119.0, 5.0, 4.50),
+    ("GGBR4", date(2026, 12, 28), 100.0, 120.0, 5.0, 4.50),
+    ("RADL3", date(2026, 12, 28), 100.0, 123.7, 5.0, 4.50),
+    ("SUZB3", date(2026, 12, 28), 100.0, 118.5, 5.0, 4.50),
 ]
 
 CSS = """
@@ -1120,6 +1085,86 @@ def make_sh(t, fixing, put, call, ki, _bid):
         "js_const": f"var PUT={put}, CALL={call}, KI={ki};",
         "js_fn": "var st=100+x; var r=st+Math.max(PUT-st,0)-(st>=KI?Math.max(st-CALL,0):0)-100; return r;",
         "js_regime": f"var st=100+x; if(st>=KI) return 'KI: teto {cap:+.0f}%.'; if(x<=(PUT-100)) return 'Piso da put.'; return 'Participa 1:1.';",
+    }
+
+
+def make_acel_ko_ativo(t, fixing, buy_call, ko_pct, sell_call, _bid):
+    """Aceleradora KO com Ativo: 2× na alta até o KO; no KO teto; queda acompanha o ativo."""
+    prazo = months_label(fixing)
+    H = round(ko_pct - 100, 2)
+    B = round(buy_call - 100, 2)
+    peak = H
+    slug = slugify("aceleradora-ko-ativo", t, prazo.replace(" ", ""))
+    kh, kb, ks = fmt_lvl(ko_pct), fmt_lvl(buy_call), fmt_lvl(sell_call)
+    peak_lbl = f"+{peak:.2f}".rstrip("0").rstrip(".").replace(".", ",") + "%"
+    half = round(H / 2, 2)
+    half_lbl = f"+{half:.2f}".rstrip("0").rstrip(".").replace(".", ",") + "%"
+    return slug, {
+        "title": f"Aceleradora KO com Ativo {t}",
+        "h1": "Aceleradora KO com Ativo",
+        "ticker": t,
+        "dot": "AK",
+        "brand": "#1a5f9e",
+        "subtitle": (
+            f"Ganho dobrado (2×) na alta de {t} até o KO {kh} (teto {peak_lbl}). "
+            f"Se a barreira for atingida, o ganho fica limitado ao teto. Na queda, acompanha o ativo."
+        ),
+        "pills": [
+            ("Ativo", t),
+            ("Prazo", prazo),
+            ("Alta", "2×"),
+            ("Call KO", kb),
+            ("KO", kh),
+            ("Teto", peak_lbl),
+        ],
+        "highlights": [
+            ("Prazo", prazo, ""),
+            ("Alta", "2×", f"Até o teto {peak_lbl} (a partir de {half_lbl})"),
+            ("No KO", peak_lbl, f"Ganho limitado ao KO {kh}"),
+            ("Queda", "1:1", "Acompanha o ativo"),
+        ],
+        "struct": [
+            ('<span class="tag b">B</span> Call KO', f"stk {kb} · barreira {kh}"),
+            ('<span class="tag s">S</span> Call', f"stk {ks}"),
+        ],
+        "zones": [
+            ("< 0%", "Acompanha o ativo 1:1."),
+            (f"0% → {half_lbl}", "Ganho dobrado: retorno = 2× a alta."),
+            (f"≥ {half_lbl}", f"Teto {peak_lbl} — limitado ao KO {kh}."),
+        ],
+        "regime0": f"Na alta: 2× até o teto {peak_lbl}. No KO {kh}: permanece em {peak_lbl}.",
+        "speech": [
+            (
+                "Para quem",
+                f"Cliente construtivo em {t} ({prazo}) que quer alavancar a alta com teto no KO, aceitando acompanhar o ativo na queda.",
+            ),
+            (
+                "Como encaixa",
+                f"Aceleradora KO com Ativo: Call KO stk {kb} (barreira {kh}) + Call vendida stk {ks}. "
+                f"2× na alta até o teto {peak_lbl}; no KO o ganho fica limitado.",
+            ),
+            ("Fechamento", "Material de uso interno — condições no DIE."),
+        ],
+        "x_min": -40,
+        "x_max": max(80, int(H) + 30),
+        "y_min": -40,
+        "y_max": max(40, int(math.ceil(peak / 5.0) * 5) + 10),
+        "ko_markers": True,
+        "ko_call_label": f"KO · teto {peak_lbl}",
+        "js_const": f"var H={H}, CAP={peak}, B={B};",
+        "js_fn": "if (x < 0) return x; if (x < H) return Math.min(2*x, CAP); return CAP;",
+        "js_regime": (
+            "if (x < 0) return 'Queda: acompanha o ativo 1:1.'; "
+            "if (2*x < CAP) return 'Alta acelerada: 2× (ainda abaixo do teto).'; "
+            "if (x < H) return 'Teto do KO atingido — ganho limitado a '+CAP.toFixed(1).replace('.',',')+'%.'; "
+            "return 'KO: teto '+CAP.toFixed(1).replace('.',',')+'%.';"
+        ),
+        "js_build": """
+    for (var x = X_MIN; x <= 0; x += 0.5) add(x, x);
+    for (var x2 = 0.5; x2 < H; x2 += 0.5) add(x2, Math.min(2 * x2, CAP));
+    add(H, CAP);
+    for (var x3 = H + 0.5; x3 <= X_MAX; x3 += 0.5) add(x3, CAP);
+""",
     }
 
 
@@ -2056,6 +2101,11 @@ SECTION_META = {
         "blurb": "2× na alta até a call vendida; se atingir o KO, a call vira pó. Proteção parcial.",
         "color": "#1e4d7b",
     },
+    "Aceleradora KO com Ativo": {
+        "id": "aceleradora-ko-ativo",
+        "blurb": "2× na alta até o KO; no KO o ganho fica no teto. Na queda, acompanha o ativo.",
+        "color": "#1a5f9e",
+    },
     "Triplo Retorno KO": {
         "id": "triplo",
         "blurb": "Alavancagem 3× na alta, ganho também na queda moderada, com teto no KO.",
@@ -2662,37 +2712,22 @@ def main():
     sections: list[tuple[str, list]] = []
     all_ops = []
 
-    soc_items = [make_soc(*r) for r in SOC]
-    sections.append(("SOC", soc_items))
-    all_ops.extend(soc_items)
+    def add_section(title: str, items: list) -> None:
+        if not items:
+            return
+        sections.append((title, items))
+        all_ops.extend(items)
 
-    sh_items = [make_sh(*r) for r in SMART]
-    sections.append(("Smart Hedge", sh_items))
-    all_ops.extend(sh_items)
-
-    tri_items = [make_triplo(*r) for r in TRIPLO]
-    sections.append(("Triplo Retorno KO", tri_items))
-    all_ops.extend(tri_items)
-
-    cs_items = [make_call_spread(*r) for r in CALL_SPREAD]
-    sections.append(("Compra de Call Spread", cs_items))
-    all_ops.extend(cs_items)
-
-    collar_items = [make_collar(*r) for r in COLLAR]
-    sections.append(("Collar", collar_items))
-    all_ops.extend(collar_items)
-
-    ck_items = [make_call_ko(*r) for r in CALL_KO]
-    sections.append(("Call KO com Rebate", ck_items))
-    all_ops.extend(ck_items)
-
-    pop = make_pop(*POP)
-    sections.append(("POP", [pop]))
-    all_ops.append(pop)
-
-    ot_items = [make_ot(*r) for r in ONE_TOUCH]
-    sections.append(("One Touch de Alta", ot_items))
-    all_ops.extend(ot_items)
+    add_section("SOC", [make_soc(*r) for r in SOC])
+    add_section("Smart Hedge", [make_sh(*r) for r in SMART])
+    add_section("Aceleradora KO com Ativo", [make_acel_ko_ativo(*r) for r in ACEL_KO])
+    add_section("Triplo Retorno KO", [make_triplo(*r) for r in TRIPLO])
+    add_section("Compra de Call Spread", [make_call_spread(*r) for r in CALL_SPREAD])
+    add_section("Collar", [make_collar(*r) for r in COLLAR])
+    add_section("Call KO com Rebate", [make_call_ko(*r) for r in CALL_KO])
+    if POP:
+        add_section("POP", [make_pop(*POP)])
+    add_section("One Touch de Alta", [make_ot(*r) for r in ONE_TOUCH])
 
     tickers = [cfg["ticker"] for _, cfg in all_ops]
     try:
