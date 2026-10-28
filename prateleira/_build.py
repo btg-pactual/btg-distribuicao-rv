@@ -898,7 +898,7 @@ def op_page(cfg: dict) -> str:
     }}
     if (typeof H === 'number') {{
       var cL=document.getElementById('callKoGap'), cT=document.getElementById('callKoLabel');
-      var peakY = (typeof CAP === 'number') ? CAP : (2 * H);
+      var peakY = (typeof PEAK === 'number') ? PEAK : ((typeof CAP === 'number') ? CAP : (2 * H));
       cL.setAttribute('x1', xToSvg(H)); cL.setAttribute('x2', xToSvg(H));
       cL.setAttribute('y1', yToSvg(peakY)); cL.setAttribute('y2', yToSvg(0));
       cL.setAttribute('opacity', '1');
@@ -1100,16 +1100,21 @@ def make_sh(t, fixing, put, call, ki, _bid):
 
 
 def make_acel_ko_ativo(t, fixing, buy_call, ko_pct, sell_call, _bid):
-    """Aceleradora KO com Ativo: 2× na alta até o KO; no KO teto; queda acompanha o ativo."""
+    """Aceleradora KO com Ativo (DIE): ativo + Call UO stk B / KO H + Call vendida stk H.
+
+    Sem KO: abaixo de B acompanha 1:1; entre B e H retorno = 2x−B (pico ≈ 2H−B).
+    Com KO: Call UO some; acima de H o ganho fica limitado a H (cliff do pico para H).
+    """
     prazo = months_label(fixing)
     H = round(ko_pct - 100, 2)
     B = round(buy_call - 100, 2)
-    peak = H
+    peak = round(2 * H - B, 2)  # ganho máx. se KO não for atingido (justo abaixo da barreira)
+    cap_ko = H  # se KO atingido e spot ≥ H: limitado ao nível do KO
     slug = slugify("aceleradora-ko-ativo", t, prazo.replace(" ", ""))
     kh, kb, ks = fmt_lvl(ko_pct), fmt_lvl(buy_call), fmt_lvl(sell_call)
-    peak_lbl = f"+{peak:.2f}".rstrip("0").rstrip(".").replace(".", ",") + "%"
-    half = round(H / 2, 2)
-    half_lbl = f"+{half:.2f}".rstrip("0").rstrip(".").replace(".", ",") + "%"
+    peak_lbl = fmt_pct(peak)
+    cap_lbl = fmt_pct(cap_ko)
+    b_lbl = fmt_pct(B) if B != 0 else "0%"
     return slug, {
         "title": f"Aceleradora KO com Ativo {t}",
         "h1": "Aceleradora KO com Ativo",
@@ -1117,8 +1122,8 @@ def make_acel_ko_ativo(t, fixing, buy_call, ko_pct, sell_call, _bid):
         "dot": "AK",
         "brand": "#1a5f9e",
         "subtitle": (
-            f"Ganho dobrado (2×) na alta de {t} até o KO {kh} (teto {peak_lbl}). "
-            f"Se a barreira for atingida, o ganho fica limitado ao teto. Na queda, acompanha o ativo."
+            f"Alavanca a alta de {t} até o KO {kh}: ganho máximo {peak_lbl} se a barreira não for atingida. "
+            f"Caso a alta ultrapasse {kh}, o ganho fica limitado a {cap_lbl}. Na queda, acompanha o ativo."
         ),
         "pills": [
             ("Ativo", t),
@@ -1126,12 +1131,12 @@ def make_acel_ko_ativo(t, fixing, buy_call, ko_pct, sell_call, _bid):
             ("Alta", "2×"),
             ("Call KO", kb),
             ("KO", kh),
-            ("Teto", peak_lbl),
+            ("Máx.", peak_lbl),
         ],
         "highlights": [
             ("Prazo", prazo, ""),
-            ("Alta", "2×", f"Até o teto {peak_lbl} (a partir de {half_lbl})"),
-            ("No KO", peak_lbl, f"Ganho limitado ao KO {kh}"),
+            ("Alta", "2×", f"Acima de {kb} até o KO — máx. {peak_lbl}"),
+            ("No KO", cap_lbl, f"Barreira atingida: limitado a {kh}"),
             ("Queda", "1:1", "Acompanha o ativo"),
         ],
         "struct": [
@@ -1139,11 +1144,17 @@ def make_acel_ko_ativo(t, fixing, buy_call, ko_pct, sell_call, _bid):
             ('<span class="tag s">S</span> Call', f"stk {ks}"),
         ],
         "zones": [
-            ("< 0%", "Acompanha o ativo 1:1."),
-            (f"0% → {half_lbl}", "Ganho dobrado: retorno = 2× a alta."),
-            (f"≥ {half_lbl}", f"Teto {peak_lbl} — limitado ao KO {kh}."),
+            (f"< {b_lbl}" if B > 0 else "< 0%", "Acompanha o ativo 1:1."),
+            (
+                f"{b_lbl} → {fmt_pct(H)}" if B > 0 else f"0% → {fmt_pct(H)}",
+                f"KO não atingido: retorno = 2× a alta − {kb} (máx. {peak_lbl}).",
+            ),
+            (f"≥ {fmt_pct(H)}", f"KO atingido: ganho limitado a {cap_lbl}."),
         ],
-        "regime0": f"Na alta: 2× até o teto {peak_lbl}. No KO {kh}: permanece em {peak_lbl}.",
+        "regime0": (
+            f"Sem KO: 2× acima de {kb} até {peak_lbl}. "
+            f"Com KO {kh}: cliff — ganho limitado a {cap_lbl}."
+        ),
         "speech": [
             (
                 "Para quem",
@@ -1152,7 +1163,7 @@ def make_acel_ko_ativo(t, fixing, buy_call, ko_pct, sell_call, _bid):
             (
                 "Como encaixa",
                 f"Aceleradora KO com Ativo: Call KO stk {kb} (barreira {kh}) + Call vendida stk {ks}. "
-                f"2× na alta até o teto {peak_lbl}; no KO o ganho fica limitado.",
+                f"Sem KO, ganho até {peak_lbl}; se a barreira for atingida, limitado a {cap_lbl}.",
             ),
             ("Fechamento", "Material de uso interno — condições no DIE."),
         ],
@@ -1161,18 +1172,19 @@ def make_acel_ko_ativo(t, fixing, buy_call, ko_pct, sell_call, _bid):
         "y_min": -40,
         "y_max": max(40, int(math.ceil(peak / 5.0) * 5) + 10),
         "ko_markers": True,
-        "ko_call_label": f"KO · teto {peak_lbl}",
-        "js_const": f"var H={H}, CAP={peak}, B={B};",
-        "js_fn": "if (x < 0) return x; if (x < H) return Math.min(2*x, CAP); return CAP;",
+        "ko_call_label": f"KO · máx {peak_lbl} → {cap_lbl}",
+        "js_const": f"var H={H}, B={B}, PEAK={peak}, CAP={cap_ko};",
+        # DIE: abaixo de B = 1:1; B→H = 2x−B; ≥H (KO) = H (cliff do PEAK para CAP).
+        "js_fn": "if (x < B) return x; if (x < H) return 2*x - B; return CAP;",
         "js_regime": (
-            "if (x < 0) return 'Queda: acompanha o ativo 1:1.'; "
-            "if (2*x < CAP) return 'Alta acelerada: 2× (ainda abaixo do teto).'; "
-            "if (x < H) return 'Teto do KO atingido — ganho limitado a '+CAP.toFixed(1).replace('.',',')+'%.'; "
-            "return 'KO: teto '+CAP.toFixed(1).replace('.',',')+'%.';"
+            "if (x < B) return 'Abaixo da Call KO: acompanha o ativo 1:1.'; "
+            "if (x < H) return 'KO não atingido: alta acelerada (2×) — até '+PEAK.toFixed(2).replace('.',',')+'%.'; "
+            "return 'KO atingido: ganho limitado a '+CAP.toFixed(2).replace('.',',')+'%.';"
         ),
         "js_build": """
-    for (var x = X_MIN; x <= 0; x += 0.5) add(x, x);
-    for (var x2 = 0.5; x2 < H; x2 += 0.5) add(x2, Math.min(2 * x2, CAP));
+    for (var x = X_MIN; x <= B; x += 0.5) add(x, x);
+    for (var x2 = B + 0.5; x2 < H; x2 += 0.5) add(x2, 2 * x2 - B);
+    add(H - 0.01, PEAK);
     add(H, CAP);
     for (var x3 = H + 0.5; x3 <= X_MAX; x3 += 0.5) add(x3, CAP);
 """,
