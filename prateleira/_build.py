@@ -22,9 +22,15 @@ OPS = ROOT / "ops"
 REF = date(2026, 10, 28)  # aba Excel 28.10.26 — PDF da semana ainda não publicado
 PDF_NAME = ""  # remover PDF antigo; novo em breve
 
-# Destaques manuais do Overview — preencher quando pedido.
-# Ex.: {"title": "SOC TOTS3", "blurb": "…", "href": "./ops/soc-tots3-30dc/"}
-OVERVIEW_DESTAQUES: list[dict] = []
+# Destaques / leituras manuais do Overview — preencher quando pedido.
+# Ex.: {"title": "…", "blurb": "…", "href": "https://…"}  (http → abre em nova aba)
+OVERVIEW_DESTAQUES: list[dict] = [
+    {
+        "title": "Estratégia: Correção do mercado — e agora?",
+        "blurb": "Após o sell-off, o Research avalia até onde a correção pode ir e o que monitorar daqui pra frente. Abrir no Research →",
+        "href": "https://content.btgpactual.com/research/home/relatorio/6ae1dbef29c4882ecd6c2b4b/Estrategia-Correcao-do-mercado-e-agora",
+    },
+]
 RESEARCH_REC = "https://content.btgpactual.com/api/research/content-hub/recommendations/ticker/{ticker}?includeInstitutionalData=true"
 RESEARCH_QUOTES = "https://content.btgpactual.com/api/research/research/public/asset/quotes"
 RESEARCH_SUMMARY = "https://content.btgpactual.com/api/research/content-hub-assets/v1/asset/summary/{ticker}"
@@ -2426,8 +2432,9 @@ def overview_html(sections: list[tuple[str, list[tuple[str, dict]]]]) -> str:
             href = html_esc(d.get("href") or "#")
             title = html_esc(d.get("title") or "")
             blurb = html_esc(d.get("blurb") or "")
+            ext = ' target="_blank" rel="noopener noreferrer"' if href.startswith("http") else ""
             items.append(
-                f'<li><a href="{href}"><div class="destaque-title">{title}</div>'
+                f'<li><a href="{href}"{ext}><div class="destaque-title">{title}</div>'
                 f'<div class="destaque-blurb">{blurb}</div></a></li>'
             )
         destaques = f'<ul class="destaque-list">{"".join(items)}</ul>'
@@ -2471,7 +2478,7 @@ def overview_html(sections: list[tuple[str, list[tuple[str, dict]]]]) -> str:
       </div>
     </div>
     <div class="sec-head">
-      <h2>Destaques</h2>
+      <h2>Leitura em destaque</h2>
     </div>
     <div class="ov-panel">{destaques}</div>
     {_hub_footer()}
