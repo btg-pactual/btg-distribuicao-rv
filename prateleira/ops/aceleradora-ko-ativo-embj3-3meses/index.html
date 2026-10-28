@@ -132,7 +132,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
     <h2>Research BTG</h2>
     <a class="research-link" href="https://content.btgpactual.com/research/ativo/EMBJ3" target="_blank" rel="noopener">Abrir EMBJ3 no Research <span class="arrow" aria-hidden="true">→</span></a>
   </div>
-  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 96,83</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 126,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+30,12%</div></div></div><p class="research-note">Spot do fechamento anterior (28/10/2026) · preço-alvo atualizado em 24/08/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
+  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 96,72</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 126,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+30,27%</div></div></div><p class="research-note">Spot do fechamento anterior (28/10/2026) · preço-alvo atualizado em 24/08/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
 </section>
 
 <div class="main">
@@ -146,8 +146,8 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
           <table class="struct-table">
             <thead><tr><th></th><th>R$</th><th>vs spot</th></tr></thead>
             <tbody>
-              <tr><td>Máximo</td><td><strong>105,50</strong></td><td>+9,0%</td></tr>
-              <tr><td>Mínimo</td><td><strong>68,08</strong></td><td>-29,7%</td></tr>
+              <tr><td>Máximo</td><td><strong>105,50</strong></td><td>+9,1%</td></tr>
+              <tr><td>Mínimo</td><td><strong>68,08</strong></td><td>-29,6%</td></tr>
             </tbody>
           </table>
           <p class="legend-note">
@@ -225,7 +225,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
   var X_MIN=-40,X_MAX=80,Y_MIN=-40,Y_MAX=40;
   var PAD={l:48,t:24,r:48,b:24},VW=600,VH=400;
   var PLOT_W=VW-PAD.l-PAD.r,PLOT_H=VH-PAD.t-PAD.b;
-  var RESEARCH_X=30.1250;
+  var RESEARCH_X=30.2730;
   var H=16.0, CAP=16.0, B=0.0;
   function structureReturn(x){ if (x < 0) return x; if (x < H) return Math.min(2*x, CAP); return CAP; }
   function regimeFor(x){ if (x < 0) return 'Queda: acompanha o ativo 1:1.'; if (2*x < CAP) return 'Alta acelerada: 2× (ainda abaixo do teto).'; if (x < H) return 'Teto do KO atingido — ganho limitado a '+CAP.toFixed(1).replace('.',',')+'%.'; return 'KO: teto '+CAP.toFixed(1).replace('.',',')+'%.'; }

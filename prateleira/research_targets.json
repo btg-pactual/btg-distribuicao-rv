@@ -30,8 +30,8 @@
   "AXIA3": {
     "ticker": "AXIA3",
     "url": "https://content.btgpactual.com/research/ativo/AXIA3",
-    "price": 49.05,
-    "last_trade": "2026-10-28T15:58:51",
+    "price": 48.8,
+    "last_trade": "2026-10-28T16:04:54",
     "sector": "Serviços Básicos",
     "company": "Axia Energia",
     "rec": "COMPRA",
@@ -45,13 +45,13 @@
       "A preferência segue no resgate de PNCs em vez de dividendos extraordinários, com distribuição do dividendo mínimo no 4T. O pipeline em transmissão soma R$8 bi, enquanto os investimentos em R&M devem ficar em R$5,0–5,5 bi no ano, ante…"
     ],
     "summary_date": "2026-10-27 16:46:22.419592+00:00",
-    "upside": 69.21508664627932
+    "upside": 70.08196721311477
   },
   "WEGE3": {
     "ticker": "WEGE3",
     "url": "https://content.btgpactual.com/research/ativo/WEGE3",
-    "price": 46.98,
-    "last_trade": "2026-10-28T15:58:51",
+    "price": 47.12,
+    "last_trade": "2026-10-28T16:04:56",
     "sector": "Bens de Capital",
     "company": "WEG",
     "rec": "COMPRA",
@@ -65,13 +65,13 @@
       "A tese também carrega sensibilidade cambial, com cerca de 60% da receita em moeda estrangeira e potencial de alta de 11% no lucro de 2027 se o dólar subir de R$5,50 para R$6,00. Para investidores, recomenda-se acompanhar a conversão do…"
     ],
     "summary_date": "2026-10-27 19:18:53.913838+00:00",
-    "upside": 38.35674755214986
+    "upside": 37.94567062818337
   },
   "PRIO3": {
     "ticker": "PRIO3",
     "url": "https://content.btgpactual.com/research/ativo/PRIO3",
-    "price": 71.95,
-    "last_trade": "2026-10-28T15:58:51",
+    "price": 71.9,
+    "last_trade": "2026-10-28T16:04:56",
     "sector": "Petróleo & Gás",
     "company": "PetroRio",
     "rec": "COMPRA",
@@ -85,7 +85,7 @@
       "A companhia também indicou intenção de sustentar produção ao redor de 200 kboed até 2028, encerrar 2026 em ~210 kboed e reduzir o custo de extração para ~US$7/bbl no 3T26. As âncoras de retorno seguem relevantes: FCFE yield de ~20–24%…"
     ],
     "summary_date": "2026-10-19 15:53:01.297225+00:00",
-    "upside": 1.459346768589298
+    "upside": 1.5299026425591
   },
   "SPCX34": {
     "ticker": "SPCX34",
@@ -158,8 +158,8 @@
   "ITUB4": {
     "ticker": "ITUB4",
     "url": "https://content.btgpactual.com/research/ativo/ITUB4",
-    "price": 39.88,
-    "last_trade": "2026-10-28T15:58:48",
+    "price": 39.82,
+    "last_trade": "2026-10-28T16:04:56",
     "sector": "Financeiro",
     "company": "Itaú Unibanco",
     "rec": "COMPRA",
@@ -173,7 +173,7 @@
       "Nos KPIs, a inadimplência acima de 90 dias ficou em 1,9%, o custo de crédito líquido em R$9 bi, as provisões brutas em R$10,5 bi, as recuperações em R$1,5 bi, a cobertura em 53,8% e o CET1 em 12,3%, reforçando a resiliência do balanço…"
     ],
     "summary_date": "2026-10-27 17:48:33.459703+00:00",
-    "upside": 35.40621865596789
+    "upside": 35.61024610748367
   },
   "PETR4": {
     "ticker": "PETR4",
@@ -218,8 +218,8 @@
   "EMBJ3": {
     "ticker": "EMBJ3",
     "url": "https://content.btgpactual.com/research/ativo/EMBJ3",
-    "price": 96.83,
-    "last_trade": "2026-10-28T15:58:51",
+    "price": 96.72,
+    "last_trade": "2026-10-28T16:04:47",
     "sector": "Aéreas",
     "company": "Embraer",
     "rec": "COMPRA",
@@ -233,7 +233,7 @@
       "No acumulado de 9M26, foram 167 unidades, ou 67% do ponto médio do guidance anual, exigindo 73–88 entregas no 4T26 para cumprir a faixa. A carteira de pedidos atingiu recorde de US$ 36 bi no 3T26, alta de 14% a/a e 3% t/t, com US$ 15,8…"
     ],
     "summary_date": "2026-10-23 18:01:45.987198+00:00",
-    "upside": 30.12496127233295
+    "upside": 30.272952853598014
   },
   "ITLC34": {
     "ticker": "ITLC34",
@@ -406,8 +406,8 @@
   "SUZB3": {
     "ticker": "SUZB3",
     "url": "https://content.btgpactual.com/research/ativo/SUZB3",
-    "price": 48.13,
-    "last_trade": "2026-10-28T15:58:50",
+    "price": 48.1,
+    "last_trade": "2026-10-28T16:04:57",
     "sector": "Papel & Celulose",
     "company": "SUZANO",
     "rec": "COMPRA",
@@ -421,7 +421,7 @@
       "A dívida líquida ficou em R$66,1 bi e a alavancagem em ~3,3x, com a administração indicando pico no 3T26 e melhora a partir do 4T26 via geração de caixa, menor capex, sinergias e fluxo da JV com a Kimberly-Clark, cuja aquisição de 51%…"
     ],
     "summary_date": "2026-10-27 11:58:49.120767+00:00",
-    "upside": 49.59484728859338
+    "upside": 49.68814968814967
   },
   "SMAL11": {
     "ticker": "SMAL11",
@@ -574,8 +574,8 @@
   "GGBR4": {
     "ticker": "GGBR4",
     "url": "https://content.btgpactual.com/research/ativo/GGBR4",
-    "price": 23.82,
-    "last_trade": "2026-10-28T15:58:49",
+    "price": 23.83,
+    "last_trade": "2026-10-28T16:04:57",
     "sector": "Mineração & Siderurgia",
     "company": "Gerdau",
     "rec": "COMPRA",
@@ -589,7 +589,7 @@
       "No 2T26, o EBITDA havia sido de R$3,43 bi, com FCF de R$237 mi, reforçando a trajetória de melhora operacional e financeira. Como âncoras, cerca de 75% do EBITDA vem da América do Norte, uma depreciação de 10% do real pode elevar o…"
     ],
     "summary_date": "2026-10-27 11:58:49.166968+00:00",
-    "upside": 17.54827875734677
+    "upside": 17.498950902224088
   },
   "AMZO34": {
     "ticker": "AMZO34",
@@ -662,8 +662,8 @@
   "MBRF3": {
     "ticker": "MBRF3",
     "url": "https://content.btgpactual.com/research/ativo/MBRF3",
-    "price": 15.91,
-    "last_trade": "2026-10-28T15:58:47",
+    "price": 15.96,
+    "last_trade": "2026-10-28T16:04:57",
     "sector": "Alimentos & Bebidas",
     "company": "Marfrig",
     "rec": "NEUTRO",
@@ -677,21 +677,21 @@
       "Na prévia do trimestre, a expectativa era de receita próxima de R$40 bi, EBITDA de R$3,1 bi e margem de 7,8%, refletindo estabilidade operacional, com BRF compensando pressão doméstica com operações internacionais e bovinos ainda sob…"
     ],
     "summary_date": "2026-10-16 10:51:40.025007+00:00",
-    "upside": 63.41923318667504
+    "upside": 62.907268170426065
   },
   "AURA33": {
     "ticker": "AURA33",
     "url": "https://content.btgpactual.com/research/ativo/AURA33",
-    "price": 142.19,
-    "last_trade": "2026-10-28T15:58:33",
+    "price": 141.65,
+    "last_trade": "2026-10-28T16:04:41",
     "sector": "Materiais Básicos",
     "company": "Aura Minerals"
   },
   "VIVT3": {
     "ticker": "VIVT3",
     "url": "https://content.btgpactual.com/research/ativo/VIVT3",
-    "price": 30.98,
-    "last_trade": "2026-10-28T15:58:50",
+    "price": 30.96,
+    "last_trade": "2026-10-28T16:04:57",
     "sector": "Telecom & Tecnologia",
     "company": "Telefônica Brasil",
     "rec": "COMPRA",
@@ -705,13 +705,13 @@
       "No móvel, o pós-pago, equivalente a 87% da receita de serviços móveis, subiu 8% a/a, apoiado por base pós-paga +6,9% e ARPU de R$ 53,9 (+0,8% a/a), enquanto o pré-pago caiu 1% a/a, com desaceleração relevante da contração."
     ],
     "summary_date": "2026-10-07 09:40:32.124757+00:00",
-    "upside": 0.06455777921239303
+    "upside": 0.12919896640826156
   },
   "RADL3": {
     "ticker": "RADL3",
     "url": "https://content.btgpactual.com/research/ativo/RADL3",
-    "price": 15.51,
-    "last_trade": "2026-10-28T15:58:48",
+    "price": 15.49,
+    "last_trade": "2026-10-28T16:04:55",
     "sector": "Varejo & Consumo",
     "company": "Raia Drogasil",
     "rec": "COMPRA",
@@ -725,6 +725,6 @@
       "A geração de caixa operacional foi de R$ 879 mi no trimestre, com fluxo de caixa de R$ 550 mi e conversão de 54% do EBITDA, enquanto, em 12 meses até o 2T26, a conversão de caixa operacional avançou para 67% e o FCF/EBITDA para 30%. As…"
     ],
     "summary_date": "2026-10-27 19:19:49.914710+00:00",
-    "upside": 93.42359767891683
+    "upside": 93.67333763718528
   }
 }

@@ -2566,11 +2566,7 @@ def hub_html(sections: list[tuple[str, list[tuple[str, dict]]]]) -> str:
         )
 
     spotlights = f"""
-<section class="spotlights" id="spotlights" aria-label="Empresas com operação">
-  <div class="sec-head">
-    <h2>Empresas com operação</h2>
-    <p>Clique na linha para abrir as estruturas do ativo.</p>
-  </div>
+<section class="spotlights" id="spotlights" aria-label="Empresas">
   <div class="table-wrap">
     <table class="data-table">
       <thead>
@@ -2607,7 +2603,7 @@ def hub_html(sections: list[tuple[str, list[tuple[str, dict]]]]) -> str:
     <div class="page-head">
       <div>
         <h1>Empresas</h1>
-        <p class="sub">Operações por ativo · ref. {REF.strftime('%d/%m/%Y')}</p>
+        <p class="sub">Clique na linha para abrir as estruturas · ref. {REF.strftime('%d/%m/%Y')}</p>
       </div>
       {_pdf_cta()}
     </div>
@@ -2651,15 +2647,11 @@ def estruturas_html(sections: list[tuple[str, list[tuple[str, dict]]]]) -> str:
     <div class="page-head">
       <div>
         <h1>Estruturas</h1>
-        <p class="sub">Tipos de produto da semana · ref. {REF.strftime('%d/%m/%Y')}</p>
+        <p class="sub">Selecione o produto para ver as operações · ref. {REF.strftime('%d/%m/%Y')}</p>
       </div>
       {_pdf_cta()}
     </div>
     <div id="homeBlock">
-      <div class="sec-head">
-        <h2>Tipos de estrutura</h2>
-        <p>Selecione o produto para ver as operações.</p>
-      </div>
       <div class="cat-grid" id="catGrid">{cats}</div>
     </div>
     {body}
