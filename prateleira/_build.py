@@ -30,6 +30,11 @@ OVERVIEW_DESTAQUES: list[dict] = [
         "blurb": "Após o sell-off, o Research avalia até onde a correção pode ir e o que monitorar daqui pra frente. Abrir no Research →",
         "href": "https://content.btgpactual.com/research/home/relatorio/6ae1dbef29c4882ecd6c2b4b/Estrategia-Correcao-do-mercado-e-agora",
     },
+    {
+        "title": "Depois das urnas: onde investir e como posicionar a carteira",
+        "blurb": "Empiricus — impactos pós-eleição, diversificação Brasil/exterior e ideias de carteira. Abrir PDF →",
+        "href": "./leituras/Empiricus-Depois-das-urnas-onde-investir.pdf",
+    },
 ]
 RESEARCH_REC = "https://content.btgpactual.com/api/research/content-hub/recommendations/ticker/{ticker}?includeInstitutionalData=true"
 RESEARCH_QUOTES = "https://content.btgpactual.com/api/research/research/public/asset/quotes"
