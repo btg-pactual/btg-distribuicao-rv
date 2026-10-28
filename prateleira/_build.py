@@ -590,8 +590,7 @@ ONE_TOUCH: list = []
 
 # Aceleradora KO com Ativo: (ticker, fixing, buy_call, ko, sell_call, bid)
 ACEL_KO = [
-    ("ITUB4", date(2027, 2, 25), 102.0, 115.48, 115.48, 1.00),
-    ("AXIA3", date(2027, 2, 25), 102.0, 116.33, 116.33, 1.00),
+    ("ITUB4", date(2027, 2, 25), 100.0, 114.75, 114.75, 1.00),
     ("PRIO3", date(2027, 1, 26), 100.0, 116.0, 116.0, 2.85),
     ("EMBJ3", date(2027, 1, 26), 100.0, 116.0, 116.0, 1.45),
 ]
