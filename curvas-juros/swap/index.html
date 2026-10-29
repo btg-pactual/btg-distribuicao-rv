@@ -17,6 +17,18 @@ body{font-family:Segoe UI,system-ui,sans-serif;color:var(--ink);background:var(-
 .btn-refresh{margin-top:8px;padding:8px 12px;border:1px solid rgba(255,255,255,.5);background:rgba(255,255,255,.15);color:#fff;border-radius:8px;font-size:.78rem;font-weight:600;cursor:pointer;width:100%}
 .btn-refresh:disabled{opacity:.55;cursor:wait}
 .btn-refresh-sub{margin-top:6px;background:transparent;font-weight:500;opacity:.9}
+.btn-caption{display:block;font-size:.68rem;font-weight:400;opacity:.88;margin-top:5px;line-height:1.35;text-align:left}
+.glossario{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin-bottom:18px}
+.glossario h2{font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--brand);margin-bottom:10px}
+.glossario p{font-size:.82rem;color:var(--muted);margin-bottom:10px}
+.glossario dl{margin:0;font-size:.82rem}
+.glossario dt{font-weight:700;color:var(--ink);margin-top:10px}
+.glossario dt:first-child{margin-top:0}
+.glossario dd{margin:4px 0 0 0;color:var(--muted);line-height:1.45}
+.glossario .tag{display:inline-block;font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;padding:2px 7px;border-radius:4px;margin-right:6px;vertical-align:middle}
+.glossario .tag-advfn{background:#e8f4f4;color:#0d6e6e}
+.glossario .tag-b3{background:#eef3ff;color:#0b5fff}
+.kpi .lbl-sub{display:block;font-weight:400;text-transform:none;font-size:.6rem;margin-top:3px;line-height:1.25;color:var(--muted);letter-spacing:0}
 .main{display:grid;grid-template-columns:300px 1fr 300px;gap:16px;align-items:start}
 .panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}
 .panel h2{font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--brand);margin-bottom:12px}
@@ -41,12 +53,31 @@ input[type=range]{padding:0;height:32px}
 <div class="page">
   <div class="banner">
     <h1>Simulador Swap — CDI × Pré</h1>
-    <p>Perna flutuante: % do CDI · Perna fixa: taxa pré (% a.a.) · Curva atual: ADVFN (ULT) · Histórico: B3</p>
+    <p>Perna flutuante: % do CDI · Perna fixa: taxa pré (% a.a.) · Curva usada nos cálculos: futuros DI1 (CDI futuro).</p>
     <div class="pills" id="pills-meta"></div>
-    <button type="button" class="btn-refresh" id="btn-refresh-advfn">Atualizar cotação ADVFN</button>
-    <button type="button" class="btn-refresh btn-refresh-sub" id="btn-server-advfn">Forçar coleta no GitHub (Actions)</button>
+    <button type="button" class="btn-refresh" id="btn-refresh-advfn">
+      Recarregar curva publicada no site
+      <span class="btn-caption">Baixa o JSON já gerado (última coleta ADVFN). Não acessa a ADVFN direto do seu navegador.</span>
+    </button>
+    <button type="button" class="btn-refresh btn-refresh-sub" id="btn-server-advfn">
+      Disparar nova coleta no servidor (GitHub Actions)
+      <span class="btn-caption">Abre o workflow no GitHub para quem tem permissão: Run workflow → aguarde ~1–2 min → use o botão acima.</span>
+    </button>
     <p class="hint" id="refresh-status" style="color:rgba(255,255,255,.85);margin-top:8px;font-size:.75rem"></p>
   </div>
+
+  <section class="glossario" aria-label="Fontes de dados">
+    <h2>De onde vêm os números?</h2>
+    <p>Dois momentos distintos: <strong>curva de hoje</strong> (intraday) e <strong>histórico de fechamentos</strong> (série para gráficos passados).</p>
+    <dl>
+      <dt><span class="tag tag-b3">B3</span> DI1 — contrato de DI futuro (CDI futuro)</dt>
+      <dd>Futuro listado na B3 cujo preço/taxa implica expectativa de CDI entre hoje e o vencimento do contrato. Montamos a <strong>curva DI</strong> ligando vários vencimentos DI1 (prazos em anos × taxa % a.a.). É a referência de mercado para CDI forward.</dd>
+      <dt><span class="tag tag-advfn">ADVFN</span> Curva do dia (somente hoje)</dt>
+      <dd>Cotação <strong>ULT</strong> dos contratos DI1 na ADVFN, coletada pelo pipeline e publicada em <code style="font-size:.78rem">curva_advfn.json</code>. Alimenta a linha “curva atual” e o botão “Recarregar curva publicada”.</dd>
+      <dt><span class="tag tag-b3">B3</span> Histórico de taxas (datas passadas)</dt>
+      <dd>Cada data nos gráficos de histórico é o <strong>fechamento oficial</strong> da curva DI1 na B3 (API / Price Report), não ADVFN. Serve para comparar como o CDI forward no prazo do swap evoluiu.</dd>
+    </dl>
+  </section>
 
   <div class="main">
     <aside class="panel">
@@ -69,7 +100,7 @@ input[type=range]{padding:0;height:32px}
 
     <section class="panel chart-panel">
       <h2>Curva DI — base vs choque</h2>
-      <p class="hint">Linha sólida: curva atual. Tracejada: curva após choque. Linha horizontal: taxa pré.</p>
+      <p class="hint">Linha sólida: curva de <strong>hoje</strong> (ADVFN ULT). Tracejada: mesma curva após choque paralelo (stress). Horizontal: taxa pré contratada. Eixo X: prazo em anos (vértices DI1).</p>
       <div class="sim-row"><span>Choque paralelo</span><output id="out-shift">0 bp</output></div>
       <input type="range" id="shift-bps" min="-200" max="200" step="5" value="0"/>
       <div class="chart-wrap">
@@ -80,12 +111,12 @@ input[type=range]{padding:0;height:32px}
     <aside class="panel">
       <h2>Marcação (estimada)</h2>
       <div class="kpi">
-        <div class="box"><div class="lbl">CDI DI no prazo</div><div class="val" id="kpi-cdi">—</div></div>
-        <div class="box"><div class="lbl">CDI × %</div><div class="val" id="kpi-cdi-pct">—</div></div>
-        <div class="box"><div class="lbl">Spread pré − CDI</div><div class="val" id="kpi-spread">—</div></div>
-        <div class="box"><div class="lbl">Líquido no venc. (bullet)</div><div class="val" id="kpi-payoff">—</div></div>
-        <div class="box"><div class="lbl">Fator PV (DI no prazo)</div><div class="val" id="kpi-df">—</div></div>
-        <div class="box wide" style="grid-column:1/-1"><div class="lbl">MTM — valor presente</div><div class="val" id="kpi-mtm">—</div></div>
+        <div class="box"><div class="lbl">CDI DI no prazo<span class="lbl-sub">Taxa forward DI1 na curva de hoje, no vencimento do swap</span></div><div class="val" id="kpi-cdi">—</div></div>
+        <div class="box"><div class="lbl">CDI × %<span class="lbl-sub">Perna flutuante: % do CDI × taxa acima</span></div><div class="val" id="kpi-cdi-pct">—</div></div>
+        <div class="box"><div class="lbl">Spread pré − CDI<span class="lbl-sub">Diferença em pontos percentuais (pré vs flutuante)</span></div><div class="val" id="kpi-spread">—</div></div>
+        <div class="box"><div class="lbl">Líquido no venc. (bullet)<span class="lbl-sub">Recebe juros pré − paga juros %CDI, no vencimento</span></div><div class="val" id="kpi-payoff">—</div></div>
+        <div class="box"><div class="lbl">Fator PV (DI no prazo)<span class="lbl-sub">Desconto 1/(1+DI)^T com DI forward de hoje</span></div><div class="val" id="kpi-df">—</div></div>
+        <div class="box wide" style="grid-column:1/-1"><div class="lbl">MTM — valor presente<span class="lbl-sub">Estimativa educacional; não é marcação oficial</span></div><div class="val" id="kpi-mtm">—</div></div>
       </div>
       <p class="hint" style="margin-top:10px">Bullet: juros acumulados no vencimento com pré vs %CDI×CDI (taxa única forward), depois descontados pela DI no prazo. Se contratou “na curva” hoje (pré = %CDI×CDI), MTM ≈ 0.</p>
     </aside>
@@ -93,7 +124,7 @@ input[type=range]{padding:0;height:32px}
 
   <section class="panel" style="margin-top:16px">
     <h2>Histórico CDI futuro (DI1)</h2>
-    <p class="hint">Acima: série da taxa DI no prazo do swap. Abaixo: sobrepor curvas DI de datas históricas.</p>
+    <p class="hint">Todas as datas abaixo são <strong>fechamento B3</strong> (curva DI1 oficial), não ADVFN. Acima: como evoluiu a taxa DI no prazo do swap. Abaixo: sobrepor curvas inteiras de dias selecionados.</p>
     <div class="chart-wrap" style="height:300px;margin-bottom:14px">
       <canvas id="chart-hist"></canvas>
     </div>
@@ -198,9 +229,9 @@ function updateCurvaPills(){
   const coletaPill = DATA.curva_atual.coleta_em
     ? `<span class="pill">Coleta ADVFN: ${DATA.curva_atual.coleta_em}</span>` : "";
   document.getElementById("pills-meta").innerHTML =
-    `<span class="pill">Curva DI: ${DATA.curva_atual.data_br} (${DATA.curva_atual.fonte})</span>`+
+    `<span class="pill">Curva hoje (ADVFN): ${DATA.curva_atual.data_br}</span>`+
     coletaPill+
-    `<span class="pill">Histórico B3: ${(DATA.historico||[]).length} datas</span>`+
+    `<span class="pill">Histórico fechamento B3: ${(DATA.historico||[]).length} datas</span>`+
     `<span class="pill">Gerado: ${DATA.gerado_em||"—"}</span>`;
 }
 
@@ -208,7 +239,7 @@ async function refreshAdvfnFromJson(){
   const btn=document.getElementById("btn-refresh-advfn");
   const st=document.getElementById("refresh-status");
   if(btn) btn.disabled=true;
-  if(st) st.textContent="Buscando última cotação publicada…";
+  if(st) st.textContent="Baixando curva_advfn.json publicado no site…";
   try{
     const r=await fetch(liveJsonUrl()+"?t="+Date.now(),{cache:"no-store"});
     if(!r.ok) throw new Error("HTTP "+r.status);
@@ -218,7 +249,7 @@ async function refreshAdvfnFromJson(){
     DATA.curva_atual=Object.assign({},DATA.curva_atual,j);
     updateCurvaPills();
     setFairPre(true);
-    if(st) st.textContent="Cotação carregada: "+(j.coleta_em||"—")+".";
+    if(st) st.textContent="Curva do dia atualizada no navegador. Coleta ADVFN: "+(j.coleta_em||"—")+".";
   }catch(err){
     if(st) st.textContent="";
     alert(["Não foi possível atualizar a cotação ADVFN.", "", err.message, "",
@@ -279,7 +310,7 @@ function recalc(){
   mtmEl.className="val "+(mtm>0?"pos":mtm<0?"neg":"");
 
   const ds=[
-    dsXY("DI atual", basePts, {borderColor:"#0b5fff"}),
+    dsXY("DI hoje (ADVFN)", basePts, {borderColor:"#0b5fff"}),
     dsXY("DI choque", stressed, {borderColor:"#f97316", borderDash:[6,4], pointRadius:0}),
     dsXY("Pré", [{x:0.1,y:pre},{x:10,y:pre}], {borderColor:"#0d6e6e", borderDash:[2,2], pointRadius:0, tension:0})
   ];
@@ -317,7 +348,7 @@ function drawHist(T){
     }]},
     options:{
       responsive:true,maintainAspectRatio:false,
-      plugins:{title:{display:true,text:"Histórico da taxa forward (DI1) no prazo do swap"}},
+      plugins:{title:{display:true,text:"Fechamento B3: taxa DI1 forward no prazo do swap"}},
       scales:{x:{ticks:{maxTicksLimit:14}},y:{title:{display:true,text:"% a.a."}}}
     }
   };
@@ -368,7 +399,7 @@ function drawHistCurvas(){
     type:"line",data:{datasets},
     options:{
       responsive:true,maintainAspectRatio:false,
-      plugins:{title:{display:true,text:"Curvas DI históricas (sobreposição)"},legend:{position:"bottom"}},
+      plugins:{title:{display:true,text:"Fechamento B3: curvas DI1 por data (sobreposição)"},legend:{position:"bottom"}},
       scales:{
         x:{type:"linear",title:{display:true,text:"Prazo (anos)"},min:xmin,max:xmax},
         y:{title:{display:true,text:"Taxa (% a.a.)"}}
@@ -404,7 +435,7 @@ async function boot(){
       if(!repo){ alert("GitHub → Actions → curvas-refresh-advfn → Run workflow."); return; }
       window.open("https://github.com/"+repo+"/actions/workflows/"+wf,"_blank");
       const st=document.getElementById("refresh-status");
-      if(st) st.textContent="Workflow aberto. Em ~1–2 min clique em Atualizar cotação ADVFN.";
+      if(st) st.textContent="GitHub Actions aberto. Após Run workflow (~1–2 min), use Recarregar curva publicada no site.";
     };
     setFairPre(false);
     buildHistDates();
