@@ -211,6 +211,8 @@ input[type=range]{padding:0;height:32px}
 .chart-wrap{position:relative;height:360px}
 .chart-wrap.tall{height:420px}
 .hint{font-size:.78rem;color:var(--muted);margin-bottom:10px}
+#hist-dates label{width:100%;justify-content:flex-start}
+.hist-preset{font-weight:700;border-color:var(--brand)!important;color:var(--brand)}
 .footer{margin-top:20px;font-size:.75rem;color:var(--muted);padding:12px;border:1px dashed var(--line);border-radius:10px;background:#fff}
 @media(max-width:1050px){.main{grid-template-columns:1fr}}
 </style>
@@ -299,6 +301,7 @@ input[type=range]{padding:0;height:32px}
         <input type="number" id="hist-prazo-max" value="10" step="0.5" min="0.5"/>
       </label>
     </div>
+    <p class="hint" style="margin-bottom:6px">Curvas sobrepostas — atalhos (fechamento B3):</p>
     <div class="btn-row" id="hist-btns" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px"></div>
     <div id="hist-dates" style="max-height:140px;overflow:auto;border:1px solid var(--line);border-radius:8px;padding:8px;background:#fafbfc"></div>
     <div class="chart-wrap tall" style="margin-top:12px">
@@ -519,6 +522,46 @@ function drawHist(T){
   chartHist=new Chart(document.getElementById("chart-hist"),cfg);
 }
 
+let histPresetActive=null;
+
+function setHistChecks(shouldCheck){
+  DATA.historico.forEach((h,i)=>{
+    const el=document.getElementById("hist-dt-"+h.data);
+    if(el) el.checked=!!shouldCheck(h,i);
+  });
+  drawHistCurvas();
+}
+
+function selectHistPreset(mode){
+  histPresetActive=mode;
+  document.querySelectorAll("#hist-btns [data-preset]").forEach(b=>{
+    b.classList.toggle("hist-preset", b.getAttribute("data-preset")===mode);
+  });
+  if(mode==="mensal"){
+    const seen=new Set();
+    setHistChecks(h=>{
+      const k=h.data.slice(0,7);
+      if(seen.has(k)) return false;
+      seen.add(k); return true;
+    });
+  }else if(mode==="trimestral"){
+    const seen=new Set();
+    setHistChecks(h=>{
+      const p=h.data.split("-");
+      const y=+p[0], m=+p[1];
+      const k=y+"-Q"+(Math.floor((m-1)/3)+1);
+      if(seen.has(k)) return false;
+      seen.add(k); return true;
+    });
+  }else if(mode==="atual-antiga"){
+    setHistChecks((h,i)=>i===0||i===DATA.historico.length-1);
+  }else if(mode==="todas"){
+    setHistChecks(()=>true);
+  }else if(mode==="nenhuma"){
+    setHistChecks(()=>false);
+  }
+}
+
 function buildHistDates(){
   const box=document.getElementById("hist-dates");
   box.innerHTML="";
@@ -527,21 +570,28 @@ function buildHistDates(){
     const lab=document.createElement("label");
     lab.style.cssText="display:flex;align-items:center;gap:6px;font-size:.82rem;margin:3px 0;cursor:pointer";
     lab.innerHTML=`<input type="checkbox" id="${id}" data-i="${i}"/> ${h.data_br}`;
-    lab.querySelector("input").onchange=drawHistCurvas;
+    lab.querySelector("input").onchange=()=>{ histPresetActive=null; document.querySelectorAll("#hist-btns [data-preset]").forEach(b=>b.classList.remove("hist-preset")); drawHistCurvas(); };
     box.appendChild(lab);
-  });
-  const def=[0, DATA.historico.length-1];
-  def.forEach(i=>{
-    const h=DATA.historico[i];
-    const el=document.getElementById("hist-dt-"+h.data);
-    if(el) el.checked=true;
   });
   const btns=document.getElementById("hist-btns");
   btns.innerHTML="";
-  [["Atual + mais antiga",()=>{DATA.historico.forEach((h,i)=>{const el=document.getElementById("hist-dt-"+h.data);if(el) el.checked=(i===0||i===DATA.historico.length-1);});drawHistCurvas();}],
-   ["Todas",()=>{DATA.historico.forEach(h=>{const el=document.getElementById("hist-dt-"+h.data);if(el) el.checked=true;});drawHistCurvas();}],
-   ["Nenhuma",()=>{DATA.historico.forEach(h=>{const el=document.getElementById("hist-dt-"+h.data);if(el) el.checked=false;});drawHistCurvas();}]
-  ].forEach(([t,fn])=>{const b=document.createElement("button");b.type="button";b.textContent=t;b.style.cssText="padding:6px 10px;border:1px solid var(--line);border-radius:8px;background:#fff;cursor:pointer;font-size:.78rem";b.onclick=fn;btns.appendChild(b);});
+  const btnStyle="padding:6px 10px;border:1px solid var(--line);border-radius:8px;background:#fff;cursor:pointer;font-size:.78rem";
+  [
+    ["mensal","Mensal"],
+    ["trimestral","Trimestral"],
+    ["atual-antiga","Atual + mais antiga"],
+    ["todas","Todas"],
+    ["nenhuma","Nenhuma"]
+  ].forEach(([mode,label])=>{
+    const b=document.createElement("button");
+    b.type="button";
+    b.textContent=label;
+    b.setAttribute("data-preset", mode);
+    b.style.cssText=btnStyle;
+    b.onclick=()=>selectHistPreset(mode);
+    btns.appendChild(b);
+  });
+  selectHistPreset("trimestral");
 }
 
 function drawHistCurvas(){
