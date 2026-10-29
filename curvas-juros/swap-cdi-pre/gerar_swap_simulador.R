@@ -112,7 +112,7 @@ pts_base <- montar_pts(curva_base)
 
 gh_repo <- Sys.getenv("GITHUB_REPOSITORY", unset = "")
 if (!nzchar(gh_repo)) {
-  gh_repo <- NULL
+  gh_repo <- "btg-pactual/btg-distribuicao-rv"
 }
 
 hist_curvas <- lapply(seq_len(nrow(datas_ord)), function(i) {
@@ -153,6 +153,11 @@ payload <- list(
 )
 
 json_txt <- jsonlite::toJSON(payload, auto_unbox = TRUE, null = "null", digits = 8)
+json_html <- gsub("<", "\\u003c", json_txt, fixed = TRUE)
+d_notional <- sprintf("%.0f", payload$defaults$notional)
+d_pct <- as.character(payload$defaults$pct_cdi)
+d_prazo <- as.character(payload$defaults$prazo_anos)
+d_prazo_max <- payload$defaults$prazo_max
 
 html <- paste0(
 '<!DOCTYPE html>
@@ -160,8 +165,7 @@ html <- paste0(
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Swap CDI × Pré — simulador (interno)</title>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<title>Swap CDI × Pré — simulador</title>
 <style>
 :root{--ink:#0b1f3a;--muted:#5c6b7a;--line:#d0d8e2;--bg:#eef2f6;--card:#fff;--brand:#0d6e6e;--accent:#0b5fff;--ok:#0f7a4a;--bad:#c0392b}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -210,16 +214,16 @@ input[type=range]{padding:0;height:32px}
     <aside class="panel">
       <h2>Estrutura do swap</h2>
       <label>Notional (R$)
-        <input type="number" id="notional" min="1000" step="1000"/>
+        <input type="number" id="notional" min="1000" step="1000" value="', d_notional, '"/>
       </label>
       <label>% do CDI (perna flutuante)
-        <input type="number" id="pct-cdi" min="0" max="200" step="0.01"/>
+        <input type="number" id="pct-cdi" min="0" max="200" step="0.01" value="', d_pct, '"/>
       </label>
       <label>Taxa pré contratada (% a.a.)
         <input type="number" id="taxa-pre" min="0" max="30" step="0.0001"/>
       </label>
       <label>Prazo (anos)
-        <input type="number" id="prazo" min="0.25" max="10" step="0.25"/>
+        <input type="number" id="prazo" min="0.25" max="10" step="0.25" value="', d_prazo, '"/>
       </label>
       <button type="button" id="btn-fair" style="width:100%;padding:10px;border:1px solid var(--brand);background:#fff;color:var(--brand);border-radius:8px;font-weight:700;cursor:pointer;margin-bottom:8px">Pré ≈ CDI no prazo (100%)</button>
       <p class="hint">Recebe pré · Paga %CDI. Prazo máximo 10 anos.</p>
@@ -273,9 +277,37 @@ input[type=range]{padding:0;height:32px}
   <p class="footer" id="footer-aviso"></p>
 </div>
 
-<script id="dados" type="application/json">', json_txt, '</script>
+<script id="dados" type="application/json">', json_html, '</script>
+<script src="../vendor/chart.umd.min.js"></script>
 <script>
-const DATA = JSON.parse(document.getElementById("dados").textContent);
+function showBootErr(msg){
+  const box=document.createElement("p");
+  box.id="boot-err";
+  box.style.cssText="color:#c0392b;font-weight:700;padding:12px;margin:0 0 12px;background:#fff3f3;border:1px solid #f5c6cb;border-radius:8px";
+  box.textContent="Erro ao carregar simulador: "+msg;
+  const page=document.querySelector(".page");
+  if(page) page.prepend(box);
+}
+async function loadDataAsync(){
+  const el=document.getElementById("dados");
+  if(el&&el.textContent.trim()){
+    try{ return JSON.parse(el.textContent); }catch(e){ console.warn("JSON inline:", e); }
+  }
+  const r=await fetch("dados.json?t="+Date.now(),{cache:"no-store"});
+  if(!r.ok) throw new Error("dados.json HTTP "+r.status);
+  return r.json();
+}
+function loadChartJs(){
+  return new Promise((resolve,reject)=>{
+    if(typeof Chart!=="undefined") return resolve();
+    const s=document.createElement("script");
+    s.src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js";
+    s.onload=()=>resolve();
+    s.onerror=()=>reject(new Error("Chart.js não carregou (rede ou CDN bloqueado)."));
+    document.head.appendChild(s);
+  });
+}
+let DATA=null;
 let chartCurva = null, chartHist = null, chartHistCurvas = null;
 const fmt = (v,d=2)=> v==null||Number.isNaN(v)?"—":Number(v).toLocaleString("pt-BR",{minimumFractionDigits:d,maximumFractionDigits:d});
 const fmtBRL = v => v==null||Number.isNaN(v)?"—":Number(v).toLocaleString("pt-BR",{style:"currency",currency:"BRL",maximumFractionDigits:0});
@@ -312,31 +344,27 @@ function fatorPV(taxaAa, T){
   return 1 / Math.pow(1 + taxaAa/100, T);
 }
 
-document.getElementById("footer-aviso").textContent = DATA.aviso;
-
 const elNotional=document.getElementById("notional");
 const elPct=document.getElementById("pct-cdi");
 const elPre=document.getElementById("taxa-pre");
 const elPrazo=document.getElementById("prazo");
 const elShift=document.getElementById("shift-bps");
-elNotional.value=DATA.defaults.notional;
-elPct.value=DATA.defaults.pct_cdi;
-elPrazo.value=DATA.defaults.prazo_anos;
-elPrazo.max=DATA.defaults.prazo_max;
+let basePts=[];
 
-let basePts=DATA.curva_atual.pts;
-const LIVE_JSON = (DATA.github && DATA.github.curva_json) || "../data/curva_advfn.json";
+function liveJsonUrl(){
+  return (DATA&&DATA.github&&DATA.github.curva_json)||"../data/curva_advfn.json";
+}
 
 function updateCurvaPills(){
+  if(!DATA||!DATA.curva_atual) return;
   const coletaPill = DATA.curva_atual.coleta_em
     ? `<span class="pill">Coleta ADVFN: ${DATA.curva_atual.coleta_em}</span>` : "";
   document.getElementById("pills-meta").innerHTML =
     `<span class="pill">Curva DI: ${DATA.curva_atual.data_br} (${DATA.curva_atual.fonte})</span>`+
     coletaPill+
-    `<span class="pill">Histórico B3: ${DATA.historico.length} datas</span>`+
-    `<span class="pill">Gerado: ${DATA.gerado_em}</span>`;
+    `<span class="pill">Histórico B3: ${(DATA.historico||[]).length} datas</span>`+
+    `<span class="pill">Gerado: ${DATA.gerado_em||"—"}</span>`;
 }
-updateCurvaPills();
 
 async function refreshAdvfnFromJson(){
   const btn=document.getElementById("btn-refresh-advfn");
@@ -344,7 +372,7 @@ async function refreshAdvfnFromJson(){
   if(btn) btn.disabled=true;
   if(st) st.textContent="Buscando última cotação publicada…";
   try{
-    const r=await fetch(LIVE_JSON+"?t="+Date.now(),{cache:"no-store"});
+    const r=await fetch(liveJsonUrl()+"?t="+Date.now(),{cache:"no-store"});
     if(!r.ok) throw new Error("HTTP "+r.status);
     const j=await r.json();
     if(!j.pts||!j.pts.length) throw new Error("arquivo sem vértices");
@@ -355,24 +383,13 @@ async function refreshAdvfnFromJson(){
     if(st) st.textContent="Cotação carregada: "+(j.coleta_em||"—")+".";
   }catch(err){
     if(st) st.textContent="";
-    alert("Não foi possível atualizar a cotação ADVFN.\n\n"+err.message+
-      "\n\nNo GitHub Pages use o botão após o workflow; localmente regere o HTML.");
+    alert(["Não foi possível atualizar a cotação ADVFN.", "", err.message, "",
+      "No GitHub Pages use o botão após o workflow; localmente regere o HTML."
+    ].join(String.fromCharCode(10)));
   }finally{
     if(btn) btn.disabled=false;
   }
 }
-document.getElementById("btn-refresh-advfn").onclick=()=>refreshAdvfnFromJson();
-document.getElementById("btn-server-advfn").onclick=()=>{
-  const repo=DATA.github&&DATA.github.repo;
-  const wf=DATA.github&&DATA.github.workflow_advfn||"refresh-advfn.yml";
-  if(!repo){
-    alert("GitHub → Actions → curvas-refresh-advfn → Run workflow.");
-    return;
-  }
-  window.open("https://github.com/"+repo+"/actions/workflows/"+wf,"_blank");
-  const st=document.getElementById("refresh-status");
-  if(st) st.textContent="Workflow aberto. Em ~1–2 min clique em Atualizar cotação ADVFN.";
-};
 
 function cdiNoPrazo(pts,T){ return interp(pts,T); }
 
@@ -528,20 +545,41 @@ function drawHistCurvas(){
   chartHistCurvas=new Chart(document.getElementById("chart-hist-curvas"),cfg);
 }
 
-try {
-  setFairPre(false);
-  buildHistDates();
-  [elNotional,elPct,elPre,elPrazo,elShift].forEach(el=>el.addEventListener("input",recalc));
-  document.getElementById("hist-prazo-min").addEventListener("input",()=>{drawHistCurvas();});
-  document.getElementById("hist-prazo-max").addEventListener("input",()=>{drawHistCurvas();});
-  recalc();
-} catch(err) {
-  console.error(err);
-  const msg=document.createElement("p");
-  msg.style.cssText="color:#c0392b;font-weight:700;padding:12px";
-  msg.textContent="Erro ao iniciar gráficos: "+err.message;
-  document.querySelector(".page").prepend(msg);
+async function boot(){
+  try{
+    await loadChartJs();
+    DATA=await loadDataAsync();
+    if(!DATA||!DATA.curva_atual||!DATA.curva_atual.pts||!DATA.curva_atual.pts.length){
+      throw new Error("Curva DI ausente nos dados.");
+    }
+    document.getElementById("footer-aviso").textContent=DATA.aviso||"";
+    elNotional.value=DATA.defaults.notional;
+    elPct.value=DATA.defaults.pct_cdi;
+    elPrazo.value=DATA.defaults.prazo_anos;
+    elPrazo.max=DATA.defaults.prazo_max;
+    basePts=DATA.curva_atual.pts;
+    updateCurvaPills();
+    document.getElementById("btn-refresh-advfn").onclick=()=>refreshAdvfnFromJson();
+    document.getElementById("btn-server-advfn").onclick=()=>{
+      const repo=DATA.github&&DATA.github.repo;
+      const wf=DATA.github&&DATA.github.workflow_advfn||"curvas-refresh-advfn.yml";
+      if(!repo){ alert("GitHub → Actions → curvas-refresh-advfn → Run workflow."); return; }
+      window.open("https://github.com/"+repo+"/actions/workflows/"+wf,"_blank");
+      const st=document.getElementById("refresh-status");
+      if(st) st.textContent="Workflow aberto. Em ~1–2 min clique em Atualizar cotação ADVFN.";
+    };
+    setFairPre(false);
+    buildHistDates();
+    [elNotional,elPct,elPre,elPrazo,elShift].forEach(el=>el.addEventListener("input",recalc));
+    document.getElementById("hist-prazo-min").addEventListener("input",()=>{drawHistCurvas();});
+    document.getElementById("hist-prazo-max").addEventListener("input",()=>{drawHistCurvas();});
+    recalc();
+  }catch(err){
+    console.error(err);
+    showBootErr(err.message);
+  }
 }
+boot();
 </script>
 </body>
 </html>'
@@ -549,5 +587,8 @@ try {
 
 out <- file.path(raiz, "swap_simulador.html")
 writeLines(html, out, useBytes = TRUE)
+writeLines(json_txt, file.path(raiz, "dados.json"), useBytes = TRUE)
+writeLines(json_txt, file.path(projeto, "swap/dados.json"), useBytes = TRUE)
 message("Simulador gerado: ", out)
-message("Publicação: copie para docs/swap/ (Rscript scripts/ci_publish.R).")
+message("Dados: swap/dados.json")
+message("Publicação: Rscript scripts/ci_publish.R")

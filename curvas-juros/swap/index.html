@@ -221,12 +221,9 @@ async function refreshAdvfnFromJson(){
     if(st) st.textContent="Cotação carregada: "+(j.coleta_em||"—")+".";
   }catch(err){
     if(st) st.textContent="";
-    alert("Não foi possível atualizar a cotação ADVFN.
-
-"+err.message+
-      "
-
-No GitHub Pages use o botão após o workflow; localmente regere o HTML.");
+    alert(["Não foi possível atualizar a cotação ADVFN.", "", err.message, "",
+      "No GitHub Pages use o botão após o workflow; localmente regere o HTML."
+    ].join(String.fromCharCode(10)));
   }finally{
     if(btn) btn.disabled=false;
   }
