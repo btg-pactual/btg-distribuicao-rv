@@ -32,16 +32,11 @@ jobs:
         with:
           r-version: "4.4.1"
 
-      - uses: r-lib/actions/setup-r-dependencies@v2
-        with:
-          working-directory: curvas-juros
-          packages: |
-            any::httr
-            any::jsonlite
-            any::readr
-            any::dplyr
-            any::tibble
-            any::lubridate
+      - name: Instalar pacotes R
+        run: Rscript scripts/install_deps.R
+        working-directory: curvas-juros
+        env:
+          ADVFN_ONLY: "true"
 
       - name: ADVFN + HTML
         run: Rscript scripts/ci_publish.R advfn_only
@@ -52,7 +47,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add curvas-juros/index.html curvas-juros/swap curvas-juros/data \
-            curvas-juros/swap-cdi-pre/swap_simulador.html
+            curvas-juros/vendor curvas-juros/swap-cdi-pre/swap_simulador.html
           git diff --staged --quiet && echo "Sem mudanças." && exit 0
           git commit -m "Curvas: cotação ADVFN."
           git push

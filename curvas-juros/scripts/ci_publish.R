@@ -72,6 +72,15 @@ cat(paste(status, collapse = "\n"), "\n")
 
 dir.create(file.path(site_root, "swap"), recursive = TRUE, showWarnings = FALSE)
 dir.create(file.path(site_root, "data"), recursive = TRUE, showWarnings = FALSE)
+dir.create(file.path(site_root, "vendor"), recursive = TRUE, showWarnings = FALSE)
+vendor_src <- file.path(layout$code_root, "vendor/chart.umd.min.js")
+if (file.exists(vendor_src)) {
+  file.copy(vendor_src, file.path(site_root, "vendor/chart.umd.min.js"), overwrite = TRUE)
+}
+dados_src <- file.path(layout$code_root, "swap/dados.json")
+if (!file.exists(dados_src)) {
+  dados_src <- file.path(layout$code_root, "swap-cdi-pre/dados.json")
+}
 
 if (!file.copy("curvas_juros.html", file.path(site_root, "index.html"), overwrite = TRUE)) {
   stop("curvas_juros.html não encontrado")
@@ -82,6 +91,23 @@ if (!file.copy(
   overwrite = TRUE
 )) {
   stop("swap_simulador.html não encontrado")
+}
+if (file.exists(dados_src)) {
+  file.copy(dados_src, file.path(site_root, "swap/dados.json"), overwrite = TRUE)
+}
+docs_swap <- file.path(site_root, "docs/swap")
+dir.create(docs_swap, recursive = TRUE, showWarnings = FALSE)
+file.copy(
+  file.path(site_root, "swap/index.html"),
+  file.path(docs_swap, "index.html"),
+  overwrite = TRUE
+)
+if (file.exists(file.path(site_root, "swap/dados.json"))) {
+  file.copy(
+    file.path(site_root, "swap/dados.json"),
+    file.path(docs_swap, "dados.json"),
+    overwrite = TRUE
+  )
 }
 
 json_src <- file.path(site_root, "data/curva_advfn.json")

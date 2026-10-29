@@ -139,7 +139,7 @@ payload <- list(
   ),
   historico = hist_curvas,
   defaults = list(
-    notional = 1000000,
+    notional = 1000000L,
     pct_cdi = 100,
     prazo_anos = 5,
     prazo_max = 10,
@@ -154,9 +154,13 @@ payload <- list(
 
 json_txt <- jsonlite::toJSON(payload, auto_unbox = TRUE, null = "null", digits = 8)
 json_html <- gsub("<", "\\u003c", json_txt, fixed = TRUE)
-d_notional <- sprintf("%.0f", payload$defaults$notional)
-d_pct <- as.character(payload$defaults$pct_cdi)
-d_prazo <- as.character(payload$defaults$prazo_anos)
+d_notional <- format(
+  as.integer(round(payload$defaults$notional)),
+  scientific = FALSE,
+  trim = TRUE
+)
+d_pct <- format(payload$defaults$pct_cdi, scientific = FALSE, trim = TRUE)
+d_prazo <- format(payload$defaults$prazo_anos, scientific = FALSE, trim = TRUE)
 d_prazo_max <- payload$defaults$prazo_max
 
 html <- paste0(
