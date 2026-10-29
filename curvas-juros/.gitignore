@@ -1,0 +1,27 @@
+# R
+.Rhistory
+.RData
+.Ruserdata
+*.Rproj.user
+
+# Logs / runs locais
+_run_*.txt
+_ci_out.txt
+*.log
+
+# Downloads grandes (CI baixa de novo)
+data/raw/b3/*.csv
+data/raw/b3/pr/*.zip
+data/raw/b3/pr/*.part
+data/raw/advfn/*.html
+data/rb3-cache-test/
+data/rb3-cache/
+
+# Temp
+*.part
+.DS_Store
+Thumbs.db
+
+# Segredos
+.env
+.env.*

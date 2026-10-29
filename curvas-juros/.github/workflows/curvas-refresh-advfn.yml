@@ -1,0 +1,67 @@
+name: Curvas DI — refresh ADVFN
+
+on:
+  schedule:
+    - cron: "15 13,14,15,16,17,18,19,20,21,22 * * 1-5"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  advfn:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    env:
+      GITHUB_REPOSITORY: ${{ github.repository }}
+      ADVFN_ONLY: "true"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: pages
+
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: "4.4.1"
+
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          working-directory: curvas-juros
+          packages: |
+            any::httr
+            any::jsonlite
+            any::readr
+            any::dplyr
+            any::tibble
+            any::lubridate
+
+      - name: ADVFN + HTML
+        run: Rscript scripts/ci_publish.R advfn_only
+        working-directory: curvas-juros
+
+      - name: Commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add curvas-juros/index.html curvas-juros/swap curvas-juros/data \
+            curvas-juros/swap-cdi-pre/swap_simulador.html
+          git diff --staged --quiet && echo "Sem mudanças." && exit 0
+          git commit -m "Curvas: cotação ADVFN."
+          git push
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+
+      - uses: actions/deploy-pages@v4
+        id: deployment

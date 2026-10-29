@@ -1,0 +1,70 @@
+name: Curvas DI — B3 + ADVFN (diário)
+
+on:
+  schedule:
+    - cron: "5 22 * * 1-5"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    env:
+      GITHUB_REPOSITORY: ${{ github.repository }}
+      MESES_HISTORICO_DI: "24"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: pages
+
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: "4.4.1"
+
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          working-directory: curvas-juros
+          packages: |
+            any::tidyverse
+            any::lubridate
+            any::httr
+            any::jsonlite
+            any::curl
+            any::scales
+            any::bizdays
+            any::xml2
+
+      - name: Pipeline + site
+        run: Rscript scripts/ci_publish.R
+        working-directory: curvas-juros
+
+      - name: Commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add curvas-juros/index.html curvas-juros/swap curvas-juros/data \
+            curvas-juros/data/processed curvas-juros/curvas_juros.html \
+            curvas-juros/swap-cdi-pre/swap_simulador.html curvas-juros/data/processed/
+          git diff --staged --quiet && echo "Sem mudanças." && exit 0
+          git commit -m "Curvas: atualiza B3 + ADVFN (diário)."
+          git push
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+
+      - uses: actions/deploy-pages@v4
+        id: deployment
