@@ -59,10 +59,6 @@ input[type=range]{padding:0;height:32px}
       Recarregar curva publicada no site
       <span class="btn-caption">Baixa o JSON já gerado (última coleta ADVFN). Não acessa a ADVFN direto do seu navegador.</span>
     </button>
-    <button type="button" class="btn-refresh btn-refresh-sub" id="btn-server-advfn">
-      Disparar nova coleta no servidor (GitHub Actions)
-      <span class="btn-caption">Abre o workflow no GitHub para quem tem permissão: Run workflow → aguarde ~1–2 min → use o botão acima.</span>
-    </button>
     <p class="hint" id="refresh-status" style="color:rgba(255,255,255,.85);margin-top:8px;font-size:.75rem"></p>
   </div>
 
@@ -77,6 +73,7 @@ input[type=range]{padding:0;height:32px}
       <dt><span class="tag tag-b3">B3</span> Histórico de taxas (datas passadas)</dt>
       <dd>Cada data nos gráficos de histórico é o <strong>fechamento oficial</strong> da curva DI1 na B3 (API / Price Report), não ADVFN. Serve para comparar como o CDI forward no prazo do swap evoluiu.</dd>
     </dl>
+    <p class="hint" style="margin:12px 0 0">A curva do dia é atualizada <strong>automaticamente</strong> em horário comercial (pipeline no GitHub). Use o botão acima se acabou de publicar uma nova coleta e quer ver no navegador.</p>
   </section>
 
   <div class="main">
@@ -429,14 +426,6 @@ async function boot(){
     basePts=DATA.curva_atual.pts;
     updateCurvaPills();
     document.getElementById("btn-refresh-advfn").onclick=()=>refreshAdvfnFromJson();
-    document.getElementById("btn-server-advfn").onclick=()=>{
-      const repo=DATA.github&&DATA.github.repo;
-      const wf=DATA.github&&DATA.github.workflow_advfn||"curvas-refresh-advfn.yml";
-      if(!repo){ alert("GitHub → Actions → curvas-refresh-advfn → Run workflow."); return; }
-      window.open("https://github.com/"+repo+"/actions/workflows/"+wf,"_blank");
-      const st=document.getElementById("refresh-status");
-      if(st) st.textContent="GitHub Actions aberto. Após Run workflow (~1–2 min), use Recarregar curva publicada no site.";
-    };
     setFairPre(false);
     buildHistDates();
     [elNotional,elPct,elPre,elPrazo,elShift].forEach(el=>el.addEventListener("input",recalc));
