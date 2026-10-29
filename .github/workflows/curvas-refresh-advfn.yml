@@ -32,16 +32,11 @@ jobs:
         with:
           r-version: "4.4.1"
 
-      - uses: r-lib/actions/setup-r-dependencies@v2
-        with:
-          working-directory: curvas-juros
-          packages: |
-            any::httr
-            any::jsonlite
-            any::readr
-            any::dplyr
-            any::tibble
-            any::lubridate
+      - name: Instalar pacotes R
+        run: Rscript scripts/install_deps.R
+        working-directory: curvas-juros
+        env:
+          ADVFN_ONLY: "true"
 
       - name: ADVFN + HTML
         run: Rscript scripts/ci_publish.R advfn_only
