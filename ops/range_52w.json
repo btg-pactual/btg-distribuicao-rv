@@ -1,86 +1,86 @@
 {
-  "updated_at": "2026-10-28T17:09:24Z",
-  "as_of_br": "28/10/2026",
+  "updated_at": "2026-10-29T01:10:20Z",
+  "as_of_br": "29/10/2026",
   "tickers": {
     "VALE3": {
       "ticker": "VALE3",
       "source": "Yahoo Finance VALE3.SA",
       "high": 91.62,
-      "low": 61.4,
-      "last": 63.0,
+      "low": 0.0,
+      "last": 61.38,
       "n_days": 249,
-      "as_of": "2026-10-28",
-      "as_of_br": "28/10/2026"
+      "as_of": "2026-10-29",
+      "as_of_br": "29/10/2026"
     },
     "PETR4": {
       "ticker": "PETR4",
       "source": "Yahoo Finance PETR4.SA",
       "high": 59.79,
-      "low": 29.53,
-      "last": 52.79,
+      "low": 0.0,
+      "last": 52.51,
       "n_days": 249,
-      "as_of": "2026-10-28",
-      "as_of_br": "28/10/2026"
+      "as_of": "2026-10-29",
+      "as_of_br": "29/10/2026"
     },
     "AXIA3": {
       "ticker": "AXIA3",
       "source": "Yahoo Finance AXIA3.SA",
       "high": 67.84,
-      "low": 46.4,
-      "last": 48.64,
+      "low": 0.0,
+      "last": 48.23,
       "n_days": 249,
-      "as_of": "2026-10-28",
-      "as_of_br": "28/10/2026"
+      "as_of": "2026-10-29",
+      "as_of_br": "29/10/2026"
     },
     "ROXO34": {
       "ticker": "ROXO34",
       "source": "Yahoo Finance ROXO34.SA",
       "high": 16.57,
-      "low": 9.47,
-      "last": 11.0,
+      "low": 0.0,
+      "last": 10.7,
       "n_days": 249,
-      "as_of": "2026-10-28",
-      "as_of_br": "28/10/2026"
+      "as_of": "2026-10-29",
+      "as_of_br": "29/10/2026"
     },
     "ITUB4": {
       "ticker": "ITUB4",
       "source": "Yahoo Finance ITUB4.SA",
       "high": 50.85,
-      "low": 37.0777,
-      "last": 39.83,
+      "low": 0.0,
+      "last": 39.78,
       "n_days": 249,
-      "as_of": "2026-10-28",
-      "as_of_br": "28/10/2026"
+      "as_of": "2026-10-29",
+      "as_of_br": "29/10/2026"
     },
     "EMBJ3": {
       "ticker": "EMBJ3",
       "source": "Yahoo Finance EMBJ3.SA",
       "high": 105.5,
-      "low": 68.08,
-      "last": 97.04,
+      "low": 0.0,
+      "last": 97.29,
       "n_days": 249,
-      "as_of": "2026-10-28",
-      "as_of_br": "28/10/2026"
+      "as_of": "2026-10-29",
+      "as_of_br": "29/10/2026"
     },
     "EQTL3": {
       "ticker": "EQTL3",
       "source": "Yahoo Finance EQTL3.SA",
       "high": 51.26,
-      "low": 32.0,
-      "last": 35.3,
+      "low": 0.0,
+      "last": 34.06,
       "n_days": 249,
-      "as_of": "2026-10-28",
-      "as_of_br": "28/10/2026"
+      "as_of": "2026-10-29",
+      "as_of_br": "29/10/2026"
     },
     "PACB11": {
       "ticker": "PACB11",
       "source": "Yahoo Finance PACB11.SA",
       "high": 12.72,
-      "low": 10.1838,
-      "last": 11.1,
+      "low": 0.0,
+      "last": 11.15,
       "n_days": 247,
-      "as_of": "2026-10-28",
-      "as_of_br": "28/10/2026"
+      "as_of": "2026-10-29",
+      "as_of_br": "29/10/2026"
     },
     "PTAX": {
       "ticker": "PTAX",
@@ -88,89 +88,9 @@
       "high": 5.5739,
       "low": 4.8973,
       "last": 5.342,
-      "n_days": 254,
-      "as_of": "2026-10-28",
-      "as_of_br": "28/10/2026"
-    },
-    "MBRF3": {
-      "ticker": "MBRF3",
-      "source": "Yahoo Finance MBRF3.SA",
-      "high": 26.83,
-      "low": 14.49,
-      "last": 16.03,
-      "n_days": 249,
-      "as_of": "2026-10-28",
-      "as_of_br": "28/10/2026"
-    },
-    "AURA33": {
-      "ticker": "AURA33",
-      "source": "Yahoo Finance AURA33.SA",
-      "high": 182.9,
-      "low": 49.9,
-      "last": 142.25,
-      "n_days": 249,
-      "as_of": "2026-10-28",
-      "as_of_br": "28/10/2026"
-    },
-    "VIVT3": {
-      "ticker": "VIVT3",
-      "source": "Yahoo Finance VIVT3.SA",
-      "high": 43.47,
-      "low": 28.99,
-      "last": 31.06,
-      "n_days": 249,
-      "as_of": "2026-10-28",
-      "as_of_br": "28/10/2026"
-    },
-    "WEGE3": {
-      "ticker": "WEGE3",
-      "source": "Yahoo Finance WEGE3.SA",
-      "high": 54.53,
-      "low": 41.15,
-      "last": 47.32,
-      "n_days": 249,
-      "as_of": "2026-10-28",
-      "as_of_br": "28/10/2026"
-    },
-    "PRIO3": {
-      "ticker": "PRIO3",
-      "source": "Yahoo Finance PRIO3.SA",
-      "high": 74.6,
-      "low": 35.57,
-      "last": 72.18,
-      "n_days": 249,
-      "as_of": "2026-10-28",
-      "as_of_br": "28/10/2026"
-    },
-    "GGBR4": {
-      "ticker": "GGBR4",
-      "source": "Yahoo Finance GGBR4.SA",
-      "high": 28.72,
-      "low": 16.79,
-      "last": 23.95,
-      "n_days": 249,
-      "as_of": "2026-10-28",
-      "as_of_br": "28/10/2026"
-    },
-    "RADL3": {
-      "ticker": "RADL3",
-      "source": "Yahoo Finance RADL3.SA",
-      "high": 27.42,
-      "low": 13.5,
-      "last": 15.74,
-      "n_days": 249,
-      "as_of": "2026-10-28",
-      "as_of_br": "28/10/2026"
-    },
-    "SUZB3": {
-      "ticker": "SUZB3",
-      "source": "Yahoo Finance SUZB3.SA",
-      "high": 59.65,
-      "low": 39.17,
-      "last": 48.64,
-      "n_days": 249,
-      "as_of": "2026-10-28",
-      "as_of_br": "28/10/2026"
+      "n_days": 253,
+      "as_of": "2026-10-29",
+      "as_of_br": "29/10/2026"
     }
   }
 }

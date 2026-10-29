@@ -140,7 +140,7 @@
     <h2>Research BTG</h2>
     <a class="research-link" href="https://content.btgpactual.com/research/ativo/EQTL3" target="_blank" rel="noopener">Abrir EQTL3 no Research <span class="arrow" aria-hidden="true">→</span></a>
   </div>
-  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 35,30</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 56,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+58,64%</div></div></div><p class="research-note">Spot do fechamento anterior (27/10/2026) · preço-alvo atualizado em 06/10/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
+  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 34,06</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 69,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+102,58%</div></div></div><p class="research-note">Spot do fechamento anterior (28/10/2026) · preço-alvo atualizado em 27/10/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
 </section>
 
 
@@ -161,12 +161,12 @@
           <table class="struct-table">
             <thead><tr><th></th><th>R$</th><th>vs spot</th></tr></thead>
             <tbody>
-              <tr><td>Máximo</td><td><strong>51,26</strong></td><td>+45,2%</td></tr>
-              <tr><td>Mínimo</td><td><strong>32,00</strong></td><td>-9,3%</td></tr>
+              <tr><td>Máximo</td><td><strong>51,26</strong></td><td>+50,5%</td></tr>
+              <tr><td>Mínimo</td><td><strong>0,00</strong></td><td>-100,0%</td></tr>
             </tbody>
           </table>
           <p class="legend-note">
-            Máx./mín. dos últimos ~12 meses (até o Dia D (28/10/2026)).
+            Máx./mín. dos últimos ~12 meses (até o Dia D (29/10/2026)).
             Fonte: Yahoo Finance EQTL3.SA.
           </p>
         </div>
@@ -216,7 +216,7 @@
         <p class="chart-touch-hint">Toque e arraste no gráfico · ou use o controle abaixo</p>
         <div class="mobile-sim">
           <div class="sim-label"><span>Variação do EQTL3</span><output id="spotOutMobile">+20%</output></div>
-          <input type="range" id="spotSliderMobile" min="-40" max="90" step="0.5" value="20" />
+          <input type="range" id="spotSliderMobile" min="-40" max="120" step="0.5" value="20" />
         </div>
         <div class="zones">
           <div class="zone"><strong>≤ -10%</strong><p>Proteção: retorno limitado a -10%.</p></div>
@@ -228,7 +228,7 @@
       <aside class="panel">
         <h2>Simulador no vencimento</h2>
         <div class="sim-label"><span>Variação do EQTL3</span><output id="spotOut">+20%</output></div>
-        <input type="range" id="spotSlider" min="-40" max="90" step="0.5" value="20" />
+        <input type="range" id="spotSlider" min="-40" max="120" step="0.5" value="20" />
         <div class="sim-cards">
           <div class="sim-card"><div class="lbl">Retorno do ativo</div><div class="val" id="assetVal">+20,0%</div></div>
           <div class="sim-card"><div class="lbl">Retorno da estrutura</div><div class="val" id="structVal">+20,0%</div></div>
@@ -274,7 +274,7 @@
 
   <script>
     (function () {
-      var X_MIN = -40, X_MAX = 90;
+      var X_MIN = -40, X_MAX = 120;
       var Y_MIN = -25.0, Y_MAX = 55;
       var PAD = { l: 48, t: 24, r: 48, b: 24 };
       var VW = 600, VH = 400;
@@ -282,7 +282,7 @@
       var PLOT_H = VH - PAD.t - PAD.b;
       var PUT = 90.0, CALL = 104.0, BARRIER = 130.0;
       var FLOOR = -10.0, CAP = 4.0, KI_VAR = 30.0;
-      var RESEARCH_X=58.6402;
+      var RESEARCH_X=102.5837;
 
       function structureReturn(x) {
         var st = 100 + x;
