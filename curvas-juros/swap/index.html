@@ -90,11 +90,21 @@ input[type=range]{padding:0;height:32px}
       <label>Taxa pré contratada (% a.a.)
         <input type="number" id="taxa-pre" min="0" max="30" step="0.0001"/>
       </label>
-      <label>Prazo (anos)
+      <label>Forma do prazo
+        <select id="prazo-modo">
+          <option value="anos" selected>Prazo em anos</option>
+          <option value="data">Data fixa de vencimento</option>
+        </select>
+      </label>
+      <label id="wrap-prazo-anos">Prazo (anos)
         <input type="number" id="prazo" min="0.25" max="10" step="0.25" value="5"/>
       </label>
+      <label id="wrap-prazo-data" style="display:none">Vencimento (data fixa)
+        <input type="date" id="prazo-data"/>
+      </label>
+      <p class="hint" id="prazo-equiv"></p>
       <button type="button" id="btn-fair" style="width:100%;padding:10px;border:1px solid var(--brand);background:#fff;color:var(--brand);border-radius:8px;font-weight:700;cursor:pointer;margin-bottom:8px">Pré ≈ CDI no prazo (100%)</button>
-      <p class="hint">Recebe pré · Paga %CDI. Prazo máximo 10 anos.</p>
+      <p class="hint">Recebe pré · Paga %CDI. Contagem a partir da <strong>data da curva de hoje</strong> (pill no topo). Máx. 10 anos.</p>
     </aside>
 
     <section class="panel chart-panel">
@@ -217,8 +227,75 @@ const elNotional=document.getElementById("notional");
 const elPct=document.getElementById("pct-cdi");
 const elPre=document.getElementById("taxa-pre");
 const elPrazo=document.getElementById("prazo");
+const elPrazoData=document.getElementById("prazo-data");
+const elPrazoModo=document.getElementById("prazo-modo");
 const elShift=document.getElementById("shift-bps");
 let basePts=[];
+
+function refDateObj(){
+  const iso=DATA&&DATA.curva_atual&&DATA.curva_atual.data;
+  if(!iso) return new Date();
+  const p=iso.split("-").map(Number);
+  return new Date(p[0], p[1]-1, p[2]);
+}
+function toIsoLocal(d){
+  return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+}
+function addYearsFromRef(years){
+  const d=new Date(refDateObj().getTime());
+  d.setFullYear(d.getFullYear()+Math.floor(years));
+  d.setDate(d.getDate()+Math.round((years-Math.floor(years))*365.25));
+  return d;
+}
+function prazoMaxAnos(){ return +elPrazo.max||10; }
+function prazoMinAnos(){ return +elPrazo.min||0.25; }
+function prazoEffetivoAnos(){
+  const max=prazoMaxAnos(), min=prazoMinAnos();
+  if(elPrazoModo.value==="data"){
+    if(!elPrazoData.value) return null;
+    const p=elPrazoData.value.split("-").map(Number);
+    const end=new Date(p[0], p[1]-1, p[2]);
+    const ref=refDateObj();
+    const T=(end-ref)/(365.25*86400000);
+    if(!isFinite(T)||T<=0) return null;
+    return Math.min(max, Math.max(min, T));
+  }
+  const T=+elPrazo.value;
+  return isFinite(T)&&T>0?Math.min(max, Math.max(min, T)):null;
+}
+function syncPrazoDataFromAnos(){
+  if(!DATA||!DATA.curva_atual) return;
+  const d=addYearsFromRef(+elPrazo.value||5);
+  elPrazoData.value=toIsoLocal(d);
+  updatePrazoHint();
+}
+function initPrazoDatasLimites(){
+  const maxY=prazoMaxAnos();
+  elPrazoData.min=toIsoLocal(addYearsFromRef(prazoMinAnos()));
+  elPrazoData.max=toIsoLocal(addYearsFromRef(maxY));
+  syncPrazoDataFromAnos();
+}
+function updatePrazoHint(){
+  const box=document.getElementById("prazo-equiv");
+  if(!box||!DATA||!DATA.curva_atual) return;
+  const T=prazoEffetivoAnos();
+  const refBr=DATA.curva_atual.data_br||DATA.curva_atual.data;
+  if(elPrazoModo.value==="data"){
+    if(T==null){ box.textContent="Escolha um vencimento após "+refBr+"."; return; }
+    box.textContent="≈ "+T.toFixed(2)+" anos desde "+refBr+" (usado na curva DI e nos KPIs).";
+  }else{
+    if(elPrazoData.value)
+      box.textContent="Vencimento equivalente: "+elPrazoData.value.split("-").reverse().join("/")+".";
+    else box.textContent="";
+  }
+}
+function applyPrazoModo(){
+  const anos=elPrazoModo.value==="anos";
+  document.getElementById("wrap-prazo-anos").style.display=anos?"grid":"none";
+  document.getElementById("wrap-prazo-data").style.display=anos?"none":"grid";
+  updatePrazoHint();
+  recalc();
+}
 
 function liveJsonUrl(){
   return (DATA&&DATA.github&&DATA.github.curva_json)||"../data/curva_advfn.json";
@@ -248,6 +325,8 @@ async function refreshAdvfnFromJson(){
     basePts=j.pts;
     DATA.curva_atual=Object.assign({},DATA.curva_atual,j);
     updateCurvaPills();
+    initPrazoDatasLimites();
+    updatePrazoHint();
     setFairPre(true);
     if(st) st.textContent="Curva do dia atualizada no navegador. Coleta ADVFN: "+(j.coleta_em||"—")+".";
   }catch(err){
@@ -263,8 +342,8 @@ async function refreshAdvfnFromJson(){
 function cdiNoPrazo(pts,T){ return interp(pts,T); }
 
 function setFairPre(runRecalc){
-  const T=+elPrazo.value;
-  const cdi=cdiNoPrazo(basePts,T);
+  const T=prazoEffetivoAnos();
+  const cdi=T==null?null:cdiNoPrazo(basePts,T);
   if(cdi!=null) elPre.value=(cdi*(+elPct.value/100)).toFixed(4);
   if(runRecalc!==false) recalc();
 }
@@ -283,8 +362,17 @@ function dsXY(label, pts, extra){
 
 function recalc(){
   ensureChart();
-  const N=+elNotional.value, pct=+elPct.value, pre=+elPre.value, T=+elPrazo.value;
+  const N=+elNotional.value, pct=+elPct.value, pre=+elPre.value, T=prazoEffetivoAnos();
   const bps=+elShift.value;
+  if(T==null){
+    document.getElementById("kpi-cdi").textContent="—";
+    document.getElementById("kpi-cdi-pct").textContent="—";
+    document.getElementById("kpi-spread").textContent="—";
+    document.getElementById("kpi-payoff").textContent="—";
+    document.getElementById("kpi-df").textContent="—";
+    document.getElementById("kpi-mtm").textContent="—";
+    return;
+  }
   document.getElementById("out-shift").textContent=(bps>0?"+":"")+bps+" bp";
   const stressed=shiftPts(basePts,bps);
   const cdi=cdiNoPrazo(stressed,T);
@@ -473,12 +561,16 @@ async function boot(){
     elPct.value=DATA.defaults.pct_cdi;
     elPrazo.value=DATA.defaults.prazo_anos;
     elPrazo.max=DATA.defaults.prazo_max;
+    initPrazoDatasLimites();
     basePts=DATA.curva_atual.pts;
     updateCurvaPills();
     document.getElementById("btn-refresh-advfn").onclick=()=>refreshAdvfnFromJson();
+    elPrazoModo.addEventListener("change", applyPrazoModo);
+    elPrazoData.addEventListener("change", ()=>{ updatePrazoHint(); recalc(); });
+    elPrazo.addEventListener("input", ()=>{ syncPrazoDataFromAnos(); recalc(); });
     setFairPre(false);
     buildHistDates();
-    [elNotional,elPct,elPre,elPrazo,elShift].forEach(el=>el.addEventListener("input",recalc));
+    [elNotional,elPct,elPre,elShift].forEach(el=>el.addEventListener("input",recalc));
     document.getElementById("hist-prazo-min").addEventListener("input",()=>{drawHistCurvas();});
     document.getElementById("hist-prazo-max").addEventListener("input",()=>{drawHistCurvas();});
     recalc();
