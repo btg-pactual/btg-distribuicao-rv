@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mr Derivs — IV &amp; Opções B3</title>
+  <style>
+    :root {
+      --btg: #0b1f3a;
+      --btg-mid: #163a5f;
+      --link: #1a66b3;
+      --muted: #5c6b7a;
+      --line: #d0d8e2;
+      --bg: #eef2f6;
+      --card: #ffffff;
+      --accent: #00c37a;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: Segoe UI, -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif;
+      color: var(--btg);
+      background: var(--bg);
+      line-height: 1.5;
+    }
+    .hero {
+      background: linear-gradient(135deg, #0a1628 0%, var(--btg-mid) 60%, #1e4d7b 100%);
+      color: #fff;
+      padding: 32px 24px 36px;
+    }
+    .hero-inner { max-width: 920px; margin: 0 auto; }
+    h1 { font-size: clamp(26px, 4vw, 36px); margin-top: 8px; }
+    .lede { margin-top: 10px; color: rgba(255,255,255,.85); max-width: 40em; font-size: 15px; }
+    .back { color: rgba(255,255,255,.9); font-size: 13px; text-decoration: none; font-weight: 600; }
+    .back:hover { text-decoration: underline; }
+    .page { max-width: 920px; margin: 0 auto; padding: 28px 24px 48px; }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 20px 22px;
+      margin-bottom: 16px;
+    }
+    h2 { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--link); margin-bottom: 10px; }
+    .status { font-family: ui-monospace, Consolas, monospace; font-size: 13px; white-space: pre-wrap; }
+    .ok { color: #0a7a4b; font-weight: 700; }
+    .warn { color: #b45309; font-weight: 700; }
+    code { background: #eef2f6; padding: 2px 6px; border-radius: 3px; font-size: 12px; }
+    ul { margin: 10px 0 0 18px; font-size: 14px; color: var(--muted); }
+    .footer { margin-top: 24px; font-size: 11px; color: var(--muted); text-align: center; }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-inner">
+      <a class="back" href="../index.html">← Distribuição RV</a>
+      <h1>Mr Derivs</h1>
+      <p class="lede">
+        Vol implícita, skew/smile FVOL, IV vs realizada e busca histórica de opções B3.
+        App Shiny (R local); cache COTAHIST atualizado diariamente via GitHub Actions.
+      </p>
+    </div>
+  </header>
+  <main class="page">
+    <section class="card">
+      <h2>Status do cache COTAHIST</h2>
+      <div id="status" class="status">Carregando…</div>
+    </section>
+    <section class="card">
+      <h2>Como rodar (local)</h2>
+      <ul>
+        <li>Clone o repositório e abra a pasta <code>mr-derivs</code></li>
+        <li>R: <code>shiny::runApp("app_vol_implicita.R")</code></li>
+        <li>Seed 24m (uma vez): <code>Rscript jobs/seed_cache_24m.R</code></li>
+      </ul>
+    </section>
+    <section class="card">
+      <h2>Abas do app</h2>
+      <ul>
+        <li>IV histórica · Skew &amp; Smile · IV vs Realizada · Busca opções</li>
+      </ul>
+    </section>
+    <p class="footer">Uso interno BTG · Código em <code>mr-derivs/</code> no branch <code>pages</code></p>
+  </main>
+  <script>
+    fetch("data/cotahist_status.json")
+      .then(r => r.ok ? r.json() : Promise.reject(new Error("HTTP " + r.status)))
+      .then(d => {
+        const ok = d.ok === true;
+        const cls = ok ? "ok" : "warn";
+        document.getElementById("status").innerHTML =
+          `<span class="${cls}">${ok ? "OK" : "ATENÇÃO"}</span> · último COTAHIST: ${d.ultima_cotahist || "n/d"}\n` +
+          `Atualizado: ${d.atualizado_em || "n/d"} · lag: ${d.lag_dias ?? "n/d"} dias\n` +
+          `${d.mensagem || ""}\n\nTickers seed:\n` +
+          (d.tickers || []).map(t => `  ${t.ticker}: spot até ${t.ultima_spot || "n/d"}`).join("\n");
+      })
+      .catch(e => {
+        document.getElementById("status").textContent =
+          "Status indisponível (rode o workflow Mr Derivs COTAHIST ou seed local).\n" + e.message;
+      });
+  </script>
+</body>
+</html>
