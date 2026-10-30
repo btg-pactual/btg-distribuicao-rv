@@ -15,9 +15,17 @@ invisible(gc())
 # 0a. CONFIG + CACHE RB3 (precisa vir antes de library(rb3))
 # =============================================================================
 VI_SCRIPT_DIR <- local({
+  if (exists("APP_DIR", inherits = TRUE) && nzchar(get0("APP_DIR", ifnotfound = ""))) {
+    return(normalizePath(APP_DIR, winslash = "/", mustWork = FALSE))
+  }
   args <- commandArgs(trailingOnly = FALSE)
   f <- grep("^--file=", args, value = TRUE)
-  if (length(f)) dirname(normalizePath(sub("^--file=", "", f[[1]]))) else getwd()
+  if (length(f)) {
+    d <- dirname(normalizePath(sub("^--file=", "", f[[1]]), winslash = "/", mustWork = FALSE))
+    if (basename(d) == "jobs") return(normalizePath(file.path(d, ".."), winslash = "/", mustWork = FALSE))
+    return(d)
+  }
+  normalizePath(getwd(), winslash = "/", mustWork = FALSE)
 })
 source(file.path(VI_SCRIPT_DIR, "config_mr_derivs.R"), local = FALSE)
 configurar_cache_rb3(DEFAULT_RB3_CACHE)
@@ -97,7 +105,8 @@ rodar_vol_implicita <- function(
   dpi = 120,
   incluir_tabela_grafico = TRUE,
   salvar_png = TRUE,
-  retorno_leve = FALSE
+  retorno_leve = FALSE,
+  somente_dados = FALSE
 ) {
 ATIVO          <- toupper(ativo)
 ATIVO_PREFIXO  <- if (!is.null(prefixo_opcoes)) toupper(prefixo_opcoes) else if (!is.null(ticker_spot)) substr(toupper(ticker_spot), 1, 4) else substr(ATIVO, 1, 4)
@@ -147,7 +156,7 @@ message(sprintf(">>> Carrego BSM: %s", MODO_CARREGO))
 # =============================================================================
 bizdays::load_builtin_calendars()
 if (!CAL %in% ls(bizdays::calendars())) stop("Calendario nao carregado: ", CAL)
-bizdays.options$set(default.calendar = CAL)
+bizdays::bizdays.options$set(default.calendar = CAL)
 DATA_FIM <- bizdays::preceding(Sys.Date(), CAL)
 message(sprintf(">>> Calendario: %s", CAL))
 message(sprintf(">>> Data fim: %s", DATA_FIM))
@@ -407,8 +416,8 @@ if (nrow(price_data) == 0) {
 # Cobre 3a segunda (acoes), 4a perto do dia 15 (indice) e 3a sexta.
 # Semanais caem nas outras semanas (1-7, 8-14, 22-31).
 eh_vencimento_mensal <- function(x) {
-  d <- lubridate::mday(as.Date(x))
-  d >= 15 & d <= 21
+  d <- as.integer(format(as.Date(x), "%d"))
+  d >= 15L & d <= 21L
 }
 
 # =============================================================================
@@ -798,6 +807,29 @@ if (nrow(fvol_ts) >= 3) {
   }
 }
 if (nrow(fvol_ts) == 0) stop("Nenhuma curva FVOL restante apos filtro de qualidade para ", ATIVO)
+
+if (isTRUE(somente_dados)) {
+  n_iv_dias <- dplyr::n_distinct(op_all$refdate_calc)
+  fvol_ult <- dplyr::slice_tail(fvol_ts, n = 1)
+  return(invisible(list(
+    ativo = ATIVO,
+    ticker_spot = TICKER_SPOT,
+    periodo = c(inicio = DATA_CALC_INICIO, fim = DATA_CALC_FIM),
+    meta_datas = list(
+      ultima_spot = if (nrow(price_data)) max(price_data$refdate) else as.Date(NA),
+      ultima_iv = if (nrow(op_all)) max(op_all$refdate_calc) else as.Date(NA),
+      ultima_fvol = if (nrow(fvol_ts)) max(fvol_ts$refdate) else as.Date(NA),
+      n_datas_iv = n_iv_dias,
+      ultimo_vencimento = if (nrow(fvol_ts)) fvol_ult$maturity_date[1] else as.Date(NA),
+      ultimo_biz_days = if (nrow(fvol_ts)) as.integer(fvol_ult$biz_days[1]) else NA_integer_,
+      ultimo_carry_aa = if ("carry_aa" %in% names(fvol_ult)) fvol_ult$carry_aa[1] else NA_real_
+    ),
+    fvol = fvol_ts,
+    n_iv_dias = n_iv_dias,
+    carrego_modo = MODO_CARREGO,
+    du_alvo = DU_ALVO
+  )))
+}
 
 dias_iv_sem_fvol <- setdiff(
   unique(op_all$refdate_calc),

@@ -98,7 +98,7 @@ mercado_para_simulacao <- function(
   configurar_cache_rb3(cache_dir)
 
   bizdays::load_builtin_calendars()
-  bizdays.options$set(default.calendar = cal)
+  bizdays::bizdays.options$set(default.calendar = cal)
 
   refdate <- ultima_data_ticker(ticker_spot, cache_dir)
   if (!is.finite(refdate)) stop("Sem cotacao para ", ticker_spot, " no cache.")

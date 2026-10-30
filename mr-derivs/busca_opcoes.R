@@ -298,7 +298,7 @@ carregar_spot_opcoes <- function(
 
   bizdays::load_builtin_calendars()
   if (!cal %in% ls(bizdays::calendars())) stop("Calendario nao carregado: ", cal)
-  bizdays.options$set(default.calendar = cal)
+  bizdays::bizdays.options$set(default.calendar = cal)
 
   ch_y <- tryCatch(rb3::cotahist_get(type = "yearly"), error = function(e) NULL)
   ch_d <- tryCatch(rb3::cotahist_get(type = "daily"), error = function(e) NULL)

@@ -4,12 +4,18 @@ Pipeline de vol implícita / FVOL (skew, smile), IV vs realizada e busca histór
 
 ## App (4 abas)
 
+Pasta oficial: `btg-distribuicao-rv/mr-derivs` (monorepo, branch `pages`).
+
+**Windows (duplo clique):** `scripts\run_app.bat`
+
 ```r
-setwd(".../Mr Derivs")
+setwd(".../btg-distribuicao-rv/mr-derivs")
 source("sanity_check.R")
 options(vol_implicita.autorun = FALSE)
 shiny::runApp("app_vol_implicita.R")
 ```
+
+O cache COTAHIST usa automaticamente `Documentos/rb3_cache` no OneDrive BTG, se existir (override: `MR_DERIVS_RB3_CACHE`).
 
 | Aba | Conteúdo |
 |-----|----------|

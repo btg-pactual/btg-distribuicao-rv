@@ -55,8 +55,13 @@
       <a class="back" href="../index.html">← Distribuição RV</a>
       <h1>Mr Derivs</h1>
       <p class="lede">
-        Vol implícita, skew/smile FVOL, IV vs realizada e busca histórica de opções B3.
-        App Shiny (R local); cache COTAHIST atualizado diariamente via GitHub Actions.
+        Vol implícita, skew/smile FVOL e IV vs realizada — consulta pelo navegador (GitHub Pages)
+        ou app Shiny completo no R local.
+      </p>
+      <p style="margin-top:14px;">
+        <a href="viz.html" style="display:inline-block;background:#00c37a;color:#0a1628;font-weight:700;padding:10px 18px;border-radius:4px;text-decoration:none;font-size:14px;">
+          Abrir gráficos por ativo →
+        </a>
       </p>
     </div>
   </header>
@@ -66,11 +71,17 @@
       <div id="status" class="status">Carregando…</div>
     </section>
     <section class="card">
-      <h2>Como rodar (local)</h2>
+      <h2>Site (sem instalar R)</h2>
       <ul>
-        <li>Clone o repositório e abra a pasta <code>mr-derivs</code></li>
-        <li>R: <code>shiny::runApp("app_vol_implicita.R")</code></li>
-        <li>Seed 24m (uma vez): <code>Rscript jobs/seed_cache_24m.R</code></li>
+        <li><a href="viz.html">viz.html</a> — escolha o ticker e veja vol ATM, skew e smile (dados em <code>data/web/*.json</code>)</li>
+        <li>Atualização: workflow GitHub Actions ou <code>scripts/run_export_web.bat</code> + push</li>
+      </ul>
+    </section>
+    <section class="card">
+      <h2>App completo (R local)</h2>
+      <ul>
+        <li><code>scripts/run_app.bat</code> ou <code>shiny::runApp("app_vol_implicita.R")</code></li>
+        <li>Busca de opções, filtros e recálculo ao vivo</li>
       </ul>
     </section>
     <section class="card">

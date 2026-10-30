@@ -6,11 +6,8 @@ cd /d "%~dp0.."
 set RB3_CACHE=%MR_DERIVS_RB3_CACHE%
 if "%RB3_CACHE%"=="" set RB3_CACHE=C:\Users\PIMENTPA\OneDrive - Banco BTG Pactual S.A\Documentos\rb3_cache
 
-where Rscript >nul 2>&1
-if errorlevel 1 (
-  echo Rscript nao encontrado no PATH.
-  exit /b 1
-)
+call "%~dp0_rscript_path.bat"
+if errorlevel 1 exit /b 1
 
-Rscript jobs\seed_cache_24m.R "%RB3_CACHE%" 24
+"%MR_DERIVS_RSCRIPT%" jobs\seed_cache_24m.R "%RB3_CACHE%" 24
 exit /b %ERRORLEVEL%

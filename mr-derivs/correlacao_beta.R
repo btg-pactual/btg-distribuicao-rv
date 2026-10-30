@@ -78,7 +78,7 @@ carregar_precos_tickers <- function(
 
   bizdays::load_builtin_calendars()
   if (!cal %in% ls(bizdays::calendars())) stop("Calendario nao carregado: ", cal)
-  bizdays.options$set(default.calendar = cal)
+  bizdays::bizdays.options$set(default.calendar = cal)
 
   data_ini <- as.Date(periodo_inicio)
   data_fim <- as.Date(periodo_fim)

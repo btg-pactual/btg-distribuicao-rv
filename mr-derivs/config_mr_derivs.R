@@ -23,10 +23,25 @@ MR_DERIVS_ROOT <- local({
   normalizePath(getwd(), winslash = "/", mustWork = FALSE)
 })
 
-DEFAULT_RB3_CACHE <- Sys.getenv(
-  "MR_DERIVS_RB3_CACHE",
-  unset = file.path(MR_DERIVS_ROOT, ".rb3_cache")
-)
+#' Cache rb3: env MR_DERIVS_RB3_CACHE, senao Documentos/rb3_cache (OneDrive BTG), senao .rb3_cache local.
+resolver_cache_rb3 <- function() {
+  env <- Sys.getenv("MR_DERIVS_RB3_CACHE", unset = "")
+  if (nzchar(env)) {
+    return(normalizePath(env, winslash = "/", mustWork = FALSE))
+  }
+  doc_cache <- file.path(
+    Sys.getenv("USERPROFILE", unset = "~"),
+    "OneDrive - Banco BTG Pactual S.A",
+    "Documentos",
+    "rb3_cache"
+  )
+  if (dir.exists(doc_cache)) {
+    return(normalizePath(doc_cache, winslash = "/", mustWork = FALSE))
+  }
+  file.path(MR_DERIVS_ROOT, ".rb3_cache")
+}
+
+DEFAULT_RB3_CACHE <- resolver_cache_rb3()
 
 DEFAULT_OUT_RADAR <- file.path(MR_DERIVS_ROOT, "outputs_radar")
 DEFAULT_OUT_GRAPHICS <- Sys.getenv(
@@ -70,7 +85,7 @@ garantir_calendario <- function(cal = MR_CALENDAR) {
   if (!cal %in% ls(bizdays::calendars())) {
     stop("Calendario nao carregado: ", cal)
   }
-  bizdays.options$set(default.calendar = cal)
+  bizdays::bizdays.options$set(default.calendar = cal)
   invisible(cal)
 }
 
@@ -95,10 +110,10 @@ if (!is.finite(MR_CACHE_MESES) || MR_CACHE_MESES < 1) MR_CACHE_MESES <- 24L
 
 #' Inicio do COTAHIST para seed / job diario (N meses calendario).
 cache_data_inicio_padrao <- function(meses = MR_CACHE_MESES) {
-  if (requireNamespace("lubridate", quietly = TRUE)) {
-    return(lubridate::floor_date(Sys.Date(), "month") %m-% lubridate::months(as.integer(meses)))
-  }
-  Sys.Date() - as.integer(meses) * 30L
+  meses <- as.integer(meses)
+  if (!is.finite(meses) || meses < 1L) meses <- 24L
+  anchor <- as.Date(format(Sys.Date(), "%Y-%m-01"))
+  seq(anchor, by = paste0("-", meses, " months"), length = 2L)[2L]
 }
 
 MR_DERIVS_FULL_UI <- identical(

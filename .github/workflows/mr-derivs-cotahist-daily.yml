@@ -14,6 +14,14 @@ on:
         options:
           - "false"
           - "true"
+      export_web:
+        description: "Gerar JSON para viz.html (vol/skew no Pages)"
+        required: false
+        default: "false"
+        type: choice
+        options:
+          - "false"
+          - "true"
 
 permissions:
   contents: write
@@ -25,6 +33,7 @@ concurrency:
 jobs:
   cotahist:
     runs-on: ubuntu-latest
+    timeout-minutes: 180
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -59,15 +68,19 @@ jobs:
             Rscript mr-derivs/jobs/atualizar_cache_diario.R "${{ github.workspace }}/mr-derivs/.rb3_cache" || true
           fi
           Rscript mr-derivs/jobs/export_cache_status.R
+          if [ "${{ github.event.inputs.export_web }}" = "true" ]; then
+            export MR_DERIVS_WEB_DIAS=180
+            Rscript mr-derivs/jobs/export_iv_web.R "${{ github.workspace }}/mr-derivs/.rb3_cache" 180
+          fi
 
       - name: Commit status JSON
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add mr-derivs/data/cotahist_status.json
+          git add mr-derivs/data/cotahist_status.json mr-derivs/data/web/
           if git diff --staged --quiet; then
-            echo "sem mudança em cotahist_status.json"
+            echo "sem mudança em cotahist_status.json / data/web"
           else
-            git commit -m "Mr Derivs: atualiza status COTAHIST (Actions)."
+            git commit -m "Mr Derivs: atualiza status COTAHIST e dados web (Actions)."
             git push
           fi

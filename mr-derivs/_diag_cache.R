@@ -14,7 +14,7 @@ library(dplyr)
 library(bizdays)
 library(lubridate)
 load_builtin_calendars()
-bizdays.options$set(default.calendar = "Brazil/ANBIMA")
+bizdays::bizdays.options$set(default.calendar = "Brazil/ANBIMA")
 
 max_cotahist <- function(tipo) {
   ch <- tryCatch(cotahist_get(type = tipo), error = function(e) NULL)
