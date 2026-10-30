@@ -14,5 +14,5 @@ REM Opcional: so alguns tickers — set MR_DERIVS_WEB_TICKERS=BOVA11,PETR4
 REM Janela exibida (dias): set MR_DERIVS_WEB_DIAS=180
 
 echo Export web: cache=%MR_DERIVS_RB3_CACHE%
-"%MR_DERIVS_RSCRIPT%" jobs\export_iv_web.R "%RB3_CACHE%" 180
+"%MR_DERIVS_RSCRIPT%" jobs\export_iv_web.R "%RB3_CACHE%" 365
 exit /b %ERRORLEVEL%

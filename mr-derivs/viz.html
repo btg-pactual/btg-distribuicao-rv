@@ -28,34 +28,40 @@
       display: flex;
       flex-wrap: wrap;
       gap: 16px;
-      align-items: center;
+      align-items: flex-end;
       justify-content: space-between;
     }
-    h1 { font-size: 20px; font-weight: 600; }
+    h1 { font-size: 20px; font-weight: 600; margin-top: 6px; }
     .back { color: var(--link); text-decoration: none; font-size: 13px; }
     .back:hover { text-decoration: underline; }
     .controls {
       display: flex;
       flex-wrap: wrap;
       gap: 12px;
-      align-items: center;
+      align-items: flex-end;
     }
-    label { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
-    select {
+    label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; display: block; margin-bottom: 4px; }
+    select, input[type="date"] {
       background: var(--panel);
       color: var(--text);
       border: 1px solid var(--line);
       border-radius: 4px;
-      padding: 8px 12px;
+      padding: 8px 10px;
       font-size: 14px;
-      min-width: 140px;
+      min-width: 130px;
     }
-    .meta {
-      font-size: 12px;
+    .btn-row { display: flex; gap: 6px; flex-wrap: wrap; }
+    button.preset {
+      background: var(--panel);
+      border: 1px solid var(--line);
       color: var(--muted);
-      max-width: 420px;
-      line-height: 1.45;
+      border-radius: 4px;
+      padding: 6px 10px;
+      font-size: 12px;
+      cursor: pointer;
     }
+    button.preset:hover { border-color: var(--accent); color: var(--text); }
+    .meta { font-size: 12px; color: var(--muted); max-width: 360px; line-height: 1.45; }
     main { padding: 16px 20px 32px; max-width: 1200px; margin: 0 auto; }
     .chart {
       background: var(--panel);
@@ -89,6 +95,34 @@
     }
     .kpi span { display: block; font-size: 11px; color: var(--muted); text-transform: uppercase; }
     .kpi strong { font-size: 18px; margin-top: 4px; display: block; }
+    .tbl-wrap {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 12px 14px 16px;
+      margin-bottom: 16px;
+      overflow-x: auto;
+    }
+    .tbl-wrap h2 {
+      font-size: 12px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--link);
+      margin-bottom: 10px;
+    }
+    table.pct {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    table.pct th, table.pct td {
+      padding: 8px 10px;
+      text-align: right;
+      border-bottom: 1px solid var(--line);
+    }
+    table.pct th:first-child, table.pct td:first-child { text-align: left; }
+    table.pct th { color: var(--muted); font-weight: 600; font-size: 11px; text-transform: uppercase; }
+    table.pct tr:last-child td { border-bottom: none; }
   </style>
 </head>
 <body>
@@ -99,18 +133,52 @@
     </div>
     <div class="controls">
       <div>
-        <label for="ticker">Ativo</label><br />
+        <label for="ticker">Ativo</label>
         <select id="ticker" aria-label="Ativo"></select>
       </div>
-      <p class="meta" id="meta">Carregando manifest…</p>
+      <div>
+        <label for="dIni">De</label>
+        <input type="date" id="dIni" />
+      </div>
+      <div>
+        <label for="dFim">Até</label>
+        <input type="date" id="dFim" />
+      </div>
+      <div>
+        <label>Atalhos</label>
+        <div class="btn-row">
+          <button type="button" class="preset" data-days="30">1M</button>
+          <button type="button" class="preset" data-days="90">3M</button>
+          <button type="button" class="preset" data-days="180">6M</button>
+          <button type="button" class="preset" data-days="365">1A</button>
+          <button type="button" class="preset" data-days="0">Tudo</button>
+        </div>
+      </div>
+      <p class="meta" id="meta">Carregando…</p>
     </div>
   </header>
   <main>
     <div id="banner" class="alert" hidden></div>
     <div class="kpi" id="kpi"></div>
+    <div class="tbl-wrap">
+      <h2>Percentis no período selecionado</h2>
+      <table class="pct" id="tblPct">
+        <thead>
+          <tr>
+            <th>Variável</th>
+            <th>Atual</th>
+            <th>Mín</th>
+            <th>Máx</th>
+            <th>Média</th>
+            <th>Percentil</th>
+            <th>Dif. média</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
     <div id="chartVol" class="chart"></div>
     <div id="chartSkew" class="chart"></div>
-    <div id="chartSmile" class="chart"></div>
   </main>
   <script>
     const TICKERS_FALLBACK = [
@@ -127,9 +195,30 @@
       legend: { orientation: "h", y: 1.12 }
     };
 
-    function pct(x) {
+    let rawSeries = [];
+    let bounds = { inicio: null, fim: null };
+    let manifestGlobal = null;
+
+    function pctVol(x) {
       if (x == null || Number.isNaN(x)) return "n/d";
       return (x * 100).toFixed(2) + "%";
+    }
+    function pctRate(x) {
+      if (x == null || Number.isNaN(x)) return "n/d";
+      return (x * 100).toFixed(2) + "%";
+    }
+    function ppDiff(x) {
+      if (x == null || Number.isNaN(x)) return "n/d";
+      const s = x >= 0 ? "+" : "";
+      return s + (x * 100).toFixed(2) + " pp";
+    }
+    function pctRank(vals, cur) {
+      if (cur == null || Number.isNaN(cur) || !vals.length) return null;
+      const v = vals.filter(x => x != null && !Number.isNaN(x)).sort((a, b) => a - b);
+      if (!v.length) return null;
+      let c = 0;
+      for (const x of v) if (x <= cur) c++;
+      return (c / v.length) * 100;
     }
 
     function showBanner(msg) {
@@ -138,21 +227,159 @@
       el.textContent = msg;
     }
 
+    function filterSeries() {
+      const d0 = document.getElementById("dIni").value;
+      const d1 = document.getElementById("dFim").value;
+      if (!d0 || !d1) return rawSeries.slice();
+      return rawSeries.filter(r => r.refdate >= d0 && r.refdate <= d1);
+    }
+
+    function rowStats(series, key, asVol) {
+      const vals = series.map(r => r[key]).filter(v => v != null && !Number.isNaN(v));
+      const cur = series.length ? series[series.length - 1][key] : null;
+      if (!vals.length) {
+        return { cur, min: null, max: null, mean: null, pct: null, diff: null };
+      }
+      const min = Math.min(...vals);
+      const max = Math.max(...vals);
+      const mean = vals.reduce((a, b) => a + b, 0) / vals.length;
+      const pct = pctRank(vals, cur);
+      const diff = cur != null ? cur - mean : null;
+      const fmt = asVol ? pctVol : pctRate;
+      return {
+        cur: fmt(cur),
+        min: fmt(min),
+        max: fmt(max),
+        mean: fmt(mean),
+        pct: pct != null ? Math.round(pct) + "º" : "n/d",
+        diff: asVol ? ppDiff(diff) : ppDiff(diff)
+      };
+    }
+
+    function renderTable(series) {
+      const rows = [
+        { label: "Vol ATM", key: "sigma_atm", vol: true },
+        { label: "Skew", key: "skew", vol: true },
+        { label: "Smile", key: "smile", vol: true }
+      ];
+      const tbody = document.querySelector("#tblPct tbody");
+      tbody.innerHTML = rows.map(r => {
+        const s = rowStats(series, r.key, r.vol);
+        return `<tr>
+          <td>${r.label}</td>
+          <td>${s.cur}</td>
+          <td>${s.min}</td>
+          <td>${s.max}</td>
+          <td>${s.mean}</td>
+          <td>${s.pct}</td>
+          <td>${s.diff}</td>
+        </tr>`;
+      }).join("");
+    }
+
+    function renderCharts(series) {
+      if (!series.length) {
+        showBanner("Nenhum pregão no período selecionado.");
+        Plotly.purge("chartVol");
+        Plotly.purge("chartSkew");
+        return;
+      }
+      document.getElementById("banner").hidden = true;
+      const last = series[series.length - 1];
+      const pctV = pctRank(series.map(r => r.sigma_atm), last.sigma_atm);
+      document.getElementById("kpi").innerHTML = `
+        <div><span>Vol ATM (fim período)</span><strong>${pctVol(last.sigma_atm)}</strong></div>
+        <div><span>Skew</span><strong>${last.skew != null ? pctRate(last.skew) : "n/d"}</strong></div>
+        <div><span>Smile</span><strong>${last.smile != null ? pctRate(last.smile) : "n/d"}</strong></div>
+        <div><span>Percentil vol</span><strong>${pctV != null ? Math.round(pctV) + "º" : "n/d"}</strong></div>
+      `;
+      renderTable(series);
+      const dates = series.map(r => r.refdate);
+      const volTraces = [
+        { x: dates, y: series.map(r => r.sigma_atm), name: "Vol ATM FVOL", type: "scatter", mode: "lines", line: { color: "#00c37a" } }
+      ];
+      if (series.some(r => r.vol_mm != null)) {
+        volTraces.push({
+          x: dates, y: series.map(r => r.vol_mm), name: "MM 21d", type: "scatter", mode: "lines",
+          line: { color: "#6eb5ff", dash: "dot" }
+        });
+      }
+      if (series.some(r => r.vol_realizada != null)) {
+        volTraces.push({
+          x: dates, y: series.map(r => r.vol_realizada), name: "Realizada", type: "scatter", mode: "lines",
+          line: { color: "#fbbf24" }
+        });
+      }
+      Plotly.newPlot("chartVol", volTraces, { ...plotLayout, title: "Vol ATM" }, { responsive: true });
+      Plotly.newPlot("chartSkew", [
+        { x: dates, y: series.map(r => r.skew), name: "Skew", type: "scatter", mode: "lines", line: { color: "#a78bfa" } },
+        { x: dates, y: series.map(r => r.smile), name: "Smile", type: "scatter", mode: "lines", yaxis: "y2", line: { color: "#f472b6" } }
+      ], {
+        ...plotLayout,
+        title: "Skew & smile (FVOL)",
+        yaxis: { title: "Skew", gridcolor: "#2a3f5f" },
+        yaxis2: { title: "Smile", overlaying: "y", side: "right", gridcolor: "transparent" }
+      }, { responsive: true });
+    }
+
+    function applyPeriod() {
+      const series = filterSeries();
+      renderCharts(series);
+      const tk = document.getElementById("ticker").value;
+      const q = new URLSearchParams(location.search);
+      q.set("ticker", tk);
+      q.set("from", document.getElementById("dIni").value);
+      q.set("to", document.getElementById("dFim").value);
+      history.replaceState(null, "", "?" + q.toString());
+    }
+
+    function setPreset(days) {
+      const fim = bounds.fim || document.getElementById("dFim").value;
+      if (!fim) return;
+      document.getElementById("dFim").value = fim;
+      if (days === 0) {
+        document.getElementById("dIni").value = bounds.inicio;
+      } else {
+        const end = new Date(fim + "T12:00:00");
+        end.setDate(end.getDate() - days);
+        document.getElementById("dIni").value = end.toISOString().slice(0, 10);
+      }
+      applyPeriod();
+    }
+
+    function setDateBounds(b) {
+      bounds = b;
+      const dIni = document.getElementById("dIni");
+      const dFim = document.getElementById("dFim");
+      if (b.inicio) dIni.min = b.inicio;
+      if (b.fim) dFim.max = b.fim;
+      const params = new URLSearchParams(location.search);
+      dFim.value = params.get("to") || b.fim || "";
+      dIni.value = params.get("from") || b.inicio || "";
+      if (!params.get("from") && b.fim) {
+        const end = new Date((b.fim) + "T12:00:00");
+        end.setDate(end.getDate() - 90);
+        const def = end.toISOString().slice(0, 10);
+        if (def >= (b.inicio || "")) dIni.value = def;
+      }
+    }
+
     async function loadManifest() {
       try {
         const r = await fetch("data/web/manifest.json");
         if (!r.ok) throw new Error("manifest HTTP " + r.status);
         return await r.json();
       } catch (e) {
-        return { tickers: TICKERS_FALLBACK.map(t => ({ ticker: t })), periodo_dias: null };
+        return { tickers: TICKERS_FALLBACK.map(t => ({ ticker: t })) };
       }
     }
 
     function fillTickerSelect(manifest) {
+      manifestGlobal = manifest;
       const sel = document.getElementById("ticker");
       sel.innerHTML = "";
-      const list = (manifest.tickers || []).map(t => t.ticker || t).filter(Boolean);
-      const tickers = list.length ? list : TICKERS_FALLBACK;
+      const fromManifest = (manifest.tickers || []).map(t => t.ticker).filter(Boolean);
+      const tickers = fromManifest.length ? fromManifest : TICKERS_FALLBACK;
       tickers.forEach(t => {
         const o = document.createElement("option");
         o.value = t;
@@ -163,75 +390,43 @@
       const q = params.get("ticker");
       if (q && tickers.includes(q)) sel.value = q;
       document.getElementById("meta").textContent = manifest.atualizado_em
-        ? `Dados: ${manifest.periodo_inicio || "?"} → hoje · atualizado ${manifest.atualizado_em}`
-        : "Aguardando export (jobs/export_iv_web.R ou GitHub Actions).";
+        ? `Série até ${manifest.periodo_inicio || "?"} · export ${manifest.atualizado_em}`
+        : "Dados: export web (seed 24m)";
     }
 
     async function loadTicker(ticker) {
       document.getElementById("banner").hidden = true;
       const r = await fetch(`data/web/${ticker}.json`);
       if (!r.ok) {
-        showBanner(
-          `Sem dados para ${ticker} no GitHub Pages ainda. Rode jobs/export_iv_web.R (local) ou dispare o workflow Mr Derivs com export web; depois commit em data/web/.`
-        );
-        Plotly.purge("chartVol");
-        Plotly.purge("chartSkew");
-        Plotly.purge("chartSmile");
-        document.getElementById("kpi").innerHTML = "";
+        showBanner(`Sem dados para ${ticker}. Rode scripts/run_export_web.bat e publique data/web/ no GitHub.`);
+        rawSeries = [];
         return;
       }
       const d = await r.json();
-      const s = d.series || [];
-      if (!s.length) {
-        showBanner(`Arquivo ${ticker}.json vazio ou pipeline sem FVOL no periodo.`);
-        return;
+      rawSeries = d.series || [];
+      const b = d.bounds || {};
+      if (!b.inicio && rawSeries.length) {
+        b.inicio = rawSeries[0].refdate;
+        b.fim = rawSeries[rawSeries.length - 1].refdate;
       }
-      const last = s[s.length - 1];
-      document.getElementById("kpi").innerHTML = `
-        <div><span>Vol ATM (último)</span><strong>${pct(last.sigma_atm)}</strong></div>
-        <div><span>Skew FVOL</span><strong>${last.skew != null ? last.skew.toFixed(4) : "n/d"}</strong></div>
-        <div><span>Smile FVOL</span><strong>${last.smile != null ? last.smile.toFixed(4) : "n/d"}</strong></div>
-        <div><span>Percentil vol</span><strong>${last.pct_vol != null ? last.pct_vol.toFixed(0) + "º" : "n/d"}</strong></div>
-      `;
-      const dates = s.map(r => r.refdate);
-      Plotly.newPlot("chartVol", [
-        { x: dates, y: s.map(r => r.sigma_atm), name: "Vol ATM FVOL", type: "scatter", mode: "lines", line: { color: "#00c37a" } },
-        { x: dates, y: s.map(r => r.vol_mm), name: "MM 21d", type: "scatter", mode: "lines", line: { color: "#6eb5ff", dash: "dot" } },
-        { x: dates, y: s.map(r => r.vol_realizada), name: "Realizada", type: "scatter", mode: "lines", line: { color: "#fbbf24" } }
-      ], { ...plotLayout, title: "Vol ATM vs realizada" }, { responsive: true, displayModeBar: true });
-
-      Plotly.newPlot("chartSkew", [
-        { x: dates, y: s.map(r => r.skew), name: "Skew", type: "scatter", mode: "lines", line: { color: "#a78bfa" } },
-        { x: dates, y: s.map(r => r.smile), name: "Smile", type: "scatter", mode: "lines", yaxis: "y2", line: { color: "#f472b6" } }
-      ], {
-        ...plotLayout,
-        title: "Skew & smile (FVOL)",
-        yaxis: { title: "Skew", gridcolor: "#2a3f5f" },
-        yaxis2: { title: "Smile", overlaying: "y", side: "right", gridcolor: "transparent" }
-      }, { responsive: true });
-
-      const sm = d.smile_ultimo;
-      if (sm && sm.points && sm.points.length) {
-        const pts = sm.points;
-        Plotly.newPlot("chartSmile", [
-          { x: pts.map(p => p.sn), y: pts.map(p => p.impvol), name: "IV mkt", mode: "markers+lines", line: { color: "#6eb5ff" } },
-          { x: pts.map(p => p.sn), y: pts.map(p => p.fvol_fit), name: "FVOL fit", mode: "lines", line: { color: "#00c37a" } }
-        ], { ...plotLayout, title: `Smile último pregão (${sm.refdate})`, xaxis: { title: "sn" }, yaxis: { title: "Vol" } }, { responsive: true });
-      } else {
-        Plotly.newPlot("chartSmile", [], { ...plotLayout, title: "Smile (sem curva no export)" }, { responsive: true });
-      }
+      const mRow = (manifestGlobal?.tickers || []).find(t => t.ticker === ticker);
+      if (mRow?.inicio) b.inicio = mRow.inicio;
+      if (mRow?.fim) b.fim = mRow.fim;
+      setDateBounds(b);
+      applyPeriod();
     }
 
     (async () => {
-      const manifest = await loadManifest();
-      fillTickerSelect(manifest);
+      await loadManifest();
+      fillTickerSelect(manifestGlobal);
       const sel = document.getElementById("ticker");
-      const go = () => {
-        history.replaceState(null, "", "?ticker=" + encodeURIComponent(sel.value));
-        loadTicker(sel.value);
-      };
-      sel.addEventListener("change", go);
-      go();
+      document.getElementById("dIni").addEventListener("change", applyPeriod);
+      document.getElementById("dFim").addEventListener("change", applyPeriod);
+      document.querySelectorAll("button.preset").forEach(btn => {
+        btn.addEventListener("click", () => setPreset(parseInt(btn.dataset.days, 10)));
+      });
+      sel.addEventListener("change", () => loadTicker(sel.value));
+      loadTicker(sel.value);
     })();
   </script>
 </body>

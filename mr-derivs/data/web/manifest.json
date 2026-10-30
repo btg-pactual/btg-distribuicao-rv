@@ -1,12 +1,84 @@
 {
-  "atualizado_em": "2026-10-30T17:37:06-0300",
-  "periodo_dias": 90,
-  "periodo_inicio": "2026-08-01",
+  "atualizado_em": "2026-10-30T17:49:35-0300",
+  "periodo_dias": 365,
+  "periodo_inicio": "2025-10-30",
   "tickers": [
     {
       "ticker": "BOVA11",
-      "n_pontos": 58,
-      "ultima": "2026-10-29"
+      "n_pontos": 243,
+      "ultima": "2026-10-29",
+      "inicio": "2025-10-30",
+      "fim": "2026-10-29"
+    },
+    {
+      "ticker": "SMAL11",
+      "n_pontos": 238,
+      "ultima": "2026-10-29",
+      "inicio": "2025-10-30",
+      "fim": "2026-10-29"
+    },
+    {
+      "ticker": "PETR4",
+      "n_pontos": 240,
+      "ultima": "2026-10-29",
+      "inicio": "2025-10-30",
+      "fim": "2026-10-29"
+    },
+    {
+      "ticker": "EQTL3",
+      "n_pontos": 235,
+      "ultima": "2026-10-29",
+      "inicio": "2025-10-30",
+      "fim": "2026-10-29"
+    },
+    {
+      "ticker": "VALE3",
+      "n_pontos": 239,
+      "ultima": "2026-10-29",
+      "inicio": "2025-10-30",
+      "fim": "2026-10-29"
+    },
+    {
+      "ticker": "ITUB4",
+      "n_pontos": 238,
+      "ultima": "2026-10-29",
+      "inicio": "2025-10-30",
+      "fim": "2026-10-29"
+    },
+    {
+      "ticker": "BPAC11",
+      "n_pontos": 235,
+      "ultima": "2026-10-29",
+      "inicio": "2025-10-30",
+      "fim": "2026-10-29"
+    },
+    {
+      "ticker": "WEGE3",
+      "n_pontos": 237,
+      "ultima": "2026-10-29",
+      "inicio": "2025-10-30",
+      "fim": "2026-10-29"
+    },
+    {
+      "ticker": "BBDC4",
+      "n_pontos": 242,
+      "ultima": "2026-10-29",
+      "inicio": "2025-10-30",
+      "fim": "2026-10-29"
+    },
+    {
+      "ticker": "ITSA4",
+      "n_pontos": 237,
+      "ultima": "2026-10-29",
+      "inicio": "2025-10-30",
+      "fim": "2026-10-29"
+    },
+    {
+      "ticker": "ABEV3",
+      "n_pontos": 236,
+      "ultima": "2026-10-29",
+      "inicio": "2025-10-30",
+      "fim": "2026-10-29"
     }
   ],
   "erros": []

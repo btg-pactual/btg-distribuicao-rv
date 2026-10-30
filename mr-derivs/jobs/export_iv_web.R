@@ -20,9 +20,9 @@ if (!requireNamespace("jsonlite", quietly = TRUE)) {
 args <- commandArgs(trailingOnly = TRUE)
 cache_dir <- if (length(args) >= 1 && nzchar(args[[1]])) args[[1]] else DEFAULT_RB3_CACHE
 dias <- if (length(args) >= 2 && nzchar(args[[2]])) as.integer(args[[2]]) else {
-  as.integer(Sys.getenv("MR_DERIVS_WEB_DIAS", unset = "180"))
+  as.integer(Sys.getenv("MR_DERIVS_WEB_DIAS", unset = "365"))
 }
-if (!is.finite(dias) || dias < 30L) dias <- 180L
+if (!is.finite(dias) || dias < 30L) dias <- 365L
 
 tickers_env <- Sys.getenv("MR_DERIVS_WEB_TICKERS", unset = "")
 tickers <- if (nzchar(tickers_env)) {
@@ -65,25 +65,13 @@ serialize_series <- function(fvol_ts) {
   out
 }
 
-serialize_smile <- function(fvol_ts) {
-  if (is.null(fvol_ts) || !nrow(fvol_ts) || !"fit_data" %in% names(fvol_ts)) {
-    return(NULL)
+enrich_fvol_for_web <- function(fvol) {
+  if (is.null(fvol) || !nrow(fvol)) return(fvol)
+  if ("fit_data" %in% names(fvol)) fvol$fit_data <- NULL
+  if (requireNamespace("zoo", quietly = TRUE) && "sigma_atm" %in% names(fvol)) {
+    fvol$vol_mm <- zoo::rollmean(fvol$sigma_atm, k = 21L, fill = NA, align = "right")
   }
-  last <- fvol_ts[nrow(fvol_ts), , drop = FALSE]
-  fit <- last$fit_data[[1]]
-  if (is.null(fit) || !nrow(fit)) return(NULL)
-  cols <- intersect(c("sn", "impvol", "fvol_fit", "strike_price"), names(fit))
-  df <- as.data.frame(fit[, cols, drop = FALSE])
-  for (nm in names(df)) {
-    if (is.numeric(df[[nm]])) df[[nm]] <- round(df[[nm]], 6)
-  }
-  list(
-    refdate = format(as.Date(last$refdate), "%Y-%m-%d"),
-    sigma_atm = round(as.numeric(last$sigma_atm), 6),
-    skew = round(as.numeric(last$skew), 6),
-    smile = round(as.numeric(last$smile), 6),
-    points = jsonlite::fromJSON(jsonlite::toJSON(df, dataframe = "rows", na = "null"))
-  )
+  fvol
 }
 
 sanitize_meta <- function(meta) {
@@ -126,25 +114,28 @@ for (tk in tickers) {
       somente_dados = TRUE,
       out_dir = file.path(job_root, "outputs_iv")
     )
-    fvol <- res$fvol
-    if ("fit_data" %in% names(fvol)) {
-      smile <- serialize_smile(fvol)
-      fvol$fit_data <- NULL
+    fvol <- enrich_fvol_for_web(res$fvol)
+    ser <- serialize_series(fvol)
+    bounds <- if (length(ser)) {
+      list(
+        inicio = ser[[1]]$refdate,
+        fim = ser[[length(ser)]]$refdate
+      )
     } else {
-      smile <- NULL
+      list(inicio = NA_character_, fim = NA_character_)
     }
     list(
       ticker = tk,
       ativo = pref,
       meta_datas = sanitize_meta(res$meta_datas),
-      series = serialize_series(fvol),
-      smile_ultimo = smile
+      bounds = bounds,
+      series = ser
     )
   }, error = function(e) {
     job_log("  ERRO ", tk, ": ", conditionMessage(e))
-    manifest$erros[[length(manifest$erros) + 1L]] <- list(
-      ticker = tk,
-      mensagem = conditionMessage(e)
+    manifest$erros <<- c(
+      manifest$erros,
+      list(list(ticker = tk, mensagem = conditionMessage(e)))
     )
     NULL
   })
@@ -162,7 +153,9 @@ for (tk in tickers) {
   manifest$tickers[[length(manifest$tickers) + 1L]] <- list(
     ticker = tk,
     n_pontos = n_pts,
-    ultima = ult_ref
+    ultima = ult_ref,
+    inicio = payload$bounds$inicio,
+    fim = payload$bounds$fim
   )
   job_log("  OK ", tk, " (", n_pts, " pregões)")
 }
