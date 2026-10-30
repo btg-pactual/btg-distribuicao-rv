@@ -154,7 +154,7 @@
           <button type="button" class="preset" data-days="0">Tudo</button>
         </div>
       </div>
-      <p class="meta" id="meta">Carregando…</p>
+      <p class="meta" id="meta">Carregando manifest…</p>
     </div>
   </header>
   <main>
@@ -375,6 +375,7 @@
     }
 
     function fillTickerSelect(manifest) {
+      manifest = manifest || {};
       manifestGlobal = manifest;
       const sel = document.getElementById("ticker");
       sel.innerHTML = "";
@@ -417,16 +418,22 @@
     }
 
     (async () => {
-      await loadManifest();
-      fillTickerSelect(manifestGlobal);
-      const sel = document.getElementById("ticker");
-      document.getElementById("dIni").addEventListener("change", applyPeriod);
-      document.getElementById("dFim").addEventListener("change", applyPeriod);
-      document.querySelectorAll("button.preset").forEach(btn => {
-        btn.addEventListener("click", () => setPreset(parseInt(btn.dataset.days, 10)));
-      });
-      sel.addEventListener("change", () => loadTicker(sel.value));
-      loadTicker(sel.value);
+      try {
+        manifestGlobal = await loadManifest();
+        fillTickerSelect(manifestGlobal);
+        const sel = document.getElementById("ticker");
+        if (!sel.value && sel.options.length) sel.selectedIndex = 0;
+        document.getElementById("dIni").addEventListener("change", applyPeriod);
+        document.getElementById("dFim").addEventListener("change", applyPeriod);
+        document.querySelectorAll("button.preset").forEach(btn => {
+          btn.addEventListener("click", () => setPreset(parseInt(btn.dataset.days, 10)));
+        });
+        sel.addEventListener("change", () => loadTicker(sel.value));
+        await loadTicker(sel.value);
+      } catch (e) {
+        console.error(e);
+        showBanner("Erro ao iniciar a página: " + e.message + ". Use Ctrl+F5 ou scripts/run_viz_local.bat.");
+      }
     })();
   </script>
 </body>
