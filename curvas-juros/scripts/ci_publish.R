@@ -70,43 +70,49 @@ if (!is.null(attr(status, "status")) && attr(status, "status") != 0L) {
 }
 cat(paste(status, collapse = "\n"), "\n")
 
+copy_unless_same <- function(from, to) {
+  if (!file.exists(from)) return(invisible(FALSE))
+  from_n <- normalizePath(from, winslash = "/", mustWork = TRUE)
+  if (file.exists(to)) {
+    to_n <- normalizePath(to, winslash = "/", mustWork = TRUE)
+    if (identical(from_n, to_n)) return(invisible(TRUE))
+  }
+  dir.create(dirname(to), recursive = TRUE, showWarnings = FALSE)
+  file.copy(from, to, overwrite = TRUE)
+}
+
 dir.create(file.path(site_root, "swap"), recursive = TRUE, showWarnings = FALSE)
 dir.create(file.path(site_root, "data"), recursive = TRUE, showWarnings = FALSE)
 dir.create(file.path(site_root, "vendor"), recursive = TRUE, showWarnings = FALSE)
 vendor_src <- file.path(layout$code_root, "vendor/chart.umd.min.js")
-if (file.exists(vendor_src)) {
-  file.copy(vendor_src, file.path(site_root, "vendor/chart.umd.min.js"), overwrite = TRUE)
-}
+copy_unless_same(vendor_src, file.path(site_root, "vendor/chart.umd.min.js"))
 dados_src <- file.path(layout$code_root, "swap/dados.json")
 if (!file.exists(dados_src)) {
   dados_src <- file.path(layout$code_root, "swap-cdi-pre/dados.json")
 }
 
-if (!file.copy("curvas_juros.html", file.path(site_root, "index.html"), overwrite = TRUE)) {
+if (!copy_unless_same("curvas_juros.html", file.path(site_root, "index.html"))) {
   stop("curvas_juros.html não encontrado")
 }
-if (!file.copy(
+if (!copy_unless_same(
   "swap-cdi-pre/swap_simulador.html",
-  file.path(site_root, "swap/index.html"),
-  overwrite = TRUE
+  file.path(site_root, "swap/index.html")
 )) {
   stop("swap_simulador.html não encontrado")
 }
 if (file.exists(dados_src)) {
-  file.copy(dados_src, file.path(site_root, "swap/dados.json"), overwrite = TRUE)
+  copy_unless_same(dados_src, file.path(site_root, "swap/dados.json"))
 }
 docs_swap <- file.path(site_root, "docs/swap")
 dir.create(docs_swap, recursive = TRUE, showWarnings = FALSE)
-file.copy(
+copy_unless_same(
   file.path(site_root, "swap/index.html"),
-  file.path(docs_swap, "index.html"),
-  overwrite = TRUE
+  file.path(docs_swap, "index.html")
 )
 if (file.exists(file.path(site_root, "swap/dados.json"))) {
-  file.copy(
+  copy_unless_same(
     file.path(site_root, "swap/dados.json"),
-    file.path(docs_swap, "dados.json"),
-    overwrite = TRUE
+    file.path(docs_swap, "dados.json")
   )
 }
 
