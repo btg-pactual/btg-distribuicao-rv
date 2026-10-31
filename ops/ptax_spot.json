@@ -1,9 +1,9 @@
 {
-  "spot": 5.3744,
-  "date": "2026-10-29",
-  "date_br": "29/10/2026",
+  "spot": 5.4212,
+  "date": "2026-10-30",
+  "date_br": "30/10/2026",
   "tipo": "Fechamento PTAX",
-  "data_hora": "2026-10-29 13:11:53.555689",
+  "data_hora": "2026-10-30 13:04:18.706316",
   "source": "BCB Olinda PTAX CotacaoMoedaDia",
-  "updated_at": "2026-10-30T01:17:32Z"
+  "updated_at": "2026-10-31T00:58:55Z"
 }
