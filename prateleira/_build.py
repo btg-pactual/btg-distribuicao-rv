@@ -21,6 +21,7 @@ if str(REPO) not in sys.path:
 OPS = ROOT / "ops"
 REF = date(2026, 10, 28)  # aba Excel 28.10.26 — PDF da semana ainda não publicado
 PDF_NAME = ""  # remover PDF antigo; novo em breve
+WEEK_MOVES: dict | None = None
 
 # Destaques / leituras manuais do Overview — preencher quando pedido.
 # Ex.: {"title": "…", "blurb": "…", "href": "https://…"}  (http → abre em nova aba)
@@ -2263,6 +2264,13 @@ body{font-family:var(--font);color:var(--ink);background:var(--bg);min-height:10
 .pie-swatch{width:10px;height:10px;border-radius:1px;flex-shrink:0}
 .pie-count{margin-left:auto;padding-left:16px;color:var(--muted);font-weight:500}
 .ov-empty{font-size:13px;color:var(--muted);padding:8px 0 4px}
+.mov-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.mov-list{list-style:none}
+.mov-list li{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:8px 0;border-top:1px solid var(--line)}
+.mov-list li:first-child{border-top:0}
+.mov-name{font-size:14px;font-weight:700}
+.mov-struct{display:block;font-size:12px;font-weight:500;color:var(--muted)}
+.mov-when{font-size:12px;color:var(--muted);white-space:nowrap}
 .destaque-list{list-style:none}
 .destaque-list li{border-top:1px solid var(--line)}
 .destaque-list li:first-child{border-top:0}
@@ -2279,6 +2287,7 @@ body{font-family:var(--font);color:var(--ink);background:var(--bg);min-height:10
   .col-sec,.col-ops{display:none}
   .data-table thead th:nth-child(3),.data-table thead th:nth-child(7){display:none}
   .ov-grid{grid-template-columns:1fr}
+  .mov-grid{grid-template-columns:1fr}
   .cat-grid{grid-template-columns:1fr}
   .topbar{height:auto;min-height:58px;padding:12px 16px;flex-wrap:wrap;gap:6px}
   .topbar-brand{font-size:17px}
@@ -2439,6 +2448,44 @@ def _sector_pie_svg(counts: list[tuple[str, int]]) -> str:
 </div>"""
 
 
+def _move_list(rows: list[dict]) -> str:
+    if not rows:
+        return '<p class="ov-empty">Nenhuma</p>'
+    items = []
+    for row in rows:
+        fixing = row["fixing"].strftime("%d/%m/%Y")
+        items.append(
+            "<li><span><span class=\"mov-struct\">"
+            f"{html_esc(row['struct'])}</span>"
+            f"<span class=\"mov-name\">{html_esc(row['ticker'])}</span></span>"
+            f"<span class=\"mov-when\">{fixing}</span></li>"
+        )
+    return f'<ul class="mov-list">{"".join(items)}</ul>'
+
+
+def _moves_html() -> str:
+    moves = WEEK_MOVES
+    if not moves:
+        return ""
+    prev = moves["prev_ref"].strftime("%d/%m/%Y")
+    curr = moves["curr_ref"].strftime("%d/%m/%Y")
+    return f"""
+    <div class="sec-head">
+      <h2>Movimento da semana</h2>
+      <p>{curr} em relação a {prev}</p>
+    </div>
+    <div class="mov-grid">
+      <div class="ov-panel">
+        <h2>Entrou · {len(moves["entered"])}</h2>
+        {_move_list(moves["entered"])}
+      </div>
+      <div class="ov-panel">
+        <h2>Saiu · {len(moves["left"])}</h2>
+        {_move_list(moves["left"])}
+      </div>
+    </div>"""
+
+
 def overview_html(sections: list[tuple[str, list[tuple[str, dict]]]]) -> str:
     _cats, _secs, companies, n_ops = _collect_hub_data(sections)
     pie = _sector_pie_svg(_sector_counts(companies))
@@ -2490,6 +2537,7 @@ def overview_html(sections: list[tuple[str, list[tuple[str, dict]]]]) -> str:
         {pie}
       </div>
     </div>
+    {_moves_html()}
     <div class="sec-head">
       <h2>Leitura em destaque</h2>
     </div>
@@ -2708,7 +2756,7 @@ def patch_root_index():
 
 
 def main():
-    global REF
+    global REF, WEEK_MOVES
     ROOT.mkdir(parents=True, exist_ok=True)
     if OPS.exists():
         shutil.rmtree(OPS)
@@ -2721,7 +2769,7 @@ def main():
     pop_row = POP
     ot_rows = ONE_TOUCH
     try:
-        from _excel_week import load_excel_week, summary
+        from _excel_week import load_excel_week, load_previous_week, moves_summary, summary, week_moves
 
         week = load_excel_week()
         if week:
@@ -2750,7 +2798,20 @@ def main():
             )
             if n_ops == 0:
                 raise SystemExit(f"excel_empty sheet={week.sheet} — nenhuma operação lida")
-            (ROOT / "_excel_week.txt").write_text(summary(week), encoding="utf-8")
+            text = summary(week)
+            prev = load_previous_week()
+            if prev:
+                WEEK_MOVES = week_moves(week, prev)
+                text += "\n" + moves_summary(WEEK_MOVES)
+                print(
+                    "week_moves",
+                    prev.sheet,
+                    "entrou",
+                    len(WEEK_MOVES["entered"]),
+                    "saiu",
+                    len(WEEK_MOVES["left"]),
+                )
+            (ROOT / "_excel_week.txt").write_text(text, encoding="utf-8")
             print("excel_sheet", week.sheet, "ref", REF.isoformat(), "n", n_ops)
     except Exception as exc:
         print("excel_fail", exc)

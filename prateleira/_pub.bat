@@ -11,7 +11,7 @@ git add prateleira/_build.py prateleira/_excel_week.py prateleira/index.html pra
 git add prateleira/Material-Prateleira-Tatica-*.pdf 2>nul
 git add -u -- prateleira/
 git status -sb -- prateleira/ ops/range_52w.json > prateleira\_st.txt 2>&1
-echo Prateleira: usa BTG Pactual Sans, a mesma fonte do Research.> prateleira\_commit_msg.txt
+echo Prateleira: Overview mostra o que entrou e saiu contra a semana anterior.> prateleira\_commit_msg.txt
 git commit -F prateleira\_commit_msg.txt >> prateleira\_pub.txt 2>&1
 echo COMMIT=%ERRORLEVEL% >> prateleira\_pub.txt
 git pull --rebase --autostash origin pages >> prateleira\_pub.txt 2>&1

@@ -117,21 +117,7 @@ class WeekData:
     ONE_TOUCH: list
 
 
-def load_excel_week() -> WeekData | None:
-    if not XLSX.exists():
-        return None
-    try:
-        from openpyxl import load_workbook
-    except ImportError:
-        return None
-
-    wb = load_workbook(XLSX, data_only=True)
-    sheet_name = wb.sheetnames[-1]
-    ref = sheet_to_ref(sheet_name)
-    if ref is None:
-        return None
-
-    ws = wb[sheet_name]
+def _parse_ws(ws, sheet_name: str, ref: date) -> WeekData:
     section: str | None = None
     soc: list = []
     smart: list = []
@@ -260,6 +246,135 @@ def load_excel_week() -> WeekData | None:
         POP=pop,
         ONE_TOUCH=one_touch,
     )
+
+
+def _open_wb():
+    if not XLSX.exists():
+        return None
+    try:
+        from openpyxl import load_workbook
+    except ImportError:
+        return None
+    return load_workbook(XLSX, data_only=True)
+
+
+def dated_sheetnames(wb) -> list[str]:
+    return [n for n in wb.sheetnames if sheet_to_ref(n)]
+
+
+def _load_named(sheet_name: str) -> WeekData | None:
+    wb = _open_wb()
+    if wb is None or sheet_name not in wb.sheetnames:
+        return None
+    ref = sheet_to_ref(sheet_name)
+    if ref is None:
+        return None
+    return _parse_ws(wb[sheet_name], sheet_name, ref)
+
+
+def load_excel_week() -> WeekData | None:
+    wb = _open_wb()
+    if wb is None:
+        return None
+    names = dated_sheetnames(wb)
+    if not names:
+        return None
+    return _load_named(names[-1])
+
+
+def load_previous_week() -> WeekData | None:
+    wb = _open_wb()
+    if wb is None:
+        return None
+    names = dated_sheetnames(wb)
+    if len(names) < 2:
+        return None
+    return _load_named(names[-2])
+
+
+_KIND_ORDER = (
+    ("SOC", "SOC", "SOC"),
+    ("SMART", "Smart Hedge", "SMART"),
+    ("ACEL_DYN", "Aceleradora Dinâmica", "ACEL_DYN"),
+    ("ACEL_KO", "Aceleradora KO com Ativo", "ACEL_KO"),
+    ("TRIPLO", "Triplo Retorno KO", "TRIPLO"),
+    ("CALL_SPREAD", "Compra de Call Spread", "CALL_SPREAD"),
+    ("COLLAR", "Collar", "COLLAR"),
+    ("CALL_KO", "Call KO com Rebate", "CALL_KO"),
+    ("POP", "POP", "POP"),
+    ("ONE_TOUCH", "One Touch de Alta", "ONE_TOUCH"),
+)
+
+
+def _shelf_rows(w: WeekData) -> list[tuple[str, str, str, date]]:
+    rows: list[tuple[str, str, str, date]] = []
+    for key, label, attr in _KIND_ORDER:
+        val = getattr(w, attr)
+        items = [val] if key == "POP" and val else (val or [])
+        if key == "POP" and not val:
+            continue
+        for row in items:
+            if not row or row[1] is None:
+                continue
+            rows.append((key, label, row[0], row[1]))
+    return rows
+
+
+def week_moves(curr: WeekData, prev: WeekData) -> dict:
+    """Linha some ou aparece. Troca só de vencimento, no mesmo produto e ticker, não conta."""
+    from collections import defaultdict
+
+    def bucket(rows):
+        g = defaultdict(list)
+        for key, label, ticker, fixing in rows:
+            g[(key, ticker)].append((label, fixing))
+        return g
+
+    gc = bucket(_shelf_rows(curr))
+    gp = bucket(_shelf_rows(prev))
+    order = {k: i for i, (k, _label, _attr) in enumerate(_KIND_ORDER)}
+    entered: list[tuple] = []
+    left: list[tuple] = []
+    for key in set(gc) | set(gp):
+        cs = sorted(gc.get(key, []), key=lambda x: x[1])
+        ps = sorted(gp.get(key, []), key=lambda x: x[1])
+        used: set[int] = set()
+        keep_c = []
+        for label, fixing in cs:
+            match = next((i for i, (_pl, pf) in enumerate(ps) if i not in used and pf == fixing), None)
+            if match is None:
+                keep_c.append((label, fixing))
+            else:
+                used.add(match)
+        keep_p = [item for i, item in enumerate(ps) if i not in used]
+        n_roll = min(len(keep_c), len(keep_p))
+        ticker = key[1]
+        for label, fixing in keep_c[n_roll:]:
+            entered.append((order[key[0]], label, ticker, fixing))
+        for label, fixing in keep_p[n_roll:]:
+            left.append((order[key[0]], label, ticker, fixing))
+    entered.sort()
+    left.sort()
+    return {
+        "prev_sheet": prev.sheet,
+        "prev_ref": prev.ref,
+        "curr_ref": curr.ref,
+        "entered": [{"struct": lb, "ticker": tk, "fixing": fx} for _o, lb, tk, fx in entered],
+        "left": [{"struct": lb, "ticker": tk, "fixing": fx} for _o, lb, tk, fx in left],
+    }
+
+
+def moves_summary(moves: dict) -> str:
+    lines = [
+        f"prev={moves['prev_sheet']}",
+        f"entrou={len(moves['entered'])}",
+        f"saiu={len(moves['left'])}",
+    ]
+    for row in moves["entered"]:
+        lines.append(f"ENTROU\t{row['struct']}\t{row['ticker']}\t{row['fixing'].isoformat()}")
+    for row in moves["left"]:
+        lines.append(f"SAIU\t{row['struct']}\t{row['ticker']}\t{row['fixing'].isoformat()}")
+    return "\n".join(lines)
 
 
 def sheet_names_from_xlsx(path: Path | None = None) -> list[str]:
