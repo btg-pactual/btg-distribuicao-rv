@@ -158,22 +158,22 @@
   "ITUB4": {
     "ticker": "ITUB4",
     "url": "https://content.btgpactual.com/research/ativo/ITUB4",
-    "price": 38.69,
+    "price": 38.675,
     "last_trade": "2026-10-30T21:39:12",
     "sector": "Financeiro",
     "company": "Itaú Unibanco",
     "rec": "COMPRA",
     "rec_lbl": "Compra",
     "rec_cls": "buy",
-    "date": "2026-10-27T17:47:32.617Z",
-    "target": 54.0,
+    "date": "2026-10-30T00:00:00.000Z",
+    "target": 53.0,
     "bullets": [
       "O Itaú Unibanco reportou 2T26 sólido em balanço e qualidade de ativos, ainda que com operação um pouco abaixo do padrão histórico: o lucro líquido recorrente foi de R$12,4 bi, +1% t/t e +8% a/a, com ROE de 24,5%, enquanto a carteira de…",
       "A margem financeira com clientes somou R$31,4 bi e o NII total, R$32,3 bi, com parte das receitas de operações estruturadas concentrada no 2S26, sobretudo no 4T26.",
       "Nos KPIs, a inadimplência acima de 90 dias ficou em 1,9%, o custo de crédito líquido em R$9 bi, as provisões brutas em R$10,5 bi, as recuperações em R$1,5 bi, a cobertura em 53,8% e o CET1 em 12,3%, reforçando a resiliência do balanço…"
     ],
     "summary_date": "2026-10-27 17:48:33.459703+00:00",
-    "upside": 39.570948565520816
+    "upside": 37.03943115707822
   },
   "PETR4": {
     "ticker": "PETR4",
