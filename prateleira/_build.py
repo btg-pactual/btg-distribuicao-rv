@@ -2717,10 +2717,51 @@ def patch_root_index():
 
 
 def main():
+    global REF
     ROOT.mkdir(parents=True, exist_ok=True)
     if OPS.exists():
         shutil.rmtree(OPS)
     OPS.mkdir(parents=True, exist_ok=True)
+
+    soc_rows, smart_rows = SOC, SMART
+    acel_rows, triplo_rows = ACEL_KO, TRIPLO
+    cs_rows, collar_rows = CALL_SPREAD, COLLAR
+    call_ko_rows = CALL_KO
+    pop_row = POP
+    ot_rows = ONE_TOUCH
+    try:
+        from _excel_week import load_excel_week, summary
+
+        week = load_excel_week()
+        if week:
+            REF = week.ref
+            soc_rows = week.SOC
+            smart_rows = week.SMART
+            acel_rows = week.ACEL_KO
+            triplo_rows = week.TRIPLO
+            cs_rows = week.CALL_SPREAD
+            collar_rows = week.COLLAR
+            call_ko_rows = week.CALL_KO
+            pop_row = week.POP
+            ot_rows = week.ONE_TOUCH
+            n_ops = (
+                len(week.SOC)
+                + len(week.SMART)
+                + len(week.ACEL_KO)
+                + len(week.TRIPLO)
+                + len(week.CALL_SPREAD)
+                + len(week.COLLAR)
+                + len(week.CALL_KO)
+                + (1 if week.POP else 0)
+                + len(week.ONE_TOUCH)
+            )
+            if n_ops == 0:
+                raise SystemExit(f"excel_empty sheet={week.sheet} — nenhuma operação lida")
+            (ROOT / "_excel_week.txt").write_text(summary(week), encoding="utf-8")
+            print("excel_sheet", week.sheet, "ref", REF.isoformat(), "n", n_ops)
+    except Exception as exc:
+        print("excel_fail", exc)
+
     ok_pdf = copy_pdf()
     print("pdf_copied", ok_pdf)
 
@@ -2733,16 +2774,16 @@ def main():
         sections.append((title, items))
         all_ops.extend(items)
 
-    add_section("SOC", [make_soc(*r) for r in SOC])
-    add_section("Smart Hedge", [make_sh(*r) for r in SMART])
-    add_section("Aceleradora KO com Ativo", [make_acel_ko_ativo(*r) for r in ACEL_KO])
-    add_section("Triplo Retorno KO", [make_triplo(*r) for r in TRIPLO])
-    add_section("Compra de Call Spread", [make_call_spread(*r) for r in CALL_SPREAD])
-    add_section("Collar", [make_collar(*r) for r in COLLAR])
-    add_section("Call KO com Rebate", [make_call_ko(*r) for r in CALL_KO])
-    if POP:
-        add_section("POP", [make_pop(*POP)])
-    add_section("One Touch de Alta", [make_ot(*r) for r in ONE_TOUCH])
+    add_section("SOC", [make_soc(*r) for r in soc_rows])
+    add_section("Smart Hedge", [make_sh(*r) for r in smart_rows])
+    add_section("Aceleradora KO com Ativo", [make_acel_ko_ativo(*r) for r in acel_rows])
+    add_section("Triplo Retorno KO", [make_triplo(*r) for r in triplo_rows])
+    add_section("Compra de Call Spread", [make_call_spread(*r) for r in cs_rows])
+    add_section("Collar", [make_collar(*r) for r in collar_rows])
+    add_section("Call KO com Rebate", [make_call_ko(*r) for r in call_ko_rows])
+    if pop_row:
+        add_section("POP", [make_pop(*pop_row)])
+    add_section("One Touch de Alta", [make_ot(*r) for r in ot_rows])
 
     tickers = [cfg["ticker"] for _, cfg in all_ops]
     try:
