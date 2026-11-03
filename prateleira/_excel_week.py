@@ -182,10 +182,11 @@ def load_excel_week() -> WeekData | None:
         rest = [row_full[j] for j in range(off + 2, len(row_full))]
 
         if section == "soc":
-            if len(rest) < 3:
+            # B PUT KO | S CALL KO | KO | BID — barreira é a 3ª coluna, não a call.
+            if len(rest) < 4:
                 continue
             soc.append(
-                (ticker, fixing, pct(rest[0]), pct(rest[1]), bid_pct(rest[2]), None, None)
+                (ticker, fixing, pct(rest[0]), pct(rest[2]), bid_pct(rest[3]), None, None)
             )
         elif section == "smart":
             if len(rest) < 4:

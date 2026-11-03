@@ -1,0 +1,25 @@
+name: R syntax check
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+jobs:
+  parse:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: r-lib/actions/setup-r@v2
+      - name: Parse R files
+        run: |
+          Rscript -e "
+          ok <- TRUE
+          for (f in list.files(c('.', 'jobs'), pattern='\\\\.[Rr]$', recursive=TRUE, full.names=TRUE)) {
+            if (grepl('^\\\\./_', f)) next
+            x <- tryCatch(parse(f), error=function(e) e)
+            if (inherits(x, 'error')) { message('FAIL ', f, ': ', x$message); ok <- FALSE }
+          }
+          if (!ok) quit(status=1)
+          message('All R files parse OK')
+          "

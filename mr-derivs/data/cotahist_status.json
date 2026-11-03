@@ -1,0 +1,10 @@
+{
+  "atualizado_em": "pendente",
+  "cache_dir": "mr-derivs/.rb3_cache",
+  "ultima_cotahist": null,
+  "lag_dias": null,
+  "ok": false,
+  "mensagem": "Aguardando primeiro workflow ou seed local.",
+  "tickers": [],
+  "meses_janela": 24
+}
