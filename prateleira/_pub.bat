@@ -18,7 +18,7 @@ git fetch origin pages >> prateleira\_pub.txt 2>&1
 git add prateleira/_build.py prateleira/_excel_week.py prateleira/_pub.bat prateleira/index.html prateleira/empresas.html prateleira/estruturas.html prateleira/ops/ prateleira/research_targets.json prateleira/operacoes/ prateleira/leituras/ ops/range_52w.json
 git add prateleira/Material-Prateleira-Tatica-*.pdf 2>nul
 git add -u -- prateleira/
-echo Prateleira: Overview mostra o que entrou e saiu contra a semana anterior.> prateleira\_commit_msg.txt
+echo Prateleira: tira o movimento da semana do Overview.> prateleira\_commit_msg.txt
 git commit -F prateleira\_commit_msg.txt >> prateleira\_pub.txt 2>&1
 set COMMIT=%ERRORLEVEL%
 echo COMMIT=%COMMIT%
