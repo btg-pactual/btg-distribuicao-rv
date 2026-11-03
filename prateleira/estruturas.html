@@ -84,6 +84,13 @@ body{font-family:var(--font);color:var(--ink);background:var(--bg);min-height:10
 .pie-swatch{width:10px;height:10px;border-radius:1px;flex-shrink:0}
 .pie-count{margin-left:auto;padding-left:16px;color:var(--muted);font-weight:500}
 .ov-empty{font-size:13px;color:var(--muted);padding:8px 0 4px}
+.mov-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.mov-list{list-style:none}
+.mov-list li{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:8px 0;border-top:1px solid var(--line)}
+.mov-list li:first-child{border-top:0}
+.mov-name{font-size:14px;font-weight:700}
+.mov-struct{display:block;font-size:12px;font-weight:500;color:var(--muted)}
+.mov-when{font-size:12px;color:var(--muted);white-space:nowrap}
 .destaque-list{list-style:none}
 .destaque-list li{border-top:1px solid var(--line)}
 .destaque-list li:first-child{border-top:0}
@@ -100,6 +107,7 @@ body{font-family:var(--font);color:var(--ink);background:var(--bg);min-height:10
   .col-sec,.col-ops{display:none}
   .data-table thead th:nth-child(3),.data-table thead th:nth-child(7){display:none}
   .ov-grid{grid-template-columns:1fr}
+  .mov-grid{grid-template-columns:1fr}
   .cat-grid{grid-template-columns:1fr}
   .topbar{height:auto;min-height:58px;padding:12px 16px;flex-wrap:wrap;gap:6px}
   .topbar-brand{font-size:17px}
