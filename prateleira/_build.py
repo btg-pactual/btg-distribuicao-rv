@@ -2724,7 +2724,7 @@ def main():
     OPS.mkdir(parents=True, exist_ok=True)
 
     soc_rows, smart_rows = SOC, SMART
-    acel_rows, triplo_rows = ACEL_KO, TRIPLO
+    acel_rows, acel_dyn_rows, triplo_rows = ACEL_KO, [], TRIPLO
     cs_rows, collar_rows = CALL_SPREAD, COLLAR
     call_ko_rows = CALL_KO
     pop_row = POP
@@ -2738,6 +2738,7 @@ def main():
             soc_rows = week.SOC
             smart_rows = week.SMART
             acel_rows = week.ACEL_KO
+            acel_dyn_rows = week.ACEL_DYN
             triplo_rows = week.TRIPLO
             cs_rows = week.CALL_SPREAD
             collar_rows = week.COLLAR
@@ -2748,6 +2749,7 @@ def main():
                 len(week.SOC)
                 + len(week.SMART)
                 + len(week.ACEL_KO)
+                + len(week.ACEL_DYN)
                 + len(week.TRIPLO)
                 + len(week.CALL_SPREAD)
                 + len(week.COLLAR)
@@ -2776,6 +2778,7 @@ def main():
 
     add_section("SOC", [make_soc(*r) for r in soc_rows])
     add_section("Smart Hedge", [make_sh(*r) for r in smart_rows])
+    add_section("Aceleradora Dinâmica", [make_acel(*r) for r in acel_dyn_rows])
     add_section("Aceleradora KO com Ativo", [make_acel_ko_ativo(*r) for r in acel_rows])
     add_section("Triplo Retorno KO", [make_triplo(*r) for r in triplo_rows])
     add_section("Compra de Call Spread", [make_call_spread(*r) for r in cs_rows])

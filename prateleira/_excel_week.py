@@ -108,6 +108,7 @@ class WeekData:
     SOC: list
     SMART: list
     ACEL_KO: list
+    ACEL_DYN: list
     TRIPLO: list
     CALL_SPREAD: list
     COLLAR: list
@@ -135,6 +136,7 @@ def load_excel_week() -> WeekData | None:
     soc: list = []
     smart: list = []
     acel_ko: list = []
+    acel_dyn: list = []
     triplo: list = []
     call_spread: list = []
     collar: list = []
@@ -198,6 +200,14 @@ def load_excel_week() -> WeekData | None:
             acel_ko.append(
                 (ticker, fixing, pct(rest[0]), pct(rest[1]), pct(rest[2]), bid_pct(rest[3]))
             )
+        elif section == "acel_dyn":
+            # B CALL KO | KO | S CALL | B PUT KO | KO | BID
+            if len(rest) < 6:
+                continue
+            ko_h, ko_l = pct(rest[1]), pct(rest[4])
+            if ko_h is None or ko_l is None:
+                continue
+            acel_dyn.append((ticker, fixing, ko_h, ko_l, bid_pct(rest[5])))
         elif section == "triplo":
             if len(rest) < 6:
                 continue
@@ -242,6 +252,7 @@ def load_excel_week() -> WeekData | None:
         SOC=soc,
         SMART=smart,
         ACEL_KO=acel_ko,
+        ACEL_DYN=acel_dyn,
         TRIPLO=triplo,
         CALL_SPREAD=call_spread,
         COLLAR=collar,
@@ -270,6 +281,7 @@ def summary(w: WeekData) -> str:
         f"SOC={len(w.SOC)}",
         f"SMART={len(w.SMART)}",
         f"ACEL_KO={len(w.ACEL_KO)}",
+        f"ACEL_DYN={len(w.ACEL_DYN)}",
         f"TRIPLO={len(w.TRIPLO)}",
         f"CALL_SPREAD={len(w.CALL_SPREAD)}",
         f"COLLAR={len(w.COLLAR)}",
@@ -281,6 +293,8 @@ def summary(w: WeekData) -> str:
         lines.append(f"SOC\t{t} {fixing.isoformat()} strike={strike} ko={ko}")
     for t, fixing, buy, ko, sell, *_rest in w.ACEL_KO:
         lines.append(f"ACEL_KO\t{t} {fixing.isoformat()} call={buy} ko={ko} sell={sell}")
+    for t, fixing, ko_h, ko_l, *_rest in w.ACEL_DYN:
+        lines.append(f"ACEL_DYN\t{t} {fixing.isoformat()} ko_alta={ko_h} ko_baixa={ko_l}")
     for t, fixing, stk, ko, rebate, offer in w.CALL_KO:
         lines.append(f"CALL_KO\t{t} {fixing.isoformat()} stk={stk} ko={ko} rebate={rebate} offer={offer}")
     return "\n".join(lines)
