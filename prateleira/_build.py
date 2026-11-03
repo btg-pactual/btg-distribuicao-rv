@@ -610,7 +610,7 @@ CSS = """
   --brand:BRAND; --btg:#0b1f3a; --success:#0f7a4a; --danger:#c0392b; --dash:#8b83a0;
 }
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:Segoe UI,-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);min-height:100vh;line-height:1.45}
+body{font-family:"BTG Pactual Sans","BTG Pactual Office",sans-serif;color:var(--ink);background:var(--bg);min-height:100vh;line-height:1.45}
 .page{max-width:1280px;margin:0 auto;padding:28px 24px 48px}
 .back-link{margin-bottom:16px;font-size:13px}
 .back-link a{color:#1a66b3;text-decoration:none;font-weight:600}
@@ -2187,7 +2187,7 @@ def _hub_css() -> str:
 :root{
   --navy:#1D428A;--navy-deep:#0F2A5C;--ink:#1a1a1a;--muted:#6b7280;--line:#e5e7eb;
   --bg:#F5F7F9;--card:#ffffff;--link:#1D428A;--up:#0d7a3f;--down:#c0392b;
-  --font:"Roboto",system-ui,-apple-system,sans-serif;
+  --font:"BTG Pactual Sans","BTG Pactual Office",sans-serif;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:var(--font);color:var(--ink);background:var(--bg);min-height:100vh;line-height:1.45;-webkit-font-smoothing:antialiased}
@@ -2463,9 +2463,6 @@ def overview_html(sections: list[tuple[str, list[tuple[str, dict]]]]) -> str:
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>Overview — Prateleira Tática | BTG Pactual</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet"/>
 <style>{_hub_css()}</style>
 </head>
 <body>
@@ -2610,9 +2607,6 @@ def hub_html(sections: list[tuple[str, list[tuple[str, dict]]]]) -> str:
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>Empresas — Prateleira Tática | BTG Pactual</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet"/>
 <style>{_hub_css()}</style>
 </head>
 <body>
@@ -2654,9 +2648,6 @@ def estruturas_html(sections: list[tuple[str, list[tuple[str, dict]]]]) -> str:
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>Estruturas — Prateleira Tática | BTG Pactual</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet"/>
 <style>{_hub_css()}</style>
 </head>
 <body>
