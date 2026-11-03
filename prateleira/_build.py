@@ -2799,18 +2799,23 @@ def main():
             if n_ops == 0:
                 raise SystemExit(f"excel_empty sheet={week.sheet} — nenhuma operação lida")
             text = summary(week)
-            prev = load_previous_week()
-            if prev:
-                WEEK_MOVES = week_moves(week, prev)
-                text += "\n" + moves_summary(WEEK_MOVES)
-                print(
-                    "week_moves",
-                    prev.sheet,
-                    "entrou",
-                    len(WEEK_MOVES["entered"]),
-                    "saiu",
-                    len(WEEK_MOVES["left"]),
-                )
+            try:
+                prev = load_previous_week()
+                if prev:
+                    WEEK_MOVES = week_moves(week, prev)
+                    text += "\n" + moves_summary(WEEK_MOVES)
+                    print(
+                        "week_moves",
+                        prev.sheet,
+                        "entrou",
+                        len(WEEK_MOVES["entered"]),
+                        "saiu",
+                        len(WEEK_MOVES["left"]),
+                    )
+                else:
+                    print("week_moves none")
+            except Exception as exc:
+                print("week_moves_fail", exc)
             (ROOT / "_excel_week.txt").write_text(text, encoding="utf-8")
             print("excel_sheet", week.sheet, "ref", REF.isoformat(), "n", n_ops)
     except Exception as exc:

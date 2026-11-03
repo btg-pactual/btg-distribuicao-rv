@@ -56,22 +56,23 @@ def bid_pct(v) -> float | None:
 
 
 def offer_abs(v) -> float | None:
+    """Preço de compra em pontos percentuais. '-4,50%' e -0,045 viram 4,50."""
     if v is None:
         return None
-    if isinstance(v, (int, float)):
-        x = float(v)
-        if x < 0:
-            return round(abs(x) * 100, 2)
-        if x <= 2.5:
-            return round(abs(x) * 100, 2)
-        return round(abs(x), 2)
+    as_percent = False
     if isinstance(v, str):
-        s = v.strip().replace(",", ".")
+        as_percent = "%" in v
+        s = v.strip().replace("%", "").replace(",", ".")
+        if not s:
+            return None
         x = float(s)
-        if x < 0:
-            return round(abs(x) * 100, 2)
+    elif isinstance(v, (int, float)):
+        x = float(v)
+    else:
+        return None
+    if as_percent or abs(x) > 2.5:
         return round(abs(x), 2)
-    return None
+    return round(abs(x) * 100, 2)
 
 
 def _section_key(cell0: str | None) -> str | None:

@@ -36,7 +36,8 @@ if not "%PULL%"=="0" (
   echo PULL_FAIL — rebase abortado. Nada foi resetado.
   exit /b 1
 )
-git push origin pages >> prateleira\_pub.txt 2>&1
+git branch -f pages HEAD
+git push origin HEAD:pages >> prateleira\_pub.txt 2>&1
 set PUSH=%ERRORLEVEL%
 echo PUSH=%PUSH%
 echo PUSH=%PUSH% >> prateleira\_pub.txt
