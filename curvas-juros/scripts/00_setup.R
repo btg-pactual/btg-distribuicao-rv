@@ -2,13 +2,25 @@
 # 00_setup.R — pacotes, pastas e constantes (curvas de juros)
 # =============================================================================
 
-pkgs <- c("tidyverse", "lubridate", "curl", "httr", "jsonlite", "scales", "bizdays", "xml2")
+pkgs <- c(
+  "readr", "dplyr", "tidyr", "tibble", "purrr", "ggplot2",
+  "lubridate", "curl", "httr", "jsonlite", "scales", "bizdays", "xml2"
+)
+
+cran_repos <- function() {
+  repos <- getOption("repos")
+  cran <- unname(repos["CRAN"])
+  if (length(cran) == 0L || is.na(cran) || !nzchar(cran) || identical(cran, "@CRAN@")) {
+    return(c(CRAN = "https://cloud.r-project.org"))
+  }
+  repos
+}
 
 install_if_missing <- function(pkgs) {
   missing <- pkgs[!pkgs %in% rownames(installed.packages())]
   if (length(missing) > 0) {
     message("Instalando: ", paste(missing, collapse = ", "))
-    install.packages(missing, repos = "https://cloud.r-project.org")
+    install.packages(missing, repos = cran_repos(), dependencies = TRUE)
   }
   invisible(lapply(pkgs, library, character.only = TRUE))
 }

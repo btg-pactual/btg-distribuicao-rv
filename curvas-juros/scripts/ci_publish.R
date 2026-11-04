@@ -41,17 +41,30 @@ if (advfn_only) {
   source("scripts/R/b3_di_curva.R")
   source("scripts/R/advfn_di_curva.R")
   source("scripts/R/export_viva_json.R")
-  curva <- obter_curva_di1_advfn(Sys.Date())
-  fetched <- attr(curva, "fetched_at")
-  coleta <- if (!is.null(fetched)) fetched else Sys.time()
   json_path <- file.path(site_root, "data/curva_advfn.json")
-  export_curva_advfn_json(
-    curva,
-    path = json_path,
-    coleta_em = coleta,
-    data_ref = Sys.Date()
+  advfn_err <- NULL
+  tryCatch(
+    {
+      curva <- obter_curva_di1_advfn(Sys.Date())
+      fetched <- attr(curva, "fetched_at")
+      coleta <- if (!is.null(fetched)) fetched else Sys.time()
+      export_curva_advfn_json(
+        curva,
+        path = json_path,
+        coleta_em = coleta,
+        data_ref = Sys.Date()
+      )
+      message("JSON: ", json_path, " (", nrow(curva), " vértices)")
+    },
+    error = function(e) {
+      advfn_err <<- conditionMessage(e)
+      message("ADVFN falhou: ", advfn_err)
+      if (!file.exists(json_path)) {
+        stop("ADVFN falhou e não há curva_advfn.json anterior: ", advfn_err)
+      }
+      message("Mantendo JSON existente: ", json_path)
+    }
   )
-  message("JSON: ", json_path, " (", nrow(curva), " vértices)")
 } else {
   Sys.setenv(MESES_HISTORICO_DI = Sys.getenv("MESES_HISTORICO_DI", unset = "24"))
   source("scripts/run_all.R")

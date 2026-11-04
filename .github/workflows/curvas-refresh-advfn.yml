@@ -11,7 +11,7 @@ permissions:
   id-token: write
 
 concurrency:
-  group: pages
+  group: curvas-advfn-refresh
   cancel-in-progress: false
 
 jobs:
@@ -31,6 +31,10 @@ jobs:
       - uses: r-lib/actions/setup-r@v2
         with:
           r-version: "4.4.1"
+          use-public-rspm: true
+
+      - name: Bibliotecas do sistema
+        run: sudo apt-get update && sudo apt-get install -y libcurl4-openssl-dev libssl-dev libxml2-dev
 
       - name: Instalar pacotes R
         run: Rscript scripts/install_deps.R

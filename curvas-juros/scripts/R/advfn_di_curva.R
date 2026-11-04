@@ -13,19 +13,46 @@ baixar_html_advfn_di <- function(cache_dir = "data/raw/advfn") {
   if (!requireNamespace("httr", quietly = TRUE)) {
     stop("Pacote 'httr' necessário para ADVFN.")
   }
-  r <- httr::GET(
-    ADVFN_DI_URL,
-    httr::user_agent(
-      "Mozilla/5.0 (compatible; curvas-juros/1.0; +local)"
-    ),
-    httr::timeout(60)
+  ua <- paste(
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
+    "AppleWebKit/537.36 (KHTML, like Gecko)",
+    "Chrome/131.0.0.0 Safari/537.36"
   )
-  if (httr::status_code(r) != 200L) {
-    stop("ADVFN HTTP ", httr::status_code(r))
+  last_err <- NULL
+  r <- NULL
+  for (attempt in seq_len(3L)) {
+    r <- tryCatch(
+      httr::GET(
+        ADVFN_DI_URL,
+        httr::user_agent(ua),
+        httr::add_headers(
+          Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+          `Accept-Language` = "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7"
+        ),
+        httr::timeout(90)
+      ),
+      error = function(e) e
+    )
+    if (inherits(r, "error")) {
+      last_err <- conditionMessage(r)
+      Sys.sleep(2L * attempt)
+      next
+    }
+    if (httr::status_code(r) != 200L) {
+      last_err <- paste0("ADVFN HTTP ", httr::status_code(r))
+      Sys.sleep(2L * attempt)
+      next
+    }
+    html_try <- httr::content(r, as = "text", encoding = "UTF-8")
+    if (grepl("BMF:DI1", html_try, fixed = TRUE)) {
+      html <- html_try
+      break
+    }
+    last_err <- "Página ADVFN sem tabela DI1 (layout alterado?)."
+    Sys.sleep(2L * attempt)
   }
-  html <- httr::content(r, as = "text", encoding = "UTF-8")
-  if (!grepl("BMF:DI1", html, fixed = TRUE)) {
-    stop("Página ADVFN sem tabela DI1 (layout alterado?).")
+  if (!exists("html", inherits = FALSE)) {
+    stop(if (is.null(last_err)) "ADVFN indisponível" else last_err)
   }
   path <- file.path(cache_dir, "di_cotacoes.html")
   writeLines(html, path, useBytes = TRUE)
@@ -96,9 +123,7 @@ ler_curva_di1_advfn_html <- function(html, data_ref = Sys.Date()) {
       !is.na(.data$taxa_aa),
       .data$prazo_dias > 0L,
       .data$taxa_aa >= 8,
-      .data$taxa_aa <= 22,
-      is.finite(.data$vol),
-      .data$vol > 0
+      .data$taxa_aa <= 22
     ) |>
     dplyr::arrange(.data$vencimento) |>
     dplyr::select(
