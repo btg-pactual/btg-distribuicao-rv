@@ -2272,22 +2272,26 @@ body{font-family:var(--font);color:var(--ink);background:var(--bg);min-height:10
 .op-meta{margin-top:10px;display:flex;flex-wrap:wrap;gap:6px}
 .pill{background:#f3f4f6;border:1px solid var(--line);border-radius:2px;padding:3px 8px;color:#374151;font-size:11px;font-weight:500}
 .footer-alert{display:block;margin:40px 0 0;text-align:center;font-size:12px;font-weight:700;color:#a32020;line-height:1.55;padding:14px 16px;border:1px solid rgba(163,32,32,.25);background:rgba(163,32,32,.04)}
-.ov-grid{display:grid;grid-template-columns:180px 1fr;gap:20px;align-items:start;margin-top:8px}
-.ov-stat{background:var(--card);border:1px solid var(--line);border-radius:2px;padding:22px 20px;text-align:center}
+.ov-grid{display:grid;grid-template-columns:180px 1fr;gap:20px;align-items:stretch;margin-top:8px}
+.ov-stat{background:var(--card);border:1px solid var(--line);border-radius:2px;padding:22px 20px;text-align:center;display:flex;flex-direction:column;justify-content:center}
 .ov-stat-n{font-size:40px;font-weight:700;color:var(--navy);line-height:1}
 .ov-stat-l{margin-top:8px;font-size:13px;color:var(--muted);font-weight:500}
 .ov-panel{background:var(--card);border:1px solid var(--line);border-radius:2px;padding:18px 20px}
 .ov-panel h2{font-size:15px;font-weight:700;margin-bottom:14px;color:var(--ink)}
 .pie-wrap{display:flex;gap:28px;align-items:center;flex-wrap:wrap}
-.pie-svg{width:160px;height:160px;flex-shrink:0}
-.pie-legend{list-style:none;display:flex;flex-direction:column;gap:2px;font-size:13px;color:#374151;min-width:220px}
-.pie-legend a{display:flex;align-items:center;gap:8px;text-decoration:none;color:inherit;padding:4px 6px;border-radius:2px}
-.pie-legend a:hover{background:#eef3fb;color:var(--navy)}
-.pie-name{flex:1}
+.pie-svg{width:210px;height:210px;flex-shrink:0}
 .pie-svg a{cursor:pointer}
-.pie-svg a:hover path,.pie-svg a:hover circle{opacity:.82}
-.pie-swatch{width:10px;height:10px;border-radius:1px;flex-shrink:0}
-.pie-count{margin-left:auto;padding-left:16px;color:var(--muted);font-weight:500}
+.pie-svg a path{transition:opacity .15s}
+.pie-svg a:hover path,.pie-svg a:hover circle{opacity:.78}
+.pie-mid{font-family:var(--font);font-size:28px;font-weight:700;fill:var(--navy)}
+.pie-mid-l{font-family:var(--font);font-size:8px;font-weight:600;letter-spacing:.6px;fill:var(--muted)}
+.pie-legend{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:2px 16px;flex:1;min-width:280px;font-size:12.5px;color:#374151}
+.pie-legend a{display:grid;grid-template-columns:10px minmax(0,1fr) auto;align-items:center;gap:8px;text-decoration:none;color:inherit;padding:5px 8px;border-radius:2px}
+.pie-legend a:hover{background:#eef3fb;color:var(--navy)}
+.pie-legend li{min-width:0}
+.pie-name{min-width:0;line-height:1.25}
+.pie-swatch{width:10px;height:10px;border-radius:2px}
+.pie-count{color:var(--navy);font-weight:700;font-variant-numeric:tabular-nums}
 .emp-tools{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:14px}
 .emp-search{flex:1;min-width:200px;border:1px solid var(--line);background:#fff;border-radius:2px;padding:10px 12px;font:inherit;font-size:14px;color:var(--ink)}
 .emp-search:focus{outline:2px solid var(--navy);border-color:transparent}
@@ -2334,6 +2338,7 @@ body{font-family:var(--font);color:var(--ink);background:var(--bg);min-height:10
   .col-sec,.col-ops{display:none}
   .data-table thead th:nth-child(3),.data-table thead th:nth-child(7){display:none}
   .ov-grid{grid-template-columns:1fr}
+  .pie-legend{grid-template-columns:1fr}
   .mov-grid{grid-template-columns:1fr}
   .cat-grid{grid-template-columns:1fr}
   .emp-tools{flex-direction:column;align-items:stretch}
@@ -2448,28 +2453,33 @@ def _sector_counts(companies: dict[str, dict]) -> list[tuple[str, int]]:
 
 
 def _sector_pie_svg(counts: list[tuple[str, int]]) -> str:
+    # Adjacent slices alternate dark and light so 14 setores stay readable.
     colors = [
-        "#1D428A",
-        "#3d6bb3",
-        "#6b8fc4",
         "#0F2A5C",
-        "#64748b",
-        "#475569",
-        "#94a3b8",
-        "#334155",
-        "#1e3a5f",
-        "#5a7aa8",
+        "#5C8ED0",
+        "#1D428A",
+        "#8FB0DE",
+        "#163E78",
+        "#3E7C9A",
+        "#2456A8",
+        "#6AA8BC",
+        "#0C4A62",
+        "#9BB8C6",
+        "#2A6494",
+        "#4E86A8",
+        "#1A5270",
+        "#7AA0B8",
     ]
     total = sum(n for _, n in counts) or 1
     if not counts:
         return '<p class="ov-empty">Sem dados de setor nesta semana.</p>'
 
-    # SVG donut/pie via conic-style paths
-    cx = cy = 80
-    r = 70
+    cx = cy = 100.0
+    r_out = 86.0
+    r_in = 54.0
     paths = []
     legend = []
-    angle = -90.0  # start at top
+    angle = -90.0
     for i, (name, n) in enumerate(counts):
         frac = n / total
         sweep = frac * 360.0
@@ -2477,14 +2487,28 @@ def _sector_pie_svg(counts: list[tuple[str, int]]) -> str:
         href = "./empresas.html?setor=" + sector_slug(name)
         label = html_esc(name)
         if frac >= 0.999:
-            shape = f'<circle cx="{cx}" cy="{cy}" r="{r}" fill="{color}"><title>{label}</title></circle>'
+            shape = (
+                f'<path d="M {cx} {cy - r_out} A {r_out} {r_out} 0 1 1 {cx - 0.01:.2f} {cy - r_out} '
+                f'L {cx - 0.01:.2f} {cy - r_in} A {r_in} {r_in} 0 1 0 {cx} {cy - r_in} Z" '
+                f'fill="{color}" fill-rule="evenodd"><title>{label}</title></path>'
+            )
         else:
-            a0 = math.radians(angle)
-            a1 = math.radians(angle + sweep)
-            x0, y0 = cx + r * math.cos(a0), cy + r * math.sin(a0)
-            x1, y1 = cx + r * math.cos(a1), cy + r * math.sin(a1)
-            large = 1 if sweep > 180 else 0
-            d = f"M {cx} {cy} L {x0:.3f} {y0:.3f} A {r} {r} 0 {large} 1 {x1:.3f} {y1:.3f} Z"
+            gap = min(1.8, sweep * 0.18)
+            a0 = math.radians(angle + gap / 2)
+            a1 = math.radians(angle + sweep - gap / 2)
+            large = 1 if (sweep - gap) > 180 else 0
+
+            def _pt(radius: float, ang: float) -> tuple[float, float]:
+                return cx + radius * math.cos(ang), cy + radius * math.sin(ang)
+
+            x0, y0 = _pt(r_out, a0)
+            x1, y1 = _pt(r_out, a1)
+            xi1, yi1 = _pt(r_in, a1)
+            xi0, yi0 = _pt(r_in, a0)
+            d = (
+                f"M {x0:.2f} {y0:.2f} A {r_out:.0f} {r_out:.0f} 0 {large} 1 {x1:.2f} {y1:.2f} "
+                f"L {xi1:.2f} {yi1:.2f} A {r_in:.0f} {r_in:.0f} 0 {large} 0 {xi0:.2f} {yi0:.2f} Z"
+            )
             shape = f'<path d="{d}" fill="{color}"><title>{label}</title></path>'
         paths.append(f'<a href="{href}">{shape}</a>')
         angle += sweep
@@ -2492,9 +2516,13 @@ def _sector_pie_svg(counts: list[tuple[str, int]]) -> str:
             f'<li><a href="{href}"><span class="pie-swatch" style="background:{color}"></span>'
             f'<span class="pie-name">{label}</span><span class="pie-count">{n}</span></a></li>'
         )
+    mid = (
+        f'<text x="{cx:.0f}" y="104" text-anchor="middle" class="pie-mid">{total}</text>'
+        f'<text x="{cx:.0f}" y="118" text-anchor="middle" class="pie-mid-l">OPERAÇÕES</text>'
+    )
     return f"""
 <div class="pie-wrap">
-  <svg class="pie-svg" viewBox="0 0 160 160">{''.join(paths)}</svg>
+  <svg class="pie-svg" viewBox="0 0 200 200" role="img" aria-label="Operações por setor">{''.join(paths)}{mid}</svg>
   <ul class="pie-legend">{''.join(legend)}</ul>
 </div>"""
 

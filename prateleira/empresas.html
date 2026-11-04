@@ -71,22 +71,26 @@ body{font-family:var(--font);color:var(--ink);background:var(--bg);min-height:10
 .op-meta{margin-top:10px;display:flex;flex-wrap:wrap;gap:6px}
 .pill{background:#f3f4f6;border:1px solid var(--line);border-radius:2px;padding:3px 8px;color:#374151;font-size:11px;font-weight:500}
 .footer-alert{display:block;margin:40px 0 0;text-align:center;font-size:12px;font-weight:700;color:#a32020;line-height:1.55;padding:14px 16px;border:1px solid rgba(163,32,32,.25);background:rgba(163,32,32,.04)}
-.ov-grid{display:grid;grid-template-columns:180px 1fr;gap:20px;align-items:start;margin-top:8px}
-.ov-stat{background:var(--card);border:1px solid var(--line);border-radius:2px;padding:22px 20px;text-align:center}
+.ov-grid{display:grid;grid-template-columns:180px 1fr;gap:20px;align-items:stretch;margin-top:8px}
+.ov-stat{background:var(--card);border:1px solid var(--line);border-radius:2px;padding:22px 20px;text-align:center;display:flex;flex-direction:column;justify-content:center}
 .ov-stat-n{font-size:40px;font-weight:700;color:var(--navy);line-height:1}
 .ov-stat-l{margin-top:8px;font-size:13px;color:var(--muted);font-weight:500}
 .ov-panel{background:var(--card);border:1px solid var(--line);border-radius:2px;padding:18px 20px}
 .ov-panel h2{font-size:15px;font-weight:700;margin-bottom:14px;color:var(--ink)}
 .pie-wrap{display:flex;gap:28px;align-items:center;flex-wrap:wrap}
-.pie-svg{width:160px;height:160px;flex-shrink:0}
-.pie-legend{list-style:none;display:flex;flex-direction:column;gap:2px;font-size:13px;color:#374151;min-width:220px}
-.pie-legend a{display:flex;align-items:center;gap:8px;text-decoration:none;color:inherit;padding:4px 6px;border-radius:2px}
-.pie-legend a:hover{background:#eef3fb;color:var(--navy)}
-.pie-name{flex:1}
+.pie-svg{width:210px;height:210px;flex-shrink:0}
 .pie-svg a{cursor:pointer}
-.pie-svg a:hover path,.pie-svg a:hover circle{opacity:.82}
-.pie-swatch{width:10px;height:10px;border-radius:1px;flex-shrink:0}
-.pie-count{margin-left:auto;padding-left:16px;color:var(--muted);font-weight:500}
+.pie-svg a path{transition:opacity .15s}
+.pie-svg a:hover path,.pie-svg a:hover circle{opacity:.78}
+.pie-mid{font-family:var(--font);font-size:28px;font-weight:700;fill:var(--navy)}
+.pie-mid-l{font-family:var(--font);font-size:8px;font-weight:600;letter-spacing:.6px;fill:var(--muted)}
+.pie-legend{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:2px 16px;flex:1;min-width:280px;font-size:12.5px;color:#374151}
+.pie-legend a{display:grid;grid-template-columns:10px minmax(0,1fr) auto;align-items:center;gap:8px;text-decoration:none;color:inherit;padding:5px 8px;border-radius:2px}
+.pie-legend a:hover{background:#eef3fb;color:var(--navy)}
+.pie-legend li{min-width:0}
+.pie-name{min-width:0;line-height:1.25}
+.pie-swatch{width:10px;height:10px;border-radius:2px}
+.pie-count{color:var(--navy);font-weight:700;font-variant-numeric:tabular-nums}
 .emp-tools{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:14px}
 .emp-search{flex:1;min-width:200px;border:1px solid var(--line);background:#fff;border-radius:2px;padding:10px 12px;font:inherit;font-size:14px;color:var(--ink)}
 .emp-search:focus{outline:2px solid var(--navy);border-color:transparent}
@@ -133,6 +137,7 @@ body{font-family:var(--font);color:var(--ink);background:var(--bg);min-height:10
   .col-sec,.col-ops{display:none}
   .data-table thead th:nth-child(3),.data-table thead th:nth-child(7){display:none}
   .ov-grid{grid-template-columns:1fr}
+  .pie-legend{grid-template-columns:1fr}
   .mov-grid{grid-template-columns:1fr}
   .cat-grid{grid-template-columns:1fr}
   .emp-tools{flex-direction:column;align-items:stretch}
@@ -197,7 +202,7 @@ body{font-family:var(--font);color:var(--ink);background:var(--bg);min-height:10
   <td class="col-sec">Alimentos &amp; Bebidas</td>
   <td class="col-rec">Neutro</td>
   <td class="col-pa">R$ 26,00</td>
-  <td class="col-up"><span class="chg up">+60,4% ↑</span></td>
+  <td class="col-up"><span class="chg up">+61,6% ↑</span></td>
   <td class="col-ops">SOC</td>
 </tr>
 <tr class="spot co-item" data-target="co-vivt3" data-sector="telecom-tecnologia" data-sector-label="Telecom &amp; Tecnologia" data-kind="local" data-q="Telefônica Brasil VIVT3 Telecom &amp; Tecnologia SOC Compra" tabindex="0" role="button">
@@ -206,7 +211,7 @@ body{font-family:var(--font);color:var(--ink);background:var(--bg);min-height:10
   <td class="col-sec">Telecom &amp; Tecnologia</td>
   <td class="col-rec">Compra</td>
   <td class="col-pa">R$ 31,00</td>
-  <td class="col-up"><span class="chg up">+0,3% ↑</span></td>
+  <td class="col-up"><span class="chg up">+0,4% ↑</span></td>
   <td class="col-ops">SOC</td>
 </tr>
 <tr class="spot co-item" data-target="co-wege3" data-sector="bens-de-capital" data-sector-label="Bens de Capital" data-kind="local" data-q="WEG WEGE3 Bens de Capital SOC · Aceleradora KO com Ativo · Call KO com Rebate Compra" tabindex="0" role="button">
@@ -323,7 +328,7 @@ body{font-family:var(--font);color:var(--ink);background:var(--bg);min-height:10
   <td class="col-sec">Petróleo &amp; Gás</td>
   <td class="col-rec">Compra</td>
   <td class="col-pa">R$ 73,00</td>
-  <td class="col-up"><span class="chg up">+16,4% ↑</span></td>
+  <td class="col-up"><span class="chg up">+16,2% ↑</span></td>
   <td class="col-ops">Aceleradora KO com Ativo</td>
 </tr>
 <tr class="spot co-item" data-target="co-embj3" data-sector="aereas" data-sector-label="Aéreas" data-kind="local" data-q="Embraer EMBJ3 Aéreas Aceleradora KO com Ativo · Call KO com Rebate Compra" tabindex="0" role="button">
@@ -332,7 +337,7 @@ body{font-family:var(--font);color:var(--ink);background:var(--bg);min-height:10
   <td class="col-sec">Aéreas</td>
   <td class="col-rec">Compra</td>
   <td class="col-pa">R$ 126,00</td>
-  <td class="col-up"><span class="chg up">+18,2% ↑</span></td>
+  <td class="col-up"><span class="chg up">+18,4% ↑</span></td>
   <td class="col-ops">Aceleradora KO com Ativo · Call KO com Rebate</td>
 </tr>
 <tr class="spot co-item" data-target="co-m1ta34" data-sector="comunicacao" data-sector-label="Comunicação" data-kind="bdr" data-q="Meta Platforms M1TA34 Comunicação Aceleradora KO com Ativo —" tabindex="0" role="button">
@@ -377,13 +382,13 @@ body{font-family:var(--font);color:var(--ink);background:var(--bg);min-height:10
 <button type="button" class="co-card spot co-item" data-target="co-mbrf3" data-sector="alimentos-bebidas" data-sector-label="Alimentos &amp; Bebidas" data-kind="local" data-q="Marfrig MBRF3 Alimentos &amp; Bebidas SOC Neutro">
   <span class="co-card-top"><span class="co-name">Marfrig</span><span class="co-tk">MBRF3</span></span>
   <span class="co-sec">Alimentos &amp; Bebidas</span>
-  <span class="co-meta"><span class="pill">Neutro</span><span class="pill">PA R$ 26,00</span><span class="chg up">+60,4% ↑</span></span>
+  <span class="co-meta"><span class="pill">Neutro</span><span class="pill">PA R$ 26,00</span><span class="chg up">+61,6% ↑</span></span>
   <span class="co-ops">SOC</span>
 </button>
 <button type="button" class="co-card spot co-item" data-target="co-vivt3" data-sector="telecom-tecnologia" data-sector-label="Telecom &amp; Tecnologia" data-kind="local" data-q="Telefônica Brasil VIVT3 Telecom &amp; Tecnologia SOC Compra">
   <span class="co-card-top"><span class="co-name">Telefônica Brasil</span><span class="co-tk">VIVT3</span></span>
   <span class="co-sec">Telecom &amp; Tecnologia</span>
-  <span class="co-meta"><span class="pill">Compra</span><span class="pill">PA R$ 31,00</span><span class="chg up">+0,3% ↑</span></span>
+  <span class="co-meta"><span class="pill">Compra</span><span class="pill">PA R$ 31,00</span><span class="chg up">+0,4% ↑</span></span>
   <span class="co-ops">SOC</span>
 </button>
 <button type="button" class="co-card spot co-item" data-target="co-wege3" data-sector="bens-de-capital" data-sector-label="Bens de Capital" data-kind="local" data-q="WEG WEGE3 Bens de Capital SOC · Aceleradora KO com Ativo · Call KO com Rebate Compra">
@@ -461,13 +466,13 @@ body{font-family:var(--font);color:var(--ink);background:var(--bg);min-height:10
 <button type="button" class="co-card spot co-item" data-target="co-prio3" data-sector="petroleo-gas" data-sector-label="Petróleo &amp; Gás" data-kind="local" data-q="PetroRio PRIO3 Petróleo &amp; Gás Aceleradora KO com Ativo Compra">
   <span class="co-card-top"><span class="co-name">PetroRio</span><span class="co-tk">PRIO3</span></span>
   <span class="co-sec">Petróleo &amp; Gás</span>
-  <span class="co-meta"><span class="pill">Compra</span><span class="pill">PA R$ 73,00</span><span class="chg up">+16,4% ↑</span></span>
+  <span class="co-meta"><span class="pill">Compra</span><span class="pill">PA R$ 73,00</span><span class="chg up">+16,2% ↑</span></span>
   <span class="co-ops">Aceleradora KO com Ativo</span>
 </button>
 <button type="button" class="co-card spot co-item" data-target="co-embj3" data-sector="aereas" data-sector-label="Aéreas" data-kind="local" data-q="Embraer EMBJ3 Aéreas Aceleradora KO com Ativo · Call KO com Rebate Compra">
   <span class="co-card-top"><span class="co-name">Embraer</span><span class="co-tk">EMBJ3</span></span>
   <span class="co-sec">Aéreas</span>
-  <span class="co-meta"><span class="pill">Compra</span><span class="pill">PA R$ 126,00</span><span class="chg up">+18,2% ↑</span></span>
+  <span class="co-meta"><span class="pill">Compra</span><span class="pill">PA R$ 126,00</span><span class="chg up">+18,4% ↑</span></span>
   <span class="co-ops">Aceleradora KO com Ativo · Call KO com Rebate</span>
 </button>
 <button type="button" class="co-card spot co-item" data-target="co-m1ta34" data-sector="comunicacao" data-sector-label="Comunicação" data-kind="bdr" data-q="Meta Platforms M1TA34 Comunicação Aceleradora KO com Ativo —">
