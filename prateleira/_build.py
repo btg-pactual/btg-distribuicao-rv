@@ -2317,6 +2317,7 @@ def _hub_sidebar(active: str) -> str:
     {item("overview", "./index.html", "Overview")}
     {item("empresas", "./empresas.html", "Empresas")}
     {item("estruturas", "./estruturas.html", "Estruturas")}
+    {item("educacao", "./educacao.html", "Educacional")}
   </nav>"""
 
 

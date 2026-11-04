@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Educacional — Prateleira Tática | BTG Pactual</title>
+<style>
+:root{
+  --navy:#1D428A;--navy-deep:#0F2A5C;--ink:#1a1a1a;--muted:#6b7280;--line:#e5e7eb;
+  --bg:#F5F7F9;--card:#ffffff;--link:#1D428A;--up:#0d7a3f;--down:#c0392b;
+  --font:"BTG Pactual Sans","BTG Pactual Office",sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font);color:var(--ink);background:var(--bg);min-height:100vh;line-height:1.5;-webkit-font-smoothing:antialiased}
+.topbar{background:var(--navy);color:#fff;padding:0 28px;height:58px;display:flex;align-items:center;justify-content:space-between}
+.topbar-brand{font-size:19px;font-weight:700;letter-spacing:.02em;text-transform:lowercase}
+.topbar-brand span{font-weight:400;opacity:.9;margin-left:8px;font-size:16px;text-transform:none}
+.topbar-right{font-size:14px;opacity:.9;font-weight:500}
+.layout{display:flex;min-height:calc(100vh - 58px)}
+.sidebar{width:200px;flex-shrink:0;background:#eef1f5;border-right:1px solid var(--line);padding:16px 0}
+.nav-item{display:block;padding:10px 20px;font-size:13px;font-weight:500;color:#374151;text-decoration:none;border-left:3px solid transparent}
+.nav-item:hover{background:rgba(255,255,255,.55)}
+.nav-item.active{background:#fff;color:var(--navy);border-left-color:var(--navy);font-weight:700}
+.main{flex:1;min-width:0;padding:28px 32px 56px;max-width:980px}
+h1{font-size:28px;font-weight:700;letter-spacing:-.01em}
+.sub{margin-top:4px;font-size:14px;color:var(--muted)}
+.note{margin-top:18px;background:#fff8eb;border:1px solid #f0e0c0;border-radius:2px;padding:12px 14px;font-size:13px;color:#5c4a28}
+.card{background:var(--card);border:1px solid var(--line);border-radius:2px;padding:18px 20px;margin-top:16px}
+.card h2{font-size:18px;font-weight:700;margin-bottom:8px}
+.card p+p{margin-top:8px}
+.card p{font-size:14px;color:#1f2937}
+.greeks{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.greek{border:1px solid var(--line);border-radius:2px;padding:12px 14px;background:#fafbfc}
+.greek strong{display:block;font-size:14px}
+.greek span{display:block;margin-top:4px;font-size:13px;color:#374151}
+.controls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 18px;margin-top:14px}
+.steps{display:flex;flex-direction:column;gap:10px;margin-top:14px}
+.step{border:1px solid var(--line);background:#fafbfc;padding:12px 14px}
+.step p{font-size:14px}
+label{display:flex;flex-direction:column;gap:4px;font-size:12px;font-weight:700;color:var(--muted)}
+label output{font-size:14px;font-weight:700;color:var(--ink)}
+input[type=range]{width:100%;accent-color:var(--navy)}
+.price-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.pill{background:#f3f4f6;border:1px solid var(--line);border-radius:2px;padding:8px 10px;font-size:13px}
+.pill b{display:block;font-size:15px}
+.structs{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.structs button{appearance:none;border:1px solid var(--line);background:#fff;font:inherit;font-size:13px;font-weight:700;padding:8px 12px;border-radius:2px;cursor:pointer;color:#374151}
+.structs button.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+.chapters{display:flex;gap:4px;margin-top:18px;border-bottom:1px solid var(--line)}
+.chapters button{appearance:none;border:0;border-bottom:3px solid transparent;background:transparent;font:inherit;font-size:14px;font-weight:700;padding:10px 16px 8px;margin-bottom:-1px;cursor:pointer;color:#6b7280}
+.chapters button.on{color:var(--navy);border-bottom-color:var(--navy)}
+.chapter{display:none}
+.chapter.on{display:block}
+.next{margin-top:14px}
+.next button{appearance:none;border:0;background:none;color:var(--navy);font:inherit;font-size:14px;font-weight:700;cursor:pointer;padding:0}
+canvas{width:100%;height:280px;display:block;margin-top:8px}
+.readout{margin-top:8px;font-size:15px;font-weight:700}
+.hint{font-size:13px;color:var(--muted);margin-top:6px}
+.op-panel{margin-top:14px;border:1px solid var(--line);background:#fafbfc;padding:14px 16px}
+.op-panel strong{display:block;font-size:16px;margin-bottom:6px}
+.op-panel p+p{margin-top:8px}
+.formula{margin-top:14px;background:#fafbfc;border:1px solid var(--line);padding:14px 16px}
+.formula .tag{font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.02em;text-transform:uppercase}
+.formula p{font-size:15px;font-weight:700;color:var(--navy-deep);line-height:1.65}
+.formula p+p{margin-top:2px}
+.legend{display:grid;grid-template-columns:1fr 1fr;gap:4px 18px;margin-top:10px;font-size:13px;color:#374151}
+.legend b{color:var(--navy);font-weight:700}
+.footer-alert{display:block;margin:40px 0 0;text-align:center;font-size:12px;font-weight:700;color:#a32020;line-height:1.55;padding:14px 16px;border:1px solid rgba(163,32,32,.25);background:rgba(163,32,32,.04)}
+a{color:var(--link)}
+mark{background:#d6e6f5;color:inherit;padding:0 2px}
+@media (max-width:860px){
+  .layout{flex-direction:column}
+  .sidebar{width:100%;display:flex;overflow-x:auto;padding:8px;border-right:0;border-bottom:1px solid var(--line)}
+  .nav-item{border-left:0;border-bottom:2px solid transparent;white-space:nowrap}
+  .nav-item.active{border-bottom-color:var(--navy)}
+  .greeks,.controls,.legend{grid-template-columns:1fr}
+  .main{padding:20px 16px 48px}
+}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-brand">btg pactual <span>prateleira tática</span></div>
+  <div class="topbar-right">Distribuição · Renda Variável · Uso interno</div>
+</header>
+<div class="layout">
+  <nav class="sidebar" aria-label="Navegação">
+    <a class="nav-item" href="./index.html">Overview</a>
+    <a class="nav-item" href="./empresas.html">Empresas</a>
+    <a class="nav-item" href="./estruturas.html">Estruturas</a>
+    <a class="nav-item active" href="./educacao.html">Educacional</a>
+  </nav>
+  <main class="main">
+    <h1>Educacional</h1>
+    <nav class="chapters" id="chapters" aria-label="Capítulos">
+      <button type="button" data-ch="intro" class="on">Introdução</button>
+      <button type="button" data-ch="conceitos">Conceitos</button>
+      <button type="button" data-ch="aplicacao">Aplicação</button>
+      <button type="button" data-ch="estruturas">Estruturas</button>
+    </nav>
+    <p class="sub" id="chLead" hidden></p>
+
+    <div class="chapter on" id="ch-intro">
+    <section class="card">
+      <h2>De acordo com o Natenberg</h2>
+      <p>De acordo com Sheldon Natenberg, no livro <em>Option Volatility and Pricing</em>, um derivativo se entende <mark>por um acordo, não por uma fórmula</mark>. O livro abre com um terreno, um fazendeiro e um homem que talvez abra um restaurante, se uma estrada nova for construída. Os dois podem fechar o mesmo negócio de três jeitos. Em todos, o preço do contrato <mark>nasce do preço do terreno</mark>. <mark>Deriva de outra coisa.</mark> Por isso se chama derivativo.</p>
+    </section>
+
+    <section class="card">
+      <h2>Os três jeitos de fechar</h2>
+      <p><strong>À vista.</strong> De acordo com o livro, os dois combinam o preço e <mark>trocam na hora</mark>: dinheiro contra o terreno. Comprar uma ação na bolsa é esse mesmo negócio. Paga e leva o papel.</p>
+      <p><strong>A termo.</strong> A estrada demora. Eles <mark>fecham o preço hoje e só trocam daqui a um ano</mark>. O preço de lá na frente não é o de hoje, porque o dinheiro, se fosse pago agora, renderia no caminho. Quem vai precisar do bem <mark>trava a alta</mark>. Quem vai entregar o bem <mark>trava a queda</mark>. O livro usa o trigo: a padaria compra para a frente, o produtor vende a safra. Quando a bolsa padroniza o contrato e garante os dois lados, o termo passa a se chamar futuro.</p>
+      <p><strong>Opção de compra.</strong> A estrada pode nem sair. O homem não quer a obrigação de comprar. Quer o <mark>direito de decidir</mark> daqui a um ano: compra pelo preço combinado, ou desiste sem multa. O fazendeiro fica impedido de vender para outro. Por isso cobra um valor à parte, <mark>o prêmio, e fica com ele de qualquer jeito</mark>.</p>
+      <p><strong>Opção de venda.</strong> O outro lado, ainda no livro, é a casa. O mesmo homem paga um casal para ter o <mark>direito de vender</mark> a casa depois, se a obra não sair. O seguro da casa é esse contrato com outro nome. Paga-se o prêmio e só se aciona se o prejuízo acontecer. A seguradora cobra de acordo com a chance do sinistro. A opção também: <mark>o prêmio reflete a chance de o bem subir ou cair</mark>.</p>
+    </section>
+
+    <section class="card">
+      <h2>O que esses nomes viram na mesa</h2>
+      <p><mark>Prêmio</mark> é o que se paga agora pelo direito. <mark>Exercício</mark> é o preço combinado. <mark>Vencimento</mark> é o dia em que o direito acaba.</p>
+      <p>Na opção de compra, se o ativo fecha acima do exercício, a diferença é o ganho. Se fecha abaixo, a opção vale zero e quem comprou <mark>perde só o prêmio</mark>. Na opção de venda, o espelho: vale quando o ativo fecha abaixo.</p>
+      <p>Quem vendeu a opção recebeu o prêmio e ficou com a obrigação. <mark>O ganho de quem vendeu tem teto. A perda, não.</mark></p>
+    </section>
+
+    <section class="card">
+      <h2>De onde vem o Black &amp; Scholes</h2>
+      <p>O prêmio não é um chute. <mark>Black &amp; Scholes é a conta que diz quanto esse direito vale hoje.</mark> Entram cinco dados: o preço do ativo, o exercício, o prazo, os juros e a volatilidade. Não entra uma opinião sobre se o ativo vai subir.</p>
+      <p>Antes disso, precificar a opção esbarrava no prêmio de risco: quanto a mais o investidor exige por aguentar a incerteza. Esse número muda de pessoa para pessoa, então não havia um preço único. A Academia Sueca lembra que Louis Bachelier já tinha tentado em 1900, na tese de doutorado, e a fórmula saiu torta por esse motivo.</p>
+      <p>Em 1973, Fischer Black e Myron Scholes publicaram <em>The Pricing of Options and Corporate Liabilities</em> no <em>Journal of Political Economy</em> (vol. 81, n. 3, p. 637–654). A sacada foi montar uma carteira com a opção e o ativo que <mark>cancela o risco</mark>. Se não sobra risco, a carteira só pode render a taxa de juros. Dali sai o preço da opção, sem precisar do prêmio de risco.</p>
+      <p>No mesmo ano, Robert Merton deu outro caminho para a mesma fórmula e a generalizou. Em 1997, o Prêmio do Banco da Suécia em Ciências Econômicas foi para Merton e Scholes, “por um novo método para determinar o valor de derivativos”. Black tinha morrido em 1995. O prêmio não é dado depois da morte, mas o anúncio trata os três como autores do método.</p>
+      <p>O Natenberg usa essa fórmula como o preço teórico, depois de explicar o contrato. A conta, termo a termo, está no capítulo Conceitos. O modelo supõe uma volatilidade só. No mercado cada exercício tem a sua, e isso também fica em Conceitos.</p>
+    </section>
+    <p class="next"><button type="button" data-go="conceitos">Seguir para Conceitos</button></p>
+    </div>
+
+    <div class="chapter" id="ch-conceitos">
+    <section class="card">
+      <h2>De onde vem o preço: Black &amp; Scholes</h2>
+      <p>O preço de hoje não é o gráfico do vencimento. Ele responde a cinco perguntas: quanto o ativo vale agora, qual é o exercício, quanto tempo falta, qual é a taxa de juros e o quanto o ativo costuma se mexer. Esse último ponto é a volatilidade. Black e Scholes juntaram as cinco numa conta só.</p>
+      <p>A conta não adivinha o fechamento. Ela diz quanto custa o direito, dado o movimento que o mercado está precificando. Volatilidade maior deixa a opção mais cara, porque a chance de um movimento grande aumenta. Menos tempo até o vencimento, em geral, barateia a opção. Aqui a volatilidade é uma só. Mais abaixo, na curva, cada exercício ganha a sua.</p>
+      <p>O prêmio da call é uma subtração: <strong>S × N(d₁)</strong> menos <strong>K × e<sup>−rT</sup> × N(d₂)</strong>. No vencimento, quem exerce a call recebe o ativo e paga o exercício. O preço de hoje é o valor dessa troca, trazido para agora.</p>
+      <p><strong>S × N(d₁)</strong> é o lado do ativo. S é o preço de hoje. N(d₁) fica entre 0 e 1 e é o delta da call: a fração do ativo que a opção carrega. Call muito dentro do dinheiro tem N(d₁) perto de 1 e anda quase junto com o ativo. Call muito fora do dinheiro tem N(d₁) perto de 0 e esse termo quase some.</p>
+      <p><strong>K × e<sup>−rT</sup></strong> é o lado do exercício. K é o preço combinado. e<sup>−rT</sup> é o desconto: pagar K só no vencimento custa menos do que pagar K hoje, porque o dinheiro rende juros no caminho. Com juros de 10% ao ano e 30 dias, e<sup>−rT</sup> fica perto de 0,99. Cem reais no vencimento valem cerca de 99 hoje.</p>
+      <p><strong>N(d₂)</strong> pondera esse exercício. É a probabilidade neutra a risco de a call terminar dentro do dinheiro, isto é, de o ativo fechar acima de K. Neutra a risco não é uma previsão de alta. É a probabilidade da conta, com o ativo crescendo à taxa de juros. N(d₂) perto de 1 significa exercício quase certo. Perto de 0, a call tende a virar pó e quase nada se desconta.</p>
+      <p>d₁ junta tudo numa distância só. ln(S/K) mede o quanto o ativo está acima ou abaixo do exercício. Soma-se o carrego (r + σ²/2) × T e divide-se por σ√T, a volatilidade do prazo. O resultado é em desvios: d₁ = 0 é o ativo empatado com o exercício já com os juros. d₁ positivo é call para dentro. d₁ negativo é call para fora.</p>
+      <p>d₂ = d₁ − σ√T. Tira-se um desvio de volatilidade do prazo, porque o ativo e o dinheiro não entram com o mesmo peso. Por isso d₂ é menor que d₁, e N(d₁) é maior que N(d₂). A put inverte a troca: recebe-se o exercício e entrega-se o ativo. O prêmio é <strong>K × e<sup>−rT</sup> × N(−d₂)</strong> menos <strong>S × N(−d₁)</strong>.</p>
+      <div class="formula">
+        <p class="tag">A mesma conta, em letras</p>
+        <p>Compra = S × N(d<sub>1</sub>) − K × e<sup>−rT</sup> × N(d<sub>2</sub>)</p>
+        <p>Venda = K × e<sup>−rT</sup> × N(−d<sub>2</sub>) − S × N(−d<sub>1</sub>)</p>
+        <p>d<sub>1</sub> = [ln(S/K) + (r + σ²/2) × T] / (σ × √T)</p>
+        <p>d<sub>2</sub> = d<sub>1</sub> − σ × √T</p>
+      </div>
+      <div class="legend">
+        <span><b>S</b> preço do ativo agora</span>
+        <span><b>K</b> exercício</span>
+        <span><b>T</b> tempo, em anos</span>
+        <span><b>r</b> juros ao ano</span>
+        <span><b>σ</b> volatilidade</span>
+        <span><b>N</b> probabilidade acumulada da normal</span>
+      </div>
+      <p class="readout" id="bsParts"></p>
+      <div class="controls">
+        <label>Preço do ativo agora <output id="oS"></output><input id="sS" type="range" min="50" max="150" value="100" step="1"></label>
+        <label>Exercício <output id="oK"></output><input id="sK" type="range" min="70" max="130" value="100" step="1"></label>
+        <label>Dias até o vencimento <output id="oT"></output><input id="sT" type="range" min="1" max="180" value="30" step="1"></label>
+        <label>Volatilidade ao ano <output id="oV"></output><input id="sV" type="range" min="10" max="60" value="25" step="1"></label>
+        <label>Juros ao ano <output id="oR"></output><input id="sR" type="range" min="0" max="20" value="10" step="0.5"></label>
+      </div>
+      <div class="price-row">
+        <div class="pill">Compra de call<b id="pCall"></b></div>
+        <div class="pill">Compra de put<b id="pPut"></b></div>
+      </div>
+      <p class="hint" id="bsHint"></p>
+    </section>
+
+    <section class="card">
+      <h2>As gregas, com o exemplo de cima</h2>
+      <p>Gregas são apelidos para “se isto mudar um pouco, o preço da opção anda quanto”. Os números abaixo são da <strong>compra de call</strong> com os controles de cima.</p>
+      <div class="greeks">
+        <div class="greek"><strong>Delta</strong><span id="gDelta"></span></div>
+        <div class="greek"><strong>Gama</strong><span id="gGamma"></span></div>
+        <div class="greek"><strong>Teta</strong><span id="gTheta"></span></div>
+        <div class="greek"><strong>Vega</strong><span id="gVega"></span></div>
+        <div class="greek"><strong>Rô</strong><span id="gRho"></span></div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Cada exercício tem a sua volatilidade</h2>
+      <p>Volatilidade é o quanto o mercado acha que o ativo vai se mexer. É o mesmo número do controle “Volatilidade ao ano”, na conta de cima. Quanto maior, mais cara fica a opção.</p>
+      <p>Lá em cima esse número é um só, para qualquer exercício. Aqui ele muda. A altura da linha é a volatilidade. No meio, o exercício perto do preço. À esquerda, um exercício mais baixo. À direita, um exercício mais alto.</p>
+      <div class="steps">
+        <div class="step">
+          <p><strong>1. Perto do preço.</strong> É a volatilidade do exercício do meio. Mexer aqui sobe ou desce a linha inteira.</p>
+          <label>Volatilidade <output id="oA"></output><input id="fA" type="range" min="10" max="60" value="27" step="1"></label>
+        </div>
+        <div class="step">
+          <p><strong>2. O lado.</strong> Numa ação, a queda costuma pedir mais volatilidade do que a alta. No dólar, é o contrário.</p>
+          <label>Mais volatilidade <output id="oB"></output><input id="fB" type="range" min="-8" max="8" value="-3" step="0.5"></label>
+        </div>
+        <div class="step">
+          <p><strong>3. As pontas.</strong> Queda forte e alta forte ganham volatilidade extra, as duas ao mesmo tempo.</p>
+          <label>Quanto a mais <output id="oC"></output><input id="fC" type="range" min="0" max="8" value="2" step="0.5"></label>
+        </div>
+      </div>
+      <canvas id="fvolChart" width="880" height="280" aria-label="Volatilidade de cada exercício"></canvas>
+      <p class="readout" id="fvolRead"></p>
+      <p class="hint">A altura da linha é a volatilidade. A tracejada é a volatilidade única da conta de cima. A cheia muda conforme o exercício.</p>
+    </section>
+    <p class="next"><button type="button" data-go="aplicacao">Seguir para Aplicação</button></p>
+    </div>
+
+    <div class="chapter" id="ch-aplicacao">
+    <section class="card">
+      <h2>No vencimento, o resultado é uma reta</h2>
+      <p>No dia do vencimento o modelo deixa de importar. Sobra a conta simples: quanto o ativo fechou, menos o que você pagou ou mais o que você recebeu. É o mesmo tipo de gráfico das fichas da prateleira.</p>
+      <div class="structs" id="structs">
+        <button type="button" data-k="call" class="on">Compra de call</button>
+        <button type="button" data-k="put">Compra de put</button>
+        <button type="button" data-k="cs">Trava de alta</button>
+        <button type="button" data-k="ps">Trava de baixa</button>
+        <button type="button" data-k="cc">Lançamento coberto</button>
+      </div>
+      <p class="hint" id="structHint"></p>
+      <div class="controls" id="labControls"></div>
+      <canvas id="chart" width="880" height="280" aria-label="Resultado no vencimento"></canvas>
+      <p class="readout" id="readout"></p>
+      <p class="hint">Arraste o fechamento. A linha vertical é o preço escolhido. Acima de zero, a estrutura termina no ganho.</p>
+    </section>
+
+    <section class="card">
+      <h2>O passo seguinte são as estruturas</h2>
+      <p>Call, put, trava e lançamento coberto são as peças. As operações da prateleira juntam essas peças com barreira: em alguns pontos a opção se desliga, o ganho dobra ou o resultado vira um valor fixo. Cada uma está no capítulo Estruturas. O gráfico da semana, com o ativo, continua em <a href="./estruturas.html">Estruturas</a>.</p>
+    </section>
+    <p class="next"><button type="button" data-go="estruturas">Seguir para Estruturas</button></p>
+    </div>
+
+    <div class="chapter" id="ch-estruturas">
+    <section class="card">
+      <h2>As operações da prateleira</h2>
+      <p>Uma de cada vez. A barreira é o nível em que a regra muda: a opção pode se desligar ou o ganho pode ficar limitado.</p>
+      <div class="structs" id="ops">
+        <button type="button" data-op="soc" class="on">SOC</button>
+        <button type="button" data-op="sh">Smart Hedge</button>
+        <button type="button" data-op="acel">Aceleradora Dinâmica</button>
+        <button type="button" data-op="acelko">Aceleradora KO com Ativo</button>
+        <button type="button" data-op="triplo">Triplo Retorno</button>
+        <button type="button" data-op="cs">Call spread</button>
+        <button type="button" data-op="collar">Collar</button>
+        <button type="button" data-op="callko">Call KO</button>
+        <button type="button" data-op="putko">Put KO</button>
+        <button type="button" data-op="pop">POP</button>
+        <button type="button" data-op="ot">One Touch</button>
+        <button type="button" data-op="twip">TWIP</button>
+        <button type="button" data-op="put">Compra de put</button>
+      </div>
+      <div class="op-panel">
+        <strong id="opTitle"></strong>
+        <p id="opHow"></p>
+        <p id="opWho"></p>
+      </div>
+      <div class="controls" id="opControls"></div>
+      <div class="controls">
+        <label>Variação do ativo <output id="o_opSpot"></output><input id="opSpot" type="range" min="-50" max="80" value="0" step="1"></label>
+      </div>
+      <canvas id="opChart" width="880" height="280" aria-label="Resultado da estrutura no vencimento"></canvas>
+      <p class="readout" id="opRead"></p>
+      <p class="hint">Linha cheia: a estrutura. Linha tracejada: o ativo. O ponto é a variação escolhida.</p>
+    </section>
+    </div>
+
+    <p class="footer-alert">
+      <strong>MATERIAL DE USO INTERNO, NÃO ENVIAR AOS CLIENTES</strong><br>
+      <strong>PARA INFORMAÇÕES OFICIAIS, ACESSAR O DIE DA OPERAÇÃO DISPONIBILIZADO NO ADMIN BTG</strong>
+    </p>
+  </main>
+</div>
+<script>
+function erf(x){
+  var s=x<0?-1:1; x=Math.abs(x);
+  var a1=0.254829592,a2=-0.284496736,a3=1.421413741,a4=-1.453152027,a5=1.061405429,p=0.3275911;
+  var t=1/(1+p*x);
+  var y=1-(((((a5*t+a4)*t)+a3)*t+a2)*t+a1)*t*Math.exp(-x*x);
+  return s*y;
+}
+function ncdf(x){ return 0.5*(1+erf(x/Math.SQRT2)); }
+function npdf(x){ return Math.exp(-0.5*x*x)/Math.sqrt(2*Math.PI); }
+function brl(n){ return n.toLocaleString("pt-BR",{style:"currency",currency:"BRL"}); }
+function num(n,d){ return n.toLocaleString("pt-BR",{minimumFractionDigits:d,maximumFractionDigits:d}); }
+
+function bs(S,K,T,r,vol){
+  if(T<=1e-6){
+    return { call:Math.max(S-K,0), put:Math.max(K-S,0), delta:S>K?1:0, gamma:0, vega:0, theta:0, rho:0, d1:null, d2:null };
+  }
+  var sT=Math.sqrt(T), d1=(Math.log(S/K)+(r+0.5*vol*vol)*T)/(vol*sT), d2=d1-vol*sT, df=Math.exp(-r*T);
+  var call=S*ncdf(d1)-K*df*ncdf(d2);
+  var put=K*df*ncdf(-d2)-S*ncdf(-d1);
+  var delta=ncdf(d1);
+  var gamma=npdf(d1)/(S*vol*sT);
+  var vega=S*npdf(d1)*sT/100;
+  var theta=(-(S*npdf(d1)*vol)/(2*sT) - r*K*df*ncdf(d2))/365;
+  var rho=K*T*df*ncdf(d2)/100;
+  return {call:call, put:put, delta:delta, gamma:gamma, vega:vega, theta:theta, rho:rho, d1:d1, d2:d2};
+}
+
+var el=function(id){ return document.getElementById(id); };
+function readMkt(){
+  return {
+    S:+el("sS").value, K:+el("sK").value, days:+el("sT").value,
+    vol:+el("sV").value/100, r:+el("sR").value/100
+  };
+}
+function paintMkt(){
+  var m=readMkt();
+  el("oS").textContent=brl(m.S);
+  el("oK").textContent=brl(m.K);
+  el("oT").textContent=m.days+" dias";
+  el("oV").textContent=Math.round(m.vol*100)+"%";
+  el("oR").textContent=num(m.r*100,1).replace(".",",")+"%";
+  var g=bs(m.S,m.K,m.days/365,m.r,m.vol);
+  el("pCall").textContent=brl(g.call);
+  el("pPut").textContent=brl(g.put);
+  if(g.d1==null){
+    el("bsParts").textContent="No vencimento a fórmula deixa de valer. Sobra o ativo contra o exercício.";
+  }else{
+    var t=m.days/365;
+    var nd1=ncdf(g.d1), nd2=ncdf(g.d2);
+    var parteAtivo=m.S*nd1;
+    var parteEx=m.K*Math.exp(-m.r*t)*nd2;
+    el("bsParts").textContent="S × N(d1) = "+brl(parteAtivo)+", com N(d1) = "+num(nd1,2)+". K × e^(−rT) × N(d2) = "+brl(parteEx)+", com N(d2) = "+num(nd2,2)+". Call = "+brl(parteAtivo)+" − "+brl(parteEx)+" = "+brl(g.call)+".";
+  }
+  el("bsHint").textContent="Com o ativo a "+brl(m.S)+" e exercício "+brl(m.K)+", a compra de call custa cerca de "+brl(g.call)+" e a de put "+brl(g.put)+". Isso é o preço de hoje, não o resultado no vencimento.";
+  el("gDelta").textContent="Se o ativo sobe R$ 1, esta call anda cerca de "+brl(g.delta)+". Delta perto de 0,50 significa que a opção acompanha metade do movimento. Perto de 1, ela anda quase junto com o ativo.";
+  el("gGamma").textContent="Se o ativo sobe mais R$ 1, o delta aumenta cerca de "+num(g.gamma,3).replace(".",",")+". Gama alto quer dizer que o delta muda rápido: a opção “acelera”.";
+  el("gTheta").textContent="A cada dia que passa, sem o ativo se mexer, esta call perde cerca de "+brl(Math.abs(g.theta))+". O tempo come o prêmio de quem comprou.";
+  el("gVega").textContent="Se a volatilidade sobe 1 ponto (por exemplo de "+Math.round(m.vol*100)+"% para "+(Math.round(m.vol*100)+1)+"%), a call fica cerca de "+brl(g.vega)+" mais cara.";
+  el("gRho").textContent="Se a taxa de juros sobe 1 ponto ao ano, a call muda cerca de "+brl(g.rho)+". Em prazo curto, os juros pesam menos do que a volatilidade e o tempo.";
+}
+
+var kind="call";
+var lab={};
+function field(id,label,min,max,val,step){
+  return '<label>'+label+' <output id="o_'+id+'"></output><input id="'+id+'" type="range" min="'+min+'" max="'+max+'" value="'+val+'" step="'+step+'"></label>';
+}
+var hints={
+  call:"Paga o prêmio e fica com a alta acima do exercício. Abaixo do exercício, perde só o que pagou.",
+  put:"Paga o prêmio e ganha se o ativo cair abaixo do exercício. A alta não ajuda: a opção vira pó.",
+  cs:"Compra uma call e vende outra com exercício mais alto. Paga menos do que a call sozinha e o ganho tem teto.",
+  ps:"Compra uma put e vende outra com exercício mais baixo. Aposta na queda com perda e ganho limitados.",
+  cc:"Tem o ativo e vende uma call. Recebe o prêmio e abre mão da alta acima do exercício."
+};
+function labHtml(){
+  if(kind==="call"||kind==="put"){
+    return field("k1","Exercício",70,140,100,1)+field("p1","Prêmio pago",0.5,20,5,0.5);
+  }
+  if(kind==="cs"){
+    return field("k1","Exercício comprado",70,130,100,1)+field("p1","Prêmio pago",0.5,20,5,0.5)+field("k2","Exercício vendido",80,150,110,1)+field("p2","Prêmio recebido",0,15,2,0.5);
+  }
+  if(kind==="ps"){
+    return field("k1","Exercício comprado",80,140,100,1)+field("p1","Prêmio pago",0.5,20,5,0.5)+field("k2","Exercício vendido",60,120,90,1)+field("p2","Prêmio recebido",0,15,2,0.5);
+  }
+  return field("s0","Preço de compra do ativo",70,140,100,1)+field("k1","Exercício da call vendida",80,150,110,1)+field("p2","Prêmio recebido",0,20,3,0.5);
+}
+function payoff(S){
+  var k1=+el("k1").value, p1=el("p1")?(+el("p1").value):0, k2=el("k2")?(+el("k2").value):0, p2=el("p2")?(+el("p2").value):0, s0=el("s0")?(+el("s0").value):100;
+  if(kind==="call") return Math.max(S-k1,0)-p1;
+  if(kind==="put") return Math.max(k1-S,0)-p1;
+  if(kind==="cs") return Math.max(S-k1,0)-Math.max(S-k2,0)-(p1-p2);
+  if(kind==="ps") return Math.max(k1-S,0)-Math.max(k2-S,0)-(p1-p2);
+  return (S-s0)+p2-Math.max(S-k1,0);
+}
+function bindLab(){
+  el("structHint").textContent=hints[kind];
+  el("labControls").innerHTML=labHtml();
+  Array.prototype.forEach.call(el("labControls").querySelectorAll("input"), function(inp){
+    inp.addEventListener("input", draw);
+  });
+  draw();
+}
+function draw(){
+  Array.prototype.forEach.call(el("labControls").querySelectorAll("input"), function(inp){
+    var o=el("o_"+inp.id);
+    if(o) o.textContent = inp.id.charAt(0)==="p" ? brl(+inp.value) : brl(+inp.value);
+  });
+  var c=el("chart"), dpr=window.devicePixelRatio||1;
+  var w=c.clientWidth||880, h=280;
+  c.width=w*dpr; c.height=h*dpr;
+  var g=c.getContext("2d");
+  g.setTransform(dpr,0,0,dpr,0,0);
+  g.clearRect(0,0,w,h);
+  var pad={l:48,r:12,t:12,b:28};
+  var xmin=60, xmax=150, n=90, xs=[], ys=[];
+  var ymin=0, ymax=0;
+  for(var i=0;i<=n;i++){
+    var x=xmin+(xmax-xmin)*i/n;
+    var y=payoff(x);
+    xs.push(x); ys.push(y);
+    if(y<ymin) ymin=y;
+    if(y>ymax) ymax=y;
+  }
+  var span=Math.max(8, ymax-ymin);
+  ymin-=span*0.12; ymax+=span*0.12;
+  function X(x){ return pad.l+(x-xmin)/(xmax-xmin)*(w-pad.l-pad.r); }
+  function Y(y){ return pad.t+(ymax-y)/(ymax-ymin)*(h-pad.t-pad.b); }
+  g.strokeStyle="#e5e7eb"; g.lineWidth=1;
+  g.beginPath(); g.moveTo(pad.l,Y(0)); g.lineTo(w-pad.r,Y(0)); g.stroke();
+  g.strokeStyle="#1D428A"; g.lineWidth=2; g.beginPath();
+  for(i=0;i<=n;i++){
+    var px=X(xs[i]), py=Y(ys[i]);
+    if(i===0) g.moveTo(px,py); else g.lineTo(px,py);
+  }
+  g.stroke();
+  var spot=+el("spot").value;
+  var res=payoff(spot);
+  g.strokeStyle="#c0392b"; g.setLineDash([4,3]);
+  g.beginPath(); g.moveTo(X(spot),pad.t); g.lineTo(X(spot),h-pad.b); g.stroke();
+  g.setLineDash([]);
+  g.fillStyle=res>=0?"#0d7a3f":"#c0392b";
+  g.beginPath(); g.arc(X(spot),Y(res),4.5,0,Math.PI*2); g.fill();
+  g.fillStyle="#6b7280"; g.font="12px sans-serif";
+  g.fillText("R$ 60", pad.l, h-8);
+  g.fillText("R$ 150", w-pad.r-36, h-8);
+  el("readout").textContent="Se fechar a "+brl(spot)+", o resultado é "+brl(res)+" por ação.";
+  var so=el("o_spot");
+  if(so) so.textContent=brl(spot);
+}
+document.getElementById("structs").addEventListener("click", function(ev){
+  var b=ev.target.closest("button");
+  if(!b) return;
+  kind=b.getAttribute("data-k");
+  Array.prototype.forEach.call(el("structs").querySelectorAll("button"), function(x){ x.classList.toggle("on", x===b); });
+  bindLab();
+});
+function fvol(sn){
+  var a=+el("fA").value, b=+el("fB").value, c=+el("fC").value;
+  return Math.max(1, a + b*sn + (c/2)*sn*sn);
+}
+function paintFvol(){
+  var a=+el("fA").value, b=+el("fB").value, c=+el("fC").value;
+  el("oA").textContent=a+"%";
+  el("oB").textContent=b<-0.4?"na queda":(b>0.4?"na alta":"nos dois lados");
+  el("oC").textContent=c<0.5?"não":(c<3?"um pouco":(c<6?"mais":"muito"));
+  var cnv=el("fvolChart"), dpr=window.devicePixelRatio||1;
+  var w=cnv.clientWidth||880, h=280;
+  cnv.width=w*dpr; cnv.height=h*dpr;
+  var g=cnv.getContext("2d");
+  g.setTransform(dpr,0,0,dpr,0,0);
+  g.clearRect(0,0,w,h);
+  var pad={l:44,r:12,t:12,b:28};
+  var xmin=-2, xmax=2, n=80, ys=[];
+  var ymin=0, ymax=100;
+  for(var i=0;i<=n;i++){
+    var y=fvol(xmin+(xmax-xmin)*i/n);
+    ys.push(y);
+    if(y>ymax-8) ymax=y+8;
+  }
+  function X(x){ return pad.l+(x-xmin)/(xmax-xmin)*(w-pad.l-pad.r); }
+  function Y(y){ return pad.t+(ymax-y)/(ymax-ymin)*(h-pad.t-pad.b); }
+  g.strokeStyle="#d1d5db"; g.setLineDash([4,3]); g.lineWidth=1.5;
+  g.beginPath(); g.moveTo(X(xmin),Y(a)); g.lineTo(X(xmax),Y(a)); g.stroke();
+  g.setLineDash([]);
+  g.fillStyle="#6b7280"; g.font="12px sans-serif";
+  g.fillText("volatilidade", pad.l, 14);
+  g.fillText(Math.round(a)+"%", X(xmax)-28, Y(a)-6);
+  g.strokeStyle="#1D428A"; g.lineWidth=2; g.beginPath();
+  for(i=0;i<=n;i++){
+    var sn=xmin+(xmax-xmin)*i/n;
+    var px=X(sn), py=Y(ys[i]);
+    if(i===0) g.moveTo(px,py); else g.lineTo(px,py);
+  }
+  g.stroke();
+  g.fillStyle="#6b7280"; g.font="12px sans-serif";
+  g.fillText("queda", pad.l, h-8);
+  g.fillText("no preço", X(0)-22, h-8);
+  g.fillText("alta", w-pad.r-28, h-8);
+  var vL=fvol(-1), v0=fvol(0), vR=fvol(1);
+  var lado=b<-0.4?"A queda pede mais volatilidade.":(b>0.4?"A alta pede mais volatilidade.":"Queda e alta pedem quase o mesmo.");
+  var pontas=c<0.5?"As pontas não ganham nada a mais.":(c<3?"As pontas ganham um pouco.":(c<6?"As pontas ganham mais.":"As pontas ganham muito."));
+  el("fvolRead").textContent="Volatilidade perto do preço: "+num(v0,0)+"%. "+lado+" "+pontas+" Na queda, "+num(vL,0)+"%. Na alta, "+num(vR,0)+"%.";
+}
+["sS","sK","sT","sV","sR"].forEach(function(id){ el(id).addEventListener("input", paintMkt); });
+["fA","fB","fC"].forEach(function(id){ el(id).addEventListener("input", paintFvol); });
+var spotWrap=document.createElement("div");
+spotWrap.className="controls";
+spotWrap.innerHTML=field("spot","Fechamento no vencimento",60,150,100,1);
+el("chart").insertAdjacentElement("beforebegin", spotWrap);
+el("spot").addEventListener("input", draw);
+var leads={
+  intro:"",
+  conceitos:"O preço de hoje, as gregas e por que cada exercício é diferente.",
+  aplicacao:"O resultado no vencimento: call, put, travas e lançamento coberto.",
+  estruturas:""
+};
+function showChapter(id){
+  Array.prototype.forEach.call(document.querySelectorAll(".chapter"), function(node){
+    node.classList.toggle("on", node.id==="ch-"+id);
+  });
+  Array.prototype.forEach.call(el("chapters").querySelectorAll("button"), function(b){
+    b.classList.toggle("on", b.getAttribute("data-ch")===id);
+  });
+  el("chLead").textContent=leads[id];
+  el("chLead").hidden=!leads[id];
+  if(id==="conceitos"){ paintMkt(); paintFvol(); }
+  if(id==="aplicacao") draw();
+  if(id==="estruturas" && typeof drawOp==="function") drawOp();
+}
+el("chapters").addEventListener("click", function(ev){
+  var b=ev.target.closest("button");
+  if(!b) return;
+  showChapter(b.getAttribute("data-ch"));
+});
+document.querySelector(".main").addEventListener("click", function(ev){
+  var b=ev.target.closest("[data-go]");
+  if(!b) return;
+  showChapter(b.getAttribute("data-go"));
+  window.scrollTo(0,0);
+});
+window.addEventListener("resize", function(){
+  var on=document.querySelector(".chapter.on");
+  if(!on) return;
+  if(on.id==="ch-conceitos") paintFvol();
+  if(on.id==="ch-aplicacao") draw();
+  if(on.id==="ch-estruturas") drawOp();
+});
+paintMkt();
+bindLab();
+var ops={
+  soc:{
+    title:"SOC",
+    how:"Compra uma put com barreira e vende uma call com a mesma barreira. Se o ativo não chega na barreira de queda, o resultado é um cupom fixo. Se a barreira é atingida, as duas opções se desligam e a estrutura passa a acompanhar o ativo.",
+    who:"Para quem quer um cupom e aceita ficar com a queda, se ela for forte."
+  },
+  sh:{
+    title:"Smart Hedge",
+    how:"Tem piso na queda, pela put. Até a barreira de alta, acompanha o ativo. Se essa barreira é atingida, o ganho deixa de acompanhar e fica limitado ao exercício da call.",
+    who:"Para quem quer participar da alta com proteção e aceita um teto se a alta for grande."
+  },
+  acel:{
+    title:"Aceleradora Dinâmica",
+    how:"Na alta, o ganho é o dobro até um teto. Esse teto é a barreira da call: passado esse ponto, o ganho não dobra de novo. Na queda, o resultado fica em zero até a barreira da put. Abaixo dela, a proteção acaba e a estrutura acompanha o ativo.",
+    who:"Para quem quer alta dobrada e uma proteção só até certo ponto."
+  },
+  acelko:{
+    title:"Aceleradora KO com Ativo",
+    how:"Também dobra a alta, mas a queda acompanha o ativo o tempo todo. Enquanto a barreira de alta não é tocada, o ganho sobe o dobro. Se a barreira é tocada, esse pico some e o ganho fica limitado ao nível da barreira.",
+    who:"Para quem aceita a queda do ativo em troca de uma alta dobrada, com limite se o mercado esticar."
+  },
+  triplo:{
+    title:"Triplo Retorno KO",
+    how:"Entre as duas barreiras, a alta rende o triplo e a queda moderada rende o tamanho da queda. Se sobe além da barreira de alta, o ganho fica no teto. Se cai além da barreira de baixa, passa a acompanhar o ativo.",
+    who:"Para quem quer assimetria forte no meio do caminho e sabe que, fora das barreiras, a regra muda."
+  },
+  cs:{
+    title:"Call spread",
+    how:"Compra uma call e vende outra com exercício mais alto. Custa menos do que a call sozinha. Participa da alta só até o exercício vendido. Abaixo do exercício comprado, perde o que pagou.",
+    who:"Para quem está construtivo e quer a alta com custo e teto definidos."
+  },
+  collar:{
+    title:"Collar",
+    how:"Em cima do ativo, compra uma put e vende uma call. Na queda forte, a put segura num piso. Na alta forte, a call vendida impõe um teto. No meio, acompanha o ativo.",
+    who:"Para quem já tem o ativo, ou quer a exposição, e troca parte da alta por proteção."
+  },
+  callko:{
+    title:"Call KO com rebate",
+    how:"Compra uma call que se desliga se o ativo chega na barreira de alta. Até lá, participa da alta, descontado o prêmio. Se a barreira é atingida, para de acompanhar e recebe um valor combinado, o rebate.",
+    who:"Para quem quer a alta, mas aceita um prêmio fixo se o ativo chegar longe demais."
+  },
+  putko:{
+    title:"Put KO com rebate",
+    how:"É o espelho da call com barreira. Participa da queda até a barreira de baixa, descontado o prêmio. Se a barreira é atingida, a put se desliga e paga o rebate.",
+    who:"Para quem quer proteção ou queda, com um resultado combinado se a queda for muito forte."
+  },
+  pop:{
+    title:"POP",
+    how:"Compra uma put no nível do ativo e vende call em metade da posição. Na queda, a put segura o resultado em zero. Na alta, participa só da metade.",
+    who:"Para quem quer ficar comprado com proteção e aceita abrir mão de parte da alta."
+  },
+  ot:{
+    title:"One Touch de Alta",
+    how:"Não acompanha o caminho do ativo. Paga um prêmio. Se no vencimento o ativo fechou na barreira ou acima, recebe o rebate. Se não chegou, perde o prêmio.",
+    who:"Para quem aposta que o ativo alcança um nível, e não em quanto passa desse nível."
+  },
+  twip:{
+    title:"TWIP",
+    how:"Ganha na alta e na queda, desde que o ativo fique entre duas barreiras. O resultado é o tamanho do movimento. Se sair por cima ou por baixo, o ganho some e o resultado vai a zero.",
+    who:"Para quem espera movimento, para qualquer lado, e aceita ficar no zero se o movimento for extremo."
+  },
+  put:{
+    title:"Compra de put",
+    how:"Paga o prêmio e ganha se o ativo fechar abaixo do exercício. A diferença é o ganho. Se não cair até lá, a put vale zero e a perda fica no prêmio. Não tem barreira.",
+    who:"Para quem quer proteção ou queda, com perda limitada ao que pagou."
+  }
+};
+function showOp(id){
+  var o=ops[id];
+  if(!o) return;
+  el("opTitle").textContent=o.title;
+  el("opHow").textContent=o.how;
+  el("opWho").textContent=o.who;
+  Array.prototype.forEach.call(el("ops").querySelectorAll("button"), function(b){
+    b.classList.toggle("on", b.getAttribute("data-op")===id);
+  });
+  var spec=pay[id];
+  var html="";
+  spec.fields.forEach(function(f){
+    html+='<label>'+f.label+' <output id="o_'+f.id+'"></output><input id="'+f.id+'" type="range" min="'+f.min+'" max="'+f.max+'" value="'+f.val+'" step="'+f.step+'"></label>';
+  });
+  el("opControls").innerHTML=html;
+  Array.prototype.forEach.call(el("opControls").querySelectorAll("input"), function(inp){
+    inp.addEventListener("input", drawOp);
+  });
+  opY=spec.y;
+  drawOp();
+}
+function v(id){ return +el(id).value; }
+function pct(n){
+  var d=Math.abs(n-Math.round(n))<0.05?0:1;
+  var t=num(n,d);
+  if(n>0) t="+"+t;
+  return t+"%";
+}
+var opY=function(){ return 0; };
+var pay={
+  soc:{
+    fields:[
+      {id:"socKo",label:"Barreira de queda",min:-30,max:-5,val:-10,step:1},
+      {id:"socCup",label:"Cupom",min:1,max:12,val:5,step:0.5}
+    ],
+    y:function(x){ return x<=v("socKo") ? x : v("socCup"); }
+  },
+  sh:{
+    fields:[
+      {id:"shPiso",label:"Piso",min:-20,max:0,val:0,step:1},
+      {id:"shKi",label:"Barreira de alta",min:20,max:70,val:40,step:1},
+      {id:"shTeto",label:"Teto se a barreira for atingida",min:5,max:30,val:15,step:1}
+    ],
+    y:function(x){
+      var st=100+x, put=100+v("shPiso"), call=100+v("shTeto"), ki=100+v("shKi");
+      return st+Math.max(put-st,0)-(st>=ki?Math.max(st-call,0):0)-100;
+    }
+  },
+  acel:{
+    fields:[
+      {id:"acL",label:"Barreira de baixa",min:-40,max:-5,val:-20,step:1},
+      {id:"acH",label:"Teto da alta",min:10,max:50,val:30,step:1}
+    ],
+    y:function(x){
+      var L=v("acL"), H=v("acH");
+      if(x<=L) return x;
+      if(x<0) return 0;
+      if(x<H) return Math.min(2*x, H);
+      return H;
+    }
+  },
+  acelko:{
+    fields:[
+      {id:"akB",label:"Onde a alta começa a dobrar",min:-5,max:10,val:0,step:1},
+      {id:"akH",label:"Barreira de alta",min:8,max:40,val:16,step:1}
+    ],
+    y:function(x){
+      var B=v("akB"), H=Math.max(v("akH"), B+5);
+      if(x<B) return x;
+      if(x<H) return 2*x-B;
+      return H;
+    }
+  },
+  triplo:{
+    fields:[
+      {id:"trL",label:"Barreira de baixa",min:-40,max:-5,val:-20,step:1},
+      {id:"trH",label:"Barreira de alta",min:8,max:25,val:15,step:1}
+    ],
+    y:function(x){
+      var L=v("trL"), H=v("trH");
+      if(x<L) return x;
+      if(x<0) return -x;
+      if(x<H) return 3*x;
+      return 3*H;
+    }
+  },
+  cs:{
+    fields:[
+      {id:"csLo",label:"Exercício comprado",min:-5,max:15,val:0,step:1},
+      {id:"csHi",label:"Exercício vendido",min:5,max:30,val:10,step:1},
+      {id:"csCost",label:"Prêmio",min:0.5,max:8,val:3,step:0.5}
+    ],
+    y:function(x){
+      var lo=v("csLo"), hi=Math.max(v("csHi"), lo+5), cost=v("csCost");
+      if(x<=lo) return -cost;
+      if(x>=hi) return (hi-lo)-cost;
+      return (x-lo)-cost;
+    }
+  },
+  collar:{
+    fields:[
+      {id:"clPiso",label:"Piso",min:-30,max:0,val:-10,step:1},
+      {id:"clTeto",label:"Teto",min:5,max:40,val:15,step:1}
+    ],
+    y:function(x){
+      var piso=v("clPiso"), teto=Math.max(v("clTeto"), piso+5);
+      if(x<=piso) return piso;
+      if(x>=teto) return teto;
+      return x;
+    }
+  },
+  callko:{
+    fields:[
+      {id:"ckK",label:"Exercício",min:-5,max:10,val:0,step:1},
+      {id:"ckKo",label:"Barreira",min:8,max:40,val:20,step:1},
+      {id:"ckCost",label:"Prêmio",min:1,max:8,val:4,step:0.5},
+      {id:"ckReb",label:"Rebate",min:1,max:12,val:5,step:0.5}
+    ],
+    y:function(x){
+      var k=v("ckK"), ko=Math.max(v("ckKo"), k+5), cost=v("ckCost"), reb=v("ckReb");
+      if(x>=ko) return reb-cost;
+      return Math.max(x-k,0)-cost;
+    }
+  },
+  putko:{
+    fields:[
+      {id:"pkKo",label:"Barreira de baixa",min:-40,max:-8,val:-20,step:1},
+      {id:"pkCost",label:"Prêmio",min:1,max:8,val:4,step:0.5},
+      {id:"pkReb",label:"Rebate",min:1,max:12,val:5,step:0.5}
+    ],
+    y:function(x){
+      if(x<=v("pkKo")) return v("pkReb")-v("pkCost");
+      return Math.max(-x,0)-v("pkCost");
+    }
+  },
+  pop:{
+    fields:[{id:"popPart",label:"Participação na alta",min:20,max:80,val:50,step:5}],
+    y:function(x){ return x<0 ? 0 : x*v("popPart")/100; }
+  },
+  ot:{
+    fields:[
+      {id:"otB",label:"Barreira",min:3,max:25,val:8,step:1},
+      {id:"otCost",label:"Prêmio",min:0.5,max:6,val:2,step:0.5},
+      {id:"otReb",label:"Rebate",min:1,max:10,val:5,step:0.5}
+    ],
+    y:function(x){ return x>=v("otB") ? v("otReb")-v("otCost") : -v("otCost"); }
+  },
+  twip:{
+    fields:[
+      {id:"twL",label:"Barreira de baixa",min:-30,max:-5,val:-15,step:1},
+      {id:"twH",label:"Barreira de alta",min:5,max:30,val:15,step:1}
+    ],
+    y:function(x){
+      var L=v("twL"), H=v("twH");
+      if(x<L || x>H) return 0;
+      return Math.abs(x);
+    }
+  },
+  put:{
+    fields:[
+      {id:"puK",label:"Exercício",min:-15,max:5,val:0,step:1},
+      {id:"puCost",label:"Prêmio",min:1,max:10,val:3,step:0.5}
+    ],
+    y:function(x){ return Math.max(v("puK")-x,0)-v("puCost"); }
+  }
+};
+function drawOp(){
+  if(!el("opChart") || !el("opSpot")) return;
+  Array.prototype.forEach.call(el("opControls").querySelectorAll("input"), function(inp){
+    var o=el("o_"+inp.id);
+    if(o) o.textContent=pct(+inp.value);
+  });
+  el("o_opSpot").textContent=pct(+el("opSpot").value);
+  var c=el("opChart"), dpr=window.devicePixelRatio||1;
+  var w=c.clientWidth||880, h=280;
+  c.width=w*dpr; c.height=h*dpr;
+  var g=c.getContext("2d");
+  g.setTransform(dpr,0,0,dpr,0,0);
+  g.clearRect(0,0,w,h);
+  var pad={l:48,r:16,t:12,b:28};
+  var xmin=-50, xmax=80, n=200, xs=[], ys=[];
+  var ymin=0, ymax=0;
+  for(var i=0;i<=n;i++){
+    var x=xmin+(xmax-xmin)*i/n;
+    var y=opY(x);
+    xs.push(x); ys.push(y);
+    ymin=Math.min(ymin,y,x); ymax=Math.max(ymax,y,x);
+  }
+  var span=Math.max(8, ymax-ymin);
+  ymin-=span*0.08; ymax+=span*0.08;
+  function X(x){ return pad.l+(x-xmin)/(xmax-xmin)*(w-pad.l-pad.r); }
+  function Y(y){ return pad.t+(ymax-y)/(ymax-ymin)*(h-pad.t-pad.b); }
+  g.strokeStyle="#e5e7eb"; g.lineWidth=1;
+  g.beginPath(); g.moveTo(pad.l,Y(0)); g.lineTo(w-pad.r,Y(0)); g.stroke();
+  g.beginPath(); g.moveTo(X(0),pad.t); g.lineTo(X(0),h-pad.b); g.stroke();
+  g.strokeStyle="#9ca3af"; g.setLineDash([4,3]); g.lineWidth=1.5;
+  g.beginPath(); g.moveTo(X(xmin),Y(xmin)); g.lineTo(X(xmax),Y(xmax)); g.stroke();
+  g.setLineDash([]);
+  g.strokeStyle="#1D428A"; g.lineWidth=2; g.beginPath();
+  for(i=0;i<=n;i++){
+    var px=X(xs[i]), py=Y(ys[i]);
+    if(i===0){ g.moveTo(px,py); continue; }
+    var dx=xs[i]-xs[i-1], dy=ys[i]-ys[i-1];
+    if(dx!==0 && Math.abs(dy/dx)>12){ g.stroke(); g.beginPath(); g.moveTo(px,py); }
+    else g.lineTo(px,py);
+  }
+  g.stroke();
+  var spot=+el("opSpot").value;
+  var res=opY(spot);
+  g.strokeStyle="#c0392b"; g.setLineDash([4,3]);
+  g.beginPath(); g.moveTo(X(spot),pad.t); g.lineTo(X(spot),h-pad.b); g.stroke();
+  g.setLineDash([]);
+  g.fillStyle=res>=0?"#0d7a3f":"#c0392b";
+  g.beginPath(); g.arc(X(spot),Y(res),4.5,0,Math.PI*2); g.fill();
+  g.fillStyle="#6b7280"; g.font="12px sans-serif";
+  g.fillText("-50%", pad.l, h-8);
+  g.fillText("0", X(0)-4, h-8);
+  g.fillText("+80%", w-pad.r-36, h-8);
+  el("opRead").textContent="Se o ativo variar "+pct(spot)+", a estrutura rende "+pct(res)+".";
+}
+el("ops").addEventListener("click", function(ev){
+  var b=ev.target.closest("button");
+  if(!b) return;
+  showOp(b.getAttribute("data-op"));
+});
+el("opSpot").addEventListener("input", drawOp);
+showOp("soc");
+</script>
+</body>
+</html>
