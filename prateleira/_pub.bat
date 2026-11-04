@@ -1,5 +1,7 @@
 @echo off
 cd /d C:\Users\PIMENTPA\Projects\Artes\clone-github\prateleira
+copy /Y "C:\Users\PIMENTPA\Downloads\10.30.2026_Cenário Macro- apresentação mensal - Novembro de 2026_Macroeconomic Research - Brazil - Macro View (1).pdf" "leituras\Cenario-Macro-Novembro-2026.pdf"
+echo COPY=%ERRORLEVEL%
 python _build.py > _build_out.txt 2>&1
 set BUILD=%ERRORLEVEL%
 echo BUILD=%BUILD%
@@ -18,7 +20,7 @@ git fetch origin pages >> prateleira\_pub.txt 2>&1
 git add prateleira/_build.py prateleira/_excel_week.py prateleira/_pub.bat prateleira/index.html prateleira/empresas.html prateleira/estruturas.html prateleira/educacao.html prateleira/ops/ prateleira/research_targets.json prateleira/operacoes/ prateleira/leituras/ ops/range_52w.json
 git add prateleira/Material-Prateleira-Tatica-*.pdf 2>nul
 git add -u -- prateleira/
-echo Prateleira: abre a aba Educacional.> prateleira\_commit_msg.txt
+echo Prateleira: atualiza o hub.> prateleira\_commit_msg.txt
 git commit -F prateleira\_commit_msg.txt >> prateleira\_pub.txt 2>&1
 set COMMIT=%ERRORLEVEL%
 echo COMMIT=%COMMIT%
@@ -36,7 +38,8 @@ if not "%PULL%"=="0" (
   echo PULL_FAIL — rebase abortado. Nada foi resetado.
   exit /b 1
 )
-git branch -f pages HEAD
+for /f %%B in ('git rev-parse --abbrev-ref HEAD') do set BR=%%B
+if not "%BR%"=="pages" git branch -f pages HEAD
 git push origin HEAD:pages >> prateleira\_pub.txt 2>&1
 set PUSH=%ERRORLEVEL%
 echo PUSH=%PUSH%

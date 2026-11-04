@@ -28,6 +28,11 @@ SHOW_WEEK_MOVES = False  # Overview: ligar de novo na semana que vem
 # Ex.: {"title": "…", "blurb": "…", "href": "https://…"}  (http → abre em nova aba)
 OVERVIEW_DESTAQUES: list[dict] = [
     {
+        "title": "Cenário Macro — apresentação mensal, novembro de 2026",
+        "blurb": "Macro View do Brasil, Macroeconomic Research. Abrir PDF →",
+        "href": "./leituras/Cenario-Macro-Novembro-2026.pdf",
+    },
+    {
         "title": "Estratégia: Correção do mercado — e agora?",
         "blurb": "Após o sell-off, o Research avalia até onde a correção pode ir e o que monitorar daqui pra frente. Abrir no Research →",
         "href": "https://content.btgpactual.com/research/home/relatorio/6ae1dbef29c4882ecd6c2b4b/Estrategia-Correcao-do-mercado-e-agora",
@@ -2695,14 +2700,14 @@ def _empresas_filter_script() -> str:
     document.querySelectorAll('[data-view]').forEach(function(b){
       b.classList.toggle('on', b.getAttribute('data-view')===v);
     });
-    try{ localStorage.setItem('prateleira-emp-view', v); }catch(e){}
+    try{ localStorage.setItem('prateleira-co-view', v); }catch(e){}
   }
   document.querySelectorAll('[data-view]').forEach(function(b){
     b.addEventListener('click',function(){ setView(b.getAttribute('data-view')); });
   });
-  var saved='list';
-  try{ saved=localStorage.getItem('prateleira-emp-view')||'list'; }catch(e){}
-  setView(saved==='cards'?'cards':'list');
+  var saved='cards';
+  try{ saved=localStorage.getItem('prateleira-co-view')||'cards'; }catch(e){}
+  setView(saved==='list'?'list':'cards');
   apply();
 })();
 """
@@ -2782,14 +2787,14 @@ def hub_html(sections: list[tuple[str, list[tuple[str, dict]]]]) -> str:
     <button type="button" data-filter="local">Sem BDRs</button>
   </div>
   <div class="seg" role="group" aria-label="Visualização">
-    <button type="button" data-view="list" class="on">Lista</button>
-    <button type="button" data-view="cards">Cards</button>
+    <button type="button" data-view="list">Lista</button>
+    <button type="button" data-view="cards" class="on">Cards</button>
   </div>
 </div>
 <p class="emp-chip" id="empSector" hidden><span></span><button type="button" id="empSectorClear">Limpar setor</button></p>
 <p class="emp-empty" id="empEmpty" hidden>Nenhuma empresa com esse filtro.</p>
 <section class="spotlights" id="spotlights" aria-label="Empresas">
-  <div class="table-wrap" id="empList">
+  <div class="table-wrap" id="empList" hidden>
     <table class="data-table">
       <thead>
         <tr>
@@ -2799,7 +2804,7 @@ def hub_html(sections: list[tuple[str, list[tuple[str, dict]]]]) -> str:
       <tbody>{''.join(spot_rows)}</tbody>
     </table>
   </div>
-  <div class="emp-cards" id="empCards" hidden>{''.join(spot_cards)}</div>
+  <div class="emp-cards" id="empCards">{''.join(spot_cards)}</div>
 </section>"""
 
     body = "\n".join(company_sections)
