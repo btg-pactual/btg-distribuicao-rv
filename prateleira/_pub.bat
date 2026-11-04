@@ -1,7 +1,18 @@
 @echo off
 cd /d C:\Users\PIMENTPA\Projects\Artes\clone-github\prateleira
-copy /Y "C:\Users\PIMENTPA\Downloads\10.30.2026_*Macro View (1).pdf" "leituras\Cenario-Macro-Novembro-2026.pdf"
-echo COPY=%ERRORLEVEL%
+copy /B /Y "C:\Users\PIMENTPA\Downloads\10.30.2026_*Macro View (1).pdf" "leituras\Cenario-Macro-Novembro-2026.pdf"
+set COPY=%ERRORLEVEL%
+echo COPY=%COPY%
+for %%A in ("leituras\Cenario-Macro-Novembro-2026.pdf") do set PDF_BYTES=%%~zA
+echo PDF_BYTES=%PDF_BYTES%
+if not "%COPY%"=="0" (
+  echo PDF nao copiado
+  exit /b 1
+)
+if %PDF_BYTES% LSS 100000 (
+  echo PDF pequeno demais ^(%PDF_BYTES% bytes^). Copia incompleta.
+  exit /b 1
+)
 python _build.py > _build_out.txt 2>&1
 set BUILD=%ERRORLEVEL%
 echo BUILD=%BUILD%
