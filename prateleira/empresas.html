@@ -79,10 +79,36 @@ body{font-family:var(--font);color:var(--ink);background:var(--bg);min-height:10
 .ov-panel h2{font-size:15px;font-weight:700;margin-bottom:14px;color:var(--ink)}
 .pie-wrap{display:flex;gap:28px;align-items:center;flex-wrap:wrap}
 .pie-svg{width:160px;height:160px;flex-shrink:0}
-.pie-legend{list-style:none;display:flex;flex-direction:column;gap:6px;font-size:13px;color:#374151}
-.pie-legend li{display:flex;align-items:center;gap:8px}
+.pie-legend{list-style:none;display:flex;flex-direction:column;gap:2px;font-size:13px;color:#374151;min-width:220px}
+.pie-legend a{display:flex;align-items:center;gap:8px;text-decoration:none;color:inherit;padding:4px 6px;border-radius:2px}
+.pie-legend a:hover{background:#eef3fb;color:var(--navy)}
+.pie-name{flex:1}
+.pie-svg a{cursor:pointer}
+.pie-svg a:hover path,.pie-svg a:hover circle{opacity:.82}
 .pie-swatch{width:10px;height:10px;border-radius:1px;flex-shrink:0}
 .pie-count{margin-left:auto;padding-left:16px;color:var(--muted);font-weight:500}
+.emp-tools{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:14px}
+.emp-search{flex:1;min-width:200px;border:1px solid var(--line);background:#fff;border-radius:2px;padding:10px 12px;font:inherit;font-size:14px;color:var(--ink)}
+.emp-search:focus{outline:2px solid var(--navy);border-color:transparent}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:2px;overflow:hidden;background:#fff}
+.seg button{appearance:none;border:0;border-left:1px solid var(--line);background:transparent;font:inherit;font-size:12px;font-weight:700;color:#374151;padding:9px 12px;cursor:pointer}
+.seg button:first-child{border-left:0}
+.seg button.on{background:var(--navy);color:#fff}
+.emp-chip{display:flex;align-items:center;gap:8px;margin:0 0 12px;font-size:13px;color:#374151}
+.emp-chip button{appearance:none;border:1px solid var(--line);background:#fff;color:var(--link);font:inherit;font-size:12px;font-weight:700;padding:4px 8px;border-radius:2px;cursor:pointer}
+.emp-empty{font-size:13px;color:var(--muted);padding:8px 0 16px}
+.emp-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
+.co-card{appearance:none;width:100%;text-align:left;border:1px solid var(--line);border-left:3px solid var(--navy);background:#fff;border-radius:2px;padding:14px 16px;cursor:pointer;font:inherit;color:inherit;display:flex;flex-direction:column;gap:6px}
+.co-card:hover,.co-card:focus-visible{background:#f7f9fc;outline:none}
+.co-card-top{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.co-card .co-name{font-size:15px;font-weight:700;color:var(--ink)}
+.co-tk{font-size:12px;font-weight:700;color:var(--navy);letter-spacing:.02em}
+.co-sec{font-size:12px;color:var(--muted)}
+.co-ops{font-size:12px;color:#374151;line-height:1.4}
+.co-meta{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.tag-bdr{display:inline-block;margin-left:6px;font-size:10px;font-weight:700;letter-spacing:.04em;color:var(--navy);background:#e8eef8;border:1px solid #d5e0f0;border-radius:2px;padding:1px 5px;vertical-align:1px}
+.is-out{display:none !important}
+#empCards[hidden],#empList[hidden],.emp-chip[hidden],.emp-empty[hidden]{display:none !important}
 .ov-empty{font-size:13px;color:var(--muted);padding:8px 0 4px}
 .mov-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
 .mov-list{list-style:none}
@@ -109,6 +135,9 @@ body{font-family:var(--font);color:var(--ink);background:var(--bg);min-height:10
   .ov-grid{grid-template-columns:1fr}
   .mov-grid{grid-template-columns:1fr}
   .cat-grid{grid-template-columns:1fr}
+  .emp-tools{flex-direction:column;align-items:stretch}
+  .seg{width:100%}
+  .seg button{flex:1}
   .topbar{height:auto;min-height:58px;padding:12px 16px;flex-wrap:wrap;gap:6px}
   .topbar-brand{font-size:17px}
   .topbar-brand span{font-size:14px;display:inline}
@@ -133,14 +162,28 @@ body{font-family:var(--font);color:var(--ink);background:var(--bg);min-height:10
     <div class="page-head">
       <div>
         <h1>Empresas</h1>
-        <p class="sub">Clique na linha para abrir as estruturas · ref. 03/11/2026</p>
+        <p class="sub">Busque, filtre e clique para abrir as estruturas · ref. 03/11/2026</p>
       </div>
       
     </div>
     <div id="homeBlock">
       
+<div class="emp-tools">
+  <input class="emp-search" id="empSearch" type="search" placeholder="Buscar empresa, ticker ou setor" autocomplete="off">
+  <div class="seg" role="group" aria-label="Tipo">
+    <button type="button" data-filter="all" class="on">Todas</button>
+    <button type="button" data-filter="bdr">BDRs</button>
+    <button type="button" data-filter="local">Sem BDRs</button>
+  </div>
+  <div class="seg" role="group" aria-label="Visualização">
+    <button type="button" data-view="list" class="on">Lista</button>
+    <button type="button" data-view="cards">Cards</button>
+  </div>
+</div>
+<p class="emp-chip" id="empSector" hidden><span></span><button type="button" id="empSectorClear">Limpar setor</button></p>
+<p class="emp-empty" id="empEmpty" hidden>Nenhuma empresa com esse filtro.</p>
 <section class="spotlights" id="spotlights" aria-label="Empresas">
-  <div class="table-wrap">
+  <div class="table-wrap" id="empList">
     <table class="data-table">
       <thead>
         <tr>
@@ -148,43 +191,43 @@ body{font-family:var(--font);color:var(--ink);background:var(--bg);min-height:10
         </tr>
       </thead>
       <tbody>
-<tr class="spot" data-target="co-mbrf3" tabindex="0" role="button">
+<tr class="spot co-item" data-target="co-mbrf3" data-sector="alimentos-bebidas" data-sector-label="Alimentos &amp; Bebidas" data-kind="local" data-q="Marfrig MBRF3 Alimentos &amp; Bebidas SOC Neutro" tabindex="0" role="button">
   <td class="col-co"><span class="co-name">Marfrig</span></td>
   <td class="col-tk">MBRF3</td>
   <td class="col-sec">Alimentos &amp; Bebidas</td>
   <td class="col-rec">Neutro</td>
   <td class="col-pa">R$ 26,00</td>
-  <td class="col-up"><span class="chg up">+59,6% ↑</span></td>
+  <td class="col-up"><span class="chg up">+59,7% ↑</span></td>
   <td class="col-ops">SOC</td>
 </tr>
-<tr class="spot" data-target="co-vivt3" tabindex="0" role="button">
+<tr class="spot co-item" data-target="co-vivt3" data-sector="telecom-tecnologia" data-sector-label="Telecom &amp; Tecnologia" data-kind="local" data-q="Telefônica Brasil VIVT3 Telecom &amp; Tecnologia SOC Compra" tabindex="0" role="button">
   <td class="col-co"><span class="co-name">Telefônica Brasil</span></td>
   <td class="col-tk">VIVT3</td>
   <td class="col-sec">Telecom &amp; Tecnologia</td>
   <td class="col-rec">Compra</td>
   <td class="col-pa">R$ 31,00</td>
-  <td class="col-up"><span class="chg down">-0,3% ↓</span></td>
+  <td class="col-up"><span class="chg up">+0,2% ↑</span></td>
   <td class="col-ops">SOC</td>
 </tr>
-<tr class="spot" data-target="co-wege3" tabindex="0" role="button">
+<tr class="spot co-item" data-target="co-wege3" data-sector="bens-de-capital" data-sector-label="Bens de Capital" data-kind="local" data-q="WEG WEGE3 Bens de Capital SOC · Aceleradora KO com Ativo · Call KO com Rebate Compra" tabindex="0" role="button">
   <td class="col-co"><span class="co-name">WEG</span></td>
   <td class="col-tk">WEGE3</td>
   <td class="col-sec">Bens de Capital</td>
   <td class="col-rec">Compra</td>
   <td class="col-pa">R$ 65,00</td>
-  <td class="col-up"><span class="chg up">+29,2% ↑</span></td>
+  <td class="col-up"><span class="chg up">+29,4% ↑</span></td>
   <td class="col-ops">SOC · Aceleradora KO com Ativo · Call KO com Rebate</td>
 </tr>
-<tr class="spot" data-target="co-jbss32" tabindex="0" role="button">
+<tr class="spot co-item" data-target="co-jbss32" data-sector="consumo-nao-discricionario" data-sector-label="Consumo não Discricionário" data-kind="bdr" data-q="JBS JBSS32 Consumo não Discricionário SOC Compra" tabindex="0" role="button">
   <td class="col-co"><span class="co-name">JBS</span></td>
-  <td class="col-tk">JBSS32</td>
+  <td class="col-tk">JBSS32<span class="tag-bdr">BDR</span></td>
   <td class="col-sec">Consumo não Discricionário</td>
   <td class="col-rec">Compra</td>
   <td class="col-pa">R$ 100,00</td>
-  <td class="col-up"><span class="chg up">+41,7% ↑</span></td>
+  <td class="col-up"><span class="chg up">+42,7% ↑</span></td>
   <td class="col-ops">SOC</td>
 </tr>
-<tr class="spot" data-target="co-ibob11" tabindex="0" role="button">
+<tr class="spot co-item" data-target="co-ibob11" data-sector="fundos-de-indice" data-sector-label="Fundos de Índice" data-kind="local" data-q="BTG PACTUAL B3 IBOVESPA FUNDO DE ÍNDICE IBOB11 Fundos de Índice Smart Hedge —" tabindex="0" role="button">
   <td class="col-co"><span class="co-name">BTG PACTUAL B3 IBOVESPA FUNDO DE ÍNDICE</span></td>
   <td class="col-tk">IBOB11</td>
   <td class="col-sec">Fundos de Índice</td>
@@ -193,7 +236,7 @@ body{font-family:var(--font);color:var(--ink);background:var(--bg);min-height:10
   <td class="col-up">—</td>
   <td class="col-ops">Smart Hedge</td>
 </tr>
-<tr class="spot" data-target="co-spxb11" tabindex="0" role="button">
+<tr class="spot co-item" data-target="co-spxb11" data-sector="fundos-de-indice" data-sector-label="Fundos de Índice" data-kind="local" data-q="BTG PACTUAL S&amp;P 500 FUNDO DE ÍNDICE SPXB11 Fundos de Índice Smart Hedge —" tabindex="0" role="button">
   <td class="col-co"><span class="co-name">BTG PACTUAL S&amp;P 500 FUNDO DE ÍNDICE</span></td>
   <td class="col-tk">SPXB11</td>
   <td class="col-sec">Fundos de Índice</td>
@@ -202,7 +245,7 @@ body{font-family:var(--font);color:var(--ink);background:var(--bg);min-height:10
   <td class="col-up">—</td>
   <td class="col-ops">Smart Hedge</td>
 </tr>
-<tr class="spot" data-target="co-golb11" tabindex="0" role="button">
+<tr class="spot co-item" data-target="co-golb11" data-sector="fundos-de-indice" data-sector-label="Fundos de Índice" data-kind="local" data-q="BTG PACTUAL FUTURO DE OURO B3 FUNDO DE ÍNDICE GOLB11 Fundos de Índice Smart Hedge —" tabindex="0" role="button">
   <td class="col-co"><span class="co-name">BTG PACTUAL FUTURO DE OURO B3 FUNDO DE ÍNDICE</span></td>
   <td class="col-tk">GOLB11</td>
   <td class="col-sec">Fundos de Índice</td>
@@ -211,125 +254,246 @@ body{font-family:var(--font);color:var(--ink);background:var(--bg);min-height:10
   <td class="col-up">—</td>
   <td class="col-ops">Smart Hedge</td>
 </tr>
-<tr class="spot" data-target="co-itub4" tabindex="0" role="button">
+<tr class="spot co-item" data-target="co-itub4" data-sector="financeiro" data-sector-label="Financeiro" data-kind="local" data-q="Itaú Unibanco ITUB4 Financeiro Smart Hedge · Aceleradora KO com Ativo Compra" tabindex="0" role="button">
   <td class="col-co"><span class="co-name">Itaú Unibanco</span></td>
   <td class="col-tk">ITUB4</td>
   <td class="col-sec">Financeiro</td>
   <td class="col-rec">Compra</td>
   <td class="col-pa">R$ 53,00</td>
-  <td class="col-up"><span class="chg up">+33,8% ↑</span></td>
+  <td class="col-up"><span class="chg up">+33,3% ↑</span></td>
   <td class="col-ops">Smart Hedge · Aceleradora KO com Ativo</td>
 </tr>
-<tr class="spot" data-target="co-petr4" tabindex="0" role="button">
+<tr class="spot co-item" data-target="co-petr4" data-sector="petroleo-gas" data-sector-label="Petróleo &amp; Gás" data-kind="local" data-q="Petrobras PETR4 Petróleo &amp; Gás Smart Hedge Compra" tabindex="0" role="button">
   <td class="col-co"><span class="co-name">Petrobras</span></td>
   <td class="col-tk">PETR4</td>
   <td class="col-sec">Petróleo &amp; Gás</td>
   <td class="col-rec">Compra</td>
   <td class="col-pa">R$ 65,00</td>
-  <td class="col-up"><span class="chg up">+36,6% ↑</span></td>
+  <td class="col-up"><span class="chg up">+36,9% ↑</span></td>
   <td class="col-ops">Smart Hedge</td>
 </tr>
-<tr class="spot" data-target="co-ggbr4" tabindex="0" role="button">
+<tr class="spot co-item" data-target="co-ggbr4" data-sector="mineracao-siderurgia" data-sector-label="Mineração &amp; Siderurgia" data-kind="local" data-q="Gerdau GGBR4 Mineração &amp; Siderurgia Smart Hedge · Call KO com Rebate Compra" tabindex="0" role="button">
   <td class="col-co"><span class="co-name">Gerdau</span></td>
   <td class="col-tk">GGBR4</td>
   <td class="col-sec">Mineração &amp; Siderurgia</td>
   <td class="col-rec">Compra</td>
   <td class="col-pa">R$ 28,00</td>
-  <td class="col-up"><span class="chg up">+10,5% ↑</span></td>
+  <td class="col-up"><span class="chg up">+12,1% ↑</span></td>
   <td class="col-ops">Smart Hedge · Call KO com Rebate</td>
 </tr>
-<tr class="spot" data-target="co-gogl34" tabindex="0" role="button">
+<tr class="spot co-item" data-target="co-gogl34" data-sector="comunicacao" data-sector-label="Comunicação" data-kind="bdr" data-q="Alphabet GOGL34 Comunicação Aceleradora Dinâmica —" tabindex="0" role="button">
   <td class="col-co"><span class="co-name">Alphabet</span></td>
-  <td class="col-tk">GOGL34</td>
+  <td class="col-tk">GOGL34<span class="tag-bdr">BDR</span></td>
   <td class="col-sec">Comunicação</td>
   <td class="col-rec">—</td>
   <td class="col-pa">—</td>
   <td class="col-up">—</td>
   <td class="col-ops">Aceleradora Dinâmica</td>
 </tr>
-<tr class="spot" data-target="co-lily34" tabindex="0" role="button">
+<tr class="spot co-item" data-target="co-lily34" data-sector="consumo-nao-discricionario" data-sector-label="Consumo não Discricionário" data-kind="bdr" data-q="Eli Lilly LILY34 Consumo não Discricionário Aceleradora Dinâmica —" tabindex="0" role="button">
   <td class="col-co"><span class="co-name">Eli Lilly</span></td>
-  <td class="col-tk">LILY34</td>
+  <td class="col-tk">LILY34<span class="tag-bdr">BDR</span></td>
   <td class="col-sec">Consumo não Discricionário</td>
   <td class="col-rec">—</td>
   <td class="col-pa">—</td>
   <td class="col-up">—</td>
   <td class="col-ops">Aceleradora Dinâmica</td>
 </tr>
-<tr class="spot" data-target="co-nvdc34" tabindex="0" role="button">
+<tr class="spot co-item" data-target="co-nvdc34" data-sector="tecnologia" data-sector-label="Tecnologia" data-kind="bdr" data-q="Nvidia NVDC34 Tecnologia Aceleradora Dinâmica —" tabindex="0" role="button">
   <td class="col-co"><span class="co-name">Nvidia</span></td>
-  <td class="col-tk">NVDC34</td>
+  <td class="col-tk">NVDC34<span class="tag-bdr">BDR</span></td>
   <td class="col-sec">Tecnologia</td>
   <td class="col-rec">—</td>
   <td class="col-pa">—</td>
   <td class="col-up">—</td>
   <td class="col-ops">Aceleradora Dinâmica</td>
 </tr>
-<tr class="spot" data-target="co-tsmc34" tabindex="0" role="button">
+<tr class="spot co-item" data-target="co-tsmc34" data-sector="tecnologia" data-sector-label="Tecnologia" data-kind="bdr" data-q="TAIWAN SEMICONDUCTOR TSMC34 Tecnologia Aceleradora Dinâmica —" tabindex="0" role="button">
   <td class="col-co"><span class="co-name">TAIWAN SEMICONDUCTOR</span></td>
-  <td class="col-tk">TSMC34</td>
+  <td class="col-tk">TSMC34<span class="tag-bdr">BDR</span></td>
   <td class="col-sec">Tecnologia</td>
   <td class="col-rec">—</td>
   <td class="col-pa">—</td>
   <td class="col-up">—</td>
   <td class="col-ops">Aceleradora Dinâmica</td>
 </tr>
-<tr class="spot" data-target="co-prio3" tabindex="0" role="button">
+<tr class="spot co-item" data-target="co-prio3" data-sector="petroleo-gas" data-sector-label="Petróleo &amp; Gás" data-kind="local" data-q="PetroRio PRIO3 Petróleo &amp; Gás Aceleradora KO com Ativo Compra" tabindex="0" role="button">
   <td class="col-co"><span class="co-name">PetroRio</span></td>
   <td class="col-tk">PRIO3</td>
   <td class="col-sec">Petróleo &amp; Gás</td>
   <td class="col-rec">Compra</td>
   <td class="col-pa">R$ 73,00</td>
-  <td class="col-up"><span class="chg up">+16,5% ↑</span></td>
+  <td class="col-up"><span class="chg up">+16,3% ↑</span></td>
   <td class="col-ops">Aceleradora KO com Ativo</td>
 </tr>
-<tr class="spot" data-target="co-embj3" tabindex="0" role="button">
+<tr class="spot co-item" data-target="co-embj3" data-sector="aereas" data-sector-label="Aéreas" data-kind="local" data-q="Embraer EMBJ3 Aéreas Aceleradora KO com Ativo · Call KO com Rebate Compra" tabindex="0" role="button">
   <td class="col-co"><span class="co-name">Embraer</span></td>
   <td class="col-tk">EMBJ3</td>
   <td class="col-sec">Aéreas</td>
   <td class="col-rec">Compra</td>
   <td class="col-pa">R$ 126,00</td>
-  <td class="col-up"><span class="chg up">+19,1% ↑</span></td>
+  <td class="col-up"><span class="chg up">+18,4% ↑</span></td>
   <td class="col-ops">Aceleradora KO com Ativo · Call KO com Rebate</td>
 </tr>
-<tr class="spot" data-target="co-m1ta34" tabindex="0" role="button">
+<tr class="spot co-item" data-target="co-m1ta34" data-sector="comunicacao" data-sector-label="Comunicação" data-kind="bdr" data-q="Meta Platforms M1TA34 Comunicação Aceleradora KO com Ativo —" tabindex="0" role="button">
   <td class="col-co"><span class="co-name">Meta Platforms</span></td>
-  <td class="col-tk">M1TA34</td>
+  <td class="col-tk">M1TA34<span class="tag-bdr">BDR</span></td>
   <td class="col-sec">Comunicação</td>
   <td class="col-rec">—</td>
   <td class="col-pa">—</td>
   <td class="col-up">—</td>
   <td class="col-ops">Aceleradora KO com Ativo</td>
 </tr>
-<tr class="spot" data-target="co-eqtl3" tabindex="0" role="button">
+<tr class="spot co-item" data-target="co-eqtl3" data-sector="servicos-basicos" data-sector-label="Serviços Básicos" data-kind="local" data-q="Equatorial EQTL3 Serviços Básicos Aceleradora KO com Ativo Compra" tabindex="0" role="button">
   <td class="col-co"><span class="co-name">Equatorial</span></td>
   <td class="col-tk">EQTL3</td>
   <td class="col-sec">Serviços Básicos</td>
   <td class="col-rec">Compra</td>
   <td class="col-pa">R$ 69,00</td>
-  <td class="col-up"><span class="chg up">+106,8% ↑</span></td>
+  <td class="col-up"><span class="chg up">+107,4% ↑</span></td>
   <td class="col-ops">Aceleradora KO com Ativo</td>
 </tr>
-<tr class="spot" data-target="co-radl3" tabindex="0" role="button">
+<tr class="spot co-item" data-target="co-radl3" data-sector="varejo-consumo" data-sector-label="Varejo &amp; Consumo" data-kind="local" data-q="Raia Drogasil RADL3 Varejo &amp; Consumo Call KO com Rebate Compra" tabindex="0" role="button">
   <td class="col-co"><span class="co-name">Raia Drogasil</span></td>
   <td class="col-tk">RADL3</td>
   <td class="col-sec">Varejo &amp; Consumo</td>
   <td class="col-rec">Compra</td>
   <td class="col-pa">R$ 30,00</td>
-  <td class="col-up"><span class="chg up">+94,2% ↑</span></td>
+  <td class="col-up"><span class="chg up">+96,7% ↑</span></td>
   <td class="col-ops">Call KO com Rebate</td>
 </tr>
-<tr class="spot" data-target="co-suzb3" tabindex="0" role="button">
+<tr class="spot co-item" data-target="co-suzb3" data-sector="papel-celulose" data-sector-label="Papel &amp; Celulose" data-kind="local" data-q="SUZANO SUZB3 Papel &amp; Celulose Call KO com Rebate Compra" tabindex="0" role="button">
   <td class="col-co"><span class="co-name">SUZANO</span></td>
   <td class="col-tk">SUZB3</td>
   <td class="col-sec">Papel &amp; Celulose</td>
   <td class="col-rec">Compra</td>
   <td class="col-pa">R$ 72,00</td>
-  <td class="col-up"><span class="chg up">+37,4% ↑</span></td>
+  <td class="col-up"><span class="chg up">+37,6% ↑</span></td>
   <td class="col-ops">Call KO com Rebate</td>
 </tr></tbody>
     </table>
   </div>
+  <div class="emp-cards" id="empCards" hidden>
+<button type="button" class="co-card spot co-item" data-target="co-mbrf3" data-sector="alimentos-bebidas" data-sector-label="Alimentos &amp; Bebidas" data-kind="local" data-q="Marfrig MBRF3 Alimentos &amp; Bebidas SOC Neutro">
+  <span class="co-card-top"><span class="co-name">Marfrig</span><span class="co-tk">MBRF3</span></span>
+  <span class="co-sec">Alimentos &amp; Bebidas</span>
+  <span class="co-meta"><span class="pill">Neutro</span><span class="pill">PA R$ 26,00</span><span class="chg up">+59,7% ↑</span></span>
+  <span class="co-ops">SOC</span>
+</button>
+<button type="button" class="co-card spot co-item" data-target="co-vivt3" data-sector="telecom-tecnologia" data-sector-label="Telecom &amp; Tecnologia" data-kind="local" data-q="Telefônica Brasil VIVT3 Telecom &amp; Tecnologia SOC Compra">
+  <span class="co-card-top"><span class="co-name">Telefônica Brasil</span><span class="co-tk">VIVT3</span></span>
+  <span class="co-sec">Telecom &amp; Tecnologia</span>
+  <span class="co-meta"><span class="pill">Compra</span><span class="pill">PA R$ 31,00</span><span class="chg up">+0,2% ↑</span></span>
+  <span class="co-ops">SOC</span>
+</button>
+<button type="button" class="co-card spot co-item" data-target="co-wege3" data-sector="bens-de-capital" data-sector-label="Bens de Capital" data-kind="local" data-q="WEG WEGE3 Bens de Capital SOC · Aceleradora KO com Ativo · Call KO com Rebate Compra">
+  <span class="co-card-top"><span class="co-name">WEG</span><span class="co-tk">WEGE3</span></span>
+  <span class="co-sec">Bens de Capital</span>
+  <span class="co-meta"><span class="pill">Compra</span><span class="pill">PA R$ 65,00</span><span class="chg up">+29,4% ↑</span></span>
+  <span class="co-ops">SOC · Aceleradora KO com Ativo · Call KO com Rebate</span>
+</button>
+<button type="button" class="co-card spot co-item" data-target="co-jbss32" data-sector="consumo-nao-discricionario" data-sector-label="Consumo não Discricionário" data-kind="bdr" data-q="JBS JBSS32 Consumo não Discricionário SOC Compra">
+  <span class="co-card-top"><span class="co-name">JBS</span><span class="co-tk">JBSS32<span class="tag-bdr">BDR</span></span></span>
+  <span class="co-sec">Consumo não Discricionário</span>
+  <span class="co-meta"><span class="pill">Compra</span><span class="pill">PA R$ 100,00</span><span class="chg up">+42,7% ↑</span></span>
+  <span class="co-ops">SOC</span>
+</button>
+<button type="button" class="co-card spot co-item" data-target="co-ibob11" data-sector="fundos-de-indice" data-sector-label="Fundos de Índice" data-kind="local" data-q="BTG PACTUAL B3 IBOVESPA FUNDO DE ÍNDICE IBOB11 Fundos de Índice Smart Hedge —">
+  <span class="co-card-top"><span class="co-name">BTG PACTUAL B3 IBOVESPA FUNDO DE ÍNDICE</span><span class="co-tk">IBOB11</span></span>
+  <span class="co-sec">Fundos de Índice</span>
+  <span class="co-meta">—</span>
+  <span class="co-ops">Smart Hedge</span>
+</button>
+<button type="button" class="co-card spot co-item" data-target="co-spxb11" data-sector="fundos-de-indice" data-sector-label="Fundos de Índice" data-kind="local" data-q="BTG PACTUAL S&amp;P 500 FUNDO DE ÍNDICE SPXB11 Fundos de Índice Smart Hedge —">
+  <span class="co-card-top"><span class="co-name">BTG PACTUAL S&amp;P 500 FUNDO DE ÍNDICE</span><span class="co-tk">SPXB11</span></span>
+  <span class="co-sec">Fundos de Índice</span>
+  <span class="co-meta">—</span>
+  <span class="co-ops">Smart Hedge</span>
+</button>
+<button type="button" class="co-card spot co-item" data-target="co-golb11" data-sector="fundos-de-indice" data-sector-label="Fundos de Índice" data-kind="local" data-q="BTG PACTUAL FUTURO DE OURO B3 FUNDO DE ÍNDICE GOLB11 Fundos de Índice Smart Hedge —">
+  <span class="co-card-top"><span class="co-name">BTG PACTUAL FUTURO DE OURO B3 FUNDO DE ÍNDICE</span><span class="co-tk">GOLB11</span></span>
+  <span class="co-sec">Fundos de Índice</span>
+  <span class="co-meta">—</span>
+  <span class="co-ops">Smart Hedge</span>
+</button>
+<button type="button" class="co-card spot co-item" data-target="co-itub4" data-sector="financeiro" data-sector-label="Financeiro" data-kind="local" data-q="Itaú Unibanco ITUB4 Financeiro Smart Hedge · Aceleradora KO com Ativo Compra">
+  <span class="co-card-top"><span class="co-name">Itaú Unibanco</span><span class="co-tk">ITUB4</span></span>
+  <span class="co-sec">Financeiro</span>
+  <span class="co-meta"><span class="pill">Compra</span><span class="pill">PA R$ 53,00</span><span class="chg up">+33,3% ↑</span></span>
+  <span class="co-ops">Smart Hedge · Aceleradora KO com Ativo</span>
+</button>
+<button type="button" class="co-card spot co-item" data-target="co-petr4" data-sector="petroleo-gas" data-sector-label="Petróleo &amp; Gás" data-kind="local" data-q="Petrobras PETR4 Petróleo &amp; Gás Smart Hedge Compra">
+  <span class="co-card-top"><span class="co-name">Petrobras</span><span class="co-tk">PETR4</span></span>
+  <span class="co-sec">Petróleo &amp; Gás</span>
+  <span class="co-meta"><span class="pill">Compra</span><span class="pill">PA R$ 65,00</span><span class="chg up">+36,9% ↑</span></span>
+  <span class="co-ops">Smart Hedge</span>
+</button>
+<button type="button" class="co-card spot co-item" data-target="co-ggbr4" data-sector="mineracao-siderurgia" data-sector-label="Mineração &amp; Siderurgia" data-kind="local" data-q="Gerdau GGBR4 Mineração &amp; Siderurgia Smart Hedge · Call KO com Rebate Compra">
+  <span class="co-card-top"><span class="co-name">Gerdau</span><span class="co-tk">GGBR4</span></span>
+  <span class="co-sec">Mineração &amp; Siderurgia</span>
+  <span class="co-meta"><span class="pill">Compra</span><span class="pill">PA R$ 28,00</span><span class="chg up">+12,1% ↑</span></span>
+  <span class="co-ops">Smart Hedge · Call KO com Rebate</span>
+</button>
+<button type="button" class="co-card spot co-item" data-target="co-gogl34" data-sector="comunicacao" data-sector-label="Comunicação" data-kind="bdr" data-q="Alphabet GOGL34 Comunicação Aceleradora Dinâmica —">
+  <span class="co-card-top"><span class="co-name">Alphabet</span><span class="co-tk">GOGL34<span class="tag-bdr">BDR</span></span></span>
+  <span class="co-sec">Comunicação</span>
+  <span class="co-meta">—</span>
+  <span class="co-ops">Aceleradora Dinâmica</span>
+</button>
+<button type="button" class="co-card spot co-item" data-target="co-lily34" data-sector="consumo-nao-discricionario" data-sector-label="Consumo não Discricionário" data-kind="bdr" data-q="Eli Lilly LILY34 Consumo não Discricionário Aceleradora Dinâmica —">
+  <span class="co-card-top"><span class="co-name">Eli Lilly</span><span class="co-tk">LILY34<span class="tag-bdr">BDR</span></span></span>
+  <span class="co-sec">Consumo não Discricionário</span>
+  <span class="co-meta">—</span>
+  <span class="co-ops">Aceleradora Dinâmica</span>
+</button>
+<button type="button" class="co-card spot co-item" data-target="co-nvdc34" data-sector="tecnologia" data-sector-label="Tecnologia" data-kind="bdr" data-q="Nvidia NVDC34 Tecnologia Aceleradora Dinâmica —">
+  <span class="co-card-top"><span class="co-name">Nvidia</span><span class="co-tk">NVDC34<span class="tag-bdr">BDR</span></span></span>
+  <span class="co-sec">Tecnologia</span>
+  <span class="co-meta">—</span>
+  <span class="co-ops">Aceleradora Dinâmica</span>
+</button>
+<button type="button" class="co-card spot co-item" data-target="co-tsmc34" data-sector="tecnologia" data-sector-label="Tecnologia" data-kind="bdr" data-q="TAIWAN SEMICONDUCTOR TSMC34 Tecnologia Aceleradora Dinâmica —">
+  <span class="co-card-top"><span class="co-name">TAIWAN SEMICONDUCTOR</span><span class="co-tk">TSMC34<span class="tag-bdr">BDR</span></span></span>
+  <span class="co-sec">Tecnologia</span>
+  <span class="co-meta">—</span>
+  <span class="co-ops">Aceleradora Dinâmica</span>
+</button>
+<button type="button" class="co-card spot co-item" data-target="co-prio3" data-sector="petroleo-gas" data-sector-label="Petróleo &amp; Gás" data-kind="local" data-q="PetroRio PRIO3 Petróleo &amp; Gás Aceleradora KO com Ativo Compra">
+  <span class="co-card-top"><span class="co-name">PetroRio</span><span class="co-tk">PRIO3</span></span>
+  <span class="co-sec">Petróleo &amp; Gás</span>
+  <span class="co-meta"><span class="pill">Compra</span><span class="pill">PA R$ 73,00</span><span class="chg up">+16,3% ↑</span></span>
+  <span class="co-ops">Aceleradora KO com Ativo</span>
+</button>
+<button type="button" class="co-card spot co-item" data-target="co-embj3" data-sector="aereas" data-sector-label="Aéreas" data-kind="local" data-q="Embraer EMBJ3 Aéreas Aceleradora KO com Ativo · Call KO com Rebate Compra">
+  <span class="co-card-top"><span class="co-name">Embraer</span><span class="co-tk">EMBJ3</span></span>
+  <span class="co-sec">Aéreas</span>
+  <span class="co-meta"><span class="pill">Compra</span><span class="pill">PA R$ 126,00</span><span class="chg up">+18,4% ↑</span></span>
+  <span class="co-ops">Aceleradora KO com Ativo · Call KO com Rebate</span>
+</button>
+<button type="button" class="co-card spot co-item" data-target="co-m1ta34" data-sector="comunicacao" data-sector-label="Comunicação" data-kind="bdr" data-q="Meta Platforms M1TA34 Comunicação Aceleradora KO com Ativo —">
+  <span class="co-card-top"><span class="co-name">Meta Platforms</span><span class="co-tk">M1TA34<span class="tag-bdr">BDR</span></span></span>
+  <span class="co-sec">Comunicação</span>
+  <span class="co-meta">—</span>
+  <span class="co-ops">Aceleradora KO com Ativo</span>
+</button>
+<button type="button" class="co-card spot co-item" data-target="co-eqtl3" data-sector="servicos-basicos" data-sector-label="Serviços Básicos" data-kind="local" data-q="Equatorial EQTL3 Serviços Básicos Aceleradora KO com Ativo Compra">
+  <span class="co-card-top"><span class="co-name">Equatorial</span><span class="co-tk">EQTL3</span></span>
+  <span class="co-sec">Serviços Básicos</span>
+  <span class="co-meta"><span class="pill">Compra</span><span class="pill">PA R$ 69,00</span><span class="chg up">+107,4% ↑</span></span>
+  <span class="co-ops">Aceleradora KO com Ativo</span>
+</button>
+<button type="button" class="co-card spot co-item" data-target="co-radl3" data-sector="varejo-consumo" data-sector-label="Varejo &amp; Consumo" data-kind="local" data-q="Raia Drogasil RADL3 Varejo &amp; Consumo Call KO com Rebate Compra">
+  <span class="co-card-top"><span class="co-name">Raia Drogasil</span><span class="co-tk">RADL3</span></span>
+  <span class="co-sec">Varejo &amp; Consumo</span>
+  <span class="co-meta"><span class="pill">Compra</span><span class="pill">PA R$ 30,00</span><span class="chg up">+96,7% ↑</span></span>
+  <span class="co-ops">Call KO com Rebate</span>
+</button>
+<button type="button" class="co-card spot co-item" data-target="co-suzb3" data-sector="papel-celulose" data-sector-label="Papel &amp; Celulose" data-kind="local" data-q="SUZANO SUZB3 Papel &amp; Celulose Call KO com Rebate Compra">
+  <span class="co-card-top"><span class="co-name">SUZANO</span><span class="co-tk">SUZB3</span></span>
+  <span class="co-sec">Papel &amp; Celulose</span>
+  <span class="co-meta"><span class="pill">Compra</span><span class="pill">PA R$ 72,00</span><span class="chg up">+37,6% ↑</span></span>
+  <span class="co-ops">Call KO com Rebate</span>
+</button></div>
 </section>
     </div>
     
@@ -764,10 +928,10 @@ body{font-family:var(--font);color:var(--ink);background:var(--bg);min-height:10
       home.style.display='none';
       var el=document.getElementById(id);
       if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
-      history.replaceState(null,'','#'+id);
+      history.replaceState(null,'',location.pathname+location.search+'#'+id);
     } else {
       home.style.display='';
-      history.replaceState(null,'',location.pathname);
+      history.replaceState(null,'',location.pathname+location.search);
       window.scrollTo({top:0,behavior:'smooth'});
     }
   }
@@ -782,6 +946,74 @@ body{font-family:var(--font);color:var(--ink);background:var(--bg);min-height:10
   });
   var hash=(location.hash||'').replace('#','');
   if(hash && document.getElementById(hash)) show(hash);
+})();
+</script>
+<script>
+(function(){
+  var search=document.getElementById('empSearch');
+  var empty=document.getElementById('empEmpty');
+  var chip=document.getElementById('empSector');
+  var list=document.getElementById('empList');
+  var cards=document.getElementById('empCards');
+  if(!search||!list) return;
+  var items=[].slice.call(document.querySelectorAll('.co-item'));
+  var params=new URLSearchParams(location.search);
+  var setor=params.get('setor')||'';
+  var kind='all';
+  function norm(s){
+    return (s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+  }
+  function apply(){
+    var nq=norm(search.value);
+    var n=0;
+    items.forEach(function(el){
+      var ok=true;
+      if(setor && el.getAttribute('data-sector')!==setor) ok=false;
+      if(kind==='bdr' && el.getAttribute('data-kind')!=='bdr') ok=false;
+      if(kind==='local' && el.getAttribute('data-kind')==='bdr') ok=false;
+      if(nq && norm(el.getAttribute('data-q')).indexOf(nq)<0) ok=false;
+      el.classList.toggle('is-out', !ok);
+      if(ok && el.tagName==='TR') n++;
+    });
+    if(empty) empty.hidden=n>0;
+  }
+  if(setor && chip){
+    var sample=document.querySelector('[data-sector="'+setor.replace(/"/g,'')+'"]');
+    chip.querySelector('span').textContent='Setor: '+(sample?sample.getAttribute('data-sector-label'):setor);
+    chip.hidden=false;
+  }
+  var clear=document.getElementById('empSectorClear');
+  if(clear) clear.addEventListener('click',function(){
+    setor='';
+    if(chip) chip.hidden=true;
+    history.replaceState(null,'',location.pathname+location.hash);
+    apply();
+  });
+  search.addEventListener('input',apply);
+  document.querySelectorAll('[data-filter]').forEach(function(b){
+    b.addEventListener('click',function(){
+      kind=b.getAttribute('data-filter');
+      document.querySelectorAll('[data-filter]').forEach(function(x){
+        x.classList.toggle('on', x===b);
+      });
+      apply();
+    });
+  });
+  function setView(v){
+    list.hidden=v!=='list';
+    cards.hidden=v!=='cards';
+    document.querySelectorAll('[data-view]').forEach(function(b){
+      b.classList.toggle('on', b.getAttribute('data-view')===v);
+    });
+    try{ localStorage.setItem('prateleira-emp-view', v); }catch(e){}
+  }
+  document.querySelectorAll('[data-view]').forEach(function(b){
+    b.addEventListener('click',function(){ setView(b.getAttribute('data-view')); });
+  });
+  var saved='list';
+  try{ saved=localStorage.getItem('prateleira-emp-view')||'list'; }catch(e){}
+  setView(saved==='cards'?'cards':'list');
+  apply();
 })();
 </script>
 </body>

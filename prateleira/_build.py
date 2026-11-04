@@ -139,6 +139,21 @@ def slugify(*parts: str) -> str:
     return "".join(c if c.isalnum() or c == "-" else "-" for c in s).strip("-")
 
 
+_BDR_SUFFIXES = {"31", "32", "33", "34", "35", "36", "39"}
+
+
+def is_bdr(ticker: str) -> bool:
+    t = (ticker or "").strip().upper()
+    return len(t) >= 4 and t[-2:] in _BDR_SUFFIXES
+
+
+def sector_slug(name: str) -> str:
+    s = slugify(name or "")
+    while "--" in s:
+        s = s.replace("--", "-")
+    return s or "outros"
+
+
 def copy_pdf() -> bool:
     """Copia o PDF da semana (operacoes/ ou Downloads). Sem PDF atual, tira o antigo do hub."""
     if not PDF_NAME:
@@ -2260,10 +2275,36 @@ body{font-family:var(--font);color:var(--ink);background:var(--bg);min-height:10
 .ov-panel h2{font-size:15px;font-weight:700;margin-bottom:14px;color:var(--ink)}
 .pie-wrap{display:flex;gap:28px;align-items:center;flex-wrap:wrap}
 .pie-svg{width:160px;height:160px;flex-shrink:0}
-.pie-legend{list-style:none;display:flex;flex-direction:column;gap:6px;font-size:13px;color:#374151}
-.pie-legend li{display:flex;align-items:center;gap:8px}
+.pie-legend{list-style:none;display:flex;flex-direction:column;gap:2px;font-size:13px;color:#374151;min-width:220px}
+.pie-legend a{display:flex;align-items:center;gap:8px;text-decoration:none;color:inherit;padding:4px 6px;border-radius:2px}
+.pie-legend a:hover{background:#eef3fb;color:var(--navy)}
+.pie-name{flex:1}
+.pie-svg a{cursor:pointer}
+.pie-svg a:hover path,.pie-svg a:hover circle{opacity:.82}
 .pie-swatch{width:10px;height:10px;border-radius:1px;flex-shrink:0}
 .pie-count{margin-left:auto;padding-left:16px;color:var(--muted);font-weight:500}
+.emp-tools{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:14px}
+.emp-search{flex:1;min-width:200px;border:1px solid var(--line);background:#fff;border-radius:2px;padding:10px 12px;font:inherit;font-size:14px;color:var(--ink)}
+.emp-search:focus{outline:2px solid var(--navy);border-color:transparent}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:2px;overflow:hidden;background:#fff}
+.seg button{appearance:none;border:0;border-left:1px solid var(--line);background:transparent;font:inherit;font-size:12px;font-weight:700;color:#374151;padding:9px 12px;cursor:pointer}
+.seg button:first-child{border-left:0}
+.seg button.on{background:var(--navy);color:#fff}
+.emp-chip{display:flex;align-items:center;gap:8px;margin:0 0 12px;font-size:13px;color:#374151}
+.emp-chip button{appearance:none;border:1px solid var(--line);background:#fff;color:var(--link);font:inherit;font-size:12px;font-weight:700;padding:4px 8px;border-radius:2px;cursor:pointer}
+.emp-empty{font-size:13px;color:var(--muted);padding:8px 0 16px}
+.emp-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
+.co-card{appearance:none;width:100%;text-align:left;border:1px solid var(--line);border-left:3px solid var(--navy);background:#fff;border-radius:2px;padding:14px 16px;cursor:pointer;font:inherit;color:inherit;display:flex;flex-direction:column;gap:6px}
+.co-card:hover,.co-card:focus-visible{background:#f7f9fc;outline:none}
+.co-card-top{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.co-card .co-name{font-size:15px;font-weight:700;color:var(--ink)}
+.co-tk{font-size:12px;font-weight:700;color:var(--navy);letter-spacing:.02em}
+.co-sec{font-size:12px;color:var(--muted)}
+.co-ops{font-size:12px;color:#374151;line-height:1.4}
+.co-meta{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.tag-bdr{display:inline-block;margin-left:6px;font-size:10px;font-weight:700;letter-spacing:.04em;color:var(--navy);background:#e8eef8;border:1px solid #d5e0f0;border-radius:2px;padding:1px 5px;vertical-align:1px}
+.is-out{display:none !important}
+#empCards[hidden],#empList[hidden],.emp-chip[hidden],.emp-empty[hidden]{display:none !important}
 .ov-empty{font-size:13px;color:var(--muted);padding:8px 0 4px}
 .mov-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
 .mov-list{list-style:none}
@@ -2290,6 +2331,9 @@ body{font-family:var(--font);color:var(--ink);background:var(--bg);min-height:10
   .ov-grid{grid-template-columns:1fr}
   .mov-grid{grid-template-columns:1fr}
   .cat-grid{grid-template-columns:1fr}
+  .emp-tools{flex-direction:column;align-items:stretch}
+  .seg{width:100%}
+  .seg button{flex:1}
   .topbar{height:auto;min-height:58px;padding:12px 16px;flex-wrap:wrap;gap:6px}
   .topbar-brand{font-size:17px}
   .topbar-brand span{font-size:14px;display:inline}
@@ -2425,11 +2469,10 @@ def _sector_pie_svg(counts: list[tuple[str, int]]) -> str:
         frac = n / total
         sweep = frac * 360.0
         color = colors[i % len(colors)]
+        href = "./empresas.html?setor=" + sector_slug(name)
+        label = html_esc(name)
         if frac >= 0.999:
-            # full circle
-            paths.append(
-                f'<circle cx="{cx}" cy="{cy}" r="{r}" fill="{color}"/>'
-            )
+            shape = f'<circle cx="{cx}" cy="{cy}" r="{r}" fill="{color}"><title>{label}</title></circle>'
         else:
             a0 = math.radians(angle)
             a1 = math.radians(angle + sweep)
@@ -2437,15 +2480,16 @@ def _sector_pie_svg(counts: list[tuple[str, int]]) -> str:
             x1, y1 = cx + r * math.cos(a1), cy + r * math.sin(a1)
             large = 1 if sweep > 180 else 0
             d = f"M {cx} {cy} L {x0:.3f} {y0:.3f} A {r} {r} 0 {large} 1 {x1:.3f} {y1:.3f} Z"
-            paths.append(f'<path d="{d}" fill="{color}"/>')
+            shape = f'<path d="{d}" fill="{color}"><title>{label}</title></path>'
+        paths.append(f'<a href="{href}">{shape}</a>')
         angle += sweep
         legend.append(
-            f'<li><span class="pie-swatch" style="background:{color}"></span>'
-            f"{html_esc(name)}<span class=\"pie-count\">{n}</span></li>"
+            f'<li><a href="{href}"><span class="pie-swatch" style="background:{color}"></span>'
+            f'<span class="pie-name">{label}</span><span class="pie-count">{n}</span></a></li>'
         )
     return f"""
 <div class="pie-wrap">
-  <svg class="pie-svg" viewBox="0 0 160 160" aria-hidden="true">{''.join(paths)}</svg>
+  <svg class="pie-svg" viewBox="0 0 160 160">{''.join(paths)}</svg>
   <ul class="pie-legend">{''.join(legend)}</ul>
 </div>"""
 
@@ -2571,10 +2615,10 @@ def _drill_script(trigger_sel: str) -> str:
       home.style.display='none';
       var el=document.getElementById(id);
       if(el) el.scrollIntoView({{behavior:'smooth',block:'start'}});
-      history.replaceState(null,'','#'+id);
+      history.replaceState(null,'',location.pathname+location.search+'#'+id);
     }} else {{
       home.style.display='';
-      history.replaceState(null,'',location.pathname);
+      history.replaceState(null,'',location.pathname+location.search);
       window.scrollTo({{top:0,behavior:'smooth'}});
     }}
   }}
@@ -2593,10 +2637,82 @@ def _drill_script(trigger_sel: str) -> str:
 """
 
 
+def _empresas_filter_script() -> str:
+    return r"""
+(function(){
+  var search=document.getElementById('empSearch');
+  var empty=document.getElementById('empEmpty');
+  var chip=document.getElementById('empSector');
+  var list=document.getElementById('empList');
+  var cards=document.getElementById('empCards');
+  if(!search||!list) return;
+  var items=[].slice.call(document.querySelectorAll('.co-item'));
+  var params=new URLSearchParams(location.search);
+  var setor=params.get('setor')||'';
+  var kind='all';
+  function norm(s){
+    return (s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+  }
+  function apply(){
+    var nq=norm(search.value);
+    var n=0;
+    items.forEach(function(el){
+      var ok=true;
+      if(setor && el.getAttribute('data-sector')!==setor) ok=false;
+      if(kind==='bdr' && el.getAttribute('data-kind')!=='bdr') ok=false;
+      if(kind==='local' && el.getAttribute('data-kind')==='bdr') ok=false;
+      if(nq && norm(el.getAttribute('data-q')).indexOf(nq)<0) ok=false;
+      el.classList.toggle('is-out', !ok);
+      if(ok && el.tagName==='TR') n++;
+    });
+    if(empty) empty.hidden=n>0;
+  }
+  if(setor && chip){
+    var sample=document.querySelector('[data-sector="'+setor.replace(/"/g,'')+'"]');
+    chip.querySelector('span').textContent='Setor: '+(sample?sample.getAttribute('data-sector-label'):setor);
+    chip.hidden=false;
+  }
+  var clear=document.getElementById('empSectorClear');
+  if(clear) clear.addEventListener('click',function(){
+    setor='';
+    if(chip) chip.hidden=true;
+    history.replaceState(null,'',location.pathname+location.hash);
+    apply();
+  });
+  search.addEventListener('input',apply);
+  document.querySelectorAll('[data-filter]').forEach(function(b){
+    b.addEventListener('click',function(){
+      kind=b.getAttribute('data-filter');
+      document.querySelectorAll('[data-filter]').forEach(function(x){
+        x.classList.toggle('on', x===b);
+      });
+      apply();
+    });
+  });
+  function setView(v){
+    list.hidden=v!=='list';
+    cards.hidden=v!=='cards';
+    document.querySelectorAll('[data-view]').forEach(function(b){
+      b.classList.toggle('on', b.getAttribute('data-view')===v);
+    });
+    try{ localStorage.setItem('prateleira-emp-view', v); }catch(e){}
+  }
+  document.querySelectorAll('[data-view]').forEach(function(b){
+    b.addEventListener('click',function(){ setView(b.getAttribute('data-view')); });
+  });
+  var saved='list';
+  try{ saved=localStorage.getItem('prateleira-emp-view')||'list'; }catch(e){}
+  setView(saved==='cards'?'cards':'list');
+  apply();
+})();
+"""
+
+
 def hub_html(sections: list[tuple[str, list[tuple[str, dict]]]]) -> str:
     _cat_cards, _sections_html, companies, _n_ops = _collect_hub_data(sections)
 
     spot_rows = []
+    spot_cards = []
     company_sections = []
     for t, c in companies.items():
         rs = c["research"] or {}
@@ -2613,17 +2729,37 @@ def hub_html(sections: list[tuple[str, list[tuple[str, dict]]]]) -> str:
         ops_lbl = " · ".join(c["ops_titles"])
         co_id = "co-" + slugify(t)
         n_ops_co = len(c["items"])
+        kind = "bdr" if is_bdr(t) else "local"
+        bdr_tag = '<span class="tag-bdr">BDR</span>' if kind == "bdr" else ""
+        sec_slug = sector_slug(sector)
+        q = " ".join([c["name"], t, sector, ops_lbl, rec])
+        attrs = (
+            f'data-target="{co_id}" data-sector="{html_esc(sec_slug)}" '
+            f'data-sector-label="{html_esc(sector)}" data-kind="{kind}" '
+            f'data-q="{html_esc(q)}"'
+        )
         spot_rows.append(
             f"""
-<tr class="spot" data-target="{co_id}" tabindex="0" role="button">
+<tr class="spot co-item" {attrs} tabindex="0" role="button">
   <td class="col-co"><span class="co-name">{html_esc(c['name'])}</span></td>
-  <td class="col-tk">{html_esc(t)}</td>
+  <td class="col-tk">{html_esc(t)}{bdr_tag}</td>
   <td class="col-sec">{html_esc(sector)}</td>
   <td class="col-rec">{html_esc(rec)}</td>
   <td class="col-pa">{pa}</td>
   <td class="col-up">{up_html}</td>
   <td class="col-ops">{html_esc(ops_lbl)}</td>
 </tr>"""
+        )
+        pa_pill = f'<span class="pill">PA {pa}</span>' if pa != "—" else ""
+        rec_pill = f'<span class="pill">{html_esc(rec)}</span>' if rec != "—" else ""
+        spot_cards.append(
+            f"""
+<button type="button" class="co-card spot co-item" {attrs}>
+  <span class="co-card-top"><span class="co-name">{html_esc(c['name'])}</span><span class="co-tk">{html_esc(t)}{bdr_tag}</span></span>
+  <span class="co-sec">{html_esc(sector)}</span>
+  <span class="co-meta">{rec_pill}{pa_pill}{up_html}</span>
+  <span class="co-ops">{html_esc(ops_lbl)}</span>
+</button>"""
         )
         co_ops = "".join(_op_list_item(slug, cfg) for slug, cfg, _title in c["items"])
         company_sections.append(
@@ -2638,8 +2774,22 @@ def hub_html(sections: list[tuple[str, list[tuple[str, dict]]]]) -> str:
         )
 
     spotlights = f"""
+<div class="emp-tools">
+  <input class="emp-search" id="empSearch" type="search" placeholder="Buscar empresa, ticker ou setor" autocomplete="off">
+  <div class="seg" role="group" aria-label="Tipo">
+    <button type="button" data-filter="all" class="on">Todas</button>
+    <button type="button" data-filter="bdr">BDRs</button>
+    <button type="button" data-filter="local">Sem BDRs</button>
+  </div>
+  <div class="seg" role="group" aria-label="Visualização">
+    <button type="button" data-view="list" class="on">Lista</button>
+    <button type="button" data-view="cards">Cards</button>
+  </div>
+</div>
+<p class="emp-chip" id="empSector" hidden><span></span><button type="button" id="empSectorClear">Limpar setor</button></p>
+<p class="emp-empty" id="empEmpty" hidden>Nenhuma empresa com esse filtro.</p>
 <section class="spotlights" id="spotlights" aria-label="Empresas">
-  <div class="table-wrap">
+  <div class="table-wrap" id="empList">
     <table class="data-table">
       <thead>
         <tr>
@@ -2649,6 +2799,7 @@ def hub_html(sections: list[tuple[str, list[tuple[str, dict]]]]) -> str:
       <tbody>{''.join(spot_rows)}</tbody>
     </table>
   </div>
+  <div class="emp-cards" id="empCards" hidden>{''.join(spot_cards)}</div>
 </section>"""
 
     body = "\n".join(company_sections)
@@ -2672,7 +2823,7 @@ def hub_html(sections: list[tuple[str, list[tuple[str, dict]]]]) -> str:
     <div class="page-head">
       <div>
         <h1>Empresas</h1>
-        <p class="sub">Clique na linha para abrir as estruturas · ref. {REF.strftime('%d/%m/%Y')}</p>
+        <p class="sub">Busque, filtre e clique para abrir as estruturas · ref. {REF.strftime('%d/%m/%Y')}</p>
       </div>
       {_pdf_cta()}
     </div>
@@ -2684,6 +2835,7 @@ def hub_html(sections: list[tuple[str, list[tuple[str, dict]]]]) -> str:
   </main>
 </div>
 <script>{_drill_script('.spot')}</script>
+<script>{_empresas_filter_script()}</script>
 </body>
 </html>
 """
