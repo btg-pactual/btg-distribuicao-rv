@@ -1,6 +1,6 @@
 @echo off
 cd /d C:\Users\PIMENTPA\Projects\Artes\clone-github\prateleira
-copy /Y "C:\Users\PIMENTPA\Downloads\10.30.2026_Cenário Macro- apresentação mensal - Novembro de 2026_Macroeconomic Research - Brazil - Macro View (1).pdf" "leituras\Cenario-Macro-Novembro-2026.pdf"
+copy /Y "C:\Users\PIMENTPA\Downloads\10.30.2026_*Macro View (1).pdf" "leituras\Cenario-Macro-Novembro-2026.pdf"
 echo COPY=%ERRORLEVEL%
 python _build.py > _build_out.txt 2>&1
 set BUILD=%ERRORLEVEL%

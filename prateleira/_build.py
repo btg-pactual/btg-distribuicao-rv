@@ -2516,9 +2516,11 @@ def _sector_pie_svg(counts: list[tuple[str, int]]) -> str:
             f'<li><a href="{href}"><span class="pie-swatch" style="background:{color}"></span>'
             f'<span class="pie-name">{label}</span><span class="pie-count">{n}</span></a></li>'
         )
+    n_sec = len(counts)
+    sec_label = "SETOR" if n_sec == 1 else "SETORES"
     mid = (
-        f'<text x="{cx:.0f}" y="104" text-anchor="middle" class="pie-mid">{total}</text>'
-        f'<text x="{cx:.0f}" y="118" text-anchor="middle" class="pie-mid-l">OPERAÇÕES</text>'
+        f'<text x="{cx:.0f}" y="104" text-anchor="middle" class="pie-mid">{n_sec}</text>'
+        f'<text x="{cx:.0f}" y="118" text-anchor="middle" class="pie-mid-l">{sec_label}</text>'
     )
     return f"""
 <div class="pie-wrap">
