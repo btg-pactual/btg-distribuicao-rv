@@ -132,7 +132,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
     <h2>Research BTG</h2>
     <a class="research-link" href="https://content.btgpactual.com/research/ativo/EQTL3" target="_blank" rel="noopener">Abrir EQTL3 no Research <span class="arrow" aria-hidden="true">→</span></a>
   </div>
-  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 33,24</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 69,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+107,58%</div></div></div><p class="research-note">Spot do fechamento anterior (05/11/2026) · preço-alvo atualizado em 04/11/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
+  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 33,16</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 69,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+108,08%</div></div></div><p class="research-note">Spot do fechamento anterior (05/11/2026) · preço-alvo atualizado em 04/11/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
 </section>
 
 <div class="main">
@@ -146,8 +146,8 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
           <table class="struct-table">
             <thead><tr><th></th><th>R$</th><th>vs spot</th></tr></thead>
             <tbody>
-              <tr><td>Máximo</td><td><strong>51,26</strong></td><td>+54,2%</td></tr>
-              <tr><td>Mínimo</td><td><strong>31,36</strong></td><td>-5,7%</td></tr>
+              <tr><td>Máximo</td><td><strong>51,26</strong></td><td>+54,6%</td></tr>
+              <tr><td>Mínimo</td><td><strong>31,36</strong></td><td>-5,4%</td></tr>
             </tbody>
           </table>
           <p class="legend-note">
@@ -225,7 +225,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
   var X_MIN=-40,X_MAX=120,Y_MIN=-40,Y_MAX=40;
   var PAD={l:48,t:24,r:48,b:24},VW=600,VH=400;
   var PLOT_W=VW-PAD.l-PAD.r,PLOT_H=VH-PAD.t-PAD.b;
-  var RESEARCH_X=107.5812;
+  var RESEARCH_X=108.0820;
   var H=14.08, B=0.0, PEAK=28.16, CAP=14.08;
   function structureReturn(x){ if (x < B) return x; if (x < H) return 2*x - B; return CAP; }
   function regimeFor(x){ if (x < B) return 'Abaixo da Call KO: acompanha o ativo 1:1.'; if (x < H) return 'KO não atingido: alta acelerada (2×) — até '+PEAK.toFixed(2).replace('.',',')+'%.'; return 'KO atingido: ganho limitado a '+CAP.toFixed(2).replace('.',',')+'%.'; }

@@ -3,12 +3,9 @@ cd /d C:\Users\PIMENTPA\Projects\Artes\clone-github\prateleira
 copy /B /Y "C:\Users\PIMENTPA\Downloads\10.30.2026_*Macro View (1).pdf" "leituras\Cenario-Macro-Novembro-2026.pdf"
 set COPY=%ERRORLEVEL%
 echo COPY=%COPY%
+set PDF_BYTES=0
 for %%A in ("leituras\Cenario-Macro-Novembro-2026.pdf") do set PDF_BYTES=%%~zA
 echo PDF_BYTES=%PDF_BYTES%
-if not "%COPY%"=="0" (
-  echo PDF nao copiado
-  exit /b 1
-)
 if %PDF_BYTES% LSS 100000 (
   echo PDF pequeno demais ^(%PDF_BYTES% bytes^). Copia incompleta.
   exit /b 1
@@ -40,15 +37,23 @@ if not "%COMMIT%"=="0" (
   echo COMMIT falhou
   exit /b 1
 )
-git pull --rebase --autostash origin pages >> prateleira\_pub.txt 2>&1
-set PULL=%ERRORLEVEL%
-echo PULL=%PULL%
-echo PULL=%PULL% >> prateleira\_pub.txt
-if not "%PULL%"=="0" (
-  git rebase --abort >> prateleira\_pub.txt 2>&1
-  echo PULL_FAIL — rebase abortado. Nada foi resetado.
+git merge origin/pages -X ours -m "Prateleira: mantem a semana 03.11." >> prateleira\_pub.txt 2>&1
+if errorlevel 1 goto merge_fix
+goto merge_ok
+:merge_fix
+git diff --name-only --diff-filter=U > prateleira\_conflicts.txt
+for /f "usebackq delims=" %%F in (prateleira\_conflicts.txt) do git checkout --ours -- "%%F"
+git add -A -- prateleira
+git add -u -- prateleira ops/range_52w.json
+git commit --no-edit >> prateleira\_pub.txt 2>&1
+if errorlevel 1 (
+  git merge --abort >> prateleira\_pub.txt 2>&1
+  echo MERGE_FAIL — merge abortado. Nada foi resetado.
   exit /b 1
 )
+:merge_ok
+echo MERGE=0
+echo MERGE=0 >> prateleira\_pub.txt
 for /f %%B in ('git rev-parse --abbrev-ref HEAD') do set BR=%%B
 if not "%BR%"=="pages" git branch -f pages HEAD
 git push origin HEAD:pages >> prateleira\_pub.txt 2>&1
