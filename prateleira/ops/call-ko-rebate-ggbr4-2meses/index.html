@@ -132,7 +132,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
     <h2>Research BTG</h2>
     <a class="research-link" href="https://content.btgpactual.com/research/ativo/GGBR4" target="_blank" rel="noopener">Abrir GGBR4 no Research <span class="arrow" aria-hidden="true">→</span></a>
   </div>
-  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 25,17</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 28,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+11,24%</div></div></div><p class="research-note">Spot do fechamento anterior (04/11/2026) · preço-alvo atualizado em 27/10/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
+  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 24,18</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 33,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+36,48%</div></div></div><p class="research-note">Spot do fechamento anterior (05/11/2026) · preço-alvo atualizado em 04/11/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
 </section>
 
 <div class="main">
@@ -146,8 +146,8 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
           <table class="struct-table">
             <thead><tr><th></th><th>R$</th><th>vs spot</th></tr></thead>
             <tbody>
-              <tr><td>Máximo</td><td><strong>28,72</strong></td><td>+14,1%</td></tr>
-              <tr><td>Mínimo</td><td><strong>16,79</strong></td><td>-33,3%</td></tr>
+              <tr><td>Máximo</td><td><strong>28,72</strong></td><td>+18,8%</td></tr>
+              <tr><td>Mínimo</td><td><strong>16,79</strong></td><td>-30,6%</td></tr>
             </tbody>
           </table>
           <p class="legend-note">
@@ -227,8 +227,8 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
 
 <section class="speech-box insights-box">
   <h2>Insights Research BTG</h2>
-  <ul class="research-bullets"><li>A Gerdau entregou 3T26 sólido, com EBITDA consolidado de R$3,77 bi, alta de 10% t/t e 38% a/a, praticamente em linha com as estimativas, sustentado pela América do Norte, onde a margem EBITDA atingiu 27,7% mesmo com parada programada em…</li><li>No Brasil, a margem ficou em 10,7%, acima do esperado, enquanto a América Latina foi o ponto mais fraco, com 11,1%. Na prévia do trimestre, o destaque já era a operação americana, com preços realizados de US$1.570/t, alta de 5% t/t e…</li><li>No 2T26, o EBITDA havia sido de R$3,43 bi, com FCF de R$237 mi, reforçando a trajetória de melhora operacional e financeira. Como âncoras, cerca de 75% do EBITDA vem da América do Norte, uma depreciação de 10% do real pode elevar o…</li></ul>
-  <p class="research-note">Insights BTG · 27/10/2026 · fonte Research BTG.</p>
+  <ul class="research-bullets"><li>No 3T26, a Gerdau entregou EBITDA de R$3,77 bi, alta de 10% t/t e 38% a/a, praticamente em linha com a estimativa, com destaque para a América do Norte: a margem EBITDA da divisão atingiu 27,7%, apoiada por preços realizados de…</li><li>No Brasil, a margem ficou em 10,7%, acima do esperado, embora a América Latina tenha sido o elo mais fraco. Na prévia setorial, o banco já indicava um trimestre relativamente melhor para siderurgia, sustentado por preços mais fortes nos…</li><li>Uma depreciação de 10% do real pode elevar o EBITDA em ~15%–18%. O capex anual tende a normalizar para ~R$4 bi em 2027, abaixo da faixa anterior de R$4,5–4,7 bi, abrindo espaço para maior distribuição de capital, em uma política próxima…</li></ul>
+  <p class="research-note">Insights BTG · 04/11/2026 · fonte Research BTG.</p>
 </section>
 
 <p class="footer-alert">
@@ -241,7 +241,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
   var X_MIN=-50,X_MAX=80,Y_MIN=-50,Y_MAX=80;
   var PAD={l:48,t:24,r:48,b:24},VW=600,VH=400;
   var PLOT_W=VW-PAD.l-PAD.r,PLOT_H=VH-PAD.t-PAD.b;
-  var RESEARCH_X=11.2435;
+  var RESEARCH_X=36.4764;
   var KO=20.0, STRIKE=0.0, REB=5.0, COST=4.5;
   function structureReturn(x){ if (x >= KO) return REB - COST; return Math.max(x - STRIKE, 0) - COST; }
   function regimeFor(x){ var rp=(structureReturn(x)/COST)*100; if (x >= KO) return 'KO: rebate líquido +'+(REB-COST).toFixed(2).replace('.',',')+'% no nocional · '+rp.toFixed(0)+'% sobre o prêmio.'; if (x > STRIKE) return 'Call ITM: '+structureReturn(x).toFixed(1).replace('.',',')+'% nocional · '+rp.toFixed(0)+'% sobre o prêmio.'; return 'OTM: −'+COST.toFixed(2).replace('.',',')+'% nocional · −100% sobre o prêmio.'; }

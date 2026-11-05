@@ -216,6 +216,15 @@ body{font-family:var(--font);color:var(--ink);background:var(--bg);min-height:10
     </span>
     <span class="cat-card-blurb">Call up-and-out: se bater a barreira, recebe rebate; senão, payoff de call.</span>
   </span>
+</button>
+<button type="button" class="cat-card" data-target="put-financiada" style="--cat:#0f5f73">
+  <span class="cat-card-body">
+    <span class="cat-card-top">
+      <span class="cat-card-title">Put Financiada com Ativo</span>
+      <span class="cat-card-count">1 operação</span>
+    </span>
+    <span class="cat-card-blurb">Fica no ativo com perda limitada. Na alta, acompanha descontada a largura da call vendida.</span>
+  </span>
 </button></div>
     </div>
     
@@ -330,7 +339,7 @@ body{font-family:var(--font);color:var(--ink);background:var(--bg);min-height:10
       <span class="op-ticker">GGBR4</span>
     </div>
     <p class="op-blurb">Smart Hedge sobre GGBR4: piso na queda, participação 1:1 até a barreira KI; se KI, retorno limitado ao strike da call.</p>
-    <div class="op-meta"><span class="pill">Ativo: GGBR4</span> <span class="pill">Prazo: 12 meses</span> <span class="pill">Put: 100%</span> <span class="pill">Call: 110%</span><span class="pill">Compra</span><span class="pill">PA R$ 28,00</span></div>
+    <div class="op-meta"><span class="pill">Ativo: GGBR4</span> <span class="pill">Prazo: 12 meses</span> <span class="pill">Put: 100%</span> <span class="pill">Call: 110%</span><span class="pill">Compra</span><span class="pill">PA R$ 33,00</span></div>
   </a>
 </li></ul>
 </section>
@@ -474,7 +483,7 @@ body{font-family:var(--font);color:var(--ink);background:var(--bg);min-height:10
       <span class="op-ticker">GGBR4</span>
     </div>
     <p class="op-blurb">Call up-and-out GGBR4 strike 100%: participa da alta até a barreira; no KO recebe rebate. Prêmio 4,50% → no KO rentabilidade de +11% sobre o prêmio.</p>
-    <div class="op-meta"><span class="pill">Ativo: GGBR4</span> <span class="pill">Prazo: 2 meses</span> <span class="pill">Strike: 100%</span> <span class="pill">KO: 120%</span><span class="pill">Compra</span><span class="pill">PA R$ 28,00</span></div>
+    <div class="op-meta"><span class="pill">Ativo: GGBR4</span> <span class="pill">Prazo: 2 meses</span> <span class="pill">Strike: 100%</span> <span class="pill">KO: 120%</span><span class="pill">Compra</span><span class="pill">PA R$ 33,00</span></div>
   </a>
 </li>
 <li class="op-block">
@@ -484,7 +493,7 @@ body{font-family:var(--font);color:var(--ink);background:var(--bg);min-height:10
       <span class="op-ticker">RADL3</span>
     </div>
     <p class="op-blurb">Call up-and-out RADL3 strike 100%: participa da alta até a barreira; no KO recebe rebate. Prêmio 4,50% → no KO rentabilidade de +11% sobre o prêmio.</p>
-    <div class="op-meta"><span class="pill">Ativo: RADL3</span> <span class="pill">Prazo: 2 meses</span> <span class="pill">Strike: 100%</span> <span class="pill">KO: 121,45%</span><span class="pill">Compra</span><span class="pill">PA R$ 30,00</span></div>
+    <div class="op-meta"><span class="pill">Ativo: RADL3</span> <span class="pill">Prazo: 2 meses</span> <span class="pill">Strike: 100%</span> <span class="pill">KO: 121,45%</span><span class="pill">Compra</span><span class="pill">PA R$ 26,00</span></div>
   </a>
 </li>
 <li class="op-block">
@@ -505,6 +514,24 @@ body{font-family:var(--font);color:var(--ink);background:var(--bg);min-height:10
     </div>
     <p class="op-blurb">Call up-and-out WEGE3 strike 100%: participa da alta até a barreira; no KO recebe rebate. Prêmio 4,50% → no KO rentabilidade de +11% sobre o prêmio.</p>
     <div class="op-meta"><span class="pill">Ativo: WEGE3</span> <span class="pill">Prazo: 2 meses</span> <span class="pill">Strike: 100%</span> <span class="pill">KO: 117,68%</span><span class="pill">Compra</span><span class="pill">PA R$ 65,00</span></div>
+  </a>
+</li></ul>
+</section>
+
+<section class="cat-section" id="put-financiada" hidden>
+  <div class="cat-section-head">
+    <h2>Put Financiada com Ativo · 1 operação</h2>
+    <button type="button" class="cat-back" data-back>← Voltar</button>
+  </div>
+  <ul class="ops">
+<li class="op-block">
+  <a class="op" href="./ops/put-financiada-ativo-bova11-12meses/index.html">
+    <div class="op-top">
+      <span class="op-title">Put Financiada com Ativo BOVA11</span>
+      <span class="op-ticker">BOVA11</span>
+    </div>
+    <p class="op-blurb">Participa da alta de BOVA11 acima de 100%, sempre 10% pontos abaixo do ativo. Abaixo de 100%, o resultado fica em -10%. A put em 90% impede perda maior.</p>
+    <div class="op-meta"><span class="pill">Ativo: BOVA11</span> <span class="pill">Prazo: 12 meses</span> <span class="pill">Put: 90%</span> <span class="pill">Call comprada: 100%</span></div>
   </a>
 </li></ul>
 </section>

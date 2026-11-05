@@ -610,6 +610,12 @@ COLLAR: list = []
 POP = None
 ONE_TOUCH: list = []
 
+# Put Financiada com Ativo: (ticker, fixing, buy_call, buy_put, sell_call, bid)
+# Bid fica só na tupla — não entra no HTML.
+PUT_FIN = [
+    ("BOVA11", date(2027, 11, 5), 100.0, 90.0, 90.0, 4.0),
+]
+
 # Aceleradora KO com Ativo: (ticker, fixing, buy_call, ko, sell_call, bid)
 ACEL_KO = [
     ("ITUB4", date(2027, 2, 25), 100.0, 114.75, 114.75, 1.00),
@@ -1209,6 +1215,91 @@ def make_acel_ko_ativo(t, fixing, buy_call, ko_pct, sell_call, _bid):
     add(H, CAP);
     for (var x3 = H + 0.5; x3 <= X_MAX; x3 += 0.5) add(x3, CAP);
 """,
+    }
+
+
+def make_put_financiada(t, fixing, buy_call, buy_put, sell_call, _bid):
+    """Put Financiada com Ativo. Bid não entra no payoff nem na página.
+
+    Ativo + put comprada + call comprada + call vendida mais baixa.
+    Abaixo da call comprada o resultado fica no piso (largura do call spread).
+    Acima, acompanha o ativo descontada essa mesma largura. Put corta perda extra.
+    """
+    prazo = months_label(fixing)
+    c = round(buy_call - 100, 2)
+    p = round(buy_put - 100, 2)
+    k = round(sell_call - 100, 2)
+    gap = round(c - k, 2)
+    floor = round(p, 2) if abs(p - k) < 0.05 else round(-gap, 2)
+    be = round(gap, 2)
+    slug = slugify("put-financiada-ativo", t, prazo.replace(" ", ""))
+    call_b, put_b, call_s = fmt_lvl(buy_call), fmt_lvl(buy_put), fmt_lvl(sell_call)
+    floor_lbl = fmt_pct(floor).replace(",00%", "%")
+    be_lbl = fmt_pct(be).replace(",00%", "%")
+    gap_pts = be_lbl.lstrip("+")
+    return slug, {
+        "title": f"Put Financiada com Ativo {t}",
+        "h1": "Put Financiada com Ativo",
+        "ticker": t,
+        "dot": "PF",
+        "brand": "#0f5f73",
+        "subtitle": (
+            f"Participa da alta de {t} acima de {call_b}, sempre {gap_pts} pontos abaixo do ativo. "
+            f"Abaixo de {call_b}, o resultado fica em {floor_lbl}. A put em {put_b} impede perda maior."
+        ),
+        "pills": [
+            ("Ativo", t),
+            ("Prazo", prazo),
+            ("Put", put_b),
+            ("Call comprada", call_b),
+            ("Call vendida", call_s),
+            ("Piso", floor_lbl),
+        ],
+        "highlights": [
+            ("Prazo", prazo, f"Fixing {fixing.strftime('%d/%m/%Y')}"),
+            ("Proteção", put_b, f"Perda limitada a {floor_lbl}"),
+            ("Alta", "1:1", f"Acima de {call_b}, {gap_pts} pontos abaixo do ativo"),
+            ("Ganho", "Ilimitado", f"Equilíbrio em {be_lbl}"),
+        ],
+        "struct": [
+            ("Ativo", "Compra · 100%"),
+            ('<span class="tag b">B</span> Put', f"stk {put_b}"),
+            ('<span class="tag b">B</span> Call', f"stk {call_b}"),
+            ('<span class="tag s">S</span> Call', f"stk {call_s}"),
+        ],
+        "zones": [
+            (f"< {put_b}", f"Put segura a queda. Resultado fica em {floor_lbl}."),
+            (f"{put_b} → {call_b}", f"Resultado permanece em {floor_lbl}."),
+            (f"≥ {call_b}", f"Acompanha a alta, {gap_pts} pontos abaixo. Equilíbrio em {be_lbl}."),
+        ],
+        "regime0": (
+            f"Abaixo de {call_b}: {floor_lbl}. "
+            f"Acima: acompanha o ativo, {gap_pts} pontos abaixo."
+        ),
+        "speech": [
+            (
+                "Para quem",
+                f"Cliente que quer ficar comprado em {t} ({prazo}), participar da alta e limitar a perda a {floor_lbl.lstrip('-')}.",
+            ),
+            (
+                "Como encaixa",
+                f"Put Financiada com Ativo: ativo + put {put_b} + call comprada {call_b} + call vendida {call_s}. "
+                f"Derivativos sem entrada de caixa. Abaixo de {call_b} o resultado fica em {floor_lbl}. "
+                f"Acima, sobe junto com o ativo, {gap_pts} pontos atrás. Equilíbrio se {t} subir {gap_pts}.",
+            ),
+            ("Fechamento", "Material de uso interno — condições no DIE."),
+        ],
+        "x_min": -30,
+        "x_max": 40,
+        "y_min": -25,
+        "y_max": 30,
+        "js_const": f"var P={p}, C={c}, K={k}, FLOOR={floor};",
+        "js_fn": "return x + Math.max(P - x, 0) + Math.max(x - C, 0) - Math.max(x - K, 0);",
+        "js_regime": (
+            "if (x < C) return 'Abaixo da call comprada: resultado em '+FLOOR.toFixed(0).replace('.',',')+'%.'; "
+            "if (x < C - K) return 'Acompanha a alta, ainda abaixo do equilíbrio.'; "
+            "return 'Acima do equilíbrio: acompanha o ativo, '+(C-K).toFixed(0)+' pontos abaixo.';"
+        ),
     }
 
 
@@ -2180,6 +2271,11 @@ SECTION_META = {
         "blurb": "Paga rebate se fechar na/acima da barreira no fixing; caso contrário, só o prêmio.",
         "color": "#1e4d7b",
     },
+    "Put Financiada com Ativo": {
+        "id": "put-financiada",
+        "blurb": "Fica no ativo com perda limitada. Na alta, acompanha descontada a largura da call vendida.",
+        "color": "#0f5f73",
+    },
 }
 
 
@@ -2959,9 +3055,18 @@ def main():
     call_ko_rows = CALL_KO
     pop_row = POP
     ot_rows = ONE_TOUCH
+    put_fin_rows = PUT_FIN
     try:
-        from _excel_week import load_excel_week, load_previous_week, moves_summary, summary, week_moves
+        from _excel_week import (
+            ensure_put_financiada_bova11,
+            load_excel_week,
+            load_previous_week,
+            moves_summary,
+            summary,
+            week_moves,
+        )
 
+        ensure_put_financiada_bova11()
         week = load_excel_week()
         if week:
             REF = week.ref
@@ -2975,6 +3080,7 @@ def main():
             call_ko_rows = week.CALL_KO
             pop_row = week.POP
             ot_rows = week.ONE_TOUCH
+            put_fin_rows = week.PUT_FIN or (PUT_FIN if week.sheet == "03.11.26" else [])
             n_ops = (
                 len(week.SOC)
                 + len(week.SMART)
@@ -2986,6 +3092,7 @@ def main():
                 + len(week.CALL_KO)
                 + (1 if week.POP else 0)
                 + len(week.ONE_TOUCH)
+                + len(put_fin_rows)
             )
             if n_ops == 0:
                 raise SystemExit(f"excel_empty sheet={week.sheet} — nenhuma operação lida")
@@ -3035,6 +3142,7 @@ def main():
     if pop_row:
         add_section("POP", [make_pop(*pop_row)])
     add_section("One Touch de Alta", [make_ot(*r) for r in ot_rows])
+    add_section("Put Financiada com Ativo", [make_put_financiada(*r) for r in put_fin_rows])
 
     tickers = [cfg["ticker"] for _, cfg in all_ops]
     try:

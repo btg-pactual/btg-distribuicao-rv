@@ -99,6 +99,8 @@ def _section_key(cell0: str | None) -> str | None:
         return "pop"
     if "ONE TOUCH" in n:
         return "one_touch"
+    if "PUT FINANCIADA" in n:
+        return "put_fin"
     return None
 
 
@@ -116,6 +118,7 @@ class WeekData:
     CALL_KO: list
     POP: tuple | None
     ONE_TOUCH: list
+    PUT_FIN: list
 
 
 def _parse_ws(ws, sheet_name: str, ref: date) -> WeekData:
@@ -130,6 +133,7 @@ def _parse_ws(ws, sheet_name: str, ref: date) -> WeekData:
     call_ko: list = []
     pop: tuple | None = None
     one_touch: list = []
+    put_fin: list = []
 
     for row in ws.iter_rows(values_only=True):
         cells = [c for c in row if c is not None and str(c).strip() != ""]
@@ -232,6 +236,13 @@ def _parse_ws(ws, sheet_name: str, ref: date) -> WeekData:
             if len(rest) < 3:
                 continue
             one_touch.append((ticker, fixing, pct(rest[0]), pct(rest[1]), offer_abs(rest[2])))
+        elif section == "put_fin":
+            # B CALL | B PUT | S CALL | BID — bid não vai para o HTML.
+            if len(rest) < 4:
+                continue
+            put_fin.append(
+                (ticker, fixing, pct(rest[0]), pct(rest[1]), pct(rest[2]), bid_pct(rest[3]))
+            )
 
     return WeekData(
         sheet=sheet_name,
@@ -246,6 +257,7 @@ def _parse_ws(ws, sheet_name: str, ref: date) -> WeekData:
         CALL_KO=call_ko,
         POP=pop,
         ONE_TOUCH=one_touch,
+        PUT_FIN=put_fin,
     )
 
 
@@ -304,6 +316,7 @@ _KIND_ORDER = (
     ("CALL_KO", "Call KO com Rebate", "CALL_KO"),
     ("POP", "POP", "POP"),
     ("ONE_TOUCH", "One Touch de Alta", "ONE_TOUCH"),
+    ("PUT_FIN", "Put Financiada com Ativo", "PUT_FIN"),
 )
 
 
@@ -404,6 +417,7 @@ def summary(w: WeekData) -> str:
         f"CALL_KO={len(w.CALL_KO)}",
         f"POP={1 if w.POP else 0}",
         f"ONE_TOUCH={len(w.ONE_TOUCH)}",
+        f"PUT_FIN={len(w.PUT_FIN)}",
     ]
     for t, fixing, strike, ko, *_rest in w.SOC:
         lines.append(f"SOC\t{t} {fixing.isoformat()} strike={strike} ko={ko}")
@@ -413,7 +427,39 @@ def summary(w: WeekData) -> str:
         lines.append(f"ACEL_DYN\t{t} {fixing.isoformat()} ko_alta={ko_h} ko_baixa={ko_l}")
     for t, fixing, stk, ko, rebate, offer in w.CALL_KO:
         lines.append(f"CALL_KO\t{t} {fixing.isoformat()} stk={stk} ko={ko} rebate={rebate} offer={offer}")
+    for t, fixing, buy_call, buy_put, sell_call, _bid in w.PUT_FIN:
+        lines.append(
+            f"PUT_FIN\t{t} {fixing.isoformat()} call={buy_call} put={buy_put} sell={sell_call}"
+        )
     return "\n".join(lines)
+
+
+def ensure_put_financiada_bova11() -> bool:
+    """Grava BOVA11 na aba 03.11.26 uma vez. Não replica em semanas novas."""
+    if not XLSX.exists():
+        return False
+    try:
+        from openpyxl import load_workbook
+    except ImportError:
+        return False
+    wb = load_workbook(XLSX)
+    if "03.11.26" not in wb.sheetnames:
+        return False
+    ws = wb["03.11.26"]
+    section = None
+    for row in ws.iter_rows(values_only=True):
+        cells = [c for c in row if c is not None and str(c).strip() != ""]
+        if not cells:
+            continue
+        sk = _section_key(str(row[0]) if row and row[0] is not None else "")
+        if sk:
+            section = sk
+        if section == "put_fin" and any(str(c).strip().upper() == "BOVA11" for c in row if c is not None):
+            return False
+    ws.append(["Put Financiada com Ativo", "Ativo", "Fixing", "B CALL", "B PUT", "S CALL", "BID"])
+    ws.append([None, "BOVA11", datetime(2027, 11, 5), 100, 90, 90, 4])
+    wb.save(XLSX)
+    return True
 
 
 if __name__ == "__main__":
