@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-05T16:42:21Z",
+  "updated_at": "2026-11-05T16:49:35Z",
   "as_of_br": "05/11/2026",
   "tickers": {
     "VALE3": {
@@ -17,7 +17,7 @@
       "source": "Yahoo Finance PETR4.SA",
       "high": 59.79,
       "low": 29.53,
-      "last": 46.95,
+      "last": 46.96,
       "n_days": 248,
       "as_of": "2026-11-05",
       "as_of_br": "05/11/2026"
@@ -47,7 +47,7 @@
       "source": "Yahoo Finance ITUB4.SA",
       "high": 50.85,
       "low": 37.35,
-      "last": 39.61,
+      "last": 39.68,
       "n_days": 248,
       "as_of": "2026-11-05",
       "as_of_br": "05/11/2026"
@@ -57,7 +57,7 @@
       "source": "Yahoo Finance EMBJ3.SA",
       "high": 107.41,
       "low": 68.08,
-      "last": 102.57,
+      "last": 102.48,
       "n_days": 248,
       "as_of": "2026-11-05",
       "as_of_br": "05/11/2026"
@@ -67,7 +67,7 @@
       "source": "Yahoo Finance EQTL3.SA",
       "high": 51.26,
       "low": 31.36,
-      "last": 33.01,
+      "last": 33.18,
       "n_days": 248,
       "as_of": "2026-11-05",
       "as_of_br": "05/11/2026"
@@ -97,7 +97,7 @@
       "source": "Yahoo Finance MBRF3.SA",
       "high": 26.83,
       "low": 14.49,
-      "last": 15.82,
+      "last": 15.86,
       "n_days": 248,
       "as_of": "2026-11-05",
       "as_of_br": "05/11/2026"
@@ -107,7 +107,7 @@
       "source": "Yahoo Finance VIVT3.SA",
       "high": 43.47,
       "low": 28.99,
-      "last": 31.13,
+      "last": 31.12,
       "n_days": 248,
       "as_of": "2026-11-05",
       "as_of_br": "05/11/2026"
@@ -117,7 +117,7 @@
       "source": "Yahoo Finance WEGE3.SA",
       "high": 54.53,
       "low": 41.15,
-      "last": 47.92,
+      "last": 48.03,
       "n_days": 248,
       "as_of": "2026-11-05",
       "as_of_br": "05/11/2026"
@@ -127,7 +127,7 @@
       "source": "Yahoo Finance JBSS32.SA",
       "high": 93.74,
       "low": 55.44,
-      "last": 69.65,
+      "last": 69.68,
       "n_days": 248,
       "as_of": "2026-11-05",
       "as_of_br": "05/11/2026"
@@ -147,7 +147,7 @@
       "source": "Yahoo Finance SPXB11.SA",
       "high": 18.64,
       "low": 14.6,
-      "last": 18.02,
+      "last": 18.0,
       "n_days": 248,
       "as_of": "2026-11-05",
       "as_of_br": "05/11/2026"
@@ -157,7 +157,7 @@
       "source": "Yahoo Finance GOLB11.SA",
       "high": 120.0,
       "low": 98.73,
-      "last": 104.95,
+      "last": 105.05,
       "n_days": 96,
       "as_of": "2026-11-05",
       "as_of_br": "05/11/2026"
@@ -167,7 +167,7 @@
       "source": "Yahoo Finance GGBR4.SA",
       "high": 28.72,
       "low": 16.79,
-      "last": 24.36,
+      "last": 24.29,
       "n_days": 248,
       "as_of": "2026-11-05",
       "as_of_br": "05/11/2026"
@@ -207,7 +207,7 @@
       "source": "Yahoo Finance SUZB3.SA",
       "high": 59.65,
       "low": 39.17,
-      "last": 51.91,
+      "last": 51.8,
       "n_days": 248,
       "as_of": "2026-11-05",
       "as_of_br": "05/11/2026"
@@ -217,7 +217,7 @@
       "source": "Yahoo Finance GOGL34.SA",
       "high": 170.64,
       "low": 119.18,
-      "last": 130.1,
+      "last": 129.7,
       "n_days": 248,
       "as_of": "2026-11-05",
       "as_of_br": "05/11/2026"
@@ -227,7 +227,7 @@
       "source": "Yahoo Finance LILY34.SA",
       "high": 265.0,
       "low": 142.0,
-      "last": 259.21,
+      "last": 257.0,
       "n_days": 248,
       "as_of": "2026-11-05",
       "as_of_br": "05/11/2026"
@@ -237,7 +237,7 @@
       "source": "Yahoo Finance NVDC34.SA",
       "high": 25.88,
       "low": 17.99,
-      "last": 21.3,
+      "last": 21.29,
       "n_days": 248,
       "as_of": "2026-11-05",
       "as_of_br": "05/11/2026"
@@ -247,7 +247,7 @@
       "source": "Yahoo Finance TSMC34.SA",
       "high": 309.32,
       "low": 181.17,
-      "last": 250.33,
+      "last": 248.77,
       "n_days": 248,
       "as_of": "2026-11-05",
       "as_of_br": "05/11/2026"
@@ -257,7 +257,7 @@
       "source": "Yahoo Finance BOVA11.SA",
       "high": 207.0,
       "low": 140.0,
-      "last": 164.16,
+      "last": 164.19,
       "n_days": 248,
       "as_of": "2026-11-05",
       "as_of_br": "05/11/2026"

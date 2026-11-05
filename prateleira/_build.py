@@ -1236,7 +1236,7 @@ def make_put_financiada(t, fixing, buy_call, buy_put, sell_call, _bid):
     call_b, put_b, call_s = fmt_lvl(buy_call), fmt_lvl(buy_put), fmt_lvl(sell_call)
     floor_lbl = fmt_pct(floor).replace(",00%", "%")
     be_lbl = fmt_pct(be).replace(",00%", "%")
-    gap_pts = be_lbl.lstrip("+")
+    pontos = str(int(round(be))) if abs(be - round(be)) < 0.05 else be_lbl.lstrip("+").rstrip("%")
 
     def _pay(x: float) -> float:
         return x + max(p - x, 0.0) + max(x - c, 0.0) - max(x - k, 0.0)
@@ -1270,8 +1270,8 @@ def make_put_financiada(t, fixing, buy_call, buy_put, sell_call, _bid):
         "dot": "PF",
         "brand": "#0f5f73",
         "subtitle": (
-            f"Participa da alta de {t} acima de {call_b}, sempre {gap_pts} pontos abaixo do ativo. "
-            f"Abaixo de {call_b}, o resultado fica em {floor_lbl}. A put em {put_b} impede perda maior."
+            f"Participa da alta de {t} sem limitador, {pontos} pontos abaixo do ativo. "
+            f"Na queda, a perda fica limitada a {floor_lbl.lstrip('-')}."
         ),
         "pills": [
             ("Ativo", t),
@@ -1284,7 +1284,7 @@ def make_put_financiada(t, fixing, buy_call, buy_put, sell_call, _bid):
         "highlights": [
             ("Prazo", prazo, f"Fixing {fixing.strftime('%d/%m/%Y')}"),
             ("Proteção", put_b, f"Perda limitada a {floor_lbl}"),
-            ("Alta", "1:1", f"Acima de {call_b}, {gap_pts} pontos abaixo do ativo"),
+            ("Alta", "Sem teto", f"{pontos} pontos abaixo do ativo"),
             ("Ganho", "Ilimitado", f"Equilíbrio em {be_lbl}"),
         ],
         "struct": [
@@ -1296,11 +1296,10 @@ def make_put_financiada(t, fixing, buy_call, buy_put, sell_call, _bid):
         "zones": [
             (f"< {put_b}", f"Put segura a queda. Resultado fica em {floor_lbl}."),
             (f"{put_b} → {call_b}", f"Resultado permanece em {floor_lbl}."),
-            (f"≥ {call_b}", f"Acompanha a alta, {gap_pts} pontos abaixo. Equilíbrio em {be_lbl}."),
+            (f"≥ {call_b}", f"Acompanha a alta sem teto, {pontos} pontos abaixo. Equilíbrio em {be_lbl}."),
         ],
         "regime0": (
-            f"Abaixo de {call_b}: {floor_lbl}. "
-            f"Acima: acompanha o ativo, {gap_pts} pontos abaixo."
+            f"Alta sem teto, {pontos} pontos abaixo do ativo. Na queda, resultado em {floor_lbl}."
         ),
         "speech": [
             (
@@ -1310,8 +1309,8 @@ def make_put_financiada(t, fixing, buy_call, buy_put, sell_call, _bid):
             (
                 "Como encaixa",
                 f"Put Financiada com Ativo: ativo + put {put_b} + call comprada {call_b} + call vendida {call_s}. "
-                f"Derivativos sem entrada de caixa. Abaixo de {call_b} o resultado fica em {floor_lbl}. "
-                f"Acima, sobe junto com o ativo, {gap_pts} pontos atrás. Equilíbrio se {t} subir {gap_pts}.",
+                f"Derivativos sem entrada de caixa. Participa da alta sem limitador, {pontos} pontos abaixo do ativo. "
+                f"Na queda, a put em {put_b} limita a perda a {floor_lbl.lstrip('-')}. Equilíbrio se {t} subir {pontos} pontos.",
             ),
             ("Fechamento", "Material de uso interno — condições no DIE."),
         ],
