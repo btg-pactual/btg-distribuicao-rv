@@ -1237,6 +1237,32 @@ def make_put_financiada(t, fixing, buy_call, buy_put, sell_call, _bid):
     floor_lbl = fmt_pct(floor).replace(",00%", "%")
     be_lbl = fmt_pct(be).replace(",00%", "%")
     gap_pts = be_lbl.lstrip("+")
+
+    def _pay(x: float) -> float:
+        return x + max(p - x, 0.0) + max(x - c, 0.0) - max(x - k, 0.0)
+
+    def _mx(n: float) -> str:
+        s = f"{n:.2f}".replace(".", ",")
+        if n > 0:
+            s = "+" + s
+        return s + "%"
+
+    # Pontos do DIE: ativo → resultado no vencimento.
+    matrix_rows = []
+    for spot in (15.0, 12.5, 10.0, 5.0, 0.0, -5.0, -10.0, -12.5, -15.0):
+        matrix_rows.append(f"<tr><td>{_mx(spot)}</td><td><strong>{_mx(_pay(spot))}</strong></td></tr>")
+    matrix_html = f"""
+  <div class="matrix-wrap">
+    <h2>Matriz de resultado</h2>
+    <p class="matrix-note">Variação de {t} e resultado da estrutura no vencimento, como no DIE.</p>
+    <table class="struct-table">
+      <thead><tr><th>{t}</th><th>Resultado</th></tr></thead>
+      <tbody>
+        {''.join(matrix_rows)}
+      </tbody>
+    </table>
+  </div>
+"""
     return slug, {
         "title": f"Put Financiada com Ativo {t}",
         "h1": "Put Financiada com Ativo",
@@ -1300,6 +1326,7 @@ def make_put_financiada(t, fixing, buy_call, buy_put, sell_call, _bid):
             "if (x < C - K) return 'Acompanha a alta, ainda abaixo do equilíbrio.'; "
             "return 'Acima do equilíbrio: acompanha o ativo, '+(C-K).toFixed(0)+' pontos abaixo.';"
         ),
+        "matrix_html": matrix_html,
     }
 
 
