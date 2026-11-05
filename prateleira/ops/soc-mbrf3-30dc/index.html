@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Smart Hedge GOLB11 | BTG Pactual</title>
+<title>SOC MBRF3 | BTG Pactual</title>
 <style>
 :root {
   --ink:#0b1f3a; --muted:#5c6b7a; --line:#d0d8e2; --bg:#eef2f6; --card:#ffffff;
-  --brand:#007e33; --btg:#0b1f3a; --success:#0f7a4a; --danger:#c0392b; --dash:#8b83a0;
+  --brand:#0d6e6e; --btg:#0b1f3a; --success:#0f7a4a; --danger:#c0392b; --dash:#8b83a0;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:"BTG Pactual Sans","BTG Pactual Office",sans-serif;color:var(--ink);background:var(--bg);min-height:100vh;line-height:1.45}
@@ -118,27 +118,27 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
   <div class="brand-block">
     <div class="logos">
       <span class="logo-btg">BTG PACTUAL</span>
-      <span class="logo-co"><span class="dot">SH</span> GOLB11</span>
+      <span class="logo-co"><span class="dot">SOC</span> MBRF3</span>
     </div>
-    <h1>Smart Hedge <span>GOLB11</span></h1>
-    <p class="subtitle">Smart Hedge sobre GOLB11: piso na queda, participação 1:1 até a barreira KI; se KI, retorno limitado ao strike da call.</p>
+    <h1>SOC <span>MBRF3</span></h1>
+    <p class="subtitle">Stock or Coupon sobre MBRF3: cupom se a barreira de queda não for atingida; se KO, acompanha o ativo.</p>
   </div>
-  <div class="meta-pills"><div class="pill"><strong>Ativo</strong> GOLB11</div><div class="pill"><strong>Prazo</strong> 24 meses</div><div class="pill"><strong>Put</strong> 100%</div><div class="pill"><strong>Call</strong> 115%</div><div class="pill"><strong>KI</strong> 160%</div></div>
+  <div class="meta-pills"><div class="pill"><strong>Ativo</strong> MBRF3</div><div class="pill"><strong>Prazo</strong> 30dc</div><div class="pill"><strong>Vencimento</strong> 27/11/2026</div><div class="pill"><strong>Strike</strong> 105.97%</div><div class="pill"><strong>KO</strong> 90%</div><div class="pill"><strong>Cupom</strong> 5.97%</div><div class="pill"><strong>Backtest (barreira)</strong> —</div></div>
 </header>
-<section class="highlights"><div class="hi"><h3>Prazo</h3><p>24 meses<span></span></p></div><div class="hi"><h3>Piso</h3><p>+0%<span>Put 100%</span></p></div><div class="hi"><h3>Barreira KI</h3><p>160%<span>+60,0%</span></p></div><div class="hi"><h3>Teto se KI</h3><p>+15%<span>Call 115%</span></p></div></section>
+<section class="highlights"><div class="hi"><h3>Prazo</h3><p>30dc<span>Vencimento 27/11/2026</span></p></div><div class="hi"><h3>Cupom</h3><p>+5.97%<span>Se barreira não for atingida</span></p></div><div class="hi"><h3>KO</h3><p>90%<span>Abaixo de -10%: acompanha o ativo</span></p></div><div class="hi"><h3>Strike</h3><p>105.97%<span>Put KO / Call KO</span></p></div><div class="hi"><h3>Backtest (barreira)</h3><p>—<span>Não publicado no material desta semana</span></p></div></section>
 
 <section class="research">
   <div class="research-head">
     <h2>Research BTG</h2>
-    <a class="research-link" href="https://content.btgpactual.com/research/ativo/GOLB11" target="_blank" rel="noopener">Abrir GOLB11 no Research <span class="arrow" aria-hidden="true">→</span></a>
+    <a class="research-link" href="https://content.btgpactual.com/research/ativo/MBRF3" target="_blank" rel="noopener">Abrir MBRF3 no Research <span class="arrow" aria-hidden="true">→</span></a>
   </div>
-  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 103,59</div></div></div><p class="research-note">Spot do fechamento anterior (04/11/2026) · sem preço-alvo publicado para este ticker · atualizado às 18h30 · fonte Research BTG.</p>
+  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 15,91</div></div><div><div class="lbl">Recomendação</div><div class="val hold">Neutro</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 26,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+63,42%</div></div></div><p class="research-note">Spot do fechamento anterior (04/11/2026) · preço-alvo atualizado em 04/11/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
 </section>
 
 <div class="main">
 <aside class="panel">
   <h2>Estrutura</h2>
-  <table class="struct-table"><thead><tr><th>Perna</th><th>Nível</th></tr></thead><tbody><tr><td><span class="tag b">B</span> Put</td><td>100%</td></tr><tr><td><span class="tag s">S</span> Call KI</td><td>115% · barreira 160%</td></tr></tbody></table>
+  <table class="struct-table"><thead><tr><th>Perna</th><th>Nível</th></tr></thead><tbody><tr><td><span class="tag b">B</span> Put KO</td><td>105.97% · barreira 90%</td></tr><tr><td><span class="tag s">S</span> Call KO</td><td>105.97% · barreira 90%</td></tr></tbody></table>
   <p class="legend-note">Payoff ilustrativo no vencimento. Condições oficiais no DIE.</p>
   <!-- RANGE_52W -->
         <div class="range-52w" style="margin-top:16px">
@@ -146,13 +146,13 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
           <table class="struct-table">
             <thead><tr><th></th><th>R$</th><th>vs spot</th></tr></thead>
             <tbody>
-              <tr><td>Máximo</td><td><strong>120,00</strong></td><td>+15,8%</td></tr>
-              <tr><td>Mínimo</td><td><strong>98,73</strong></td><td>-4,7%</td></tr>
+              <tr><td>Máximo</td><td><strong>26,83</strong></td><td>+68,6%</td></tr>
+              <tr><td>Mínimo</td><td><strong>14,49</strong></td><td>-8,9%</td></tr>
             </tbody>
           </table>
           <p class="legend-note">
-            Máx./mín. dos últimos ~12 meses (até a ref. 03/11/2026).
-            Fonte: Yahoo Finance GOLB11.SA.
+            Máx./mín. dos últimos ~12 meses (até a ref. 28/10/2026).
+            Fonte: Yahoo Finance MBRF3.SA.
           </p>
         </div>
         <!-- /RANGE_52W -->
@@ -171,42 +171,48 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
       <line id="axisZeroX" x1="0" y1="0" x2="0" y2="400" stroke="#c5ced8" stroke-width="1"/>
       <line id="axisZeroY" x1="48" y1="0" x2="552" y2="0" stroke="#c5ced8" stroke-width="1"/>
       <polyline id="assetPath" fill="none" stroke="#8b83a0" stroke-width="2" stroke-dasharray="6 5"/>
-      <path id="structPath" fill="none" stroke="#007e33" stroke-width="2.5"/>
+      <path id="structPath" fill="none" stroke="#0d6e6e" stroke-width="2.5"/>
       <line id="putKoGap" x1="0" y1="0" x2="0" y2="0" stroke="#0f7a4a" stroke-width="2" stroke-dasharray="4 3" opacity="0"/>
-      <line id="callKoGap" x1="0" y1="0" x2="0" y2="0" stroke="#007e33" stroke-width="2" stroke-dasharray="4 3" opacity="0"/>
+      <line id="callKoGap" x1="0" y1="0" x2="0" y2="0" stroke="#0d6e6e" stroke-width="2" stroke-dasharray="4 3" opacity="0"/>
       <text id="putKoLabel" font-size="11" fill="#0f7a4a" font-weight="700" opacity="0">Put KO</text>
-      <text id="callKoLabel" font-size="11" fill="#007e33" font-weight="700" opacity="0">Call vendida</text>
+      <text id="callKoLabel" font-size="11" fill="#0d6e6e" font-weight="700" opacity="0">Call vendida</text>
       <line id="researchTargetLine" x1="0" y1="24" x2="0" y2="376" stroke="#1a66b3" stroke-width="1.5" stroke-dasharray="5 4" opacity="0"/>
       <text id="researchTargetLabel" font-size="11" fill="#1a66b3" font-weight="700" opacity="0">PA Research</text>
       <g id="xLabels"></g><g id="yLabels"></g>
-      <line id="hoverLine" x1="0" y1="24" x2="0" y2="376" stroke="#007e33" stroke-width="1" opacity="0"/>
-      <circle id="hoverStruct" r="5" fill="#007e33" opacity="0"/>
+      <line id="hoverLine" x1="0" y1="24" x2="0" y2="376" stroke="#0d6e6e" stroke-width="1" opacity="0"/>
+      <circle id="hoverStruct" r="5" fill="#0d6e6e" opacity="0"/>
       <circle id="hoverAsset" r="4" fill="#8b83a0" opacity="0"/>
     </svg>
   </div>
   <p class="chart-touch-hint">Arraste no gráfico para simular</p>
       <div class="mobile-sim">
     <div class="sim-label"><span>Spot final</span><output id="spotOutMobile">0%</output></div>
-    <input type="range" id="spotSliderMobile" min="-50" max="85" step="0.5" value="0"/>
+    <input type="range" id="spotSliderMobile" min="-30" max="80" step="0.5" value="0"/>
   </div>
-  <div class="zones"><div class="zone"><strong>Queda</strong><p>Piso +0% (put).</p></div><div class="zone"><strong>Até +60%</strong><p>Acompanha o ativo 1:1.</p></div><div class="zone"><strong>≥ +60%</strong><p>KI: retorno limitado a +15%.</p></div></div>
+  <div class="zones"><div class="zone"><strong>≤ -10%</strong><p>Put/Call KO nocauteados — acompanha o ativo 1:1.</p></div><div class="zone"><strong>> -10%</strong><p>Cupom fixo +5.97% (SOC).</p></div><div class="zone"><strong>Ideia</strong><p>Fluxo de cupom com risco de conversão se cair forte.</p></div></div>
 </section>
 <aside class="panel panel-sim">
   <h2>Simulador</h2>
   <div class="sim-label"><span>Variação do ativo</span><output id="spotOut">0%</output></div>
-  <input type="range" id="spotSlider" min="-50" max="85" step="0.5" value="0"/>
+  <input type="range" id="spotSlider" min="-30" max="80" step="0.5" value="0"/>
   <div class="sim-cards">
     <div class="sim-card"><div class="lbl">Ativo</div><div class="val" id="assetVal">0,0%</div></div>
     <div class="sim-card"><div class="lbl">Estrutura</div><div class="val" id="structVal">0,0%</div></div>
     
   </div>
-  <div class="regime" id="regimeText">Entre o piso e a barreira: participa 1:1.</div>
+  <div class="regime" id="regimeText">Acima da barreira: cupom +5.97%.</div>
   
 </aside>
 </div>
 <section class="speech-box">
   <h2>Speech comercial</h2>
-  <p class="speech-label">Para quem</p><p>Cliente construtivo em GOLB11 no horizonte de 24 meses, com proteção na queda.</p><p class="speech-label">Como encaixa</p><p>Put 100% · call 115% KI em 160% · prazo 24 meses.</p><p class="speech-label">Fechamento</p><p>Material de uso interno — condições no DIE.</p>
+  <p class="speech-label">Para quem</p><p>Cliente que quer cupom curto em MBRF3, aceitando risco de exposição se o papel cair além da barreira.</p><p class="speech-label">Como encaixa</p><p>SOC · 30dc (venc. 27/11/2026). Sem KO: cupom +5.97%. Com KO (90%): acompanha o ativo. Backtest (barreira) não publicado no material desta semana.</p><p class="speech-label">Fechamento</p><p>Material de uso interno — condições no DIE.</p>
+</section>
+
+<section class="speech-box insights-box">
+  <h2>Insights Research BTG</h2>
+  <ul class="research-bullets"><li>A MBRF reportou 2T26 amplamente em linha, com receita líquida de R$ 40,7 bi (+5,2% a/a e +3,2% t/t), EBITDA ajustado de R$ 3,2 bi (+5,4% a/a e 2,5% acima da estimativa) e margem de 7,9%; a BRF sustentou o resultado com EBITDA de R$ 2,55…</li><li>Para o 3T26, a prévia aponta receita de R$ 40,8 bi (-2% a/a), EBITDA ajustado de R$ 3,27 bi (-7% a/a e +2% t/t) e margem de 8,0%, com vetores opostos entre BRF e bovinos: a BRF deve recuar para R$ 2,44 bi de EBITDA, com margem de 15,0%…</li><li>Entre os KPIs financeiros, o lucro líquido do 2T26 foi de R$ 68 mi, beneficiado por reversão tributária de R$ 423 mi, o resultado financeiro ficou negativo em R$ 1,8 bi, a dívida líquida subiu para R$ 51,7 bi e a alavancagem permaneceu…</li></ul>
+  <p class="research-note">Insights BTG · 04/11/2026 · fonte Research BTG.</p>
 </section>
 
 <p class="footer-alert">
@@ -216,13 +222,13 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
 </div>
 <script>
 (function(){
-  var X_MIN=-50,X_MAX=85,Y_MIN=-50,Y_MAX=85;
+  var X_MIN=-30,X_MAX=80,Y_MIN=-30,Y_MAX=15;
   var PAD={l:48,t:24,r:48,b:24},VW=600,VH=400;
   var PLOT_W=VW-PAD.l-PAD.r,PLOT_H=VH-PAD.t-PAD.b;
-  var RESEARCH_X=null;
-  var PUT=100.0, CALL=115.0, KI=160.0;
-  function structureReturn(x){ var st=100+x; var r=st+Math.max(PUT-st,0)-(st>=KI?Math.max(st-CALL,0):0)-100; return r; }
-  function regimeFor(x){ var st=100+x; if(st>=KI) return 'KI: teto +15%.'; if(x<=(PUT-100)) return 'Piso da put.'; return 'Participa 1:1.'; }
+  var RESEARCH_X=63.4192;
+  var KO_VAR=-10.0, CUPON=5.97;
+  function structureReturn(x){ if (x <= KO_VAR) return x; return CUPON; }
+  function regimeFor(x){ if (x <= KO_VAR) return 'KO: acompanha o ativo.'; return 'Cupom SOC +5.97%.'; }
   function fmtPct(v,d){ d=d==null?1:d; var s=v.toFixed(d).replace('.',','); return (v>0?'+':'')+s+'%'; }
   function xToSvg(x){ return PAD.l+((x-X_MIN)/(X_MAX-X_MIN))*PLOT_W; }
   function yToSvg(y){ return PAD.t+((Y_MAX-y)/(Y_MAX-Y_MIN))*PLOT_H; }
