@@ -4,10 +4,13 @@ from __future__ import annotations
 
 import json
 import math
+import os
 import re
 import shutil
 import ssl
+import stat
 import sys
+import time
 import unicodedata
 import urllib.error
 import urllib.request
@@ -16,6 +19,35 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
 REPO = ROOT.parent
+
+
+def write_out(path: Path, text: str) -> None:
+    """Grava HTML por arquivo temporário. No Windows, abrir o destino direto
+    devolve Errno 22 quando o editor ainda está com o arquivo."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    tmp = path.with_name("." + path.name + ".tmp")
+    tmp.write_text(text, encoding="utf-8")
+    last: Exception | None = None
+    for _ in range(8):
+        try:
+            if path.exists():
+                try:
+                    os.chmod(path, stat.S_IWRITE | stat.S_IREAD)
+                except OSError:
+                    pass
+            os.replace(tmp, path)
+            return
+        except OSError as exc:
+            last = exc
+            time.sleep(0.35)
+    try:
+        tmp.unlink()
+    except OSError:
+        pass
+    raise SystemExit(
+        f"nao consegui gravar {path.name}: {last}. "
+        "Feche essa aba no editor e rode .\\_pub.bat de novo."
+    )
 if str(REPO) not in sys.path:
     sys.path.insert(0, str(REPO))
 OPS = ROOT / "ops"
@@ -2493,6 +2525,7 @@ def _hub_sidebar(active: str) -> str:
     {item("overview", "./index.html", "Overview")}
     {item("empresas", "./empresas.html", "Empresas")}
     {item("estruturas", "./estruturas.html", "Estruturas")}
+    {item("coes", "./coes/index.html", "COEs")}
     {item("educacao", "./educacao.html", "Educacional")}
   </nav>"""
 
@@ -3229,11 +3262,11 @@ def main():
     for slug, cfg in all_ops:
         d = OPS / slug
         d.mkdir(parents=True, exist_ok=True)
-        (d / "index.html").write_text(op_page(cfg), encoding="utf-8")
+        write_out(d / "index.html", op_page(cfg))
 
-    (ROOT / "index.html").write_text(overview_html(sections), encoding="utf-8")
-    (ROOT / "empresas.html").write_text(hub_html(sections), encoding="utf-8")
-    (ROOT / "estruturas.html").write_text(estruturas_html(sections), encoding="utf-8")
+    write_out(ROOT / "index.html", overview_html(sections))
+    write_out(ROOT / "empresas.html", hub_html(sections))
+    write_out(ROOT / "estruturas.html", estruturas_html(sections))
     patch_root_index()
     print("ops", len(all_ops))
     for slug, cfg in all_ops[:5]:
