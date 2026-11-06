@@ -132,7 +132,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
     <h2>Research BTG</h2>
     <a class="research-link" href="https://content.btgpactual.com/research/ativo/AXIA3" target="_blank" rel="noopener">Abrir AXIA3 no Research <span class="arrow" aria-hidden="true">→</span></a>
   </div>
-  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 47,58</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 83,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+74,44%</div></div></div><p class="research-note">Spot do fechamento anterior (04/11/2026) · preço-alvo atualizado em 27/10/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
+  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 47,69</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 83,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+74,04%</div></div></div><p class="research-note">Spot do fechamento anterior (05/11/2026) · preço-alvo atualizado em 05/11/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
 </section>
 
 <div class="main">
@@ -146,12 +146,12 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
           <table class="struct-table">
             <thead><tr><th></th><th>R$</th><th>vs spot</th></tr></thead>
             <tbody>
-              <tr><td>Máximo</td><td><strong>67,84</strong></td><td>+42,6%</td></tr>
-              <tr><td>Mínimo</td><td><strong>46,21</strong></td><td>-2,9%</td></tr>
+              <tr><td>Máximo</td><td><strong>67,84</strong></td><td>+42,3%</td></tr>
+              <tr><td>Mínimo</td><td><strong>46,21</strong></td><td>-3,1%</td></tr>
             </tbody>
           </table>
           <p class="legend-note">
-            Máx./mín. dos últimos ~12 meses (até o Dia D (05/11/2026)).
+            Máx./mín. dos últimos ~12 meses (até o Dia D (06/11/2026)).
             Fonte: Yahoo Finance AXIA3.SA.
           </p>
         </div>
@@ -222,8 +222,8 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
 
 <section class="speech-box insights-box">
   <h2>Insights Research BTG</h2>
-  <ul class="research-bullets"><li>No 2T26, a Axia reportou EBITDA ajustado de R$6,4 bi, alta de 11,9% a/a, em linha com o consenso de R$6,4–6,5 bi, mas abaixo da estimativa do BTG de R$6,7 bi.</li><li>A receita líquida cresceu 4,3%, para R$10,0 bi, e o lucro líquido ajustado somou R$1,7 bi, alta de 34,9% a/a. Em capital, o principal destaque foi o anúncio de mais R$3,7 bi em resgates de Axia7, elevando o total anunciado no 1S26 para…</li><li>A leitura é de forte geração de caixa, baixa alavancagem e potencial de novas distribuições ao longo de 2026, com preferência da companhia por resgatar PNCs em vez de ampliar dividendos além do mínimo no 4T. Na comercialização, a faixa…</li></ul>
-  <p class="research-note">Insights BTG · 04/11/2026 · fonte Research BTG.</p>
+  <ul class="research-bullets"><li>A Axia reportou no 3T26 EBITDA regulatório ajustado de R$6,21 bi, em linha com a estimativa e ~5% acima do 3T25, com margem EBITDA ajustada de 61,9%; a geração sustentou o trimestre, com margem de contribuição de R$3,07 bi ante R$2,8 bi…</li><li>Na linha final, o lucro regulatório somou R$3,37 bi e o lucro líquido IFRS ficou em R$1,1 bi, beneficiados por despesas financeiras líquidas de R$1,6 bi, bem abaixo do esperado, equivalência patrimonial de R$709 mi e imposto de renda de…</li><li>No balanço energético, a exposição a preços em 2027 caiu para 19%–41%, de 27%–43%, com envelope mantido em ~R$200–230/MWh, enquanto em 2028 a exposição ficou em 23%–56% e o envelope subiu para ~R$200–240/MWh, de ~R$190–230/MWh.</li></ul>
+  <p class="research-note">Insights BTG · 05/11/2026 · fonte Research BTG.</p>
 </section>
 
 <p class="footer-alert">
@@ -236,7 +236,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
   var X_MIN=-50,X_MAX=50,Y_MIN=-50,Y_MAX=50;
   var PAD={l:48,t:24,r:48,b:24},VW=600,VH=400;
   var PLOT_W=VW-PAD.l-PAD.r,PLOT_H=VH-PAD.t-PAD.b;
-  var RESEARCH_X=74.4430;
+  var RESEARCH_X=74.0407;
   var PUT=90.0, CALL=124.0, CDI_PERIOD=11.898210;
   function structureReturn(x){ var st=100+x; return st+Math.max(PUT-st,0)-Math.max(st-CALL,0)-100; }
   function regimeFor(x){ if (x <= PUT-100) return 'Piso da put.'; if (x >= CALL-100) return 'Teto da call.'; return 'Participa 1:1.'; }
