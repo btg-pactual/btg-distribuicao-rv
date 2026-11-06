@@ -32,6 +32,9 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Dependências
+        run: pip install openpyxl
+
       - name: Rebuild Prateleira semanal (spot + alvo)
         run: python prateleira/_build.py
 

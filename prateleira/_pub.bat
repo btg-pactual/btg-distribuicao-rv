@@ -25,7 +25,7 @@ type _excel_week.txt
 type _excel_week.txt >> _pub.txt 2>nul
 cd ..
 git fetch origin pages >> prateleira\_pub.txt 2>&1
-git add prateleira/_build.py prateleira/_excel_week.py prateleira/_pub.bat prateleira/index.html prateleira/empresas.html prateleira/estruturas.html prateleira/educacao.html prateleira/ops/ prateleira/research_targets.json prateleira/operacoes/ prateleira/leituras/ ops/range_52w.json
+git add prateleira/_build.py prateleira/_excel_week.py prateleira/_pub.bat prateleira/index.html prateleira/empresas.html prateleira/estruturas.html prateleira/educacao.html prateleira/ops/ prateleira/research_targets.json prateleira/operacoes/ prateleira/leituras/ ops/range_52w.json .github/workflows/prateleira-research-daily.yml
 git add prateleira/Material-Prateleira-Tatica-*.pdf 2>nul
 git add -u -- prateleira/
 echo Prateleira: atualiza o hub.> prateleira\_commit_msg.txt

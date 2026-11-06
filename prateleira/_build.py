@@ -3142,8 +3142,12 @@ def main():
                 print("week_moves_fail", exc)
             (ROOT / "_excel_week.txt").write_text(text, encoding="utf-8")
             print("excel_sheet", week.sheet, "ref", REF.isoformat(), "n", n_ops)
+        else:
+            raise SystemExit("excel_fail — aba da semana não carregou; hub não gerado")
+    except SystemExit:
+        raise
     except Exception as exc:
-        print("excel_fail", exc)
+        raise SystemExit(f"excel_fail {exc} — hub não gerado") from exc
 
     ok_pdf = copy_pdf()
     print("pdf_copied", ok_pdf)
