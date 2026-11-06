@@ -123,7 +123,7 @@ input[type=range]{width:100%;accent-color:var(--navy);margin-top:6px}
       <div class="mast-top">
         <div>
           <h1>Nasdaq-100</h1>
-          <p class="lead">Três anos. O capital volta no vencimento. Se o índice sobe, a alta passa inteira, sem teto.</p>
+          <p class="lead">Três anos. Capital protegido se o índice desvalorizar. Na alta, o ganho é ilimitado.</p>
         </div>
         <div class="level">
           <b id="level">—</b>
@@ -132,8 +132,8 @@ input[type=range]{width:100%;accent-color:var(--navy);margin-top:6px}
       </div>
       <ul class="facts">
         <li><span>Prazo</span><b>3 anos</b></li>
-        <li><span>Proteção</span><b>Capital no vencimento</b></li>
-        <li><span>Alta</span><b>Sem limitador</b></li>
+        <li><span>Proteção</span><b>Se o índice cair</b></li>
+        <li><span>Alta</span><b>Ilimitada</b></li>
         <li><span>Participação</span><b>100% da alta</b></li>
       </ul>
     </section>
@@ -143,8 +143,8 @@ input[type=range]{width:100%;accent-color:var(--navy);margin-top:6px}
       <p class="hint">A conta é a variação percentual do NDX. Não é uma opção com barreira.</p>
       <ol class="rule">
         <li><b>Mede o índice</b><span>Compara o NDX do vencimento com o nível do início.</span></li>
-        <li><b>Se subiu</b><span>O COE paga o capital mais essa alta. Não há teto.</span></li>
-        <li><b>Se caiu</b><span>Devolve o capital. A proteção vale nesse dia, não no meio do caminho.</span></li>
+        <li><b>Se subiu</b><span>Acompanha a alta do índice, sem limite.</span></li>
+        <li><b>Se caiu</b><span>O capital fica protegido. Isso vale no vencimento, não no meio do caminho.</span></li>
       </ol>
     </section>
 
@@ -619,7 +619,7 @@ input[type=range]{width:100%;accent-color:var(--navy);margin-top:6px}
     var amount = Math.max(0, Number(document.getElementById("amount").value) || 0);
     document.getElementById("when").textContent = label(w.y, w.m) + "  →  " + label(w.ey, w.em);
     var order = [
-      ["coe", "COE Nasdaq-100", w.coe, w.coe < 0.0005 ? "Capital de volta" : "Alta sem teto"],
+      ["coe", "COE Nasdaq-100", w.coe, w.coe < 0.0005 ? "Capital protegido" : "Alta ilimitada"],
       ["ndx", "Ficar no NDX", w.ndx, "O índice, com a queda"],
       ["spx", "S&P 500", w.spx, "Mesma janela"],
       ["ewz", "EWZ", w.ewz, "Brasil em dólar"],
