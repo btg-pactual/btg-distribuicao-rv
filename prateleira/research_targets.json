@@ -30,8 +30,8 @@
   "AXIA3": {
     "ticker": "AXIA3",
     "url": "https://content.btgpactual.com/research/ativo/AXIA3",
-    "price": 47.69,
-    "last_trade": "2026-11-05T21:05:50",
+    "price": 48.29,
+    "last_trade": "2026-11-06T22:34:57",
     "sector": "Serviços Básicos",
     "company": "Axia Energia",
     "rec": "COMPRA",
@@ -45,7 +45,7 @@
       "No balanço energético, a exposição a preços em 2027 caiu para 19%–41%, de 27%–43%, com envelope mantido em ~R$200–230/MWh, enquanto em 2028 a exposição ficou em 23%–56% e o envelope subiu para ~R$200–240/MWh, de ~R$190–230/MWh."
     ],
     "summary_date": "2026-11-05 12:39:17.605811+00:00",
-    "upside": 74.04067938771233
+    "upside": 71.87823565955685
   },
   "WEGE3": {
     "ticker": "WEGE3",
@@ -198,8 +198,8 @@
   "VALE3": {
     "ticker": "VALE3",
     "url": "https://content.btgpactual.com/research/ativo/VALE3",
-    "price": 62.67,
-    "last_trade": "2026-11-05T21:05:52",
+    "price": 64.04,
+    "last_trade": "2026-11-06T22:27:39",
     "sector": "Mineração & Siderurgia",
     "company": "Vale",
     "rec": "COMPRA",
@@ -213,7 +213,7 @@
       "A dívida líquida expandida caiu para US$16,4 bi, ainda acima do nível de conforto de US$15 bi, o que limita dividendos extraordinários no curto prazo. Em minério, a produção de 2026 deve ficar no piso do guidance de 335–345 Mt, enquanto…"
     ],
     "summary_date": "2026-10-30 09:30:14.558334+00:00",
-    "upside": 43.60938247965534
+    "upside": 40.53716427232978
   },
   "EMBJ3": {
     "ticker": "EMBJ3",
@@ -274,8 +274,8 @@
   "ROXO34": {
     "ticker": "ROXO34",
     "url": "https://content.btgpactual.com/research/ativo/ROXO34",
-    "price": 10.79,
-    "last_trade": "2026-11-05T21:07:00",
+    "price": 11.01,
+    "last_trade": "2026-11-06T21:08:59",
     "sector": "Financeiro",
     "company": "Nubank",
     "rec": "COMPRA",
@@ -289,7 +289,7 @@
       "A qualidade dos ativos mostrou sinais mistos, com inadimplência inicial em queda de 20 bps t/t, mas NPL acima de 90 dias em 6,9%, alta de 40 bps t/t; ainda assim, as provisões recuaram 14% t/t para US$1,48 bi, levando o NIM ajustado ao…"
     ],
     "summary_date": "2026-10-27 17:48:30.579608+00:00",
-    "upside": 94.62465245597778
+    "upside": 90.73569482288828
   },
   "GOGL34": {
     "ticker": "GOGL34",
