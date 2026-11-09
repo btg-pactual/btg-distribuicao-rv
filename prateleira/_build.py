@@ -377,6 +377,9 @@ SECTOR_FALLBACK = {
     "VIVT3": "Telecom",
     "RADL3": "Varejo / Farmácia",
     "SUZB3": "Papel & Celulose",
+    "VALE3": "Mineração",
+    "MOTV3": "Transporte / Infraestrutura",
+    "RDOR3": "Saúde",
 }
 COMPANY_FALLBACK = {
     "SPCX34": "SPDR S&P 500",
@@ -413,6 +416,9 @@ COMPANY_FALLBACK = {
     "SUZB3": "Suzano",
     "TEND3": "Construtora Tenda",
     "PRIO3": "Prio",
+    "VALE3": "Vale",
+    "MOTV3": "Motiva",
+    "RDOR3": "Rede D'Or",
 }
 
 
@@ -1107,6 +1113,98 @@ def make_soc(t, fixing, strike, ko, _bid, backtest=None, prazo_dc=None):
         "js_const": f"var KO_VAR={ko_var}, CUPON={cupom};",
         "js_fn": "if (x <= KO_VAR) return x; return CUPON;",
         "js_regime": f"if (x <= KO_VAR) return 'KO: acompanha o ativo.'; return 'Cupom SOC +{cupom:.2f}%.';",
+    }
+
+
+def make_car(t, fixing, put_strike, ko_down, call_strike, ko_up, _bid):
+    """Cupom Alto Retorno: SOC + call KO de alta. Bid não entra no payoff nem na página.
+
+    Abaixo da barreira de queda, acompanha o ativo. No meio, cupom (strike da put − 100)
+    e, acima do strike da call, soma essa alta. No KO de alta a call sai e fica só o cupom.
+    """
+    prazo_dc = max(1, (fixing - REF).days)
+    prazo = f"{prazo_dc}dc"
+    venc = fixing.strftime("%d/%m/%Y")
+    dn_var = round(ko_down - 100, 2)
+    up_var = round(ko_up - 100, 2)
+    call_k = round(call_strike - 100, 2)
+    cupom = round(put_strike - 100, 2)
+    peak = round(cupom + (up_var - call_k), 2)
+    slug = slugify("car", t, prazo)
+    put_lbl, dn_lbl = fmt_lvl(put_strike), fmt_lvl(ko_down)
+    call_lbl, up_lbl = fmt_lvl(call_strike), fmt_lvl(ko_up)
+    cupom_lbl = f"+{cupom:.2f}%"
+    peak_lbl = fmt_pct(peak)
+    return slug, {
+        "title": f"Cupom Alto Retorno {t}",
+        "h1": "Cupom Alto Retorno",
+        "ticker": t,
+        "dot": "CAR",
+        "brand": "#9a3412",
+        "subtitle": (
+            f"Cupom de {cupom_lbl} em {t} se a barreira de {dn_lbl} não for atingida. "
+            f"Até o KO de alta em {up_lbl}, soma a alta acima de {call_lbl}. "
+            f"No KO de alta, a call sai e fica só o cupom. Abaixo de {dn_lbl}, acompanha o ativo."
+        ),
+        "pills": [
+            ("Ativo", t),
+            ("Prazo", prazo),
+            ("Vencimento", venc),
+            ("Cupom", f"{cupom:.2f}%"),
+            ("KO queda", dn_lbl),
+            ("KO alta", up_lbl),
+        ],
+        "highlights": [
+            ("Prazo", prazo, f"Vencimento {venc}"),
+            ("Cupom", cupom_lbl, f"Se a barreira de {dn_lbl} não for atingida"),
+            ("Até o KO", peak_lbl, f"Cupom + alta acima de {call_lbl}, até {up_lbl}"),
+            ("No KO de alta", cupom_lbl, f"Call nocauteada em {up_lbl}"),
+            ("KO de queda", dn_lbl, f"Abaixo de {dn_var:.0f}%: acompanha o ativo"),
+        ],
+        "struct": [
+            ('<span class="tag b">B</span> Put KO', f"{put_lbl} · barreira {dn_lbl}"),
+            ('<span class="tag s">S</span> Call KO', f"{put_lbl} · barreira {dn_lbl}"),
+            ('<span class="tag b">B</span> Call KO', f"{call_lbl} · barreira {up_lbl}"),
+        ],
+        "zones": [
+            (f"≤ {dn_var:.0f}%", "Put e call de baixa nocauteados — acompanha o ativo 1:1."),
+            (f"{dn_var:.0f}% → {fmt_pct(call_k) if call_k else '0%'}", f"Cupom fixo {cupom_lbl}."),
+            (f"{fmt_pct(call_k) if call_k else '0%'} → {fmt_pct(up_var)}", f"Cupom + a alta acima de {call_lbl} (máx. {peak_lbl})."),
+            (f"≥ {fmt_pct(up_var)}", f"KO de alta ({up_lbl}): a call sai e fica só o cupom {cupom_lbl}."),
+        ],
+        "regime0": f"Entre as barreiras: cupom {cupom_lbl}, mais a alta até {up_lbl}.",
+        "speech": [
+            (
+                "Para quem",
+                f"Cliente que quer cupom em {t} e ainda participar da alta até {up_lbl}, aceitando ficar com o ativo se cair além de {dn_lbl}.",
+            ),
+            (
+                "Como encaixa",
+                f"Cupom Alto Retorno · {prazo} (venc. {venc}). Sem KO de queda: cupom {cupom_lbl}. "
+                f"Acima de {call_lbl} e antes de {up_lbl}: soma a alta. No KO de alta, volta ao cupom. "
+                f"Abaixo de {dn_lbl}: acompanha o ativo.",
+            ),
+            ("Fechamento", "Material de uso interno — condições no DIE."),
+        ],
+        "x_min": -30,
+        "x_max": max(40, int(math.ceil(ko_up)) + 15),
+        "y_min": -30,
+        "y_max": max(40, int(math.ceil(peak / 5.0) * 5) + 10),
+        "js_const": f"var KO_DN={dn_var}, KO_UP={up_var}, CALL_K={call_k}, CUPON={cupom}, PEAK={peak};",
+        "js_fn": "if (x <= KO_DN) return x; if (x >= KO_UP) return CUPON; if (x <= CALL_K) return CUPON; return CUPON + (x - CALL_K);",
+        "js_regime": (
+            "if (x <= KO_DN) return 'KO de queda: acompanha o ativo.'; "
+            "if (x >= KO_UP) return 'KO de alta: fica só o cupom +'+CUPON.toFixed(2).replace('.',',')+'%.'; "
+            "if (x <= CALL_K) return 'Cupom +'+CUPON.toFixed(2).replace('.',',')+'%.'; "
+            "return 'Cupom + a alta, até '+PEAK.toFixed(2).replace('.',',')+'%.';"
+        ),
+        "js_build": """
+    for (var x = X_MIN; x <= KO_DN; x += 0.5) add(x, x);
+    for (var x2 = KO_DN + 0.5; x2 < KO_UP; x2 += 0.5) add(x2, structureReturn(x2));
+    add(KO_UP - 0.01, PEAK);
+    add(KO_UP, CUPON);
+    for (var x3 = KO_UP + 0.5; x3 <= X_MAX; x3 += 0.5) add(x3, CUPON);
+""",
     }
 
 
@@ -2284,6 +2382,11 @@ SECTION_META = {
         "blurb": "Stock or Coupon: recebe cupom se a barreira não for atingida; senão, entrega o ativo.",
         "color": "#0d6e6e",
     },
+    "Cupom Alto Retorno": {
+        "id": "car",
+        "blurb": "Cupom se a queda não atingir a barreira, mais a alta até o KO de cima. No KO de alta, fica só o cupom.",
+        "color": "#9a3412",
+    },
     "Smart Hedge": {
         "id": "smart-hedge",
         "blurb": "Proteção com piso na queda e participação 1:1 até a barreira KI.",
@@ -3115,6 +3218,7 @@ def main():
     pop_row = POP
     ot_rows = ONE_TOUCH
     put_fin_rows = PUT_FIN
+    car_rows: list = []
     try:
         from _excel_week import (
             ensure_put_financiada_bova11,
@@ -3140,6 +3244,7 @@ def main():
             pop_row = week.POP
             ot_rows = week.ONE_TOUCH
             put_fin_rows = week.PUT_FIN or (PUT_FIN if week.sheet == "03.11.26" else [])
+            car_rows = week.CAR
             n_ops = (
                 len(week.SOC)
                 + len(week.SMART)
@@ -3152,6 +3257,7 @@ def main():
                 + (1 if week.POP else 0)
                 + len(week.ONE_TOUCH)
                 + len(put_fin_rows)
+                + len(car_rows)
             )
             if n_ops == 0:
                 raise SystemExit(f"excel_empty sheet={week.sheet} — nenhuma operação lida")
@@ -3195,6 +3301,7 @@ def main():
         all_ops.extend(items)
 
     add_section("SOC", [make_soc(*r) for r in soc_rows])
+    add_section("Cupom Alto Retorno", [make_car(*r) for r in car_rows])
     add_section("Smart Hedge", [make_sh(*r) for r in smart_rows])
     add_section("Aceleradora Dinâmica", [make_acel(*r) for r in acel_dyn_rows])
     add_section("Aceleradora KO com Ativo", [make_acel_ko_ativo(*r) for r in acel_rows])

@@ -101,6 +101,8 @@ def _section_key(cell0: str | None) -> str | None:
         return "one_touch"
     if "PUT FINANCIADA" in n:
         return "put_fin"
+    if "CUPOM ALTO" in n or n.endswith(" CAR") or n == "CAR":
+        return "car"
     return None
 
 
@@ -119,6 +121,7 @@ class WeekData:
     POP: tuple | None
     ONE_TOUCH: list
     PUT_FIN: list
+    CAR: list
 
 
 def _parse_ws(ws, sheet_name: str, ref: date) -> WeekData:
@@ -134,6 +137,7 @@ def _parse_ws(ws, sheet_name: str, ref: date) -> WeekData:
     pop: tuple | None = None
     one_touch: list = []
     put_fin: list = []
+    car: list = []
 
     for row in ws.iter_rows(values_only=True):
         cells = [c for c in row if c is not None and str(c).strip() != ""]
@@ -243,6 +247,15 @@ def _parse_ws(ws, sheet_name: str, ref: date) -> WeekData:
             put_fin.append(
                 (ticker, fixing, pct(rest[0]), pct(rest[1]), pct(rest[2]), bid_pct(rest[3]))
             )
+        elif section == "car":
+            # B PUT KO | KO | S CALL KO | KO | B CALL KO | KO | BID — bid não vai para o HTML.
+            if len(rest) < 7:
+                continue
+            put_k, ko_dn = pct(rest[0]), pct(rest[1])
+            call_k, ko_up = pct(rest[4]), pct(rest[5])
+            if None in (put_k, ko_dn, call_k, ko_up):
+                continue
+            car.append((ticker, fixing, put_k, ko_dn, call_k, ko_up, bid_pct(rest[6])))
 
     return WeekData(
         sheet=sheet_name,
@@ -258,6 +271,7 @@ def _parse_ws(ws, sheet_name: str, ref: date) -> WeekData:
         POP=pop,
         ONE_TOUCH=one_touch,
         PUT_FIN=put_fin,
+        CAR=car,
     )
 
 
@@ -307,6 +321,7 @@ def load_previous_week() -> WeekData | None:
 
 _KIND_ORDER = (
     ("SOC", "SOC", "SOC"),
+    ("CAR", "Cupom Alto Retorno", "CAR"),
     ("SMART", "Smart Hedge", "SMART"),
     ("ACEL_DYN", "Aceleradora Dinâmica", "ACEL_DYN"),
     ("ACEL_KO", "Aceleradora KO com Ativo", "ACEL_KO"),
@@ -418,6 +433,7 @@ def summary(w: WeekData) -> str:
         f"POP={1 if w.POP else 0}",
         f"ONE_TOUCH={len(w.ONE_TOUCH)}",
         f"PUT_FIN={len(w.PUT_FIN)}",
+        f"CAR={len(w.CAR)}",
     ]
     for t, fixing, strike, ko, *_rest in w.SOC:
         lines.append(f"SOC\t{t} {fixing.isoformat()} strike={strike} ko={ko}")
@@ -427,6 +443,10 @@ def summary(w: WeekData) -> str:
         lines.append(f"ACEL_DYN\t{t} {fixing.isoformat()} ko_alta={ko_h} ko_baixa={ko_l}")
     for t, fixing, stk, ko, rebate, offer in w.CALL_KO:
         lines.append(f"CALL_KO\t{t} {fixing.isoformat()} stk={stk} ko={ko} rebate={rebate} offer={offer}")
+    for t, fixing, put_k, ko_dn, call_k, ko_up, _bid in w.CAR:
+        lines.append(
+            f"CAR\t{t} {fixing.isoformat()} put={put_k} ko_baixa={ko_dn} call={call_k} ko_alta={ko_up}"
+        )
     for t, fixing, buy_call, buy_put, sell_call, _bid in w.PUT_FIN:
         lines.append(
             f"PUT_FIN\t{t} {fixing.isoformat()} call={buy_call} put={buy_put} sell={sell_call}"
