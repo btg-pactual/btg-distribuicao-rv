@@ -49,7 +49,6 @@ a{color:var(--link)}
 canvas{width:100%;display:block;margin-top:8px}
 #hist{height:320px}
 #cmp{height:260px}
-#wins{height:220px}
 .tip{margin-top:6px;font-size:13px;color:#374151;min-height:1.2em}
 .legend{display:flex;flex-wrap:wrap;gap:8px 16px;margin-top:8px;font-size:12px;color:#374151}
 .sw{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:-1px}
@@ -182,11 +181,9 @@ input[type=range]{width:100%;accent-color:var(--navy);margin-top:6px}
 
     <section class="card">
       <h2>Todas as janelas de 3 anos</h2>
-      <p class="hint">Cada ponto é uma entrada e o resultado três anos depois. A linha verde é o COE. Onde o índice cai, ela fica em zero.</p>
+      <p class="hint">Cada número é uma entrada e o resultado três anos depois.</p>
       <div class="stats" id="stats"></div>
       <div class="avgs" id="avgs"></div>
-      <canvas id="wins" aria-label="Resultado de todas as janelas de três anos"></canvas>
-      <p class="tip" id="winTip"></p>
     </section>
 
     <div class="cols block">
@@ -388,7 +385,6 @@ input[type=range]{width:100%;accent-color:var(--navy);margin-top:6px}
   var hi = 0;
   var histCanvas = document.getElementById("hist");
   var cmpCanvas = document.getElementById("cmp");
-  var winCanvas = document.getElementById("wins");
 
   function histRows() {
     var end = series.ndx[series.ndx.length - 1];
@@ -562,55 +558,6 @@ input[type=range]{width:100%;accent-color:var(--navy);margin-top:6px}
     ctx.fillText(label(sel.ey, sel.em), box.w - padR, box.h - padB + 8);
   }
 
-  function drawWins() {
-    var box = setup(winCanvas);
-    var ctx = box.ctx;
-    ctx.clearRect(0, 0, box.w, box.h);
-    if (!wins.length) return;
-    var vals = [];
-    wins.forEach(function (w) { vals.push(w.ndx * 100, w.coe * 100); });
-    var scale = nice(Math.min.apply(null, vals), Math.max.apply(null, vals));
-    var padL = 42, padR = 12, padT = 12, padB = 22;
-    function yOf(v) {
-      return padT + (box.h - padT - padB) * (1 - (v - scale.lo) / (scale.hi - scale.lo));
-    }
-    ctx.font = "11px sans-serif";
-    ctx.textAlign = "right";
-    ctx.textBaseline = "middle";
-    scale.ticks.forEach(function (tick) {
-      var yy = yOf(tick);
-      ctx.strokeStyle = Math.abs(tick) < 0.01 ? "#94a3b8" : "#e5e7eb";
-      ctx.beginPath();
-      ctx.moveTo(padL, yy);
-      ctx.lineTo(box.w - padR, yy);
-      ctx.stroke();
-      ctx.fillStyle = "#6b7280";
-      ctx.fillText((tick > 0 ? "+" : "") + Math.round(tick) + "%", padL - 6, yy);
-    });
-    function stroke(getter, color, width) {
-      ctx.beginPath();
-      wins.forEach(function (w, i) {
-        var x = xOf(i, wins.length, padL, padR, box.w);
-        var y = yOf(getter(w) * 100);
-        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
-      });
-      ctx.strokeStyle = color;
-      ctx.lineWidth = width;
-      ctx.stroke();
-    }
-    stroke(function (w) { return w.ndx; }, COLORS.ndx, 1.5);
-    stroke(function (w) { return w.coe; }, COLORS.coe, 2);
-    var selI = Number(document.getElementById("start").value) || 0;
-    var x = xOf(selI, wins.length, padL, padR, box.w);
-    ctx.strokeStyle = "#0F2A5C";
-    ctx.lineWidth = 1;
-    ctx.beginPath();
-    ctx.moveTo(x, padT);
-    ctx.lineTo(x, box.h - padB);
-    ctx.stroke();
-    winCanvas._geom = { padL: padL, padR: padR };
-  }
-
   function render() {
     var i = Number(document.getElementById("start").value) || 0;
     if (i < 0) i = 0;
@@ -662,9 +609,7 @@ input[type=range]{width:100%;accent-color:var(--navy);margin-top:6px}
     }).join("");
     drawHist();
     drawCmp();
-    drawWins();
     document.getElementById("histTip").textContent = "Último ponto da série: " + pts(last[2]) + " em " + label(last[0], last[1]) + ".";
-    document.getElementById("winTip").textContent = "Janela marcada: " + label(w.y, w.m) + ". NDX " + pct(w.ndx) + ". COE " + pct(w.coe) + ".";
   }
 
   var slider = document.getElementById("start");
@@ -693,16 +638,6 @@ input[type=range]{width:100%;accent-color:var(--navy);margin-top:6px}
     if (i > n - 1) i = n - 1;
     var r = rows[i];
     document.getElementById("histTip").textContent = label(r[0], r[1]) + " · " + pts(r[2]) + " pontos";
-  });
-  winCanvas.addEventListener("click", function (ev) {
-    var geom = winCanvas._geom;
-    if (!geom || !wins.length) return;
-    var span = winCanvas.clientWidth - geom.padL - geom.padR;
-    var i = Math.round((ev.offsetX - geom.padL) / span * (wins.length - 1));
-    if (i < 0) i = 0;
-    if (i > wins.length - 1) i = wins.length - 1;
-    slider.value = String(i);
-    render();
   });
   window.addEventListener("resize", render);
   render();
