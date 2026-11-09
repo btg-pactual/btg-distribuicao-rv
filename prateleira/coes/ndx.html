@@ -68,12 +68,6 @@ input[type=range]{width:100%;accent-color:var(--navy);margin-top:6px}
 .up{color:var(--up)}
 .down{color:var(--down)}
 .flat{color:var(--navy)}
-.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:14px}
-.stat{border:1px solid var(--line);padding:10px 12px;background:#fafbfc}
-.stat span{display:block;font-size:11px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;color:var(--muted)}
-.stat b{display:block;margin-top:3px;font-size:16px;font-weight:700}
-.avgs{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:12px;font-size:13px}
-.avgs b{font-variant-numeric:tabular-nums}
 .note{margin-top:12px;font-size:12px;color:var(--muted);line-height:1.45}
 .warn{margin-top:12px;background:#fff8eb;border:1px solid #f0e0c0;padding:10px 12px;font-size:13px;color:#5c4a28}
 .cols{display:grid;grid-template-columns:1.1fr .9fr;gap:16px}
@@ -94,7 +88,7 @@ input[type=range]{width:100%;accent-color:var(--navy);margin-top:6px}
   .nav-item{border-left:0;border-bottom:2px solid transparent;white-space:nowrap;padding:8px 12px}
   .nav-item.active{border-bottom-color:var(--navy)}
   .main{padding:20px 16px 48px}
-  .mast-top,.sim,.rule,.facts,.stats,.cols,.outs{grid-template-columns:1fr}
+  .mast-top,.sim,.rule,.facts,.cols,.outs{grid-template-columns:1fr}
   .out.coe{grid-column:auto}
   .level{text-align:left;margin-top:12px}
   .bars li{grid-template-columns:108px 1fr 48px}
@@ -179,13 +173,6 @@ input[type=range]{width:100%;accent-color:var(--navy);margin-top:6px}
       <p class="note">A variação é a do próprio indicador, sem câmbio. NDX, S&amp;P 500 e Ibovespa são índice de preço. EWZ entra com o preço ajustado por dividendo. O piso do COE só existe no vencimento: antes disso, o certificado pode valer menos que o capital. A proteção é obrigação do emissor.</p>
     </section>
 
-    <section class="card">
-      <h2>Todas as janelas de 3 anos</h2>
-      <p class="hint">Cada número é uma entrada e o resultado três anos depois.</p>
-      <div class="stats" id="stats"></div>
-      <div class="avgs" id="avgs"></div>
-    </section>
-
     <div class="cols block">
       <section class="card about">
         <h2>O índice</h2>
@@ -259,11 +246,6 @@ input[type=range]{width:100%;accent-color:var(--navy);margin-top:6px}
   }
   function pts(n) {
     return n.toLocaleString("pt-BR", { maximumFractionDigits: n < 200 ? 2 : 0 });
-  }
-  function avg(xs) {
-    var v = xs.filter(function (x) { return x != null && isFinite(x); });
-    if (!v.length) return null;
-    return v.reduce(function (a, b) { return a + b; }, 0) / v.length;
   }
   function setup(canvas) {
     var dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -586,26 +568,6 @@ input[type=range]{width:100%;accent-color:var(--navy);margin-top:6px}
       ["coe", "COE no vencimento"]
     ].map(function (it) {
       return "<span><i class='sw' style='background:" + COLORS[it[0]] + "'></i>" + it[1] + "</span>";
-    }).join("");
-    var neg = wins.filter(function (item) { return item.ndx < 0; }).length;
-    var worst = wins.reduce(function (a, b) { return a.ndx < b.ndx ? a : b; });
-    var best = wins.reduce(function (a, b) { return a.ndx > b.ndx ? a : b; });
-    document.getElementById("stats").innerHTML = [
-      ["Janelas", String(wins.length)],
-      ["NDX negativo", neg + " de " + wins.length],
-      ["Pior NDX", pct(worst.ndx) + " · " + label(worst.y, worst.m)],
-      ["Melhor NDX", pct(best.ndx) + " · " + label(best.y, best.m)]
-    ].map(function (s) {
-      return "<div class='stat'><span>" + s[0] + "</span><b>" + s[1] + "</b></div>";
-    }).join("");
-    document.getElementById("avgs").innerHTML = [
-      ["COE", avg(wins.map(function (item) { return item.coe; }))],
-      ["NDX", avg(wins.map(function (item) { return item.ndx; }))],
-      ["S&P 500", avg(wins.map(function (item) { return item.spx; }))],
-      ["EWZ", avg(wins.map(function (item) { return item.ewz; }))],
-      ["Ibovespa", avg(wins.map(function (item) { return item.ibov; }))]
-    ].map(function (s) {
-      return "<span>Média " + s[0] + " <b class='" + pctClass(s[1]) + "'>" + pct(s[1]) + "</b></span>";
     }).join("");
     drawHist();
     drawCmp();
