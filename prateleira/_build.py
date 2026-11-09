@@ -1157,7 +1157,7 @@ def make_car(t, fixing, put_strike, ko_down, call_strike, ko_up, _bid):
         "highlights": [
             ("Prazo", prazo, f"Vencimento {venc}"),
             ("Cupom", cupom_lbl, f"Se a barreira de {dn_lbl} não for atingida"),
-            ("Até o KO", peak_lbl, f"Cupom + alta acima de {call_lbl}, até {up_lbl}"),
+            ("Até o KO", peak_lbl, "Ganho máximo"),
             ("No KO de alta", cupom_lbl, f"Call nocauteada em {up_lbl}"),
             ("KO de queda", dn_lbl, f"Abaixo de {dn_var:.0f}%: acompanha o ativo"),
         ],
@@ -1187,7 +1187,7 @@ def make_car(t, fixing, put_strike, ko_down, call_strike, ko_up, _bid):
             ("Fechamento", "Material de uso interno — condições no DIE."),
         ],
         "x_min": -30,
-        "x_max": max(40, int(math.ceil(ko_up)) + 15),
+        "x_max": max(40, int(math.ceil(up_var)) + 15),
         "y_min": -30,
         "y_max": max(40, int(math.ceil(peak / 5.0) * 5) + 10),
         "js_const": f"var KO_DN={dn_var}, KO_UP={up_var}, CALL_K={call_k}, CUPON={cupom}, PEAK={peak};",
@@ -1196,7 +1196,7 @@ def make_car(t, fixing, put_strike, ko_down, call_strike, ko_up, _bid):
             "if (x <= KO_DN) return 'KO de queda: acompanha o ativo.'; "
             "if (x >= KO_UP) return 'KO de alta: fica só o cupom +'+CUPON.toFixed(2).replace('.',',')+'%.'; "
             "if (x <= CALL_K) return 'Cupom +'+CUPON.toFixed(2).replace('.',',')+'%.'; "
-            "return 'Cupom + a alta, até '+PEAK.toFixed(2).replace('.',',')+'%.';"
+            "return 'Ganho máximo +'+PEAK.toFixed(2).replace('.',',')+'%.';"
         ),
         "js_build": """
     for (var x = X_MIN; x <= KO_DN; x += 0.5) add(x, x);
@@ -1620,6 +1620,7 @@ def make_call_ko(t, fixing, call_strike, ko_pct, rebate, cost):
         )
     ko_net = rebate - cost
     ko_prem = (ko_net / cost) * 100
+    ko_prem_s = f"+{ko_prem:.0f}%"
     ko_net_s = f"{ko_net:.2f}".replace(".", ",")
 
     matrix_html = f"""
@@ -1627,8 +1628,7 @@ def make_call_ko(t, fixing, call_strike, ko_pct, rebate, cost):
     <h2>Matriz de ganho (só prêmio)</h2>
     <p class="matrix-note">
       Prêmio pago: <strong>{cost_s}%</strong>.
-      No KO, o resultado é <strong>+{ko_net_s}%</strong> — isso equivale a
-      <strong>+{ko_prem:.0f}%</strong> sobre o prêmio.
+      No KO, o rebate é <strong>{ko_prem_s}</strong> sobre o prêmio.
       Se a call terminar OTM, perde o prêmio (<strong>−100%</strong>).
     </p>
     <table class="struct-table">
@@ -1648,25 +1648,25 @@ def make_call_ko(t, fixing, call_strike, ko_pct, rebate, cost):
         "brand": "#c0392b",
         "subtitle": (
             f"Call up-and-out {t} strike {strike_lbl}: participa da alta até a barreira; no KO recebe rebate. "
-            f"Prêmio {cost_s}% → no KO rentabilidade de +{ko_prem:.0f}% sobre o prêmio."
+            f"Prêmio {cost_s}% → no KO o rebate vale {ko_prem_s} sobre o prêmio."
         ),
         "pills": [
             ("Ativo", t),
             ("Prazo", prazo),
             ("Strike", strike_lbl),
             ("KO", ko_lbl),
-            ("Rebate", reb_s),
+            ("Rebate", f"{ko_prem_s} do prêmio"),
             ("Preço", f"{cost_s}%"),
         ],
         "highlights": [
             ("Prazo", prazo, ""),
             ("Sem KO", f"Alta − strike − {cost_s}%", f"Call {strike_lbl}"),
-            ("No KO", f"+{ko_net_s}%", f"+{ko_prem:.0f}% sobre o prêmio"),
+            ("No KO", ko_prem_s, "Sobre o prêmio"),
             ("Risco", "−100%", "Sobre o prêmio (OTM)"),
         ],
         "struct": [
             ('<span class="tag b">B</span> Call KO', f"{strike_lbl} · barreira {ko_lbl}"),
-            ("Rebate", reb_s),
+            ("Rebate", f"{ko_prem_s} sobre o prêmio"),
             ("Preço (offer)", f"{cost_s}%"),
         ],
         "zones": [
@@ -1676,7 +1676,7 @@ def make_call_ko(t, fixing, call_strike, ko_pct, rebate, cost):
             ),
             (
                 f"≥ +{ko:.0f}%",
-                f"Rebate líquido +{ko_net_s}% no nocional → +{ko_prem:.0f}% sobre o prêmio.",
+                f"Rebate de {ko_prem_s} sobre o prêmio.",
             ),
             ("Abaixo do strike", f"OTM: −{cost_s}% nocional = −100% sobre o prêmio."),
         ],
@@ -1685,8 +1685,8 @@ def make_call_ko(t, fixing, call_strike, ko_pct, rebate, cost):
             ("Para quem", f"Cliente construtivo em {t} no curto prazo ({prazo}) que quer call com rebate se KO."),
             (
                 "Como encaixa",
-                f"Call KO {strike_lbl}/{ko_lbl} · rebate {reb_s} · preço {cost_s}%. "
-                f"No KO: +{ko_net_s}% no nocional = +{ko_prem:.0f}% sobre o prêmio. "
+                f"Call KO {strike_lbl}/{ko_lbl} · preço {cost_s}%. "
+                f"No KO: rebate de {ko_prem_s} sobre o prêmio. "
                 f"Na queda, perda limitada a −100% do prêmio.",
             ),
             ("Fechamento", "Material de uso interno — condições no DIE."),
@@ -1703,7 +1703,7 @@ def make_call_ko(t, fixing, call_strike, ko_pct, rebate, cost):
         "js_fn": "if (x >= KO) return REB - COST; return Math.max(x - STRIKE, 0) - COST;",
         "js_regime": (
             "var rp=(structureReturn(x)/COST)*100; "
-            "if (x >= KO) return 'KO: rebate líquido +'+(REB-COST).toFixed(2).replace('.',',')+'% no nocional · '+rp.toFixed(0)+'% sobre o prêmio.'; "
+            "if (x >= KO) return 'KO: rebate de '+rp.toFixed(0)+'% sobre o prêmio.'; "
             "if (x > STRIKE) return 'Call ITM: '+structureReturn(x).toFixed(1).replace('.',',')+'% nocional · '+rp.toFixed(0)+'% sobre o prêmio.'; "
             "return 'OTM: −'+COST.toFixed(2).replace('.',',')+'% nocional · −100% sobre o prêmio.';"
         ),

@@ -125,14 +125,14 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
   </div>
   <div class="meta-pills"><div class="pill"><strong>Ativo</strong> MOTV3</div><div class="pill"><strong>Prazo</strong> 43dc</div><div class="pill"><strong>Vencimento</strong> 22/12/2026</div><div class="pill"><strong>Cupom</strong> 3.50%</div><div class="pill"><strong>KO queda</strong> 90%</div><div class="pill"><strong>KO alta</strong> 113,30%</div></div>
 </header>
-<section class="highlights"><div class="hi"><h3>Prazo</h3><p>43dc<span>Vencimento 22/12/2026</span></p></div><div class="hi"><h3>Cupom</h3><p>+3.50%<span>Se a barreira de 90% não for atingida</span></p></div><div class="hi"><h3>Até o KO</h3><p>+16,80%<span>Cupom + alta acima de 100%, até 113,30%</span></p></div><div class="hi"><h3>No KO de alta</h3><p>+3.50%<span>Call nocauteada em 113,30%</span></p></div><div class="hi"><h3>KO de queda</h3><p>90%<span>Abaixo de -10%: acompanha o ativo</span></p></div></section>
+<section class="highlights"><div class="hi"><h3>Prazo</h3><p>43dc<span>Vencimento 22/12/2026</span></p></div><div class="hi"><h3>Cupom</h3><p>+3.50%<span>Se a barreira de 90% não for atingida</span></p></div><div class="hi"><h3>Até o KO</h3><p>+16,80%<span>Ganho máximo</span></p></div><div class="hi"><h3>No KO de alta</h3><p>+3.50%<span>Call nocauteada em 113,30%</span></p></div><div class="hi"><h3>KO de queda</h3><p>90%<span>Abaixo de -10%: acompanha o ativo</span></p></div></section>
 
 <section class="research">
   <div class="research-head">
     <h2>Research BTG</h2>
     <a class="research-link" href="https://content.btgpactual.com/research/ativo/MOTV3" target="_blank" rel="noopener">Abrir MOTV3 no Research <span class="arrow" aria-hidden="true">→</span></a>
   </div>
-  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 14,98</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 18,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+20,16%</div></div></div><p class="research-note">Spot do fechamento anterior (09/11/2026) · preço-alvo atualizado em 01/11/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
+  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 15,21</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 18,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+18,34%</div></div></div><p class="research-note">Spot do fechamento anterior (09/11/2026) · preço-alvo atualizado em 01/11/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
 </section>
 
 <div class="main">
@@ -146,8 +146,8 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
           <table class="struct-table">
             <thead><tr><th></th><th>R$</th><th>vs spot</th></tr></thead>
             <tbody>
-              <tr><td>Máximo</td><td><strong>20,83</strong></td><td>+39,1%</td></tr>
-              <tr><td>Mínimo</td><td><strong>11,92</strong></td><td>-20,4%</td></tr>
+              <tr><td>Máximo</td><td><strong>20,83</strong></td><td>+36,9%</td></tr>
+              <tr><td>Mínimo</td><td><strong>11,92</strong></td><td>-21,6%</td></tr>
             </tbody>
           </table>
           <p class="legend-note">
@@ -187,14 +187,14 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
   <p class="chart-touch-hint">Arraste no gráfico para simular</p>
       <div class="mobile-sim">
     <div class="sim-label"><span>Spot final</span><output id="spotOutMobile">0%</output></div>
-    <input type="range" id="spotSliderMobile" min="-30" max="129" step="0.5" value="0"/>
+    <input type="range" id="spotSliderMobile" min="-30" max="40" step="0.5" value="0"/>
   </div>
   <div class="zones"><div class="zone"><strong>≤ -10%</strong><p>Put e call de baixa nocauteados — acompanha o ativo 1:1.</p></div><div class="zone"><strong>-10% → 0%</strong><p>Cupom fixo +3.50%.</p></div><div class="zone"><strong>0% → +13,30%</strong><p>Cupom + a alta acima de 100% (máx. +16,80%).</p></div><div class="zone"><strong>≥ +13,30%</strong><p>KO de alta (113,30%): a call sai e fica só o cupom +3.50%.</p></div></div>
 </section>
 <aside class="panel panel-sim">
   <h2>Simulador</h2>
   <div class="sim-label"><span>Variação do ativo</span><output id="spotOut">0%</output></div>
-  <input type="range" id="spotSlider" min="-30" max="129" step="0.5" value="0"/>
+  <input type="range" id="spotSlider" min="-30" max="40" step="0.5" value="0"/>
   <div class="sim-cards">
     <div class="sim-card"><div class="lbl">Ativo</div><div class="val" id="assetVal">0,0%</div></div>
     <div class="sim-card"><div class="lbl">Estrutura</div><div class="val" id="structVal">0,0%</div></div>
@@ -222,13 +222,13 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
 </div>
 <script>
 (function(){
-  var X_MIN=-30,X_MAX=129,Y_MIN=-30,Y_MAX=40;
+  var X_MIN=-30,X_MAX=40,Y_MIN=-30,Y_MAX=40;
   var PAD={l:48,t:24,r:48,b:24},VW=600,VH=400;
   var PLOT_W=VW-PAD.l-PAD.r,PLOT_H=VH-PAD.t-PAD.b;
-  var RESEARCH_X=20.1602;
+  var RESEARCH_X=18.3432;
   var KO_DN=-10.0, KO_UP=13.3, CALL_K=0.0, CUPON=3.5, PEAK=16.8;
   function structureReturn(x){ if (x <= KO_DN) return x; if (x >= KO_UP) return CUPON; if (x <= CALL_K) return CUPON; return CUPON + (x - CALL_K); }
-  function regimeFor(x){ if (x <= KO_DN) return 'KO de queda: acompanha o ativo.'; if (x >= KO_UP) return 'KO de alta: fica só o cupom +'+CUPON.toFixed(2).replace('.',',')+'%.'; if (x <= CALL_K) return 'Cupom +'+CUPON.toFixed(2).replace('.',',')+'%.'; return 'Cupom + a alta, até '+PEAK.toFixed(2).replace('.',',')+'%.'; }
+  function regimeFor(x){ if (x <= KO_DN) return 'KO de queda: acompanha o ativo.'; if (x >= KO_UP) return 'KO de alta: fica só o cupom +'+CUPON.toFixed(2).replace('.',',')+'%.'; if (x <= CALL_K) return 'Cupom +'+CUPON.toFixed(2).replace('.',',')+'%.'; return 'Ganho máximo +'+PEAK.toFixed(2).replace('.',',')+'%.'; }
   function fmtPct(v,d){ d=d==null?1:d; var s=v.toFixed(d).replace('.',','); return (v>0?'+':'')+s+'%'; }
   function xToSvg(x){ return PAD.l+((x-X_MIN)/(X_MAX-X_MIN))*PLOT_W; }
   function yToSvg(y){ return PAD.t+((Y_MAX-y)/(Y_MAX-Y_MIN))*PLOT_H; }
