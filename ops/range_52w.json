@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-09T16:23:10Z",
+  "updated_at": "2026-11-09T16:42:28Z",
   "as_of_br": "09/11/2026",
   "tickers": {
     "VALE3": {
@@ -7,7 +7,7 @@
       "source": "Yahoo Finance VALE3.SA",
       "high": 91.62,
       "low": 59.42,
-      "last": 65.78,
+      "last": 65.62,
       "n_days": 247,
       "as_of": "2026-11-09",
       "as_of_br": "09/11/2026"
@@ -17,7 +17,7 @@
       "source": "Yahoo Finance PETR4.SA",
       "high": 59.79,
       "low": 29.53,
-      "last": 45.25,
+      "last": 45.19,
       "n_days": 247,
       "as_of": "2026-11-09",
       "as_of_br": "09/11/2026"
@@ -47,7 +47,7 @@
       "source": "Yahoo Finance ITUB4.SA",
       "high": 50.85,
       "low": 37.35,
-      "last": 41.07,
+      "last": 41.14,
       "n_days": 247,
       "as_of": "2026-11-09",
       "as_of_br": "09/11/2026"
@@ -57,7 +57,7 @@
       "source": "Yahoo Finance EMBJ3.SA",
       "high": 107.41,
       "low": 68.08,
-      "last": 105.91,
+      "last": 105.72,
       "n_days": 247,
       "as_of": "2026-11-09",
       "as_of_br": "09/11/2026"
@@ -67,7 +67,7 @@
       "source": "Yahoo Finance EQTL3.SA",
       "high": 51.26,
       "low": 31.36,
-      "last": 34.55,
+      "last": 34.6,
       "n_days": 247,
       "as_of": "2026-11-09",
       "as_of_br": "09/11/2026"
@@ -97,7 +97,7 @@
       "source": "Yahoo Finance MBRF3.SA",
       "high": 26.83,
       "low": 14.49,
-      "last": 16.56,
+      "last": 16.6,
       "n_days": 247,
       "as_of": "2026-11-09",
       "as_of_br": "09/11/2026"
@@ -107,7 +107,7 @@
       "source": "Yahoo Finance VIVT3.SA",
       "high": 43.47,
       "low": 28.99,
-      "last": 31.82,
+      "last": 31.75,
       "n_days": 247,
       "as_of": "2026-11-09",
       "as_of_br": "09/11/2026"
@@ -117,7 +117,7 @@
       "source": "Yahoo Finance WEGE3.SA",
       "high": 54.53,
       "low": 41.15,
-      "last": 50.17,
+      "last": 50.12,
       "n_days": 247,
       "as_of": "2026-11-09",
       "as_of_br": "09/11/2026"
@@ -127,7 +127,7 @@
       "source": "Yahoo Finance JBSS32.SA",
       "high": 93.74,
       "low": 55.44,
-      "last": 71.33,
+      "last": 71.14,
       "n_days": 247,
       "as_of": "2026-11-09",
       "as_of_br": "09/11/2026"
@@ -137,7 +137,7 @@
       "source": "Yahoo Finance IBOB11.SA",
       "high": 173.6,
       "low": 126.59,
-      "last": 140.76,
+      "last": 140.74,
       "n_days": 247,
       "as_of": "2026-11-09",
       "as_of_br": "09/11/2026"
@@ -147,7 +147,7 @@
       "source": "Yahoo Finance SPXB11.SA",
       "high": 18.64,
       "low": 14.6,
-      "last": 18.32,
+      "last": 18.27,
       "n_days": 247,
       "as_of": "2026-11-09",
       "as_of_br": "09/11/2026"
@@ -157,7 +157,7 @@
       "source": "Yahoo Finance GOLB11.SA",
       "high": 120.0,
       "low": 98.73,
-      "last": 105.43,
+      "last": 105.4,
       "n_days": 98,
       "as_of": "2026-11-09",
       "as_of_br": "09/11/2026"
@@ -167,7 +167,7 @@
       "source": "Yahoo Finance GGBR4.SA",
       "high": 28.72,
       "low": 16.79,
-      "last": 25.08,
+      "last": 24.87,
       "n_days": 247,
       "as_of": "2026-11-09",
       "as_of_br": "09/11/2026"
@@ -177,7 +177,7 @@
       "source": "Yahoo Finance GOGL34.SA",
       "high": 170.64,
       "low": 119.18,
-      "last": 134.77,
+      "last": 134.09,
       "n_days": 247,
       "as_of": "2026-11-09",
       "as_of_br": "09/11/2026"
@@ -187,7 +187,7 @@
       "source": "Yahoo Finance LILY34.SA",
       "high": 265.0,
       "low": 142.0,
-      "last": 256.99,
+      "last": 256.71,
       "n_days": 247,
       "as_of": "2026-11-09",
       "as_of_br": "09/11/2026"
@@ -197,7 +197,7 @@
       "source": "Yahoo Finance NVDC34.SA",
       "high": 25.88,
       "low": 17.99,
-      "last": 20.41,
+      "last": 20.21,
       "n_days": 247,
       "as_of": "2026-11-09",
       "as_of_br": "09/11/2026"
@@ -207,7 +207,7 @@
       "source": "Yahoo Finance TSMC34.SA",
       "high": 309.32,
       "low": 181.17,
-      "last": 271.1,
+      "last": 268.68,
       "n_days": 247,
       "as_of": "2026-11-09",
       "as_of_br": "09/11/2026"
@@ -217,7 +217,7 @@
       "source": "Yahoo Finance PRIO3.SA",
       "high": 74.6,
       "low": 37.11,
-      "last": 59.24,
+      "last": 59.25,
       "n_days": 247,
       "as_of": "2026-11-09",
       "as_of_br": "09/11/2026"
@@ -247,7 +247,7 @@
       "source": "Yahoo Finance SUZB3.SA",
       "high": 59.65,
       "low": 39.17,
-      "last": 53.49,
+      "last": 53.56,
       "n_days": 247,
       "as_of": "2026-11-09",
       "as_of_br": "09/11/2026"
@@ -267,7 +267,7 @@
       "source": "Yahoo Finance MELI34.SA",
       "high": 101.54,
       "low": 61.35,
-      "last": 70.69,
+      "last": 70.77,
       "n_days": 247,
       "as_of": "2026-11-09",
       "as_of_br": "09/11/2026"
@@ -277,7 +277,7 @@
       "source": "Yahoo Finance MOTV3.SA",
       "high": 20.83,
       "low": 11.92,
-      "last": 15.21,
+      "last": 15.22,
       "n_days": 247,
       "as_of": "2026-11-09",
       "as_of_br": "09/11/2026"
@@ -287,7 +287,7 @@
       "source": "Yahoo Finance RDOR3.SA",
       "high": 48.41,
       "low": 30.61,
-      "last": 33.29,
+      "last": 33.31,
       "n_days": 247,
       "as_of": "2026-11-09",
       "as_of_br": "09/11/2026"

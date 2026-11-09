@@ -1158,7 +1158,7 @@ def make_car(t, fixing, put_strike, ko_down, call_strike, ko_up, _bid):
             ("Prazo", prazo, f"Vencimento {venc}"),
             ("Cupom", cupom_lbl, f"Se a barreira de {dn_lbl} não for atingida"),
             ("Até o KO", peak_lbl, "Ganho máximo"),
-            ("No KO de alta", cupom_lbl, f"Call nocauteada em {up_lbl}"),
+            ("No KO de alta", cupom_lbl, "Permanece o cupom"),
             ("KO de queda", dn_lbl, f"Abaixo de {dn_var:.0f}%: acompanha o ativo"),
         ],
         "struct": [
@@ -1170,7 +1170,7 @@ def make_car(t, fixing, put_strike, ko_down, call_strike, ko_up, _bid):
             (f"≤ {dn_var:.0f}%", "Put e call de baixa nocauteados — acompanha o ativo 1:1."),
             (f"{dn_var:.0f}% → {fmt_pct(call_k) if call_k else '0%'}", f"Cupom fixo {cupom_lbl}."),
             (f"{fmt_pct(call_k) if call_k else '0%'} → {fmt_pct(up_var)}", f"Cupom + a alta acima de {call_lbl} (máx. {peak_lbl})."),
-            (f"≥ {fmt_pct(up_var)}", f"KO de alta ({up_lbl}): a call sai e fica só o cupom {cupom_lbl}."),
+            (f"≥ {fmt_pct(up_var)}", f"KO de alta ({up_lbl}): permanece o cupom {cupom_lbl}."),
         ],
         "regime0": f"Entre as barreiras: cupom {cupom_lbl}, mais a alta até {up_lbl}.",
         "speech": [
@@ -1194,7 +1194,7 @@ def make_car(t, fixing, put_strike, ko_down, call_strike, ko_up, _bid):
         "js_fn": "if (x <= KO_DN) return x; if (x >= KO_UP) return CUPON; if (x <= CALL_K) return CUPON; return CUPON + (x - CALL_K);",
         "js_regime": (
             "if (x <= KO_DN) return 'KO de queda: acompanha o ativo.'; "
-            "if (x >= KO_UP) return 'KO de alta: fica só o cupom +'+CUPON.toFixed(2).replace('.',',')+'%.'; "
+            "if (x >= KO_UP) return 'KO de alta: permanece o cupom +'+CUPON.toFixed(2).replace('.',',')+'%.'; "
             "if (x <= CALL_K) return 'Cupom +'+CUPON.toFixed(2).replace('.',',')+'%.'; "
             "return 'Ganho máximo +'+PEAK.toFixed(2).replace('.',',')+'%.';"
         ),
