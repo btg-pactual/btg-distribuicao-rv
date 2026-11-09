@@ -8,7 +8,7 @@ SYMBOLS = {
     "ndx": "^NDX",
     "spx": "^GSPC",
     "ewz": "EWZ",
-    "ibov": "^BVSP",
+    "ouro": "GLD",
 }
 
 
@@ -44,13 +44,11 @@ def main() -> None:
     shared: list | None = None
     for key, sym in SYMBOLS.items():
         times, vals = closes_of(fetch(sym), use_adj=(key == "ewz"))
-        if key == "ibov":
-            pack["ti"] = times
-        elif shared is None:
+        if shared is None:
             shared = times
         pack[key] = vals
         print(key, len(vals), vals[0], vals[-1])
-    pack = {"t": shared, "ndx": pack["ndx"], "spx": pack["spx"], "ewz": pack["ewz"], "ti": pack["ti"], "ibov": pack["ibov"]}
+    pack = {"t": shared, "ndx": pack["ndx"], "spx": pack["spx"], "ewz": pack["ewz"], "ouro": pack["ouro"]}
     dest = Path(__file__).resolve().parent / "series.js"
     dest.write_text("window.COE_PACK=" + json.dumps(pack, separators=(",", ":")) + ";\n", encoding="utf-8")
     print("wrote", dest, "bytes", dest.stat().st_size)
