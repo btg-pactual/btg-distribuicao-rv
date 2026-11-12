@@ -132,7 +132,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
     <h2>Research BTG</h2>
     <a class="research-link" href="https://content.btgpactual.com/research/ativo/VIVT3" target="_blank" rel="noopener">Abrir VIVT3 no Research <span class="arrow" aria-hidden="true">→</span></a>
   </div>
-  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 32,50</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 31,00</div></div><div><div class="lbl">Potencial</div><div class="val sell">-4,62%</div></div></div><p class="research-note">Spot do fechamento anterior (10/11/2026) · preço-alvo atualizado em 07/10/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
+  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 34,25</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 31,00</div></div><div><div class="lbl">Potencial</div><div class="val sell">-9,49%</div></div></div><p class="research-note">Spot do fechamento anterior (11/11/2026) · preço-alvo atualizado em 11/11/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
 </section>
 
 <div class="main">
@@ -146,8 +146,8 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
           <table class="struct-table">
             <thead><tr><th></th><th>R$</th><th>vs spot</th></tr></thead>
             <tbody>
-              <tr><td>Máximo</td><td><strong>43,47</strong></td><td>+33,8%</td></tr>
-              <tr><td>Mínimo</td><td><strong>28,99</strong></td><td>-10,8%</td></tr>
+              <tr><td>Máximo</td><td><strong>43,47</strong></td><td>+26,9%</td></tr>
+              <tr><td>Mínimo</td><td><strong>0,00</strong></td><td>-100,0%</td></tr>
             </tbody>
           </table>
           <p class="legend-note">
@@ -211,8 +211,8 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
 
 <section class="speech-box insights-box">
   <h2>Insights Research BTG</h2>
-  <ul class="research-bullets"><li>A Telefônica Brasil reportou 2T26 com aceleração operacional e geração de caixa mais forte: a receita de serviços somou R$ 14,7 bi, alta de 6,4% a/a, puxada por móvel (+6,6% a/a) e fixa (+6% a/a), enquanto o lucro líquido avançou 17%…</li><li>O capex ficou em R$ 2,59 bi (+6% a/a) e as despesas de arrendamento em R$ 1,36 bi (+9% a/a), mas o fluxo de caixa operacional ainda cresceu 17,4% a/a, para R$ 2,64 bi.</li><li>No móvel, o pós-pago, equivalente a 87% da receita de serviços móveis, subiu 8% a/a, apoiado por base pós-paga +6,9% e ARPU de R$ 53,9 (+0,8% a/a), enquanto o pré-pago caiu 1% a/a, com desaceleração relevante da contração.</li></ul>
-  <p class="research-note">Insights BTG · 07/10/2026 · fonte Research BTG.</p>
+  <ul class="research-bullets"><li>A Telefônica Brasil reportou 3T26 sólido, com receita de serviços de R$14,9 bi, alta de 6,0% a/a, EBITDA ajustado de R$7,1 bi, avanço de 10% a/a e 2,3% acima da estimativa, e margem de 44,5%, +1,1 p.p. em um ano.</li><li>Excluindo outras receitas e despesas operacionais, o EBITDA foi de R$6,77 bi, +8% a/a. O lucro líquido ajustado somou R$2,45 bi, alta de 30% a/a e 16,5% acima da projeção, enquanto o capex caiu 1,6% a/a, para R$2,56 bi, e o fluxo de…</li><li>Dados corporativos, TIC e serviços digitais somaram R$1,45 bi, +5% a/a. A combinação de crescimento acima dos pares em serviços, expansão de margem e disciplina de capital sustenta a percepção de resiliência operacional e forte…</li></ul>
+  <p class="research-note">Insights BTG · 11/11/2026 · fonte Research BTG.</p>
 </section>
 
 <p class="footer-alert">
@@ -225,7 +225,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
   var X_MIN=-30,X_MAX=40,Y_MIN=-30,Y_MAX=10;
   var PAD={l:48,t:24,r:48,b:24},VW=600,VH=400;
   var PLOT_W=VW-PAD.l-PAD.r,PLOT_H=VH-PAD.t-PAD.b;
-  var RESEARCH_X=-4.6154;
+  var RESEARCH_X=-9.4891;
   var KO_VAR=-10.0, CUPON=4.55;
   function structureReturn(x){ if (x <= KO_VAR) return x; return CUPON; }
   function regimeFor(x){ if (x <= KO_VAR) return 'KO: acompanha o ativo.'; return 'Cupom SOC +4.55%.'; }
