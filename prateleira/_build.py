@@ -1302,7 +1302,7 @@ def make_smart_up(t, fixing, put, call_ki, ki, call_ko, ko, _bid):
         "dot": "SU",
         "brand": "#0B6E4F",
         "subtitle": (
-            f"Smart Up sobre {t}: piso em {put_lbl}. Até a barreira de {ko_lbl}, a alta é acelerada, "
+            f"Smart Up sobre {t}: piso em {put_lbl}. Até a barreira de {ko_lbl}, a alta é acelerada (2×), "
             f"com ganho máximo de {peak_lbl}. Na barreira, volta ao piso."
         ),
         "pills": [
@@ -1325,7 +1325,7 @@ def make_smart_up(t, fixing, put, call_ki, ki, call_ko, ko, _bid):
         ],
         "zones": [
             (f"≤ {floor:+.0f}%", f"Piso {floor_lbl}."),
-            (f"{floor:+.0f}% → {fmt_pct(bar - 100)}", f"Alta acelerada, até o ganho máximo de {peak_lbl}."),
+            (f"{floor:+.0f}% → {fmt_pct(bar - 100)}", f"Alta acelerada (2×), até o ganho máximo de {peak_lbl}."),
             (f"≥ {fmt_pct(bar - 100)}", f"Barreira: volta ao piso {cap_lbl}."),
         ],
         "regime0": f"Até a barreira de {ko_lbl}, ganho máximo {peak_lbl}. Na barreira, permanece o piso.",
