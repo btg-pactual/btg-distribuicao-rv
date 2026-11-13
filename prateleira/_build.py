@@ -1332,7 +1332,7 @@ def make_smart_up(t, fixing, put, call_ki, ki, call_ko, ko, _bid):
         "speech": [
             (
                 "Para quem",
-                f"Cliente construtivo em {t} ({prazo}) que quer acelerar a alta e aceita voltar ao piso se a barreira for atingida.",
+                f"Cliente construtivo em {'dólar' if t == 'DOLB11' else t} ({prazo}) que quer acelerar a alta e aceita voltar ao piso se a barreira for atingida.",
             ),
             (
                 "Como encaixa",
