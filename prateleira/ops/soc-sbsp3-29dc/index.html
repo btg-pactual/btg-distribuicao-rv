@@ -67,6 +67,8 @@ h1 span{color:var(--brand)}
 .asset-note{margin:0 0 18px}
 .asset-note p{font-size:14px;line-height:1.5;color:var(--ink);max-width:70em}
 .asset-note p+p{margin-top:12px}
+.parity-box{width:100%;background:#f8fafc;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.parity-box svg{display:block;width:100%;height:auto}
 .chart-panel{padding:16px}
 .chart-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:10px}
 .chart-caption{font-size:12px;color:var(--muted)}
@@ -135,7 +137,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
     <h2>Research BTG</h2>
     <a class="research-link" href="https://content.btgpactual.com/research/ativo/SBSP3" target="_blank" rel="noopener">Abrir SBSP3 no Research <span class="arrow" aria-hidden="true">→</span></a>
   </div>
-  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 27,41</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 35,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+27,69%</div></div></div><p class="research-note">Spot do fechamento anterior (13/11/2026) · preço-alvo atualizado em 06/11/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
+  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 27,33</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 35,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+28,06%</div></div></div><p class="research-note">Spot do fechamento anterior (13/11/2026) · preço-alvo atualizado em 06/11/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
 </section>
 
 
@@ -150,8 +152,8 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
           <table class="struct-table">
             <thead><tr><th></th><th>R$</th><th>vs spot</th></tr></thead>
             <tbody>
-              <tr><td>Máximo</td><td><strong>35,32</strong></td><td>+28,9%</td></tr>
-              <tr><td>Mínimo</td><td><strong>23,17</strong></td><td>-15,5%</td></tr>
+              <tr><td>Máximo</td><td><strong>35,32</strong></td><td>+29,2%</td></tr>
+              <tr><td>Mínimo</td><td><strong>23,17</strong></td><td>-15,2%</td></tr>
             </tbody>
           </table>
           <p class="legend-note">
@@ -229,7 +231,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
   var X_MIN=-30,X_MAX=40,Y_MIN=-30,Y_MAX=10;
   var PAD={l:48,t:24,r:48,b:24},VW=600,VH=400;
   var PLOT_W=VW-PAD.l-PAD.r,PLOT_H=VH-PAD.t-PAD.b;
-  var RESEARCH_X=27.6906;
+  var RESEARCH_X=28.0644;
   var KO_VAR=-10.0, CUPON=4.2;
   function structureReturn(x){ if (x <= KO_VAR) return x; return CUPON; }
   function regimeFor(x){ if (x <= KO_VAR) return 'KO: acompanha o ativo.'; return 'Cupom SOC +4.20%.'; }

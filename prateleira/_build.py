@@ -735,6 +735,8 @@ h1 span{color:var(--brand)}
 .asset-note{margin:0 0 18px}
 .asset-note p{font-size:14px;line-height:1.5;color:var(--ink);max-width:70em}
 .asset-note p+p{margin-top:12px}
+.parity-box{width:100%;background:#f8fafc;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.parity-box svg{display:block;width:100%;height:auto}
 .chart-panel{padding:16px}
 .chart-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:10px}
 .chart-caption{font-size:12px;color:var(--muted)}
@@ -1262,6 +1264,104 @@ def make_sh(t, fixing, put, call, ki, _bid):
     }
 
 
+def _dolb_parity_html() -> str:
+    """DOLB11 x dólar à vista, últimos 12 meses, base 100. Só na ficha do ETF."""
+    path = ROOT / "_dolb_fx.json"
+    if not path.exists():
+        return ""
+    raw = json.loads(path.read_text(encoding="utf-8"))
+    dolb, usd, dates = raw["dolb"], raw["usd"], raw["t"]
+    n = len(dates)
+    if n < 2 or len(dolb) != n or len(usd) != n:
+        return ""
+    b0, u0 = float(dolb[0]), float(usd[0])
+    if b0 <= 0 or u0 <= 0:
+        return ""
+    yb = [100.0 * float(v) / b0 for v in dolb]
+    yu = [100.0 * float(v) / u0 for v in usd]
+    lo = min(min(yb), min(yu))
+    hi = max(max(yb), max(yu))
+    span = hi - lo or 1.0
+    lo -= span * 0.14
+    hi += span * 0.14
+    W, H = 640, 250
+    L, R, T, B = 44, 14, 12, 28
+    pw, ph = W - L - R, H - T - B
+
+    def xy(i: int, y: float) -> tuple[float, float]:
+        x = L + pw * i / (n - 1)
+        yy = T + ph * (1 - (y - lo) / (hi - lo))
+        return x, yy
+
+    def line(ys: list[float]) -> str:
+        return " ".join(
+            ("M" if i == 0 else "L") + f"{xy(i, y)[0]:.1f},{xy(i, y)[1]:.1f}"
+            for i, y in enumerate(ys)
+        )
+
+    step = 5.0 if (hi - lo) > 16 else 2.0
+    tick = math.ceil(lo / step) * step
+    grids = []
+    while tick < hi - 0.2:
+        y = xy(0, tick)[1]
+        grids.append(
+            f'<line x1="{L}" y1="{y:.1f}" x2="{W - R}" y2="{y:.1f}" stroke="#e2e8f0" stroke-width="1"/>'
+            f'<text x="{L - 8}" y="{y + 3:.1f}" text-anchor="end" font-size="11" fill="#64748b">{tick:.0f}</text>'
+        )
+        tick += step
+    y100 = xy(0, 100)[1]
+    base = (
+        f'<line x1="{L}" y1="{y100:.1f}" x2="{W - R}" y2="{y100:.1f}" '
+        f'stroke="#94a3b8" stroke-width="1" stroke-dasharray="3 3"/>'
+    )
+    meses = "jan fev mar abr mai jun jul ago set out nov dez".split()
+
+    def rotulo(iso: str) -> str:
+        ano, mes, _dia = iso.split("-")
+        return f"{meses[int(mes) - 1]}/{ano[2:]}"
+
+    labels = []
+    for i in (0, n // 4, n // 2, 3 * n // 4, n - 1):
+        x = xy(i, 100)[0]
+        anchor = "start" if i == 0 else ("end" if i == n - 1 else "middle")
+        labels.append(
+            f'<text x="{x:.1f}" y="{H - 8}" text-anchor="{anchor}" font-size="11" fill="#64748b">{rotulo(dates[i])}</text>'
+        )
+    def var_lbl(a: float, b: float) -> str:
+        p = (b / a - 1) * 100
+        sinal = "+" if p >= 0 else "−"
+        return sinal + f"{abs(p):.1f}".replace(".", ",") + "%"
+
+    dolb_lbl, usd_lbl = var_lbl(b0, float(dolb[-1])), var_lbl(u0, float(usd[-1]))
+    ini, fim = dates[0], dates[-1]
+    def br(iso: str) -> str:
+        ano, mes, dia = iso.split("-")
+        return f"{dia}/{mes}/{ano}"
+
+    svg = f"""<svg viewBox="0 0 {W} {H}" role="img" aria-label="DOLB11 e dólar à vista, base 100, de {br(ini)} a {br(fim)}">
+{''.join(grids)}{base}
+<path d="{line(yu)}" fill="none" stroke="#1a66b3" stroke-width="1.75" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="{line(yb)}" fill="none" stroke="#0B6E4F" stroke-width="1.75" stroke-linejoin="round" stroke-linecap="round"/>
+{''.join(labels)}
+</svg>"""
+    return f"""
+<section class="panel asset-note">
+  <div class="chart-head">
+    <div>
+      <h2>Paridade · 12 meses</h2>
+      <p class="chart-caption">As duas séries começam em 100, para comparar o caminho. Janela de {br(ini)} a {br(fim)}.</p>
+    </div>
+    <div class="chart-legend">
+      <span><i class="swatch" style="background:#0B6E4F"></i> DOLB11 {dolb_lbl}</span>
+      <span><i class="swatch" style="background:#1a66b3"></i> Dólar à vista {usd_lbl}</span>
+    </div>
+  </div>
+  <div class="parity-box">{svg}</div>
+  <p class="legend-note">Fechamentos do ETF e do câmbio USD/BRL à vista. O fundo busca o índice de futuros de dólar, com rolagem mensal, e não o câmbio à vista. A distância entre as linhas é essa diferença.</p>
+</section>
+"""
+
+
 def make_smart_up(t, fixing, put, call_ki, ki, call_ko, ko, _bid):
     """Smart Up: ativo + put + call KO comprada + call KI vendida. Bid não entra.
 
@@ -1294,7 +1394,7 @@ def make_smart_up(t, fixing, put, call_ki, ki, call_ko, ko, _bid):
   <p>DOLB11 é a cota do BTG Pactual Reference S&amp;P/B3 Cambial Fundo de Índice. O fundo busca refletir, antes de taxas e despesas, o S&amp;P/B3 BRL-USD Mini Futures Index: o desempenho dos futuros de dólar contra o real, com rolagem mensal.</p>
   <p><a class="research-link" href="https://www.btgpactual.com/asset-management/etf-dolar" target="_blank" rel="noopener noreferrer">Site da asset <span class="arrow" aria-hidden="true">→</span></a></p>
 </section>
-"""
+""" + _dolb_parity_html()
     return slug, {
         "title": f"Smart Up {t}",
         "h1": "Smart Up",
