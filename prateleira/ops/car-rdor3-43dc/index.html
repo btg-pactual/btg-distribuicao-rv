@@ -132,7 +132,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
     <h2>Research BTG</h2>
     <a class="research-link" href="https://content.btgpactual.com/research/ativo/RDOR3" target="_blank" rel="noopener">Abrir RDOR3 no Research <span class="arrow" aria-hidden="true">→</span></a>
   </div>
-  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 34,29</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 58,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+69,15%</div></div></div><p class="research-note">Spot do fechamento anterior (11/11/2026) · preço-alvo atualizado em 03/11/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
+  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 34,24</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 58,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+69,39%</div></div></div><p class="research-note">Spot do fechamento anterior (12/11/2026) · preço-alvo atualizado em 03/11/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
 </section>
 
 <div class="main">
@@ -146,7 +146,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
           <table class="struct-table">
             <thead><tr><th></th><th>R$</th><th>vs spot</th></tr></thead>
             <tbody>
-              <tr><td>Máximo</td><td><strong>47,86</strong></td><td>+39,6%</td></tr>
+              <tr><td>Máximo</td><td><strong>47,86</strong></td><td>+39,8%</td></tr>
               <tr><td>Mínimo</td><td><strong>0,00</strong></td><td>-100,0%</td></tr>
             </tbody>
           </table>
@@ -225,7 +225,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
   var X_MIN=-30,X_MAX=80,Y_MIN=-30,Y_MAX=40;
   var PAD={l:48,t:24,r:48,b:24},VW=600,VH=400;
   var PLOT_W=VW-PAD.l-PAD.r,PLOT_H=VH-PAD.t-PAD.b;
-  var RESEARCH_X=69.1455;
+  var RESEARCH_X=69.3925;
   var KO_DN=-10.0, KO_UP=17.7, CALL_K=0.0, CUPON=3.5, PEAK=21.2;
   function structureReturn(x){ if (x <= KO_DN) return x; if (x >= KO_UP) return CUPON; if (x <= CALL_K) return CUPON; return CUPON + (x - CALL_K); }
   function regimeFor(x){ if (x <= KO_DN) return 'KO de queda: acompanha o ativo.'; if (x >= KO_UP) return 'KO de alta: permanece o cupom +'+CUPON.toFixed(2).replace('.',',')+'%.'; if (x <= CALL_K) return 'Cupom +'+CUPON.toFixed(2).replace('.',',')+'%.'; return 'Ganho máximo +'+PEAK.toFixed(2).replace('.',',')+'%.'; }
