@@ -732,6 +732,9 @@ h1 span{color:var(--brand)}
 .tag.s{background:#fde8e8;color:var(--danger)}
 .tag.b{background:#e8f8ef;color:var(--success)}
 .legend-note{margin-top:14px;font-size:11px;color:var(--muted);line-height:1.5}
+.asset-note{margin:0 0 18px}
+.asset-note p{font-size:14px;line-height:1.5;color:var(--ink);max-width:70em}
+.asset-note p+p{margin-top:12px}
 .chart-panel{padding:16px}
 .chart-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:10px}
 .chart-caption{font-size:12px;color:var(--muted)}
@@ -830,6 +833,7 @@ def op_page(cfg: dict) -> str:
 </header>
 <section class="highlights">{his}</section>
 {cfg.get('research_html', '')}
+{cfg.get('asset_html', '')}
 <div class="main">
 <aside class="panel">
   <h2>Estrutura</h2>
@@ -1282,6 +1286,15 @@ def make_smart_up(t, fixing, put, call_ki, ki, call_ko, ko, _bid):
     put_lbl, ko_lbl = fmt_lvl(put), fmt_lvl(bar)
     floor_lbl, peak_lbl, cap_lbl = fmt_pct(floor), fmt_pct(peak), fmt_pct(cap)
     slug = slugify("smart-up", t, f"ki{int(bar)}", prazo.replace(" ", ""))
+    asset_html = ""
+    if t == "DOLB11":
+        asset_html = """
+<section class="panel asset-note">
+  <h2>O ETF</h2>
+  <p>DOLB11 é a cota do BTG Pactual Reference S&amp;P/B3 Cambial Fundo de Índice. O fundo busca refletir, antes de taxas e despesas, o S&amp;P/B3 BRL-USD Mini Futures Index: o desempenho dos futuros de dólar contra o real, com rolagem mensal.</p>
+  <p><a class="research-link" href="https://www.btgpactual.com/asset-management/etf-dolar" target="_blank" rel="noopener noreferrer">Site da asset <span class="arrow" aria-hidden="true">→</span></a></p>
+</section>
+"""
     return slug, {
         "title": f"Smart Up {t}",
         "h1": "Smart Up",
@@ -1355,6 +1368,7 @@ def make_smart_up(t, fixing, put, call_ki, ki, call_ko, ko, _bid):
     add(BAR, structureReturn(BAR));
     for (var x2 = BAR + 0.5; x2 <= X_MAX; x2 += 0.5) add(x2, structureReturn(x2));
 """,
+        "asset_html": asset_html,
     }
 
 
