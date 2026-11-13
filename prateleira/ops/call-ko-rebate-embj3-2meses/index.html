@@ -132,7 +132,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
     <h2>Research BTG</h2>
     <a class="research-link" href="https://content.btgpactual.com/research/ativo/EMBJ3" target="_blank" rel="noopener">Abrir EMBJ3 no Research <span class="arrow" aria-hidden="true">→</span></a>
   </div>
-  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 105,62</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 126,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+19,30%</div></div></div><p class="research-note">Spot do fechamento anterior (09/11/2026) · preço-alvo atualizado em 24/08/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
+  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 111,52</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 126,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+12,98%</div></div></div><p class="research-note">Spot do fechamento anterior (13/11/2026) · preço-alvo atualizado em 24/08/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
 </section>
 
 <div class="main">
@@ -146,12 +146,12 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
           <table class="struct-table">
             <thead><tr><th></th><th>R$</th><th>vs spot</th></tr></thead>
             <tbody>
-              <tr><td>Máximo</td><td><strong>107,41</strong></td><td>+1,7%</td></tr>
-              <tr><td>Mínimo</td><td><strong>68,08</strong></td><td>-35,5%</td></tr>
+              <tr><td>Máximo</td><td><strong>116,78</strong></td><td>+4,7%</td></tr>
+              <tr><td>Mínimo</td><td><strong>68,08</strong></td><td>-39,0%</td></tr>
             </tbody>
           </table>
           <p class="legend-note">
-            Máx./mín. dos últimos ~12 meses (até a ref. 09/11/2026).
+            Máx./mín. dos últimos ~12 meses (até a ref. 16/11/2026).
             Fonte: Yahoo Finance EMBJ3.SA.
           </p>
         </div>
@@ -226,8 +226,8 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
 
 <section class="speech-box insights-box">
   <h2>Insights Research BTG</h2>
-  <ul class="research-bullets"><li>A Embraer reportou 2T26 acima do esperado, com receita de US$ 2,2 bi, EBITDA ajustado de US$ 356 mi, ou ~US$ 296 mi ao excluir crédito tributário e tarifas, margem ajustada de 13%, lucro líquido ajustado de US$ 219 mi e FCF ajustado…</li><li>A dívida líquida ex-Eve caiu para US$ 124 mi, com alavancagem de 0,2x, e o guidance de 2026 foi elevado para margem EBIT de 10,0%–10,6%, de 8,7%–9,3%, e FCF acima de US$ 400 mi, ante US$ 200 mi. Na prévia do 3T26, as entregas somaram 66…</li><li>No acumulado de 9M26, foram 167 unidades, ou 67% do ponto médio do guidance anual, exigindo 73–88 entregas no 4T26 para cumprir a faixa. A carteira de pedidos atingiu recorde de US$ 36 bi no 3T26, alta de 14% a/a e 3% t/t, com US$ 15,8…</li></ul>
-  <p class="research-note">Insights BTG · 23/10/2026 · fonte Research BTG.</p>
+  <ul class="research-bullets"><li>A Embraer reportou 3T26 acima das estimativas, com receita líquida de US$ 2,4 bi (+17% a/a), EBITDA ajustado de US$ 317 mi (+34% a/a) e margem de 13,5%, além de EBIT ajustado de US$ 255 mi, com margem de 10,9%.</li><li>O lucro líquido ajustado ficou em US$ 71–74 mi, pressionado pelo resultado financeiro ligado à marcação a mercado de ações de planos de incentivo. A melhora operacional foi disseminada, com avanço de margens em Aviação Comercial, Defesa…</li><li>Nos nove meses, foram 167 entregas, ou 67% do ponto médio do guidance anual. A carteira de pedidos atingiu recorde de US$ 36 bi, +14% a/a e +3% t/t, com US$ 15,8 bi em Aviação Comercial, US$ 8,2 bi em Executiva, US$ 6,1 bi em Defesa e…</li></ul>
+  <p class="research-note">Insights BTG · 10/11/2026 · fonte Research BTG.</p>
 </section>
 
 <p class="footer-alert">
@@ -240,7 +240,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
   var X_MIN=-50,X_MAX=80,Y_MIN=-50,Y_MAX=80;
   var PAD={l:48,t:24,r:48,b:24},VW=600,VH=400;
   var PLOT_W=VW-PAD.l-PAD.r,PLOT_H=VH-PAD.t-PAD.b;
-  var RESEARCH_X=19.2956;
+  var RESEARCH_X=12.9842;
   var KO=19.0, STRIKE=0.0, REB=5.0, COST=4.3;
   function structureReturn(x){ if (x >= KO) return REB - COST; return Math.max(x - STRIKE, 0) - COST; }
   function regimeFor(x){ var rp=(structureReturn(x)/COST)*100; if (x >= KO) return 'KO: rebate de '+rp.toFixed(0)+'% sobre o prêmio.'; if (x > STRIKE) return 'Call ITM: '+structureReturn(x).toFixed(1).replace('.',',')+'% nocional · '+rp.toFixed(0)+'% sobre o prêmio.'; return 'OTM: −'+COST.toFixed(2).replace('.',',')+'% nocional · −100% sobre o prêmio.'; }

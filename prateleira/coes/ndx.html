@@ -155,7 +155,7 @@ input[type=range]{width:100%;accent-color:var(--navy);margin-top:6px}
 
     <section class="card">
       <h2>Simulador</h2>
-      <p class="hint">Escolha o mês de entrada e um valor. A conta anda três anos e compara o COE com quem tivesse ficado no índice, no S&amp;P 500, no EWZ e no ouro.</p>
+      <p class="hint">Escolha o mês de entrada e um valor. A conta anda três anos e compara o COE com o Euro Stoxx 50, o S&amp;P 500, o EWZ e o ouro.</p>
       <div class="sim">
         <div>
           <label>Valor aplicado
@@ -170,7 +170,7 @@ input[type=range]{width:100%;accent-color:var(--navy);margin-top:6px}
       </div>
       <canvas id="cmp" aria-label="Comparação da janela, base 100"></canvas>
       <div class="legend" id="cmpLegend"></div>
-      <p class="note">A variação é a do próprio indicador, sem câmbio. NDX e S&amp;P 500 são índice de preço. EWZ entra com o preço ajustado por dividendo. Ouro é o preço do metal em dólar. O piso do COE só existe no vencimento: antes disso, o certificado pode valer menos que o capital. A proteção é obrigação do emissor.</p>
+      <p class="note">A variação é a do próprio indicador, sem câmbio. S&amp;P 500 e Euro Stoxx 50 são índice de preço. EWZ entra com o preço ajustado por dividendo. Ouro é o preço do metal em dólar. O Euro Stoxx 50 está em euro. O piso do COE só existe no vencimento: antes disso, o certificado pode valer menos que o capital. A proteção é obrigação do emissor.</p>
     </section>
 
     <div class="cols block">
@@ -202,8 +202,8 @@ input[type=range]{width:100%;accent-color:var(--navy);margin-top:6px}
 <script>
 (function () {
   var MONTHS = ["jan","fev","mar","abr","mai","jun","jul","ago","set","out","nov","dez"];
-  var COLORS = { ndx:"#1D428A", spx:"#0F5F73", ewz:"#B45309", ouro:"#8C6A1F", coe:"#0d7a3f" };
-  var NAMES = { ndx:"Nasdaq-100", spx:"S&P 500", ewz:"EWZ", ouro:"Ouro", coe:"COE" };
+  var COLORS = { ndx:"#1D428A", spx:"#0F5F73", ewz:"#B45309", ouro:"#8C6A1F", sx5e:"#5B3A8C", coe:"#0d7a3f" };
+  var NAMES = { ndx:"Nasdaq-100", spx:"S&P 500", ewz:"EWZ", ouro:"Ouro", sx5e:"Euro Stoxx 50", coe:"COE" };
 
   function addMonths(y, m, n) {
     var i = y * 12 + (m - 1) + n;
@@ -283,13 +283,15 @@ input[type=range]{width:100%;accent-color:var(--navy);margin-top:6px}
     ndx: rowsFrom(pack.t, pack.ndx),
     spx: rowsFrom(pack.t, pack.spx),
     ewz: rowsFrom(pack.t, pack.ewz),
-    ouro: rowsFrom(pack.t, pack.ouro)
+    ouro: rowsFrom(pack.t, pack.ouro),
+    sx5e: rowsFrom(pack.t, pack.sx5e)
   };
   var maps = {
     ndx: toMap(series.ndx),
     spx: toMap(series.spx),
     ewz: toMap(series.ewz),
-    ouro: toMap(series.ouro)
+    ouro: toMap(series.ouro),
+    sx5e: toMap(series.sx5e)
   };
   var first = series.ndx[0];
   var last = series.ndx[series.ndx.length - 1];
@@ -301,7 +303,8 @@ input[type=range]{width:100%;accent-color:var(--navy);margin-top:6px}
     && pack.spx.length === pack.t.length
     && pack.ewz.length === pack.t.length
     && pack.ouro.length === pack.t.length
-    && series.spx.length > 100 && series.ewz.length > 100 && series.ouro.length > 100;
+    && pack.sx5e.length === pack.t.length
+    && series.spx.length > 100 && series.ewz.length > 100 && series.ouro.length > 100 && series.sx5e.length > 100;
   if (!anchorsOk) warn.hidden = false;
 
   document.getElementById("level").textContent = pts(last[2]);
@@ -354,7 +357,8 @@ input[type=range]{width:100%;accent-color:var(--navy);margin-top:6px}
       coe: ndx == null ? null : Math.max(ndx, 0),
       spx: r(maps.spx),
       ewz: r(maps.ewz),
-      ouro: r(maps.ouro)
+      ouro: r(maps.ouro),
+      sx5e: r(maps.sx5e)
     };
   }
   var wins = [];
@@ -479,7 +483,7 @@ input[type=range]{width:100%;accent-color:var(--navy);margin-top:6px}
     var sel = wins[Number(document.getElementById("start").value) || 0];
     ctx.clearRect(0, 0, box.w, box.h);
     if (!sel) return;
-    var lines = ["ndx", "spx", "ewz", "ouro"].map(function (id) {
+    var lines = ["sx5e", "spx", "ewz", "ouro"].map(function (id) {
       return { id: id, pts: pathOf(maps[id], sel.y, sel.m, sel.ey, sel.em) };
     }).filter(function (ln) { return ln.pts.length > 1; });
     var vals = [100];
@@ -549,7 +553,7 @@ input[type=range]{width:100%;accent-color:var(--navy);margin-top:6px}
     document.getElementById("when").textContent = label(w.y, w.m) + "  →  " + label(w.ey, w.em);
     var order = [
       ["coe", "COE Nasdaq-100", w.coe, w.coe < 0.0005 ? "Capital protegido" : "Alta ilimitada"],
-      ["ndx", "Ficar no NDX", w.ndx, "O índice, com a queda"],
+      ["sx5e", "Euro Stoxx 50", w.sx5e, "Bolsa europeia"],
       ["spx", "S&P 500", w.spx, "Mesma janela"],
       ["ewz", "EWZ", w.ewz, "Brasil em dólar"],
       ["ouro", "Ouro", w.ouro, "Preço em dólar"]
@@ -561,7 +565,7 @@ input[type=range]{width:100%;accent-color:var(--navy);margin-top:6px}
       return "<div class='" + cls + "'><div class='nm'>" + row[1] + "</div><div class='pv " + pctClass(r) + "'>" + pct(r) + "</div><div class='money'>" + value + "</div><div class='subl'>" + row[3] + "</div></div>";
     }).join("");
     document.getElementById("cmpLegend").innerHTML = [
-      ["ndx", "Nasdaq-100"],
+      ["sx5e", "Euro Stoxx 50"],
       ["spx", "S&P 500"],
       ["ewz", "EWZ"],
       ["ouro", "Ouro"],

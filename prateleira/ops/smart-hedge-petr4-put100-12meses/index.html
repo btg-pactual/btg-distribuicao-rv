@@ -132,7 +132,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
     <h2>Research BTG</h2>
     <a class="research-link" href="https://content.btgpactual.com/research/ativo/PETR4" target="_blank" rel="noopener">Abrir PETR4 no Research <span class="arrow" aria-hidden="true">→</span></a>
   </div>
-  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 45,19</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 65,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+43,84%</div></div></div><p class="research-note">Spot do fechamento anterior (09/11/2026) · preço-alvo atualizado em 29/10/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
+  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 45,09</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 65,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+44,16%</div></div></div><p class="research-note">Spot do fechamento anterior (13/11/2026) · preço-alvo atualizado em 11/11/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
 </section>
 
 <div class="main">
@@ -146,12 +146,12 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
           <table class="struct-table">
             <thead><tr><th></th><th>R$</th><th>vs spot</th></tr></thead>
             <tbody>
-              <tr><td>Máximo</td><td><strong>59,79</strong></td><td>+32,3%</td></tr>
-              <tr><td>Mínimo</td><td><strong>29,53</strong></td><td>-34,7%</td></tr>
+              <tr><td>Máximo</td><td><strong>59,79</strong></td><td>+32,6%</td></tr>
+              <tr><td>Mínimo</td><td><strong>29,53</strong></td><td>-34,5%</td></tr>
             </tbody>
           </table>
           <p class="legend-note">
-            Máx./mín. dos últimos ~12 meses (até a ref. 09/11/2026).
+            Máx./mín. dos últimos ~12 meses (até a ref. 16/11/2026).
             Fonte: Yahoo Finance PETR4.SA.
           </p>
         </div>
@@ -211,8 +211,8 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
 
 <section class="speech-box insights-box">
   <h2>Insights Research BTG</h2>
-  <ul class="research-bullets"><li>A Petrobras reportou 2T26 forte, com EBITDA de US$18,9 bi, cerca de 5% acima do consenso, apoiado por preços mais altos de petróleo e derivados, produção maior e lifting cost de US$6,3/boe.</li><li>A dívida líquida caiu para US$60,4 bi, a bruta para US$70,8 bi, o caixa subiu a US$10,4 bi e a alavancagem recuou para ~1,1x, com dividendos de US$3,4 bi. Para o 3T26, as prévias apontam produção recorde de ~2,83–2,86 MMbpd, pré-sal em…</li><li>Em 9 de outubro, o governo adicionou R$1,40/l ao diesel importado, elevando o subsídio total do importado a R$3,52/l por 30 dias. Ainda assim, o diesel realizado seguia ~R$0,74/l abaixo da EPP média em outubro, e o saldo acumulado da…</li></ul>
-  <p class="research-note">Insights BTG · 04/11/2026 · fonte Research BTG.</p>
+  <ul class="research-bullets"><li>A Petrobras reportou no 3T26 EBITDA ajustado de US$17,5 bi, ~5% abaixo do consenso e 6% menor t/t, pressionado por Brent mais fraco e perdas de estoque de US$0,7 bi no refino, apesar de produção e vendas de derivados em alta de ~5% t/t.</li><li>O FCF pela fórmula da companhia ficou em US$6,6 bi, com capex caixa de US$5,4 bi e consumo de capital de giro de ~US$2,5 bi, enquanto a alavancagem caiu para 1,0x, com caixa de ~US$12 bi e dívida bruta de US$70 bi. Na prévia do…</li><li>No diesel, o caminho da subvenção passou de até R$0,89/l para R$2,12/l e, depois, R$3,52/l no importado, com vigente de R$2,12/l no diesel local, enquanto o preço realizado de R$5,43/l ainda ficou R$0,74/l abaixo da EPP média em…</li></ul>
+  <p class="research-note">Insights BTG · 11/11/2026 · fonte Research BTG.</p>
 </section>
 
 <p class="footer-alert">
@@ -225,7 +225,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
   var X_MIN=-50,X_MAX=80,Y_MIN=-50,Y_MAX=80;
   var PAD={l:48,t:24,r:48,b:24},VW=600,VH=400;
   var PLOT_W=VW-PAD.l-PAD.r,PLOT_H=VH-PAD.t-PAD.b;
-  var RESEARCH_X=43.8371;
+  var RESEARCH_X=44.1561;
   var PUT=100.0, CALL=110.0, KI=150.15;
   function structureReturn(x){ var st=100+x; var r=st+Math.max(PUT-st,0)-(st>=KI?Math.max(st-CALL,0):0)-100; return r; }
   function regimeFor(x){ var st=100+x; if(st>=KI) return 'KI: teto +10%.'; if(x<=(PUT-100)) return 'Piso da put.'; return 'Participa 1:1.'; }

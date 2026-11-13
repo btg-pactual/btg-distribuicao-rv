@@ -9,6 +9,7 @@ SYMBOLS = {
     "spx": "^GSPC",
     "ewz": "EWZ",
     "ouro": "GLD",
+    "sx5e": "^STOXX50E",
 }
 
 
@@ -48,7 +49,7 @@ def main() -> None:
             shared = times
         pack[key] = vals
         print(key, len(vals), vals[0], vals[-1])
-    pack = {"t": shared, "ndx": pack["ndx"], "spx": pack["spx"], "ewz": pack["ewz"], "ouro": pack["ouro"]}
+    pack = {"t": shared, "ndx": pack["ndx"], "spx": pack["spx"], "ewz": pack["ewz"], "ouro": pack["ouro"], "sx5e": pack["sx5e"]}
     dest = Path(__file__).resolve().parent / "series.js"
     dest.write_text("window.COE_PACK=" + json.dumps(pack, separators=(",", ":")) + ";\n", encoding="utf-8")
     print("wrote", dest, "bytes", dest.stat().st_size)

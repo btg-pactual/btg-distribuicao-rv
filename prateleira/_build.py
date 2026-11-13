@@ -380,6 +380,7 @@ SECTOR_FALLBACK = {
     "VALE3": "Mineração",
     "MOTV3": "Transporte / Infraestrutura",
     "RDOR3": "Saúde",
+    "DOLB11": "Câmbio / Dólar (ETF)",
 }
 COMPANY_FALLBACK = {
     "SPCX34": "SPDR S&P 500",
@@ -419,6 +420,7 @@ COMPANY_FALLBACK = {
     "VALE3": "Vale",
     "MOTV3": "Motiva",
     "RDOR3": "Rede D'Or",
+    "DOLB11": "Dólar",
 }
 
 
@@ -1256,6 +1258,106 @@ def make_sh(t, fixing, put, call, ki, _bid):
     }
 
 
+def make_smart_up(t, fixing, put, call_ki, ki, call_ko, ko, _bid):
+    """Smart Up: ativo + put + call KO comprada + call KI vendida. Bid não entra.
+
+    Abaixo da put, o piso é o strike. Até a barreira, a call comprada acelera a alta.
+    Na barreira a call sai, a call vendida entra e o retorno volta ao piso.
+    """
+
+    def payoff(x: float) -> float:
+        st = 100 + x
+        r = st + max(put - st, 0.0)
+        if st < ko:
+            r += max(st - call_ko, 0.0)
+        if st >= ki:
+            r -= max(st - call_ki, 0.0)
+        return r - 100
+
+    prazo = months_label(fixing)
+    floor = round(put - 100, 2)
+    bar = min(ko, ki)
+    peak = round(payoff((bar - 100) - 0.01), 2)
+    cap = round(payoff(bar - 100), 2)
+    put_lbl, ko_lbl = fmt_lvl(put), fmt_lvl(bar)
+    floor_lbl, peak_lbl, cap_lbl = fmt_pct(floor), fmt_pct(peak), fmt_pct(cap)
+    slug = slugify("smart-up", t, f"ki{int(bar)}", prazo.replace(" ", ""))
+    return slug, {
+        "title": f"Smart Up {t}",
+        "h1": "Smart Up",
+        "ticker": t,
+        "dot": "SU",
+        "brand": "#0B6E4F",
+        "subtitle": (
+            f"Smart Up sobre {t}: piso em {put_lbl}. Até a barreira de {ko_lbl}, a alta é acelerada, "
+            f"com ganho máximo de {peak_lbl}. Na barreira, volta ao piso."
+        ),
+        "pills": [
+            ("Ativo", t),
+            ("Prazo", prazo),
+            ("Piso", put_lbl),
+            ("Barreira", ko_lbl),
+            ("Máx.", peak_lbl),
+        ],
+        "highlights": [
+            ("Prazo", prazo, ""),
+            ("Piso", floor_lbl, f"Put {put_lbl}"),
+            ("Até a barreira", peak_lbl, "Ganho máximo"),
+            ("Na barreira", cap_lbl, f"Volta ao piso em {ko_lbl}"),
+        ],
+        "struct": [
+            ('<span class="tag b">B</span> Put', put_lbl),
+            ('<span class="tag b">B</span> Call KO', f"{fmt_lvl(call_ko)} · barreira {fmt_lvl(ko)}"),
+            ('<span class="tag s">S</span> Call KI', f"{fmt_lvl(call_ki)} · barreira {fmt_lvl(ki)}"),
+        ],
+        "zones": [
+            (f"≤ {floor:+.0f}%", f"Piso {floor_lbl}."),
+            (f"{floor:+.0f}% → {fmt_pct(bar - 100)}", f"Alta acelerada, até o ganho máximo de {peak_lbl}."),
+            (f"≥ {fmt_pct(bar - 100)}", f"Barreira: volta ao piso {cap_lbl}."),
+        ],
+        "regime0": f"Até a barreira de {ko_lbl}, ganho máximo {peak_lbl}. Na barreira, permanece o piso.",
+        "speech": [
+            (
+                "Para quem",
+                f"Cliente construtivo em {t} ({prazo}) que quer acelerar a alta e aceita voltar ao piso se a barreira for atingida.",
+            ),
+            (
+                "Como encaixa",
+                f"Smart Up · put {put_lbl} · call KO {fmt_lvl(call_ko)} com barreira {fmt_lvl(ko)} · "
+                f"call KI {fmt_lvl(call_ki)} em {fmt_lvl(ki)}. Ganho máximo {peak_lbl}. Na barreira, piso {cap_lbl}.",
+            ),
+            ("Fechamento", "Material de uso interno — condições no DIE."),
+        ],
+        "x_min": -30,
+        "x_max": max(50, int(math.ceil(bar - 100)) + 20),
+        "y_min": -30,
+        "y_max": max(40, int(math.ceil(peak / 5.0) * 5) + 10),
+        "js_const": (
+            f"var PUT={put}, CALLKO={call_ko}, CALLKI={call_ki}, KO={ko}, KI={ki}, "
+            f"PEAK={peak}, CAP={cap}, FLOOR={floor};"
+        ),
+        "js_fn": (
+            "var st=100+x; var r=st+Math.max(PUT-st,0); "
+            "if(st<KO) r+=Math.max(st-CALLKO,0); "
+            "if(st>=KI) r-=Math.max(st-CALLKI,0); "
+            "return r-100;"
+        ),
+        "js_regime": (
+            "var st=100+x; "
+            "if(st>=KO || st>=KI) return 'Na barreira: volta ao piso '+CAP.toFixed(2).replace('.',',')+'%.'; "
+            "if(st<=PUT) return 'Piso '+FLOOR.toFixed(2).replace('.',',')+'%.'; "
+            "return 'Até a barreira: ganho máximo '+PEAK.toFixed(2).replace('.',',')+'%.';"
+        ),
+        "js_build": """
+    var BAR=Math.min(KO,KI)-100;
+    for (var x = X_MIN; x < BAR; x += 0.5) add(x, structureReturn(x));
+    add(BAR - 0.01, structureReturn(BAR - 0.01));
+    add(BAR, structureReturn(BAR));
+    for (var x2 = BAR + 0.5; x2 <= X_MAX; x2 += 0.5) add(x2, structureReturn(x2));
+""",
+    }
+
+
 def make_acel_ko_ativo(t, fixing, buy_call, ko_pct, sell_call, _bid):
     """Aceleradora KO com Ativo (DIE): ativo + Call UO stk B / KO H + Call vendida stk H.
 
@@ -1817,7 +1919,7 @@ def make_put_ko(t, fixing, ko_pct, rebate, cost):
 
 def make_twip(t, fixing, put, call_ki, ki, put_ko, put_ko_b, _bid):
     prazo = months_label(fixing)
-    slug = slugify("twip", t, prazo.replace(" ", ""))
+    slug = slugify("twip", t, f"ki{int(ki)}", prazo.replace(" ", ""))
     L = put_ko_b - 100
     H = ki - 100
     return slug, {
@@ -1846,10 +1948,14 @@ def make_twip(t, fixing, put, call_ki, ki, put_ko, put_ko_b, _bid):
         ],
         "regime0": "Entre barreiras: retorno absoluto |x|.",
         "speech": [
-            ("Para quem", f"Cliente construtivo em ouro via {t} ({prazo}) que quer payoff na alta e na queda moderada, com proteção."),
+            ("Para quem", f"Cliente que quer ganhar na alta e na queda moderada de {t} ({prazo}), com capital protegido fora da faixa."),
             ("Como encaixa", f"TWIP · put KO {fmt_lvl(put_ko_b)} · call KI {fmt_lvl(ki)}."),
             ("Fechamento", "Material de uso interno — condições no DIE."),
         ],
+        "x_min": min(-40, int(math.floor(L)) - 10),
+        "x_max": max(40, int(math.ceil(H)) + 15),
+        "y_min": -5,
+        "y_max": max(20, int(math.ceil(max(abs(L), H))) + 10),
         "js_const": f"var L={L}, H={H};",
         "js_fn": "if (x < L || x > H) return 0; return Math.abs(x);",
         "js_regime": "if (x < L || x > H) return 'Fora da faixa: 0%.'; return 'Twin: |x|.';",
@@ -2391,6 +2497,16 @@ SECTION_META = {
         "id": "smart-hedge",
         "blurb": "Proteção com piso na queda e participação 1:1 até a barreira KI.",
         "color": "#007e33",
+    },
+    "Smart Up": {
+        "id": "smart-up",
+        "blurb": "Piso na put. Até a barreira a alta é acelerada. Na barreira, volta ao piso.",
+        "color": "#0B6E4F",
+    },
+    "TWIP": {
+        "id": "twip",
+        "blurb": "Ganha na alta e na queda moderada. Fora das barreiras, o retorno é zero.",
+        "color": "#b8860b",
     },
     "Aceleradora Dinâmica": {
         "id": "aceleradora",
@@ -3219,6 +3335,8 @@ def main():
     ot_rows = ONE_TOUCH
     put_fin_rows = PUT_FIN
     car_rows: list = []
+    smart_up_rows: list = []
+    twip_rows: list = []
     try:
         from _excel_week import (
             ensure_put_financiada_bova11,
@@ -3245,6 +3363,8 @@ def main():
             ot_rows = week.ONE_TOUCH
             put_fin_rows = week.PUT_FIN or (PUT_FIN if week.sheet == "03.11.26" else [])
             car_rows = week.CAR
+            smart_up_rows = week.SMART_UP
+            twip_rows = week.TWIP
             n_ops = (
                 len(week.SOC)
                 + len(week.SMART)
@@ -3258,6 +3378,8 @@ def main():
                 + len(week.ONE_TOUCH)
                 + len(put_fin_rows)
                 + len(car_rows)
+                + len(smart_up_rows)
+                + len(twip_rows)
             )
             if n_ops == 0:
                 raise SystemExit(f"excel_empty sheet={week.sheet} — nenhuma operação lida")
@@ -3303,6 +3425,8 @@ def main():
     add_section("SOC", [make_soc(*r) for r in soc_rows])
     add_section("Cupom Alto Retorno", [make_car(*r) for r in car_rows])
     add_section("Smart Hedge", [make_sh(*r) for r in smart_rows])
+    add_section("Smart Up", [make_smart_up(*r) for r in smart_up_rows])
+    add_section("TWIP", [make_twip(*r) for r in twip_rows])
     add_section("Aceleradora Dinâmica", [make_acel(*r) for r in acel_dyn_rows])
     add_section("Aceleradora KO com Ativo", [make_acel_ko_ativo(*r) for r in acel_rows])
     add_section("Triplo Retorno KO", [make_triplo(*r) for r in triplo_rows])

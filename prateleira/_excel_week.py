@@ -81,8 +81,12 @@ def _section_key(cell0: str | None) -> str | None:
     n = _norm(str(cell0))
     if n == "SOC":
         return "soc"
+    if "SMART UP" in n:
+        return "smart_up"
     if "SMART HEDGE" in n:
         return "smart"
+    if n == "TWIP" or n.startswith("TWIP "):
+        return "twip"
     if "ACELERADORA KO" in n and "ATIVO" in n:
         return "acel_ko"
     if "ACELERADORA DIN" in n:
@@ -122,6 +126,8 @@ class WeekData:
     ONE_TOUCH: list
     PUT_FIN: list
     CAR: list
+    SMART_UP: list
+    TWIP: list
 
 
 def _parse_ws(ws, sheet_name: str, ref: date) -> WeekData:
@@ -138,6 +144,8 @@ def _parse_ws(ws, sheet_name: str, ref: date) -> WeekData:
     one_touch: list = []
     put_fin: list = []
     car: list = []
+    smart_up: list = []
+    twip: list = []
 
     for row in ws.iter_rows(values_only=True):
         cells = [c for c in row if c is not None and str(c).strip() != ""]
@@ -256,6 +264,24 @@ def _parse_ws(ws, sheet_name: str, ref: date) -> WeekData:
             if None in (put_k, ko_dn, call_k, ko_up):
                 continue
             car.append((ticker, fixing, put_k, ko_dn, call_k, ko_up, bid_pct(rest[6])))
+        elif section == "smart_up":
+            # B PUT | S CALL KI | KI | B CALL KO | KO | BID — bid não vai para o HTML.
+            if len(rest) < 6:
+                continue
+            up_put, up_call_ki, up_ki = pct(rest[0]), pct(rest[1]), pct(rest[2])
+            up_call, up_ko = pct(rest[3]), pct(rest[4])
+            if None in (up_put, up_call_ki, up_ki, up_call, up_ko):
+                continue
+            smart_up.append((ticker, fixing, up_put, up_call_ki, up_ki, up_call, up_ko, bid_pct(rest[5])))
+        elif section == "twip":
+            # B PUT | S CALL KI | KI | B PUT KO | KO | BID — bid não vai para o HTML.
+            if len(rest) < 6:
+                continue
+            put_k, call_ki, ki = pct(rest[0]), pct(rest[1]), pct(rest[2])
+            put_ko, ko = pct(rest[3]), pct(rest[4])
+            if None in (put_k, call_ki, ki, put_ko, ko):
+                continue
+            twip.append((ticker, fixing, put_k, call_ki, ki, put_ko, ko, bid_pct(rest[5])))
 
     return WeekData(
         sheet=sheet_name,
@@ -272,6 +298,8 @@ def _parse_ws(ws, sheet_name: str, ref: date) -> WeekData:
         ONE_TOUCH=one_touch,
         PUT_FIN=put_fin,
         CAR=car,
+        SMART_UP=smart_up,
+        TWIP=twip,
     )
 
 
@@ -323,6 +351,8 @@ _KIND_ORDER = (
     ("SOC", "SOC", "SOC"),
     ("CAR", "Cupom Alto Retorno", "CAR"),
     ("SMART", "Smart Hedge", "SMART"),
+    ("SMART_UP", "Smart Up", "SMART_UP"),
+    ("TWIP", "TWIP", "TWIP"),
     ("ACEL_DYN", "Aceleradora Dinâmica", "ACEL_DYN"),
     ("ACEL_KO", "Aceleradora KO com Ativo", "ACEL_KO"),
     ("TRIPLO", "Triplo Retorno KO", "TRIPLO"),
@@ -434,6 +464,8 @@ def summary(w: WeekData) -> str:
         f"ONE_TOUCH={len(w.ONE_TOUCH)}",
         f"PUT_FIN={len(w.PUT_FIN)}",
         f"CAR={len(w.CAR)}",
+        f"SMART_UP={len(w.SMART_UP)}",
+        f"TWIP={len(w.TWIP)}",
     ]
     for t, fixing, strike, ko, *_rest in w.SOC:
         lines.append(f"SOC\t{t} {fixing.isoformat()} strike={strike} ko={ko}")
@@ -443,6 +475,14 @@ def summary(w: WeekData) -> str:
         lines.append(f"ACEL_DYN\t{t} {fixing.isoformat()} ko_alta={ko_h} ko_baixa={ko_l}")
     for t, fixing, stk, ko, rebate, offer in w.CALL_KO:
         lines.append(f"CALL_KO\t{t} {fixing.isoformat()} stk={stk} ko={ko} rebate={rebate} offer={offer}")
+    for t, fixing, put_k, call_ki, ki, call_ko, ko, _bid in w.SMART_UP:
+        lines.append(
+            f"SMART_UP\t{t} {fixing.isoformat()} put={put_k} callki={call_ki} ki={ki} callko={call_ko} ko={ko}"
+        )
+    for t, fixing, put_k, call_ki, ki, put_ko, ko, _bid in w.TWIP:
+        lines.append(
+            f"TWIP\t{t} {fixing.isoformat()} put={put_k} callki={call_ki} ki={ki} putko={put_ko} ko={ko}"
+        )
     for t, fixing, put_k, ko_dn, call_k, ko_up, _bid in w.CAR:
         lines.append(
             f"CAR\t{t} {fixing.isoformat()} put={put_k} ko_baixa={ko_dn} call={call_k} ko_alta={ko_up}"
