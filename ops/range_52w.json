@@ -26,31 +26,31 @@
       "ticker": "AXIA3",
       "source": "Yahoo Finance AXIA3.SA",
       "high": 67.84,
-      "low": 0.0,
-      "last": 47.5,
+      "low": 46.21,
+      "last": 48.4,
       "n_days": 248,
-      "as_of": "2026-11-13",
-      "as_of_br": "13/11/2026"
+      "as_of": "2026-11-14",
+      "as_of_br": "14/11/2026"
     },
     "ROXO34": {
       "ticker": "ROXO34",
       "source": "Yahoo Finance ROXO34.SA",
       "high": 16.57,
-      "low": 0.0,
-      "last": 11.26,
+      "low": 9.47,
+      "last": 12.37,
       "n_days": 248,
-      "as_of": "2026-11-13",
-      "as_of_br": "13/11/2026"
+      "as_of": "2026-11-14",
+      "as_of_br": "14/11/2026"
     },
     "ITUB4": {
       "ticker": "ITUB4",
       "source": "Yahoo Finance ITUB4.SA",
       "high": 50.85,
       "low": 37.35,
-      "last": 42.37,
+      "last": 42.27,
       "n_days": 248,
-      "as_of": "2026-11-13",
-      "as_of_br": "13/11/2026"
+      "as_of": "2026-11-14",
+      "as_of_br": "14/11/2026"
     },
     "EMBJ3": {
       "ticker": "EMBJ3",
@@ -67,20 +67,20 @@
       "source": "Yahoo Finance EQTL3.SA",
       "high": 51.26,
       "low": 31.36,
-      "last": 34.2,
+      "last": 34.34,
       "n_days": 248,
-      "as_of": "2026-11-13",
-      "as_of_br": "13/11/2026"
+      "as_of": "2026-11-14",
+      "as_of_br": "14/11/2026"
     },
     "PACB11": {
       "ticker": "PACB11",
       "source": "Yahoo Finance PACB11.SA",
       "high": 12.72,
-      "low": 0.0,
-      "last": 10.94,
+      "low": 10.24,
+      "last": 10.98,
       "n_days": 247,
-      "as_of": "2026-11-13",
-      "as_of_br": "13/11/2026"
+      "as_of": "2026-11-14",
+      "as_of_br": "14/11/2026"
     },
     "PTAX": {
       "ticker": "PTAX",

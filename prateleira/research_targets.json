@@ -30,8 +30,8 @@
   "AXIA3": {
     "ticker": "AXIA3",
     "url": "https://content.btgpactual.com/research/ativo/AXIA3",
-    "price": 47.5,
-    "last_trade": "2026-11-12T21:04:00",
+    "price": 48.4,
+    "last_trade": "2026-11-13T22:28:18",
     "sector": "Serviços Básicos",
     "company": "Axia Energia",
     "rec": "COMPRA",
@@ -45,7 +45,7 @@
       "No balanço energético, a exposição a preços em 2027 caiu para 19%–41%, de 27%–43%, com envelope mantido em ~R$200–230/MWh, enquanto em 2028 a exposição ficou em 23%–56% e o envelope subiu para ~R$200–240/MWh, de ~R$190–230/MWh."
     ],
     "summary_date": "2026-11-05 12:39:17.605811+00:00",
-    "upside": 74.73684210526316
+    "upside": 71.48760330578511
   },
   "WEGE3": {
     "ticker": "WEGE3",
@@ -70,8 +70,8 @@
   "PRIO3": {
     "ticker": "PRIO3",
     "url": "https://content.btgpactual.com/research/ativo/PRIO3",
-    "price": 62.94,
-    "last_trade": "2026-11-13T20:00:24",
+    "price": 63.3,
+    "last_trade": "2026-11-13T22:25:05",
     "sector": "Petróleo & Gás",
     "company": "PetroRio",
     "rec": "COMPRA",
@@ -85,7 +85,7 @@
       "Também recomprou 6,1 mi de ações no trimestre, após já ter executado ~15,4 mi de ações em 2026, equivalentes a ~2% do valor de mercado. As âncoras de capital seguem fortes: o banco estima FCFE yield de 20–24% nos próximos 12 meses com…"
     ],
     "summary_date": "2026-11-05 09:15:34.261709+00:00",
-    "upside": 15.983476326660305
+    "upside": 15.323854660347557
   },
   "SPCX34": {
     "ticker": "SPCX34",
@@ -158,8 +158,8 @@
   "ITUB4": {
     "ticker": "ITUB4",
     "url": "https://content.btgpactual.com/research/ativo/ITUB4",
-    "price": 42.36,
-    "last_trade": "2026-11-13T20:00:31",
+    "price": 42.27,
+    "last_trade": "2026-11-13T22:39:58",
     "sector": "Financeiro",
     "company": "Itaú Unibanco",
     "rec": "COMPRA",
@@ -173,7 +173,7 @@
       "Na qualidade de ativos, a inadimplência curta caiu para 1,7%, a acima de 90 dias subiu para 2,0%, a carteira renegociada ficou em 2,6% do total e o custo de crédito líquido foi de R$9,2 bi."
     ],
     "summary_date": "2026-11-04 11:26:42.061062+00:00",
-    "upside": 25.118035882908394
+    "upside": 25.38443340430565
   },
   "PETR4": {
     "ticker": "PETR4",
@@ -274,22 +274,22 @@
   "ROXO34": {
     "ticker": "ROXO34",
     "url": "https://content.btgpactual.com/research/ativo/ROXO34",
-    "price": 11.26,
-    "last_trade": "2026-11-12T21:07:00",
+    "price": 12.37,
+    "last_trade": "2026-11-13T22:39:19",
     "sector": "Financeiro",
     "company": "Nubank",
     "rec": "COMPRA",
     "rec_lbl": "Compra",
     "rec_cls": "buy",
-    "date": "2026-10-06T14:16:18.564Z",
+    "date": "2026-11-13T09:51:36.409Z",
     "target": 21.0,
     "bullets": [
-      "O 2T26 do Nubank veio acima das expectativas, com lucro líquido GAAP de US$1,06 bi, ROE de 33% e alta de 22% t/t e 67% a/a, cerca de 10% acima do consenso, sustentado por NII após provisões de US$1,72 bi, 10% acima do mercado, e índice…",
-      "A carteira de crédito atingiu US$39,4 bi, alta de 5% t/t e 37% a/a em base neutra de câmbio, enquanto depósitos somaram US$45,3 bi, +6% t/t e +18% a/a, com custo estável em 88% do CDI.",
-      "A qualidade dos ativos mostrou sinais mistos, com inadimplência inicial em queda de 20 bps t/t, mas NPL acima de 90 dias em 6,9%, alta de 40 bps t/t; ainda assim, as provisões recuaram 14% t/t para US$1,48 bi, levando o NIM ajustado ao…"
+      "O Nubank reportou 3T26 forte, com lucro líquido GAAP de US$1,09 bi, alta de 3% t/t e 39% a/a, ROE de ~32% e resultado 2% acima da estimativa, apesar de despesa pós-impostos de ~US$50 mi ligada à quebra de um emissor de cartões.",
+      "A carteira de crédito chegou a US$42 bi, +6% t/t e +33% a/a em moeda constante, com margem financeira gerencial de US$3,9 bi e índice de eficiência de 19,3%. Em seguida, a prévia estratégica reforçou expansão internacional com…",
+      "A gestão passou a projetar eficiência anual em 19–19,5%, melhor que a indicação anterior de ~20%. Entre as âncoras, o México alcançou mais de 16 mi de clientes e a Colômbia 6,1 mi, enquanto EUA e Nu Global já estavam contemplados no…"
     ],
-    "summary_date": "2026-10-27 17:48:30.579608+00:00",
-    "upside": 86.50088809946715
+    "summary_date": "2026-11-13 09:52:32.690959+00:00",
+    "upside": 69.76556184316898
   },
   "GOGL34": {
     "ticker": "GOGL34",
@@ -378,8 +378,8 @@
   "BOVA11": {
     "ticker": "BOVA11",
     "url": "https://content.btgpactual.com/research/ativo/BOVA11",
-    "price": 168.55,
-    "last_trade": "2026-11-12T21:18:53",
+    "price": 169.68,
+    "last_trade": "2026-11-13T22:39:51",
     "sector": "Fundos de Índice",
     "company": "Ishares Ibovespa Fundo de Índice"
   },
@@ -442,8 +442,8 @@
   "EQTL3": {
     "ticker": "EQTL3",
     "url": "https://content.btgpactual.com/research/ativo/EQTL3",
-    "price": 34.19,
-    "last_trade": "2026-11-13T20:00:32",
+    "price": 34.34,
+    "last_trade": "2026-11-13T21:05:49",
     "sector": "Serviços Básicos",
     "company": "Equatorial",
     "rec": "COMPRA",
@@ -457,7 +457,7 @@
       "As perdas consolidadas ficaram em 18,1%, ainda abaixo do limite regulatório de 18,9%. Em renováveis, a Echoenergia gerou 1.508 GWh, +14,3% a/a, mas seguiu pressionada por curtailment de 12,3% na eólica e 43,0% na solar."
     ],
     "summary_date": "2026-11-12 12:13:03.752102+00:00",
-    "upside": 101.81339572974557
+    "upside": 100.9318578916715
   },
   "VBBR3": {
     "ticker": "VBBR3",
@@ -814,8 +814,8 @@
   "DOLB11": {
     "ticker": "DOLB11",
     "url": "https://content.btgpactual.com/research/ativo/DOLB11",
-    "price": 107.53,
-    "last_trade": "2026-11-13T17:18:30",
+    "price": 107.99,
+    "last_trade": "2026-11-13T21:15:00",
     "sector": "Fundos de Índice",
     "company": "BTG PACTUAL REFERENCE S&P/B3 CAMBIAL FUNDO DE ÍNDICE"
   }
