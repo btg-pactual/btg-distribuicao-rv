@@ -801,14 +801,14 @@
     "rec": "COMPRA",
     "rec_lbl": "Compra",
     "rec_cls": "buy",
-    "date": "2026-11-16T00:00:00.000Z",
+    "date": "2026-11-17T09:53:09.750Z",
     "target": 52.0,
     "bullets": [
-      "A Rede D’Or reportou 3T26 sólido, com EBITDA ajustado consolidado de R$ 3,6 bi, alta de 12% a/a, e lucro líquido ajustado de R$ 1,39 bi, 9% acima do esperado, em trimestre sem efeitos não recorrentes relevantes. Nos hospitais, a receita…",
-      "O EBITDA ajustado hospitalar avançou 14% a/a, com margem de 27%, apesar de ocupação de 79,6%, 200 bps abaixo do ano anterior. Na SulAmérica, a receita cresceu 5% a/a, para R$ 8,85 bi, com adição de 64 mil vidas, base de saúde em 3,23 mi…",
-      "O EBITDA ajustado foi de R$ 1,08 bi, alta de 6% a/a. A prévia do trimestre apontava receita consolidada de ~R$ 18,1 bi, EBITDA ajustado de ~R$ 3,5 bi, margem de ~19,4%, ocupação hospitalar de ~80% e sinistralidade da SulAmérica de…"
+      "A Rede D’Or reportou 3T26 sólido, com EBITDA ajustado consolidado de R$ 3,6 bi, alta de 12% a/a, e lucro líquido ajustado de R$ 1,39 bi, 9% acima das estimativas.",
+      "Nos hospitais, a receita líquida avançou 10% a/a, para R$ 9,15 bi, com tíquete médio +10%, oncologia +18% e margem bruta de 28%, enquanto o EBITDA ajustado hospitalar cresceu 14%, com margem de 27%. Na prévia, o trimestre já apontava…",
+      "Dados da ANS também mostraram ganho de 37 mil vidas em julho e 94 mil no ano sem ASO, reforçando a boa dinâmica comercial. A geração de caixa operacional somou R$ 2,8 bi, +19% a/a, com dias de recebíveis em 109, ante 115, dívida líquida…"
     ],
-    "summary_date": "2026-11-13 09:24:00.897880+00:00",
+    "summary_date": "2026-11-17 09:53:59.047772+00:00",
     "upside": 47.55959137343926
   },
   "DOLB11": {
