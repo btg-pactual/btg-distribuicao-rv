@@ -1,26 +1,26 @@
 {
-  "updated_at": "2026-11-16T17:31:06Z",
-  "as_of_br": "16/11/2026",
+  "updated_at": "2026-11-23T20:33:05Z",
+  "as_of_br": "23/11/2026",
   "tickers": {
     "VALE3": {
       "ticker": "VALE3",
       "source": "Yahoo Finance VALE3.SA",
       "high": 91.62,
-      "low": 59.42,
-      "last": 61.44,
+      "low": 57.67,
+      "last": 58.63,
       "n_days": 247,
-      "as_of": "2026-11-16",
-      "as_of_br": "16/11/2026"
+      "as_of": "2026-11-23",
+      "as_of_br": "23/11/2026"
     },
     "PETR4": {
       "ticker": "PETR4",
       "source": "Yahoo Finance PETR4.SA",
       "high": 59.79,
       "low": 29.53,
-      "last": 44.09,
+      "last": 41.45,
       "n_days": 247,
-      "as_of": "2026-11-16",
-      "as_of_br": "16/11/2026"
+      "as_of": "2026-11-23",
+      "as_of_br": "23/11/2026"
     },
     "AXIA3": {
       "ticker": "AXIA3",
@@ -57,10 +57,10 @@
       "source": "Yahoo Finance EMBJ3.SA",
       "high": 116.78,
       "low": 68.08,
-      "last": 110.56,
+      "last": 107.11,
       "n_days": 247,
-      "as_of": "2026-11-16",
-      "as_of_br": "16/11/2026"
+      "as_of": "2026-11-23",
+      "as_of_br": "23/11/2026"
     },
     "EQTL3": {
       "ticker": "EQTL3",
@@ -85,12 +85,12 @@
     "PTAX": {
       "ticker": "PTAX",
       "source": "BCB Olinda PTAX",
-      "high": 5.7324,
+      "high": 5.9708,
       "low": 4.8973,
-      "last": 5.7324,
-      "n_days": 253,
-      "as_of": "2026-11-16",
-      "as_of_br": "16/11/2026"
+      "last": 5.9708,
+      "n_days": 252,
+      "as_of": "2026-11-23",
+      "as_of_br": "23/11/2026"
     },
     "MBRF3": {
       "ticker": "MBRF3",
@@ -117,60 +117,60 @@
       "source": "Yahoo Finance WEGE3.SA",
       "high": 54.53,
       "low": 41.15,
-      "last": 50.68,
+      "last": 50.08,
       "n_days": 247,
-      "as_of": "2026-11-16",
-      "as_of_br": "16/11/2026"
+      "as_of": "2026-11-23",
+      "as_of_br": "23/11/2026"
     },
     "JBSS32": {
       "ticker": "JBSS32",
       "source": "Yahoo Finance JBSS32.SA",
       "high": 93.74,
       "low": 55.44,
-      "last": 70.82,
+      "last": 70.07,
       "n_days": 247,
-      "as_of": "2026-11-16",
-      "as_of_br": "16/11/2026"
+      "as_of": "2026-11-23",
+      "as_of_br": "23/11/2026"
     },
     "IBOB11": {
       "ticker": "IBOB11",
       "source": "Yahoo Finance IBOB11.SA",
       "high": 173.6,
-      "low": 126.59,
-      "last": 139.82,
+      "low": 126.93,
+      "last": 135.99,
       "n_days": 247,
-      "as_of": "2026-11-16",
-      "as_of_br": "16/11/2026"
+      "as_of": "2026-11-23",
+      "as_of_br": "23/11/2026"
     },
     "SPXB11": {
       "ticker": "SPXB11",
       "source": "Yahoo Finance SPXB11.SA",
-      "high": 19.09,
+      "high": 19.44,
       "low": 14.6,
-      "last": 19.02,
+      "last": 18.97,
       "n_days": 247,
-      "as_of": "2026-11-16",
-      "as_of_br": "16/11/2026"
+      "as_of": "2026-11-23",
+      "as_of_br": "23/11/2026"
     },
     "GOLB11": {
       "ticker": "GOLB11",
       "source": "Yahoo Finance GOLB11.SA",
       "high": 120.0,
-      "low": 98.18,
-      "last": 98.93,
-      "n_days": 103,
-      "as_of": "2026-11-16",
-      "as_of_br": "16/11/2026"
+      "low": 92.44,
+      "last": 93.21,
+      "n_days": 107,
+      "as_of": "2026-11-23",
+      "as_of_br": "23/11/2026"
     },
     "GGBR4": {
       "ticker": "GGBR4",
       "source": "Yahoo Finance GGBR4.SA",
       "high": 28.72,
       "low": 16.79,
-      "last": 24.6,
+      "last": 25.34,
       "n_days": 247,
-      "as_of": "2026-11-16",
-      "as_of_br": "16/11/2026"
+      "as_of": "2026-11-23",
+      "as_of_br": "23/11/2026"
     },
     "GOGL34": {
       "ticker": "GOGL34",
@@ -196,11 +196,11 @@
       "ticker": "NVDC34",
       "source": "Yahoo Finance NVDC34.SA",
       "high": 25.88,
-      "low": 17.41,
-      "last": 19.05,
+      "low": 16.97,
+      "last": 20.44,
       "n_days": 247,
-      "as_of": "2026-11-16",
-      "as_of_br": "16/11/2026"
+      "as_of": "2026-11-23",
+      "as_of_br": "23/11/2026"
     },
     "TSMC34": {
       "ticker": "TSMC34",
@@ -247,10 +247,10 @@
       "source": "Yahoo Finance SUZB3.SA",
       "high": 59.65,
       "low": 39.17,
-      "last": 55.35,
+      "last": 55.57,
       "n_days": 247,
-      "as_of": "2026-11-16",
-      "as_of_br": "16/11/2026"
+      "as_of": "2026-11-23",
+      "as_of_br": "23/11/2026"
     },
     "BOVA11": {
       "ticker": "BOVA11",
@@ -277,50 +277,100 @@
       "source": "Yahoo Finance MOTV3.SA",
       "high": 20.83,
       "low": 11.92,
-      "last": 15.48,
+      "last": 15.79,
       "n_days": 247,
-      "as_of": "2026-11-16",
-      "as_of_br": "16/11/2026"
+      "as_of": "2026-11-23",
+      "as_of_br": "23/11/2026"
     },
     "RDOR3": {
       "ticker": "RDOR3",
       "source": "Yahoo Finance RDOR3.SA",
       "high": 47.86,
       "low": 30.61,
-      "last": 34.91,
+      "last": 36.31,
       "n_days": 247,
-      "as_of": "2026-11-16",
-      "as_of_br": "16/11/2026"
+      "as_of": "2026-11-23",
+      "as_of_br": "23/11/2026"
     },
     "SBSP3": {
       "ticker": "SBSP3",
       "source": "Yahoo Finance SBSP3.SA",
       "high": 35.318,
       "low": 23.17,
-      "last": 27.08,
+      "last": 27.62,
       "n_days": 247,
-      "as_of": "2026-11-16",
-      "as_of_br": "16/11/2026"
+      "as_of": "2026-11-23",
+      "as_of_br": "23/11/2026"
     },
     "DOLB11": {
       "ticker": "DOLB11",
       "source": "Yahoo Finance DOLB11.SA",
-      "high": 107.99,
+      "high": 114.5,
       "low": 85.69,
-      "last": 107.53,
-      "n_days": 248,
-      "as_of": "2026-11-13",
-      "as_of_br": "13/11/2026"
+      "last": 113.17,
+      "n_days": 247,
+      "as_of": "2026-11-23",
+      "as_of_br": "23/11/2026"
     },
     "AURA33": {
       "ticker": "AURA33",
       "source": "Yahoo Finance AURA33.SA",
       "high": 182.9,
-      "low": 60.74,
-      "last": 136.43,
+      "low": 63.93,
+      "last": 124.83,
       "n_days": 247,
-      "as_of": "2026-11-16",
-      "as_of_br": "16/11/2026"
+      "as_of": "2026-11-23",
+      "as_of_br": "23/11/2026"
+    },
+    "VBBR3": {
+      "ticker": "VBBR3",
+      "source": "Yahoo Finance VBBR3.SA",
+      "high": 41.22,
+      "low": 24.04,
+      "last": 30.59,
+      "n_days": 247,
+      "as_of": "2026-11-23",
+      "as_of_br": "23/11/2026"
+    },
+    "T1TW34": {
+      "ticker": "T1TW34",
+      "source": "Yahoo Finance T1TW34.SA",
+      "high": 357.7,
+      "low": 244.64,
+      "last": 313.22,
+      "n_days": 247,
+      "as_of": "2026-11-23",
+      "as_of_br": "23/11/2026"
+    },
+    "SPCX34": {
+      "ticker": "SPCX34",
+      "source": "Yahoo Finance SPCX34.SA",
+      "high": 75.51,
+      "low": 35.49,
+      "last": 52.89,
+      "n_days": 113,
+      "as_of": "2026-11-23",
+      "as_of_br": "23/11/2026"
+    },
+    "BBAS3": {
+      "ticker": "BBAS3",
+      "source": "Yahoo Finance BBAS3.SA",
+      "high": 27.81,
+      "low": 14.02,
+      "last": 14.29,
+      "n_days": 247,
+      "as_of": "2026-11-23",
+      "as_of_br": "23/11/2026"
+    },
+    "ABEV3": {
+      "ticker": "ABEV3",
+      "source": "Yahoo Finance ABEV3.SA",
+      "high": 17.04,
+      "low": 13.0,
+      "last": 15.95,
+      "n_days": 247,
+      "as_of": "2026-11-23",
+      "as_of_br": "23/11/2026"
     }
   }
 }

@@ -168,7 +168,7 @@ body{font-family:var(--font);color:var(--ink);background:var(--bg);min-height:10
     <div class="page-head">
       <div>
         <h1>Estruturas</h1>
-        <p class="sub">Selecione o produto para ver as operações · ref. 16/11/2026</p>
+        <p class="sub">Selecione o produto para ver as operações · ref. 23/11/2026</p>
       </div>
       
     </div>
@@ -177,7 +177,7 @@ body{font-family:var(--font);color:var(--ink);background:var(--bg);min-height:10
   <span class="cat-card-body">
     <span class="cat-card-top">
       <span class="cat-card-title">SOC</span>
-      <span class="cat-card-count">10 operações</span>
+      <span class="cat-card-count">9 operações</span>
     </span>
     <span class="cat-card-blurb">Stock or Coupon: recebe cupom se a barreira não for atingida; senão, entrega o ativo.</span>
   </span>
@@ -186,25 +186,52 @@ body{font-family:var(--font);color:var(--ink);background:var(--bg);min-height:10
   <span class="cat-card-body">
     <span class="cat-card-top">
       <span class="cat-card-title">Smart Hedge</span>
-      <span class="cat-card-count">6 operações</span>
+      <span class="cat-card-count">10 operações</span>
     </span>
     <span class="cat-card-blurb">Proteção com piso na queda e participação 1:1 até a barreira KI.</span>
+  </span>
+</button>
+<button type="button" class="cat-card" data-target="smart-up" style="--cat:#0B6E4F">
+  <span class="cat-card-body">
+    <span class="cat-card-top">
+      <span class="cat-card-title">Smart Up</span>
+      <span class="cat-card-count">1 operação</span>
+    </span>
+    <span class="cat-card-blurb">Piso na put. Até a barreira a alta é acelerada. Na barreira, volta ao piso.</span>
   </span>
 </button>
 <button type="button" class="cat-card" data-target="twip" style="--cat:#b8860b">
   <span class="cat-card-body">
     <span class="cat-card-top">
       <span class="cat-card-title">TWIP</span>
-      <span class="cat-card-count">2 operações</span>
+      <span class="cat-card-count">3 operações</span>
     </span>
     <span class="cat-card-blurb">Ganha na alta e na queda moderada. Fora das barreiras, o retorno é zero.</span>
+  </span>
+</button>
+<button type="button" class="cat-card" data-target="twip-coupon" style="--cat:#8a5a00">
+  <span class="cat-card-body">
+    <span class="cat-card-top">
+      <span class="cat-card-title">TWIP Coupon</span>
+      <span class="cat-card-count">1 operação</span>
+    </span>
+    <span class="cat-card-blurb">Cupom nas barreiras. No meio, a queda soma nesse cupom e a alta acompanha o ativo.</span>
+  </span>
+</button>
+<button type="button" class="cat-card" data-target="compra-put-ativo" style="--cat:#2c5f7c">
+  <span class="cat-card-body">
+    <span class="cat-card-top">
+      <span class="cat-card-title">Compra de Put com Ativo</span>
+      <span class="cat-card-count">1 operação</span>
+    </span>
+    <span class="cat-card-blurb">Fica no ativo com a queda limitada ao piso da put, descontado o prêmio.</span>
   </span>
 </button>
 <button type="button" class="cat-card" data-target="aceleradora" style="--cat:#1e4d7b">
   <span class="cat-card-body">
     <span class="cat-card-top">
       <span class="cat-card-title">Aceleradora Dinâmica</span>
-      <span class="cat-card-count">5 operações</span>
+      <span class="cat-card-count">4 operações</span>
     </span>
     <span class="cat-card-blurb">2× na alta até a call vendida; se atingir o KO, a call vira pó. Proteção parcial.</span>
   </span>
@@ -231,115 +258,105 @@ body{font-family:var(--font);color:var(--ink);background:var(--bg);min-height:10
     
 <section class="cat-section" id="soc" hidden>
   <div class="cat-section-head">
-    <h2>SOC · 10 operações</h2>
+    <h2>SOC · 9 operações</h2>
     <button type="button" class="cat-back" data-back>← Voltar</button>
   </div>
   <ul class="ops">
 <li class="op-block">
-  <a class="op" href="./ops/soc-mbrf3-28dc/index.html">
-    <div class="op-top">
-      <span class="op-title">SOC MBRF3</span>
-      <span class="op-ticker">MBRF3</span>
-    </div>
-    <p class="op-blurb">Stock or Coupon sobre MBRF3: cupom se a barreira de queda não for atingida; se KO, acompanha o ativo.</p>
-    <div class="op-meta"><span class="pill">Ativo: MBRF3</span> <span class="pill">Prazo: 28dc</span> <span class="pill">Vencimento: 14/12/2026</span> <span class="pill">Strike: 105.97%</span><span class="pill">Neutro</span><span class="pill">PA R$ 26,00</span></div>
-  </a>
-</li>
-<li class="op-block">
-  <a class="op" href="./ops/soc-vivt3-49dc/index.html">
-    <div class="op-top">
-      <span class="op-title">SOC VIVT3</span>
-      <span class="op-ticker">VIVT3</span>
-    </div>
-    <p class="op-blurb">Stock or Coupon sobre VIVT3: cupom se a barreira de queda não for atingida; se KO, acompanha o ativo.</p>
-    <div class="op-meta"><span class="pill">Ativo: VIVT3</span> <span class="pill">Prazo: 49dc</span> <span class="pill">Vencimento: 04/01/2027</span> <span class="pill">Strike: 103.00%</span><span class="pill">Compra</span><span class="pill">PA R$ 31,00</span></div>
-  </a>
-</li>
-<li class="op-block">
-  <a class="op" href="./ops/soc-wege3-49dc/index.html">
+  <a class="op" href="./ops/soc-wege3-46dc/index.html">
     <div class="op-top">
       <span class="op-title">SOC WEGE3</span>
       <span class="op-ticker">WEGE3</span>
     </div>
     <p class="op-blurb">Stock or Coupon sobre WEGE3: cupom se a barreira de queda não for atingida; se KO, acompanha o ativo.</p>
-    <div class="op-meta"><span class="pill">Ativo: WEGE3</span> <span class="pill">Prazo: 49dc</span> <span class="pill">Vencimento: 04/01/2027</span> <span class="pill">Strike: 104.05%</span><span class="pill">Compra</span><span class="pill">PA R$ 65,00</span></div>
+    <div class="op-meta"><span class="pill">Ativo: WEGE3</span> <span class="pill">Prazo: 46dc</span> <span class="pill">Vencimento: 08/01/2027</span> <span class="pill">Strike: 104.05%</span><span class="pill">Compra</span><span class="pill">PA R$ 65,00</span></div>
   </a>
 </li>
 <li class="op-block">
-  <a class="op" href="./ops/soc-jbss32-29dc/index.html">
+  <a class="op" href="./ops/soc-jbss32-28dc/index.html">
     <div class="op-top">
       <span class="op-title">SOC JBSS32</span>
       <span class="op-ticker">JBSS32</span>
     </div>
     <p class="op-blurb">Stock or Coupon sobre JBSS32: cupom se a barreira de queda não for atingida; se KO, acompanha o ativo.</p>
-    <div class="op-meta"><span class="pill">Ativo: JBSS32</span> <span class="pill">Prazo: 29dc</span> <span class="pill">Vencimento: 15/12/2026</span> <span class="pill">Strike: 104.00%</span><span class="pill">Compra</span><span class="pill">PA R$ 100,00</span></div>
+    <div class="op-meta"><span class="pill">Ativo: JBSS32</span> <span class="pill">Prazo: 28dc</span> <span class="pill">Vencimento: 21/12/2026</span> <span class="pill">Strike: 104.00%</span><span class="pill">Compra</span><span class="pill">PA R$ 100,00</span></div>
   </a>
 </li>
 <li class="op-block">
-  <a class="op" href="./ops/soc-vale3-50dc/index.html">
+  <a class="op" href="./ops/soc-vale3-49dc/index.html">
     <div class="op-top">
       <span class="op-title">SOC VALE3</span>
       <span class="op-ticker">VALE3</span>
     </div>
     <p class="op-blurb">Stock or Coupon sobre VALE3: cupom se a barreira de queda não for atingida; se KO, acompanha o ativo.</p>
-    <div class="op-meta"><span class="pill">Ativo: VALE3</span> <span class="pill">Prazo: 50dc</span> <span class="pill">Vencimento: 05/01/2027</span> <span class="pill">Strike: 104.62%</span><span class="pill">Compra</span><span class="pill">PA R$ 90,00</span></div>
+    <div class="op-meta"><span class="pill">Ativo: VALE3</span> <span class="pill">Prazo: 49dc</span> <span class="pill">Vencimento: 11/01/2027</span> <span class="pill">Strike: 104.62%</span><span class="pill">Compra</span><span class="pill">PA R$ 75,00</span></div>
   </a>
 </li>
 <li class="op-block">
-  <a class="op" href="./ops/soc-embj3-29dc/index.html">
+  <a class="op" href="./ops/soc-embj3-28dc/index.html">
     <div class="op-top">
       <span class="op-title">SOC EMBJ3</span>
       <span class="op-ticker">EMBJ3</span>
     </div>
     <p class="op-blurb">Stock or Coupon sobre EMBJ3: cupom se a barreira de queda não for atingida; se KO, acompanha o ativo.</p>
-    <div class="op-meta"><span class="pill">Ativo: EMBJ3</span> <span class="pill">Prazo: 29dc</span> <span class="pill">Vencimento: 15/12/2026</span> <span class="pill">Strike: 104.64%</span><span class="pill">Compra</span><span class="pill">PA R$ 126,00</span></div>
+    <div class="op-meta"><span class="pill">Ativo: EMBJ3</span> <span class="pill">Prazo: 28dc</span> <span class="pill">Vencimento: 21/12/2026</span> <span class="pill">Strike: 104.64%</span><span class="pill">Compra</span><span class="pill">PA R$ 126,00</span></div>
   </a>
 </li>
 <li class="op-block">
-  <a class="op" href="./ops/soc-meli34-29dc/index.html">
-    <div class="op-top">
-      <span class="op-title">SOC MELI34</span>
-      <span class="op-ticker">MELI34</span>
-    </div>
-    <p class="op-blurb">Stock or Coupon sobre MELI34: cupom se a barreira de queda não for atingida; se KO, acompanha o ativo.</p>
-    <div class="op-meta"><span class="pill">Ativo: MELI34</span> <span class="pill">Prazo: 29dc</span> <span class="pill">Vencimento: 15/12/2026</span> <span class="pill">Strike: 103.63%</span></div>
-  </a>
-</li>
-<li class="op-block">
-  <a class="op" href="./ops/soc-motv3-29dc/index.html">
+  <a class="op" href="./ops/soc-motv3-28dc/index.html">
     <div class="op-top">
       <span class="op-title">SOC MOTV3</span>
       <span class="op-ticker">MOTV3</span>
     </div>
     <p class="op-blurb">Stock or Coupon sobre MOTV3: cupom se a barreira de queda não for atingida; se KO, acompanha o ativo.</p>
-    <div class="op-meta"><span class="pill">Ativo: MOTV3</span> <span class="pill">Prazo: 29dc</span> <span class="pill">Vencimento: 15/12/2026</span> <span class="pill">Strike: 103.57%</span><span class="pill">Compra</span><span class="pill">PA R$ 18,00</span></div>
+    <div class="op-meta"><span class="pill">Ativo: MOTV3</span> <span class="pill">Prazo: 28dc</span> <span class="pill">Vencimento: 21/12/2026</span> <span class="pill">Strike: 103.57%</span><span class="pill">Compra</span><span class="pill">PA R$ 18,00</span></div>
   </a>
 </li>
 <li class="op-block">
-  <a class="op" href="./ops/soc-rdor3-29dc/index.html">
+  <a class="op" href="./ops/soc-rdor3-28dc/index.html">
     <div class="op-top">
       <span class="op-title">SOC RDOR3</span>
       <span class="op-ticker">RDOR3</span>
     </div>
     <p class="op-blurb">Stock or Coupon sobre RDOR3: cupom se a barreira de queda não for atingida; se KO, acompanha o ativo.</p>
-    <div class="op-meta"><span class="pill">Ativo: RDOR3</span> <span class="pill">Prazo: 29dc</span> <span class="pill">Vencimento: 15/12/2026</span> <span class="pill">Strike: 104.15%</span><span class="pill">Compra</span><span class="pill">PA R$ 58,00</span></div>
+    <div class="op-meta"><span class="pill">Ativo: RDOR3</span> <span class="pill">Prazo: 28dc</span> <span class="pill">Vencimento: 21/12/2026</span> <span class="pill">Strike: 104.15%</span><span class="pill">Compra</span><span class="pill">PA R$ 52,00</span></div>
   </a>
 </li>
 <li class="op-block">
-  <a class="op" href="./ops/soc-sbsp3-29dc/index.html">
+  <a class="op" href="./ops/soc-sbsp3-28dc/index.html">
     <div class="op-top">
       <span class="op-title">SOC SBSP3</span>
       <span class="op-ticker">SBSP3</span>
     </div>
     <p class="op-blurb">Stock or Coupon sobre SBSP3: cupom se a barreira de queda não for atingida; se KO, acompanha o ativo.</p>
-    <div class="op-meta"><span class="pill">Ativo: SBSP3</span> <span class="pill">Prazo: 29dc</span> <span class="pill">Vencimento: 15/12/2026</span> <span class="pill">Strike: 104.20%</span><span class="pill">Compra</span><span class="pill">PA R$ 35,00</span></div>
+    <div class="op-meta"><span class="pill">Ativo: SBSP3</span> <span class="pill">Prazo: 28dc</span> <span class="pill">Vencimento: 21/12/2026</span> <span class="pill">Strike: 104.20%</span><span class="pill">Compra</span><span class="pill">PA R$ 35,00</span></div>
+  </a>
+</li>
+<li class="op-block">
+  <a class="op" href="./ops/soc-vbbr3-28dc/index.html">
+    <div class="op-top">
+      <span class="op-title">SOC VBBR3</span>
+      <span class="op-ticker">VBBR3</span>
+    </div>
+    <p class="op-blurb">Stock or Coupon sobre VBBR3: cupom se a barreira de queda não for atingida; se KO, acompanha o ativo.</p>
+    <div class="op-meta"><span class="pill">Ativo: VBBR3</span> <span class="pill">Prazo: 28dc</span> <span class="pill">Vencimento: 21/12/2026</span> <span class="pill">Strike: 104.36%</span><span class="pill">Compra</span><span class="pill">PA R$ 42,00</span></div>
+  </a>
+</li>
+<li class="op-block">
+  <a class="op" href="./ops/soc-ggbr4-28dc/index.html">
+    <div class="op-top">
+      <span class="op-title">SOC GGBR4</span>
+      <span class="op-ticker">GGBR4</span>
+    </div>
+    <p class="op-blurb">Stock or Coupon sobre GGBR4: cupom se a barreira de queda não for atingida; se KO, acompanha o ativo.</p>
+    <div class="op-meta"><span class="pill">Ativo: GGBR4</span> <span class="pill">Prazo: 28dc</span> <span class="pill">Vencimento: 21/12/2026</span> <span class="pill">Strike: 104.52%</span><span class="pill">Compra</span><span class="pill">PA R$ 33,00</span></div>
   </a>
 </li></ul>
 </section>
 
 <section class="cat-section" id="smart-hedge" hidden>
   <div class="cat-section-head">
-    <h2>Smart Hedge · 6 operações</h2>
+    <h2>Smart Hedge · 10 operações</h2>
     <button type="button" class="cat-back" data-back>← Voltar</button>
   </div>
   <ul class="ops">
@@ -402,12 +419,70 @@ body{font-family:var(--font);color:var(--ink);background:var(--bg);min-height:10
     <p class="op-blurb">Smart Hedge sobre SUZB3: piso na queda, participação 1:1 até a barreira KI; se KI, retorno limitado ao strike da call.</p>
     <div class="op-meta"><span class="pill">Ativo: SUZB3</span> <span class="pill">Prazo: 12 meses</span> <span class="pill">Put: 100%</span> <span class="pill">Call: 110%</span><span class="pill">Compra</span><span class="pill">PA R$ 72,00</span></div>
   </a>
+</li>
+<li class="op-block">
+  <a class="op" href="./ops/smart-hedge-t1tw34-put100-12meses/index.html">
+    <div class="op-top">
+      <span class="op-title">Smart Hedge T1TW34</span>
+      <span class="op-ticker">T1TW34</span>
+    </div>
+    <p class="op-blurb">Smart Hedge sobre T1TW34: piso na queda, participação 1:1 até a barreira KI; se KI, retorno limitado ao strike da call.</p>
+    <div class="op-meta"><span class="pill">Ativo: T1TW34</span> <span class="pill">Prazo: 12 meses</span> <span class="pill">Put: 100%</span> <span class="pill">Call: 110%</span></div>
+  </a>
+</li>
+<li class="op-block">
+  <a class="op" href="./ops/smart-hedge-spcx34-put100-6meses/index.html">
+    <div class="op-top">
+      <span class="op-title">Smart Hedge SPCX34</span>
+      <span class="op-ticker">SPCX34</span>
+    </div>
+    <p class="op-blurb">Smart Hedge sobre SPCX34: piso na queda, participação 1:1 até a barreira KI; se KI, retorno limitado ao strike da call.</p>
+    <div class="op-meta"><span class="pill">Ativo: SPCX34</span> <span class="pill">Prazo: 6 meses</span> <span class="pill">Put: 100%</span> <span class="pill">Call: 104%</span><span class="pill">Compra</span><span class="pill">PA R$ 77,00</span></div>
+  </a>
+</li>
+<li class="op-block">
+  <a class="op" href="./ops/smart-hedge-bbas3-put100-12meses/index.html">
+    <div class="op-top">
+      <span class="op-title">Smart Hedge BBAS3</span>
+      <span class="op-ticker">BBAS3</span>
+    </div>
+    <p class="op-blurb">Smart Hedge sobre BBAS3: piso na queda, participação 1:1 até a barreira KI; se KI, retorno limitado ao strike da call.</p>
+    <div class="op-meta"><span class="pill">Ativo: BBAS3</span> <span class="pill">Prazo: 12 meses</span> <span class="pill">Put: 100%</span> <span class="pill">Call: 110%</span><span class="pill">Neutro</span><span class="pill">PA R$ 16,00</span></div>
+  </a>
+</li>
+<li class="op-block">
+  <a class="op" href="./ops/smart-hedge-abev3-put100-12meses/index.html">
+    <div class="op-top">
+      <span class="op-title">Smart Hedge ABEV3</span>
+      <span class="op-ticker">ABEV3</span>
+    </div>
+    <p class="op-blurb">Smart Hedge sobre ABEV3: piso na queda, participação 1:1 até a barreira KI; se KI, retorno limitado ao strike da call.</p>
+    <div class="op-meta"><span class="pill">Ativo: ABEV3</span> <span class="pill">Prazo: 12 meses</span> <span class="pill">Put: 100%</span> <span class="pill">Call: 110%</span><span class="pill">Compra</span><span class="pill">PA R$ 20,00</span></div>
+  </a>
+</li></ul>
+</section>
+
+<section class="cat-section" id="smart-up" hidden>
+  <div class="cat-section-head">
+    <h2>Smart Up · 1 operação</h2>
+    <button type="button" class="cat-back" data-back>← Voltar</button>
+  </div>
+  <ul class="ops">
+<li class="op-block">
+  <a class="op" href="./ops/smart-up-dolb11-ki137-25meses/index.html">
+    <div class="op-top">
+      <span class="op-title">Smart Up DOLB11</span>
+      <span class="op-ticker">DOLB11</span>
+    </div>
+    <p class="op-blurb">Smart Up sobre DOLB11: piso em 110%. Até a barreira de 137%, a alta é acelerada (2×), com ganho máximo de +63,98%. Na barreira, volta ao piso.</p>
+    <div class="op-meta"><span class="pill">Ativo: DOLB11</span> <span class="pill">Prazo: 25 meses</span> <span class="pill">Piso: 110%</span> <span class="pill">Barreira: 137%</span></div>
+  </a>
 </li></ul>
 </section>
 
 <section class="cat-section" id="twip" hidden>
   <div class="cat-section-head">
-    <h2>TWIP · 2 operações</h2>
+    <h2>TWIP · 3 operações</h2>
     <button type="button" class="cat-back" data-back>← Voltar</button>
   </div>
   <ul class="ops">
@@ -430,35 +505,61 @@ body{font-family:var(--font);color:var(--ink);background:var(--bg);min-height:10
     <p class="op-blurb">Twin Win Protected: ganha na alta e na queda moderada; fora das barreiras retorno 0% (capital protegido).</p>
     <div class="op-meta"><span class="pill">Ativo: GOLB11</span> <span class="pill">Prazo: 24 meses</span> <span class="pill">Put: 100%</span> <span class="pill">KI: 151%</span></div>
   </a>
+</li>
+<li class="op-block">
+  <a class="op" href="./ops/twip-nvdc34-ki140-12meses/index.html">
+    <div class="op-top">
+      <span class="op-title">TWIP NVDC34</span>
+      <span class="op-ticker">NVDC34</span>
+    </div>
+    <p class="op-blurb">Twin Win Protected: ganha na alta e na queda moderada; fora das barreiras retorno 0% (capital protegido).</p>
+    <div class="op-meta"><span class="pill">Ativo: NVDC34</span> <span class="pill">Prazo: 12 meses</span> <span class="pill">Put: 100%</span> <span class="pill">KI: 140,50%</span></div>
+  </a>
+</li></ul>
+</section>
+
+<section class="cat-section" id="twip-coupon" hidden>
+  <div class="cat-section-head">
+    <h2>TWIP Coupon · 1 operação</h2>
+    <button type="button" class="cat-back" data-back>← Voltar</button>
+  </div>
+  <ul class="ops">
+<li class="op-block">
+  <a class="op" href="./ops/twip-coupon-bbas3-ki168-24meses/index.html">
+    <div class="op-top">
+      <span class="op-title">TWIP Coupon BBAS3</span>
+      <span class="op-ticker">BBAS3</span>
+    </div>
+    <p class="op-blurb">TWIP Coupon sobre BBAS3: cupom de +10%. Entre 70% e 100%, a queda soma nesse cupom. Até a barreira de 167,78%, acompanha o ativo. Nas barreiras, volta ao cupom.</p>
+    <div class="op-meta"><span class="pill">Ativo: BBAS3</span> <span class="pill">Prazo: 24 meses</span> <span class="pill">Cupom: +10%</span> <span class="pill">Put KO: 70%</span><span class="pill">Neutro</span><span class="pill">PA R$ 16,00</span></div>
+  </a>
+</li></ul>
+</section>
+
+<section class="cat-section" id="compra-put-ativo" hidden>
+  <div class="cat-section-head">
+    <h2>Compra de Put com Ativo · 1 operação</h2>
+    <button type="button" class="cat-back" data-back>← Voltar</button>
+  </div>
+  <ul class="ops">
+<li class="op-block">
+  <a class="op" href="./ops/compra-put-ativo-suzb3-4meses/index.html">
+    <div class="op-top">
+      <span class="op-title">Compra de Put com Ativo SUZB3</span>
+      <span class="op-ticker">SUZB3</span>
+    </div>
+    <p class="op-blurb">Compra de put 100% sobre SUZB3, junto com o ativo. Na queda, o resultado fica em -6%. Na alta, acompanha o papel descontado o prêmio de 6,00%.</p>
+    <div class="op-meta"><span class="pill">Ativo: SUZB3</span> <span class="pill">Prazo: 4 meses</span> <span class="pill">Put: 100%</span> <span class="pill">Preço: 6,00%</span><span class="pill">Compra</span><span class="pill">PA R$ 72,00</span></div>
+  </a>
 </li></ul>
 </section>
 
 <section class="cat-section" id="aceleradora" hidden>
   <div class="cat-section-head">
-    <h2>Aceleradora Dinâmica · 5 operações</h2>
+    <h2>Aceleradora Dinâmica · 4 operações</h2>
     <button type="button" class="cat-back" data-back>← Voltar</button>
   </div>
   <ul class="ops">
-<li class="op-block">
-  <a class="op" href="./ops/aceleradora-gogl34-12meses/index.html">
-    <div class="op-top">
-      <span class="op-title">Aceleradora Dinâmica GOGL34</span>
-      <span class="op-ticker">GOGL34</span>
-    </div>
-    <p class="op-blurb">Ganho dobrado (2×) na alta até atingir o teto +35% (em +17,5% de alta). Na call vanilla / KO 135%, o ganho fica limitado ao KO — teto +35% (não dobra de novo). Proteção parcial na queda até a barreira 80%.</p>
-    <div class="op-meta"><span class="pill">Ativo: GOGL34</span> <span class="pill">Prazo: 12 meses</span> <span class="pill">Alta: 2×</span> <span class="pill">Call vendida: 135% vanilla</span></div>
-  </a>
-</li>
-<li class="op-block">
-  <a class="op" href="./ops/aceleradora-lily34-12meses/index.html">
-    <div class="op-top">
-      <span class="op-title">Aceleradora Dinâmica LILY34</span>
-      <span class="op-ticker">LILY34</span>
-    </div>
-    <p class="op-blurb">Ganho dobrado (2×) na alta até atingir o teto +40% (em +20% de alta). Na call vanilla / KO 140%, o ganho fica limitado ao KO — teto +40% (não dobra de novo). Proteção parcial na queda até a barreira 80%.</p>
-    <div class="op-meta"><span class="pill">Ativo: LILY34</span> <span class="pill">Prazo: 12 meses</span> <span class="pill">Alta: 2×</span> <span class="pill">Call vendida: 140% vanilla</span></div>
-  </a>
-</li>
 <li class="op-block">
   <a class="op" href="./ops/aceleradora-nvdc34-12meses/index.html">
     <div class="op-top">
@@ -470,16 +571,6 @@ body{font-family:var(--font);color:var(--ink);background:var(--bg);min-height:10
   </a>
 </li>
 <li class="op-block">
-  <a class="op" href="./ops/aceleradora-tsmc34-12meses/index.html">
-    <div class="op-top">
-      <span class="op-title">Aceleradora Dinâmica TSMC34</span>
-      <span class="op-ticker">TSMC34</span>
-    </div>
-    <p class="op-blurb">Ganho dobrado (2×) na alta até atingir o teto +37% (em +18,5% de alta). Na call vanilla / KO 137%, o ganho fica limitado ao KO — teto +37% (não dobra de novo). Proteção parcial na queda até a barreira 80%.</p>
-    <div class="op-meta"><span class="pill">Ativo: TSMC34</span> <span class="pill">Prazo: 12 meses</span> <span class="pill">Alta: 2×</span> <span class="pill">Call vendida: 137% vanilla</span></div>
-  </a>
-</li>
-<li class="op-block">
   <a class="op" href="./ops/aceleradora-aura33-6meses/index.html">
     <div class="op-top">
       <span class="op-title">Aceleradora Dinâmica AURA33</span>
@@ -487,6 +578,26 @@ body{font-family:var(--font);color:var(--ink);background:var(--bg);min-height:10
     </div>
     <p class="op-blurb">Ganho dobrado (2×) na alta até atingir o teto +35% (em +17,5% de alta). Na call vanilla / KO 135%, o ganho fica limitado ao KO — teto +35% (não dobra de novo). Proteção parcial na queda até a barreira 80%.</p>
     <div class="op-meta"><span class="pill">Ativo: AURA33</span> <span class="pill">Prazo: 6 meses</span> <span class="pill">Alta: 2×</span> <span class="pill">Call vendida: 135% vanilla</span></div>
+  </a>
+</li>
+<li class="op-block">
+  <a class="op" href="./ops/aceleradora-abev3-12meses/index.html">
+    <div class="op-top">
+      <span class="op-title">Aceleradora Dinâmica ABEV3</span>
+      <span class="op-ticker">ABEV3</span>
+    </div>
+    <p class="op-blurb">Ganho dobrado (2×) na alta até atingir o teto +20% (em +10% de alta). Na call vanilla / KO 120%, o ganho fica limitado ao KO — teto +20% (não dobra de novo). Proteção parcial na queda até a barreira 80%.</p>
+    <div class="op-meta"><span class="pill">Ativo: ABEV3</span> <span class="pill">Prazo: 12 meses</span> <span class="pill">Alta: 2×</span> <span class="pill">Call vendida: 120% vanilla</span><span class="pill">Compra</span><span class="pill">PA R$ 20,00</span></div>
+  </a>
+</li>
+<li class="op-block">
+  <a class="op" href="./ops/aceleradora-t1tw34-12meses/index.html">
+    <div class="op-top">
+      <span class="op-title">Aceleradora Dinâmica T1TW34</span>
+      <span class="op-ticker">T1TW34</span>
+    </div>
+    <p class="op-blurb">Ganho dobrado (2×) na alta até atingir o teto +55% (em +27,5% de alta). Na call vanilla / KO 155%, o ganho fica limitado ao KO — teto +55% (não dobra de novo). Proteção parcial na queda até a barreira 75%.</p>
+    <div class="op-meta"><span class="pill">Ativo: T1TW34</span> <span class="pill">Prazo: 12 meses</span> <span class="pill">Alta: 2×</span> <span class="pill">Call vendida: 155% vanilla</span></div>
   </a>
 </li></ul>
 </section>
@@ -526,22 +637,12 @@ body{font-family:var(--font);color:var(--ink);background:var(--bg);min-height:10
   </div>
   <ul class="ops">
 <li class="op-block">
-  <a class="op" href="./ops/call-ko-rebate-embj3-2meses/index.html">
-    <div class="op-top">
-      <span class="op-title">Call KO com Rebate EMBJ3</span>
-      <span class="op-ticker">EMBJ3</span>
-    </div>
-    <p class="op-blurb">Call up-and-out EMBJ3 strike 100%: participa da alta até a barreira; no KO recebe rebate. Prêmio 4,30% → no KO o rebate vale +16% sobre o prêmio.</p>
-    <div class="op-meta"><span class="pill">Ativo: EMBJ3</span> <span class="pill">Prazo: 2 meses</span> <span class="pill">Strike: 100%</span> <span class="pill">KO: 119%</span><span class="pill">Compra</span><span class="pill">PA R$ 126,00</span></div>
-  </a>
-</li>
-<li class="op-block">
   <a class="op" href="./ops/call-ko-rebate-wege3-2meses/index.html">
     <div class="op-top">
       <span class="op-title">Call KO com Rebate WEGE3</span>
       <span class="op-ticker">WEGE3</span>
     </div>
-    <p class="op-blurb">Call up-and-out WEGE3 strike 100%: participa da alta até a barreira; no KO recebe rebate. Prêmio 4,50% → no KO o rebate vale +11% sobre o prêmio.</p>
+    <p class="op-blurb">Call up-and-out WEGE3 strike 100%: participa da alta até a barreira; no KO recebe rebate. Prêmio 4,40% → no KO o rebate vale +14% sobre o prêmio.</p>
     <div class="op-meta"><span class="pill">Ativo: WEGE3</span> <span class="pill">Prazo: 2 meses</span> <span class="pill">Strike: 100%</span> <span class="pill">KO: 117,68%</span><span class="pill">Compra</span><span class="pill">PA R$ 65,00</span></div>
   </a>
 </li>
@@ -551,8 +652,18 @@ body{font-family:var(--font);color:var(--ink);background:var(--bg);min-height:10
       <span class="op-title">Call KO com Rebate NVDC34</span>
       <span class="op-ticker">NVDC34</span>
     </div>
-    <p class="op-blurb">Call up-and-out NVDC34 strike 100%: participa da alta até a barreira; no KO recebe rebate. Prêmio 4,50% → no KO o rebate vale +11% sobre o prêmio.</p>
+    <p class="op-blurb">Call up-and-out NVDC34 strike 100%: participa da alta até a barreira; no KO recebe rebate. Prêmio 4,60% → no KO o rebate vale +9% sobre o prêmio.</p>
     <div class="op-meta"><span class="pill">Ativo: NVDC34</span> <span class="pill">Prazo: 1 mês</span> <span class="pill">Strike: 100%</span> <span class="pill">KO: 122%</span></div>
+  </a>
+</li>
+<li class="op-block">
+  <a class="op" href="./ops/call-ko-rebate-t1tw34-1mes/index.html">
+    <div class="op-top">
+      <span class="op-title">Call KO com Rebate T1TW34</span>
+      <span class="op-ticker">T1TW34</span>
+    </div>
+    <p class="op-blurb">Call up-and-out T1TW34 strike 100%: participa da alta até a barreira; no KO recebe rebate. Prêmio 4,50% → no KO o rebate vale +11% sobre o prêmio.</p>
+    <div class="op-meta"><span class="pill">Ativo: T1TW34</span> <span class="pill">Prazo: 1 mês</span> <span class="pill">Strike: 100%</span> <span class="pill">KO: 123%</span></div>
   </a>
 </li></ul>
 </section>

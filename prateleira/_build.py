@@ -362,6 +362,7 @@ SECTOR_FALLBACK = {
     "GOGL34": "Tecnologia (BDR)",
     "LILY34": "Saúde (BDR)",
     "TSMC34": "Semicondutores (BDR)",
+    "T1TW34": "Tecnologia (BDR)",
     "ITLC34": "Tecnologia (BDR)",
     "GOLD11": "Commodities / Ouro (ETF)",
     "BITC11": "Cripto (ETF)",
@@ -381,6 +382,9 @@ SECTOR_FALLBACK = {
     "MOTV3": "Transporte / Infraestrutura",
     "RDOR3": "Saúde",
     "DOLB11": "Câmbio / Dólar (ETF)",
+    "VBBR3": "Energia",
+    "BBAS3": "Financeiro",
+    "ABEV3": "Bebidas",
 }
 COMPANY_FALLBACK = {
     "SPCX34": "SPDR S&P 500",
@@ -421,6 +425,9 @@ COMPANY_FALLBACK = {
     "MOTV3": "Motiva",
     "RDOR3": "Rede D'Or",
     "DOLB11": "Dólar",
+    "T1TW34": "Take-Two Interactive",
+    "BBAS3": "Banco do Brasil",
+    "ABEV3": "Ambev",
 }
 
 
@@ -2076,6 +2083,110 @@ def make_twip(t, fixing, put, call_ki, ki, put_ko, put_ko_b, _bid):
     }
 
 
+def make_twip_coupon(t, fixing, put, put_ko, ko, call_ki, ki, _bid):
+    """TWIP com cupom. Bid não entra no payoff nem na página.
+
+    Ativo + put (o cupom) + put KO + call KI. Fora das barreiras fica o cupom.
+    Entre a barreira de baixa e o strike da put KO, a queda soma no cupom.
+    Acima do strike da put, acompanha o ativo até a barreira de alta.
+    """
+    prazo = months_label(fixing)
+    c_put = round(put - 100, 2)
+    ko_var = round(put_ko - 100, 2)
+    c_call = round(call_ki - 100, 2)
+    L = round(ko - 100, 2)
+    H = round(ki - 100, 2)
+
+    def payoff(x: float) -> float:
+        if x <= L or x >= H:
+            return c_put if x <= L else c_call
+        return x + max(c_put - x, 0.0) + max(ko_var - x, 0.0)
+
+    peak_dn = round(payoff(L + 0.01), 2)
+    peak_up = round(payoff(H - 0.01), 2)
+    cupom_lbl = fmt_pct(c_put).replace(",00%", "%")
+    dn_lbl, up_lbl = fmt_lvl(ko), fmt_lvl(ki)
+    put_lbl, put_ko_lbl, call_lbl = fmt_lvl(put), fmt_lvl(put_ko), fmt_lvl(call_ki)
+    peak_dn_lbl, peak_up_lbl = fmt_pct(peak_dn).replace(",00%", "%"), fmt_pct(peak_up).replace(",00%", "%")
+    slug = slugify("twip-coupon", t, f"ki{int(round(ki))}", prazo.replace(" ", ""))
+    return slug, {
+        "title": f"TWIP Coupon {t}",
+        "h1": "TWIP Coupon",
+        "ticker": t,
+        "dot": "TC",
+        "brand": "#8a5a00",
+        "subtitle": (
+            f"TWIP Coupon sobre {t}: cupom de {cupom_lbl}. Entre {dn_lbl} e {put_ko_lbl}, a queda soma nesse cupom. "
+            f"Até a barreira de {up_lbl}, acompanha o ativo. Nas barreiras, volta ao cupom."
+        ),
+        "pills": [
+            ("Ativo", t),
+            ("Prazo", prazo),
+            ("Cupom", cupom_lbl),
+            ("Put KO", dn_lbl),
+            ("KI", up_lbl),
+        ],
+        "highlights": [
+            ("Prazo", prazo, ""),
+            ("Cupom", cupom_lbl, "Fora das barreiras"),
+            ("Na queda", peak_dn_lbl, f"Até a barreira de {dn_lbl}"),
+            ("Na alta", peak_up_lbl, f"Até a barreira de {up_lbl}"),
+        ],
+        "struct": [
+            ('<span class="tag b">B</span> Put', put_lbl),
+            ('<span class="tag b">B</span> Put KO', f"{put_ko_lbl} · barreira {dn_lbl}"),
+            ('<span class="tag s">S</span> Call KI', f"{call_lbl} · barreira {up_lbl}"),
+        ],
+        "zones": [
+            (f"≤ {dn_lbl}", f"Put KO desligada. Fica o cupom de {cupom_lbl}."),
+            (f"{dn_lbl} → {put_ko_lbl}", f"Cupom mais a queda, até {peak_dn_lbl}."),
+            (f"{put_ko_lbl} → {put_lbl}", f"Fica no cupom de {cupom_lbl}."),
+            (f"{put_lbl} → {up_lbl}", f"Acompanha o ativo, até {peak_up_lbl}."),
+            (f"≥ {up_lbl}", f"Call KI. Volta ao cupom de {cupom_lbl}."),
+        ],
+        "regime0": f"Fora das barreiras: cupom de {cupom_lbl}. No meio, a queda soma e a alta acompanha.",
+        "speech": [
+            (
+                "Para quem",
+                f"Cliente que quer um cupom de {cupom_lbl} em {t} ({prazo}) e ainda ganhar se o papel cair até {dn_lbl} ou subir até {up_lbl}.",
+            ),
+            (
+                "Como encaixa",
+                f"TWIP Coupon · put {put_lbl} · put KO {put_ko_lbl} barreira {dn_lbl} · call KI {call_lbl} barreira {up_lbl}. "
+                f"Nas barreiras, o resultado volta ao cupom.",
+            ),
+            ("Fechamento", "Material de uso interno — condições no DIE."),
+        ],
+        "x_min": min(-40, int(math.floor(L)) - 10),
+        "x_max": max(40, int(math.ceil(H)) + 15),
+        "y_min": -5,
+        "y_max": max(20, int(math.ceil(max(peak_dn, peak_up) / 5.0) * 5) + 10),
+        "js_const": (
+            f"var C={c_put}, KC={ko_var}, CC={c_call}, L={L}, H={H}, "
+            f"PEAK_DN={peak_dn}, PEAK_UP={peak_up};"
+        ),
+        "js_fn": (
+            "if (x <= L) return C; "
+            "if (x >= H) return CC; "
+            "return x + Math.max(C - x, 0) + Math.max(KC - x, 0);"
+        ),
+        "js_regime": (
+            "if (x <= L || x >= H) return 'Barreira: cupom de +'+C.toFixed(2).replace('.',',')+'%.'; "
+            "if (x < KC) return 'Cupom mais a queda.'; "
+            "if (x < C) return 'Cupom de +'+C.toFixed(2).replace('.',',')+'%.'; "
+            "return 'Acompanha o ativo.';"
+        ),
+        "js_build": """
+    for (var x = X_MIN; x <= L; x += 0.5) add(x, C);
+    add(L + 0.01, PEAK_DN);
+    for (var x2 = L + 0.5; x2 < H; x2 += 0.5) add(x2, structureReturn(x2));
+    add(H - 0.01, PEAK_UP);
+    add(H, CC);
+    for (var x3 = H + 0.5; x3 <= X_MAX; x3 += 0.5) add(x3, CC);
+""",
+    }
+
+
 def make_pop(t, fixing, call_strike, put_strike):
     """POP: put ATM + call vendida em metade da posição · participação 50% na alta, piso 0%."""
     prazo = months_label(fixing)
@@ -2152,6 +2263,77 @@ def make_pop(t, fixing, call_strike, put_strike):
         ]
         cfg["insights_note"] = "Tese Bitcoin · POP BITC11 24 meses."
     return slug, cfg
+
+
+def make_put_ativo(t, fixing, put_strike, cost):
+    """Ativo + put comprada. O preço entra no payoff. Sem bid e sem delta.
+
+    Abaixo do strike o resultado trava em (strike − 100) − prêmio.
+    Acima, acompanha o ativo descontado o prêmio.
+    """
+    prazo = months_label(fixing)
+    k = round(put_strike - 100, 2)
+    floor = round(k - cost, 2)
+    put_lbl = fmt_lvl(put_strike)
+    cost_s = fmt_money_pct(cost)
+    floor_lbl = fmt_pct(floor).replace(",00%", "%")
+    slug = slugify("compra-put-ativo", t, prazo.replace(" ", ""))
+    return slug, {
+        "title": f"Compra de Put com Ativo {t}",
+        "h1": "Compra de Put com Ativo",
+        "ticker": t,
+        "dot": "PA",
+        "brand": "#2c5f7c",
+        "subtitle": (
+            f"Compra de put {put_lbl} sobre {t}, junto com o ativo. "
+            f"Na queda, o resultado fica em {floor_lbl}. Na alta, acompanha o papel descontado o prêmio de {cost_s}."
+        ),
+        "pills": [
+            ("Ativo", t),
+            ("Prazo", prazo),
+            ("Put", put_lbl),
+            ("Preço", cost_s),
+            ("Piso", floor_lbl),
+        ],
+        "highlights": [
+            ("Prazo", prazo, ""),
+            ("Put", put_lbl, "Comprada"),
+            ("Preço", cost_s, "Prêmio pago"),
+            ("Piso", floor_lbl, "Na queda"),
+        ],
+        "struct": [
+            ("Ativo", "Compra · 100%"),
+            ('<span class="tag b">B</span> Put', put_lbl),
+            ("Preço (offer)", cost_s),
+        ],
+        "zones": [
+            (f"≤ {put_lbl}", f"Put exerce. Resultado fica em {floor_lbl}."),
+            (f"> {put_lbl}", f"Acompanha o ativo, descontado o prêmio de {cost_s}."),
+        ],
+        "regime0": f"Na queda, piso de {floor_lbl}. Na alta, o ativo menos {cost_s}.",
+        "speech": [
+            (
+                "Para quem",
+                f"Cliente que quer ficar comprado em {t} ({prazo}) e limitar a queda, pagando {cost_s} pela put.",
+            ),
+            (
+                "Como encaixa",
+                f"Ativo + put {put_lbl} · preço {cost_s}. "
+                f"Abaixo de {put_lbl}, o resultado fica em {floor_lbl}. Acima, acompanha o papel menos o prêmio.",
+            ),
+            ("Fechamento", "Material de uso interno — condições no DIE."),
+        ],
+        "x_min": -40,
+        "x_max": 40,
+        "y_min": min(-20, int(math.floor(floor)) - 8),
+        "y_max": 40,
+        "js_const": f"var K={k}, COST={cost}, FLOOR={floor};",
+        "js_fn": "if (x <= K) return FLOOR; return x - COST;",
+        "js_regime": (
+            "if (x <= K) return 'Put: resultado em '+FLOOR.toFixed(2).replace('.',',')+'%.'; "
+            "return 'Acompanha o ativo, menos o prêmio.';"
+        ),
+    }
 
 
 def make_put_buy(t, fixing, put_strike, cost, prazo=None):
@@ -2621,6 +2803,16 @@ SECTION_META = {
         "id": "twip",
         "blurb": "Ganha na alta e na queda moderada. Fora das barreiras, o retorno é zero.",
         "color": "#b8860b",
+    },
+    "TWIP Coupon": {
+        "id": "twip-coupon",
+        "blurb": "Cupom nas barreiras. No meio, a queda soma nesse cupom e a alta acompanha o ativo.",
+        "color": "#8a5a00",
+    },
+    "Compra de Put com Ativo": {
+        "id": "compra-put-ativo",
+        "blurb": "Fica no ativo com a queda limitada ao piso da put, descontado o prêmio.",
+        "color": "#2c5f7c",
     },
     "Aceleradora Dinâmica": {
         "id": "aceleradora",
@@ -3451,6 +3643,8 @@ def main():
     car_rows: list = []
     smart_up_rows: list = []
     twip_rows: list = []
+    twip_coupon_rows: list = []
+    put_ativo_rows: list = []
     try:
         from _excel_week import (
             ensure_put_financiada_bova11,
@@ -3479,6 +3673,8 @@ def main():
             car_rows = week.CAR
             smart_up_rows = week.SMART_UP
             twip_rows = week.TWIP
+            twip_coupon_rows = week.TWIP_COUPON
+            put_ativo_rows = week.PUT_ATIVO
             n_ops = (
                 len(week.SOC)
                 + len(week.SMART)
@@ -3494,6 +3690,8 @@ def main():
                 + len(car_rows)
                 + len(smart_up_rows)
                 + len(twip_rows)
+                + len(twip_coupon_rows)
+                + len(put_ativo_rows)
             )
             if n_ops == 0:
                 raise SystemExit(f"excel_empty sheet={week.sheet} — nenhuma operação lida")
@@ -3541,6 +3739,8 @@ def main():
     add_section("Smart Hedge", [make_sh(*r) for r in smart_rows])
     add_section("Smart Up", [make_smart_up(*r) for r in smart_up_rows])
     add_section("TWIP", [make_twip(*r) for r in twip_rows])
+    add_section("TWIP Coupon", [make_twip_coupon(*r) for r in twip_coupon_rows])
+    add_section("Compra de Put com Ativo", [make_put_ativo(*r) for r in put_ativo_rows])
     add_section("Aceleradora Dinâmica", [make_acel(*r) for r in acel_dyn_rows])
     add_section("Aceleradora KO com Ativo", [make_acel_ko_ativo(*r) for r in acel_rows])
     add_section("Triplo Retorno KO", [make_triplo(*r) for r in triplo_rows])

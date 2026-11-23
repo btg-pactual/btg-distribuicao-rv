@@ -85,6 +85,8 @@ def _section_key(cell0: str | None) -> str | None:
         return "smart_up"
     if "SMART HEDGE" in n:
         return "smart"
+    if "TWIP COUPON" in n:
+        return "twip_coupon"
     if n == "TWIP" or n.startswith("TWIP "):
         return "twip"
     if "ACELERADORA KO" in n and "ATIVO" in n:
@@ -105,6 +107,8 @@ def _section_key(cell0: str | None) -> str | None:
         return "one_touch"
     if "PUT FINANCIADA" in n:
         return "put_fin"
+    if "COMPRA DE PUT" in n and "ATIVO" in n:
+        return "put_ativo"
     if "CUPOM ALTO" in n or n.endswith(" CAR") or n == "CAR":
         return "car"
     return None
@@ -128,6 +132,8 @@ class WeekData:
     CAR: list
     SMART_UP: list
     TWIP: list
+    TWIP_COUPON: list
+    PUT_ATIVO: list
 
 
 def _parse_ws(ws, sheet_name: str, ref: date) -> WeekData:
@@ -146,6 +152,8 @@ def _parse_ws(ws, sheet_name: str, ref: date) -> WeekData:
     car: list = []
     smart_up: list = []
     twip: list = []
+    twip_coupon: list = []
+    put_ativo: list = []
 
     for row in ws.iter_rows(values_only=True):
         cells = [c for c in row if c is not None and str(c).strip() != ""]
@@ -282,6 +290,24 @@ def _parse_ws(ws, sheet_name: str, ref: date) -> WeekData:
             if None in (put_k, call_ki, ki, put_ko, ko):
                 continue
             twip.append((ticker, fixing, put_k, call_ki, ki, put_ko, ko, bid_pct(rest[5])))
+        elif section == "twip_coupon":
+            # B PUT | B PUT KO | KO | S CALL KI | KI | BID — ordem diferente do TWIP.
+            # Bid não vai para o HTML.
+            if len(rest) < 6:
+                continue
+            put_k, put_ko, ko = pct(rest[0]), pct(rest[1]), pct(rest[2])
+            call_ki, ki = pct(rest[3]), pct(rest[4])
+            if None in (put_k, put_ko, ko, call_ki, ki):
+                continue
+            twip_coupon.append((ticker, fixing, put_k, put_ko, ko, call_ki, ki, bid_pct(rest[5])))
+        elif section == "put_ativo":
+            # B PUT | OFFER | DELTA — preço da put pode ir para o HTML; delta não.
+            if len(rest) < 2:
+                continue
+            put_k, cost = pct(rest[0]), offer_abs(rest[1])
+            if put_k is None or cost is None:
+                continue
+            put_ativo.append((ticker, fixing, put_k, cost))
 
     return WeekData(
         sheet=sheet_name,
@@ -300,6 +326,8 @@ def _parse_ws(ws, sheet_name: str, ref: date) -> WeekData:
         CAR=car,
         SMART_UP=smart_up,
         TWIP=twip,
+        TWIP_COUPON=twip_coupon,
+        PUT_ATIVO=put_ativo,
     )
 
 
@@ -353,6 +381,8 @@ _KIND_ORDER = (
     ("SMART", "Smart Hedge", "SMART"),
     ("SMART_UP", "Smart Up", "SMART_UP"),
     ("TWIP", "TWIP", "TWIP"),
+    ("TWIP_COUPON", "TWIP Coupon", "TWIP_COUPON"),
+    ("PUT_ATIVO", "Compra de Put com Ativo", "PUT_ATIVO"),
     ("ACEL_DYN", "Aceleradora Dinâmica", "ACEL_DYN"),
     ("ACEL_KO", "Aceleradora KO com Ativo", "ACEL_KO"),
     ("TRIPLO", "Triplo Retorno KO", "TRIPLO"),
@@ -466,6 +496,8 @@ def summary(w: WeekData) -> str:
         f"CAR={len(w.CAR)}",
         f"SMART_UP={len(w.SMART_UP)}",
         f"TWIP={len(w.TWIP)}",
+        f"TWIP_COUPON={len(w.TWIP_COUPON)}",
+        f"PUT_ATIVO={len(w.PUT_ATIVO)}",
     ]
     for t, fixing, strike, ko, *_rest in w.SOC:
         lines.append(f"SOC\t{t} {fixing.isoformat()} strike={strike} ko={ko}")
@@ -482,6 +514,14 @@ def summary(w: WeekData) -> str:
     for t, fixing, put_k, call_ki, ki, put_ko, ko, _bid in w.TWIP:
         lines.append(
             f"TWIP\t{t} {fixing.isoformat()} put={put_k} callki={call_ki} ki={ki} putko={put_ko} ko={ko}"
+        )
+    for t, fixing, put_k, put_ko, ko, call_ki, ki, _bid in w.TWIP_COUPON:
+        lines.append(
+            f"TWIP_COUPON\t{t} {fixing.isoformat()} put={put_k} putko={put_ko} ko={ko} callki={call_ki} ki={ki}"
+        )
+    for t, fixing, put_k, cost in w.PUT_ATIVO:
+        lines.append(
+            f"PUT_ATIVO\t{t} {fixing.isoformat()} put={put_k} preco={cost}"
         )
     for t, fixing, put_k, ko_dn, call_k, ko_up, _bid in w.CAR:
         lines.append(
