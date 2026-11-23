@@ -56,7 +56,38 @@ PDF_NAME = ""  # remover PDF antigo; novo em breve
 WEEK_MOVES: dict | None = None
 SHOW_WEEK_MOVES = True
 
-# Destaques / leituras manuais do Overview — preencher quando pedido.
+# Operações em destaque no Overview — preencher quando pedido.
+# href relativo à pasta prateleira (./ops/...).
+OVERVIEW_OPS: list[dict] = [
+    {
+        "title": "Smart Up · DOLB11",
+        "blurb": (
+            "Piso em 110%. Até a barreira de 137%, a alta do ETF de dólar é acelerada (2×), "
+            "com ganho máximo de +63,98%. Na barreira, volta ao piso."
+        ),
+        "href": "./ops/smart-up-dolb11-ki137-25meses/index.html",
+    },
+    {
+        "title": "Call KO com Rebate · T1TW34",
+        "blurb": (
+            "T1TW34 é o BDR da Take-Two, dona da Rockstar. GTA VI lançou em 19/11. "
+            "Call até a barreira de 123%; no KO, rebate de +11% sobre o prêmio de 4,50%."
+        ),
+        "href": "./ops/call-ko-rebate-t1tw34-1mes/index.html",
+    },
+    {
+        "title": "Smart Coupon · ANTH34",
+        "blurb": (
+            "ANTH34 é o BDR da Anthropic, a empresa do Claude, que estreou na Nasdaq em 19/11. "
+            "Cupom de +10%. Até a barreira de 190%, acompanha o ativo. Na barreira, volta ao cupom."
+        ),
+        "href": "./ops/smart-coupon-anth34-ki190-24meses/index.html",
+        "report": "./leituras/Empiricus-Anthropic-da-origem-a-fronteira.pdf",
+        "report_label": "Relatório Empiricus",
+    },
+]
+
+# Leituras manuais do Overview — preencher quando pedido.
 # Ex.: {"title": "…", "blurb": "…", "href": "https://…"}  (http → abre em nova aba)
 OVERVIEW_DESTAQUES: list[dict] = [
     {
@@ -363,6 +394,7 @@ SECTOR_FALLBACK = {
     "LILY34": "Saúde (BDR)",
     "TSMC34": "Semicondutores (BDR)",
     "T1TW34": "Tecnologia (BDR)",
+    "ANTH34": "Tecnologia (BDR)",
     "ITLC34": "Tecnologia (BDR)",
     "GOLD11": "Commodities / Ouro (ETF)",
     "BITC11": "Cripto (ETF)",
@@ -426,6 +458,7 @@ COMPANY_FALLBACK = {
     "RDOR3": "Rede D'Or",
     "DOLB11": "Dólar",
     "T1TW34": "Take-Two Interactive",
+    "ANTH34": "Anthropic",
     "BBAS3": "Banco do Brasil",
     "ABEV3": "Ambev",
 }
@@ -1268,6 +1301,95 @@ def make_sh(t, fixing, put, call, ki, _bid):
         "js_const": f"var PUT={put}, CALL={call}, KI={ki};",
         "js_fn": "var st=100+x; var r=st+Math.max(PUT-st,0)-(st>=KI?Math.max(st-CALL,0):0)-100; return r;",
         "js_regime": f"var st=100+x; if(st>=KI) return 'KI: teto {cap:+.0f}%.'; if(x<=(PUT-100)) return 'Piso da put.'; return 'Participa 1:1.';",
+    }
+
+
+def make_smart_coupon(t, fixing, put, call_ki, ki):
+    """Put acima de 100 e call KI no mesmo strike. Sem bid.
+
+    Abaixo da put, e também se a barreira for atingida, fica o cupom (put − 100).
+    Entre a put e a barreira, acompanha o ativo.
+    """
+    prazo = months_label(fixing)
+    cupom = round(put - 100, 2)
+    H = round(ki - 100, 2)
+    peak = round(H - 0.01, 2)
+    put_lbl, call_lbl, ki_lbl = fmt_lvl(put), fmt_lvl(call_ki), fmt_lvl(ki)
+    cupom_lbl = fmt_pct(cupom).replace(",00%", "%")
+    peak_lbl = fmt_pct(peak)
+    slug = slugify("smart-coupon", t, f"ki{int(round(ki))}", prazo.replace(" ", ""))
+    note = ""
+    if t == "ANTH34":
+        note = """
+<section class="panel asset-note">
+  <h2>O papel</h2>
+  <p>ANTH34 é o BDR da Anthropic, a empresa do Claude. A ação estreou na Nasdaq em 19/11/2026, sob o código ANT, na paridade de 1 ação para 8 recibos.</p>
+  <p><a class="research-link" href="../../leituras/Empiricus-Anthropic-da-origem-a-fronteira.pdf" target="_blank" rel="noopener noreferrer">Relatório Empiricus <span class="arrow" aria-hidden="true">→</span></a></p>
+</section>
+"""
+    return slug, {
+        "title": f"Smart Coupon {t}",
+        "h1": "Smart Coupon",
+        "ticker": t,
+        "dot": "SC",
+        "brand": "#6b3fa0",
+        "subtitle": (
+            f"Smart Coupon sobre {t}: cupom de {cupom_lbl}. Até a barreira de {ki_lbl}, acompanha o ativo, "
+            f"com ganho máximo de {peak_lbl}. Na barreira, volta ao cupom."
+        ),
+        "pills": [
+            ("Ativo", t),
+            ("Prazo", prazo),
+            ("Cupom", cupom_lbl),
+            ("Barreira", ki_lbl),
+            ("Máx.", peak_lbl),
+        ],
+        "highlights": [
+            ("Prazo", prazo, ""),
+            ("Cupom", cupom_lbl, f"Put {put_lbl}"),
+            ("Até a barreira", peak_lbl, "Ganho máximo"),
+            ("Na barreira", cupom_lbl, f"Volta ao cupom em {ki_lbl}"),
+        ],
+        "struct": [
+            ('<span class="tag b">B</span> Put', put_lbl),
+            ('<span class="tag s">S</span> Call KI', f"{call_lbl} · barreira {ki_lbl}"),
+        ],
+        "zones": [
+            (f"≤ {put_lbl}", f"Fica o cupom de {cupom_lbl}."),
+            (f"{put_lbl} → {ki_lbl}", f"Acompanha o ativo, até {peak_lbl}."),
+            (f"≥ {ki_lbl}", f"Barreira atingida. Volta ao cupom de {cupom_lbl}."),
+        ],
+        "regime0": f"Até a barreira, acompanha o ativo. Nas pontas, cupom de {cupom_lbl}.",
+        "speech": [
+            (
+                "Para quem",
+                f"Cliente construtivo em {t} ({prazo}) que quer um cupom de {cupom_lbl} e participar da alta até {ki_lbl}.",
+            ),
+            (
+                "Como encaixa",
+                f"Smart Coupon · put {put_lbl} · call {call_lbl} com barreira em {ki_lbl}. "
+                f"Abaixo da put, e também na barreira, o resultado volta ao cupom.",
+            ),
+            ("Fechamento", "Material de uso interno — condições no DIE."),
+        ],
+        "asset_html": note,
+        "x_min": -30,
+        "x_max": max(40, int(math.ceil(H)) + 15),
+        "y_min": -10,
+        "y_max": max(40, int(math.ceil(peak / 5.0) * 5) + 10),
+        "js_const": f"var PUT={put}, CALL={call_ki}, KI={ki}, CUPON={cupom}, H={H}, PEAK={peak};",
+        "js_fn": "var st=100+x; return st+Math.max(PUT-st,0)-(st>=KI?Math.max(st-CALL,0):0)-100;",
+        "js_regime": (
+            "if (x >= H) return 'Barreira: volta ao cupom de +'+CUPON.toFixed(2).replace('.',',')+'%.'; "
+            "if (x <= PUT-100) return 'Cupom de +'+CUPON.toFixed(2).replace('.',',')+'%.'; "
+            "return 'Acompanha o ativo.';"
+        ),
+        "js_build": """
+    for (var x = X_MIN; x < H; x += 0.5) add(x, structureReturn(x));
+    add(H - 0.01, PEAK);
+    add(H, CUPON);
+    for (var x2 = H + 0.5; x2 <= X_MAX; x2 += 0.5) add(x2, CUPON);
+""",
     }
 
 
@@ -2794,6 +2916,11 @@ SECTION_META = {
         "blurb": "Proteção com piso na queda e participação 1:1 até a barreira KI.",
         "color": "#007e33",
     },
+    "Smart Coupon": {
+        "id": "smart-coupon",
+        "blurb": "Cupom na queda e também se a barreira for atingida. No meio, acompanha o ativo.",
+        "color": "#6b3fa0",
+    },
     "Smart Up": {
         "id": "smart-up",
         "blurb": "Piso na put. Até a barreira a alta é acelerada. Na barreira, volta ao piso.",
@@ -3008,6 +3135,8 @@ body{font-family:var(--font);color:var(--ink);background:var(--bg);min-height:10
 .destaque-list a:hover{color:var(--link)}
 .destaque-title{font-size:14px;font-weight:700}
 .destaque-blurb{font-size:13px;color:var(--muted);margin-top:2px}
+.destaque-report{display:inline-block;margin:0 0 12px;font-size:13px;font-weight:700;color:var(--link);text-decoration:none}
+.destaque-report:hover{text-decoration:underline}
 @media (max-width:860px){
   .layout{flex-direction:column}
   .sidebar{width:100%;flex-direction:row;overflow-x:auto;padding:8px;border-right:0;border-bottom:1px solid var(--line)}
@@ -3249,23 +3378,36 @@ def _moves_html() -> str:
     </div>"""
 
 
+def _destaque_list(rows: list[dict]) -> str:
+    if not rows:
+        return '<p class="ov-empty">—</p>'
+    items = []
+    for d in rows:
+        href = html_esc(d.get("href") or "#")
+        title = html_esc(d.get("title") or "")
+        blurb = html_esc(d.get("blurb") or "")
+        ext = ' target="_blank" rel="noopener noreferrer"' if href.startswith("http") else ""
+        report = d.get("report") or ""
+        report_html = ""
+        if report:
+            report_href = html_esc(report)
+            report_label = html_esc(d.get("report_label") or "Abrir relatório")
+            report_html = (
+                f'<a class="destaque-report" href="{report_href}" target="_blank" '
+                f'rel="noopener noreferrer">{report_label} <span aria-hidden="true">→</span></a>'
+            )
+        items.append(
+            f'<li><a href="{href}"{ext}><div class="destaque-title">{title}</div>'
+            f'<div class="destaque-blurb">{blurb}</div></a>{report_html}</li>'
+        )
+    return f'<ul class="destaque-list">{"".join(items)}</ul>'
+
+
 def overview_html(sections: list[tuple[str, list[tuple[str, dict]]]]) -> str:
     _cats, _secs, companies, n_ops = _collect_hub_data(sections)
     pie = _sector_pie_svg(_sector_counts(companies))
-    if OVERVIEW_DESTAQUES:
-        items = []
-        for d in OVERVIEW_DESTAQUES:
-            href = html_esc(d.get("href") or "#")
-            title = html_esc(d.get("title") or "")
-            blurb = html_esc(d.get("blurb") or "")
-            ext = ' target="_blank" rel="noopener noreferrer"' if href.startswith("http") else ""
-            items.append(
-                f'<li><a href="{href}"{ext}><div class="destaque-title">{title}</div>'
-                f'<div class="destaque-blurb">{blurb}</div></a></li>'
-            )
-        destaques = f'<ul class="destaque-list">{"".join(items)}</ul>'
-    else:
-        destaques = '<p class="ov-empty">—</p>'
+    ops_destaque = _destaque_list(OVERVIEW_OPS)
+    destaques = _destaque_list(OVERVIEW_DESTAQUES)
 
     return f"""<!DOCTYPE html>
 <html lang="pt-BR">
@@ -3301,6 +3443,10 @@ def overview_html(sections: list[tuple[str, list[tuple[str, dict]]]]) -> str:
       </div>
     </div>
     {_moves_html()}
+    <div class="sec-head">
+      <h2>Operações em destaque</h2>
+    </div>
+    <div class="ov-panel">{ops_destaque}</div>
     <div class="sec-head">
       <h2>Leitura em destaque</h2>
     </div>
@@ -3634,6 +3780,7 @@ def main():
     OPS.mkdir(parents=True, exist_ok=True)
 
     soc_rows, smart_rows = SOC, SMART
+    smart_coupon_rows: list = []
     acel_rows, acel_dyn_rows, triplo_rows = ACEL_KO, [], TRIPLO
     cs_rows, collar_rows = CALL_SPREAD, COLLAR
     call_ko_rows = CALL_KO
@@ -3661,6 +3808,7 @@ def main():
             REF = week.ref
             soc_rows = week.SOC
             smart_rows = week.SMART
+            smart_coupon_rows = week.SMART_COUPON
             acel_rows = week.ACEL_KO
             acel_dyn_rows = week.ACEL_DYN
             triplo_rows = week.TRIPLO
@@ -3678,6 +3826,7 @@ def main():
             n_ops = (
                 len(week.SOC)
                 + len(week.SMART)
+                + len(smart_coupon_rows)
                 + len(week.ACEL_KO)
                 + len(week.ACEL_DYN)
                 + len(week.TRIPLO)
@@ -3737,6 +3886,7 @@ def main():
     add_section("SOC", [make_soc(*r) for r in soc_rows])
     add_section("Cupom Alto Retorno", [make_car(*r) for r in car_rows])
     add_section("Smart Hedge", [make_sh(*r) for r in smart_rows])
+    add_section("Smart Coupon", [make_smart_coupon(*r) for r in smart_coupon_rows])
     add_section("Smart Up", [make_smart_up(*r) for r in smart_up_rows])
     add_section("TWIP", [make_twip(*r) for r in twip_rows])
     add_section("TWIP Coupon", [make_twip_coupon(*r) for r in twip_coupon_rows])

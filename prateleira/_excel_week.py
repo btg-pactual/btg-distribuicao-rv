@@ -81,6 +81,8 @@ def _section_key(cell0: str | None) -> str | None:
     n = _norm(str(cell0))
     if n == "SOC":
         return "soc"
+    if "SMART COUPON" in n:
+        return "smart_coupon"
     if "SMART UP" in n:
         return "smart_up"
     if "SMART HEDGE" in n:
@@ -120,6 +122,7 @@ class WeekData:
     ref: date
     SOC: list
     SMART: list
+    SMART_COUPON: list
     ACEL_KO: list
     ACEL_DYN: list
     TRIPLO: list
@@ -140,6 +143,7 @@ def _parse_ws(ws, sheet_name: str, ref: date) -> WeekData:
     section: str | None = None
     soc: list = []
     smart: list = []
+    smart_coupon: list = []
     acel_ko: list = []
     acel_dyn: list = []
     triplo: list = []
@@ -205,6 +209,14 @@ def _parse_ws(ws, sheet_name: str, ref: date) -> WeekData:
             if len(rest) < 4:
                 continue
             smart.append((ticker, fixing, pct(rest[0]), pct(rest[1]), pct(rest[2]), bid_pct(rest[3])))
+        elif section == "smart_coupon":
+            # B PUT | S CALL KI | KI — sem bid. 1,10 no Excel (formato %) vira 110.
+            if len(rest) < 3:
+                continue
+            sc_put, sc_call, sc_ki = pct(rest[0]), pct(rest[1]), pct(rest[2])
+            if None in (sc_put, sc_call, sc_ki):
+                continue
+            smart_coupon.append((ticker, fixing, sc_put, sc_call, sc_ki))
         elif section == "acel_ko":
             if len(rest) < 4:
                 continue
@@ -314,6 +326,7 @@ def _parse_ws(ws, sheet_name: str, ref: date) -> WeekData:
         ref=ref,
         SOC=soc,
         SMART=smart,
+        SMART_COUPON=smart_coupon,
         ACEL_KO=acel_ko,
         ACEL_DYN=acel_dyn,
         TRIPLO=triplo,
@@ -379,6 +392,7 @@ _KIND_ORDER = (
     ("SOC", "SOC", "SOC"),
     ("CAR", "Cupom Alto Retorno", "CAR"),
     ("SMART", "Smart Hedge", "SMART"),
+    ("SMART_COUPON", "Smart Coupon", "SMART_COUPON"),
     ("SMART_UP", "Smart Up", "SMART_UP"),
     ("TWIP", "TWIP", "TWIP"),
     ("TWIP_COUPON", "TWIP Coupon", "TWIP_COUPON"),
@@ -484,6 +498,7 @@ def summary(w: WeekData) -> str:
         f"ref={w.ref.isoformat()}",
         f"SOC={len(w.SOC)}",
         f"SMART={len(w.SMART)}",
+        f"SMART_COUPON={len(w.SMART_COUPON)}",
         f"ACEL_KO={len(w.ACEL_KO)}",
         f"ACEL_DYN={len(w.ACEL_DYN)}",
         f"TRIPLO={len(w.TRIPLO)}",
@@ -499,6 +514,10 @@ def summary(w: WeekData) -> str:
         f"TWIP_COUPON={len(w.TWIP_COUPON)}",
         f"PUT_ATIVO={len(w.PUT_ATIVO)}",
     ]
+    for t, fixing, put_k, call_ki, ki in w.SMART_COUPON:
+        lines.append(
+            f"SMART_COUPON\t{t} {fixing.isoformat()} put={put_k} callki={call_ki} ki={ki}"
+        )
     for t, fixing, strike, ko, *_rest in w.SOC:
         lines.append(f"SOC\t{t} {fixing.isoformat()} strike={strike} ko={ko}")
     for t, fixing, buy, ko, sell, *_rest in w.ACEL_KO:
