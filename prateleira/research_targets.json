@@ -30,8 +30,8 @@
   "AXIA3": {
     "ticker": "AXIA3",
     "url": "https://content.btgpactual.com/research/ativo/AXIA3",
-    "price": 48.4,
-    "last_trade": "2026-11-13T22:28:18",
+    "price": 46.0,
+    "last_trade": "2026-11-19T22:36:35",
     "sector": "Serviços Básicos",
     "company": "Axia Energia",
     "rec": "COMPRA",
@@ -45,7 +45,7 @@
       "No balanço energético, a exposição a preços em 2027 caiu para 19%–41%, de 27%–43%, com envelope mantido em ~R$200–230/MWh, enquanto em 2028 a exposição ficou em 23%–56% e o envelope subiu para ~R$200–240/MWh, de ~R$190–230/MWh."
     ],
     "summary_date": "2026-11-05 12:39:17.605811+00:00",
-    "upside": 71.48760330578511
+    "upside": 80.43478260869566
   },
   "WEGE3": {
     "ticker": "WEGE3",
@@ -158,8 +158,8 @@
   "ITUB4": {
     "ticker": "ITUB4",
     "url": "https://content.btgpactual.com/research/ativo/ITUB4",
-    "price": 42.27,
-    "last_trade": "2026-11-13T22:39:58",
+    "price": 40.07,
+    "last_trade": "2026-11-19T22:39:32",
     "sector": "Financeiro",
     "company": "Itaú Unibanco",
     "rec": "COMPRA",
@@ -173,7 +173,7 @@
       "Na qualidade de ativos, a inadimplência curta caiu para 1,7%, a acima de 90 dias subiu para 2,0%, a carteira renegociada ficou em 2,6% do total e o custo de crédito líquido foi de R$9,2 bi."
     ],
     "summary_date": "2026-11-04 11:26:42.061062+00:00",
-    "upside": 25.38443340430565
+    "upside": 32.26853007237334
   },
   "PETR4": {
     "ticker": "PETR4",
@@ -246,8 +246,8 @@
   "TSMC34": {
     "ticker": "TSMC34",
     "url": "https://content.btgpactual.com/research/ativo/TSMC34",
-    "price": 273.03,
-    "last_trade": "2026-11-16T17:15:13",
+    "price": 264.46,
+    "last_trade": "2026-11-19T22:39:19",
     "sector": "Tecnologia",
     "company": "TAIWAN SEMICONDUCTOR"
   },
@@ -274,36 +274,36 @@
   "ROXO34": {
     "ticker": "ROXO34",
     "url": "https://content.btgpactual.com/research/ativo/ROXO34",
-    "price": 12.37,
-    "last_trade": "2026-11-13T22:39:19",
+    "price": 11.7,
+    "last_trade": "2026-11-19T21:08:53",
     "sector": "Financeiro",
     "company": "Nubank",
     "rec": "COMPRA",
     "rec_lbl": "Compra",
     "rec_cls": "buy",
-    "date": "2026-11-13T09:51:36.409Z",
+    "date": "2026-11-16T11:44:47.499Z",
     "target": 21.0,
     "bullets": [
-      "O Nubank reportou 3T26 forte, com lucro líquido GAAP de US$1,09 bi, alta de 3% t/t e 39% a/a, ROE de ~32% e resultado 2% acima da estimativa, apesar de despesa pós-impostos de ~US$50 mi ligada à quebra de um emissor de cartões.",
-      "A carteira de crédito chegou a US$42 bi, +6% t/t e +33% a/a em moeda constante, com margem financeira gerencial de US$3,9 bi e índice de eficiência de 19,3%. Em seguida, a prévia estratégica reforçou expansão internacional com…",
-      "A gestão passou a projetar eficiência anual em 19–19,5%, melhor que a indicação anterior de ~20%. Entre as âncoras, o México alcançou mais de 16 mi de clientes e a Colômbia 6,1 mi, enquanto EUA e Nu Global já estavam contemplados no…"
+      "O Nubank reportou 3T26 forte, com lucro líquido GAAP de US$1,09 bi, alta de 3% t/t e 39% a/a, em linha com o consenso e ~2% acima da estimativa do BTG.",
+      "Excluindo um efeito pós-impostos de ~US$50 mi ligado à quebra de um emissor de cartões, a melhora operacional recorrente antes de impostos foi estimada em pelo menos 10% t/t. A carteira de crédito chegou a US$42 bi, alta de 6% t/t e 33%…",
+      "A administração também destacou ROE acima de 60% no Brasil ajustado pelo excesso de capital e eficiência na faixa de 15%. Nas frentes de crescimento, o México atingiu mais de 16 mi de clientes, a Colômbia 6,1 mi, a base de PMEs já…"
     ],
-    "summary_date": "2026-11-13 09:52:32.690959+00:00",
-    "upside": 69.76556184316898
+    "summary_date": "2026-11-16 11:45:42.201279+00:00",
+    "upside": 79.48717948717949
   },
   "GOGL34": {
     "ticker": "GOGL34",
     "url": "https://content.btgpactual.com/research/ativo/GOGL34",
-    "price": 138.72,
-    "last_trade": "2026-11-16T17:15:10",
+    "price": 136.39,
+    "last_trade": "2026-11-19T22:28:10",
     "sector": "Comunicação",
     "company": "Alphabet"
   },
   "LILY34": {
     "ticker": "LILY34",
     "url": "https://content.btgpactual.com/research/ativo/LILY34",
-    "price": 278.74,
-    "last_trade": "2026-11-16T17:14:55",
+    "price": 268.6,
+    "last_trade": "2026-11-19T21:06:00",
     "sector": "Consumo não Discricionário",
     "company": "Eli Lilly"
   },
@@ -378,8 +378,8 @@
   "BOVA11": {
     "ticker": "BOVA11",
     "url": "https://content.btgpactual.com/research/ativo/BOVA11",
-    "price": 169.68,
-    "last_trade": "2026-11-13T22:39:51",
+    "price": 163.6,
+    "last_trade": "2026-11-19T22:39:26",
     "sector": "Fundos de Índice",
     "company": "Ishares Ibovespa Fundo de Índice"
   },
@@ -442,8 +442,8 @@
   "EQTL3": {
     "ticker": "EQTL3",
     "url": "https://content.btgpactual.com/research/ativo/EQTL3",
-    "price": 34.34,
-    "last_trade": "2026-11-13T21:05:49",
+    "price": 32.9,
+    "last_trade": "2026-11-19T22:38:34",
     "sector": "Serviços Básicos",
     "company": "Equatorial",
     "rec": "COMPRA",
@@ -457,7 +457,7 @@
       "As perdas consolidadas ficaram em 18,1%, ainda abaixo do limite regulatório de 18,9%. Em renováveis, a Echoenergia gerou 1.508 GWh, +14,3% a/a, mas seguiu pressionada por curtailment de 12,3% na eólica e 43,0% na solar."
     ],
     "summary_date": "2026-11-12 12:13:03.752102+00:00",
-    "upside": 100.9318578916715
+    "upside": 109.72644376899696
   },
   "VBBR3": {
     "ticker": "VBBR3",
@@ -502,8 +502,8 @@
   "MELI34": {
     "ticker": "MELI34",
     "url": "https://content.btgpactual.com/research/ativo/MELI34",
-    "price": 70.66,
-    "last_trade": "2026-11-16T17:14:53",
+    "price": 67.32,
+    "last_trade": "2026-11-19T21:07:00",
     "sector": "Consumo discricionário",
     "company": "Mercado Livre"
   },
@@ -662,8 +662,8 @@
   "MBRF3": {
     "ticker": "MBRF3",
     "url": "https://content.btgpactual.com/research/ativo/MBRF3",
-    "price": 17.87,
-    "last_trade": "2026-11-16T17:14:41",
+    "price": 18.39,
+    "last_trade": "2026-11-19T22:27:27",
     "sector": "Alimentos & Bebidas",
     "company": "Marfrig",
     "rec": "NEUTRO",
@@ -677,7 +677,7 @@
       "Na BRF, a receita somou R$ 16,7 bi e o EBITDA R$ 2,5 bi, com margem de 15,3%, mas já refletindo normalização em aves e suínos. Para a prévia do trimestre, a expectativa era de receita líquida consolidada de R$ 40,8 bi, -2% a/a e estável…"
     ],
     "summary_date": "2026-11-13 11:23:28.719955+00:00",
-    "upside": 45.49524342473419
+    "upside": 41.38118542686242
   },
   "AURA33": {
     "ticker": "AURA33",
@@ -690,8 +690,8 @@
   "VIVT3": {
     "ticker": "VIVT3",
     "url": "https://content.btgpactual.com/research/ativo/VIVT3",
-    "price": 34.27,
-    "last_trade": "2026-11-16T17:15:12",
+    "price": 35.22,
+    "last_trade": "2026-11-19T22:36:54",
     "sector": "Telecom & Tecnologia",
     "company": "Telefônica Brasil",
     "rec": "COMPRA",
@@ -705,7 +705,7 @@
       "Dados corporativos, TIC e serviços digitais somaram R$1,45 bi, +5% a/a. A combinação de crescimento acima dos pares em serviços, expansão de margem e disciplina de capital sustenta a percepção de resiliência operacional e forte…"
     ],
     "summary_date": "2026-11-11 09:20:14.622550+00:00",
-    "upside": -9.54187335862271
+    "upside": -11.981828506530379
   },
   "RADL3": {
     "ticker": "RADL3",
