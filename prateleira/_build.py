@@ -54,7 +54,7 @@ OPS = ROOT / "ops"
 REF = date(2026, 10, 28)  # aba Excel 28.10.26 — PDF da semana ainda não publicado
 PDF_NAME = ""  # remover PDF antigo; novo em breve
 WEEK_MOVES: dict | None = None
-SHOW_WEEK_MOVES = False  # Overview: ligar de novo na semana que vem
+SHOW_WEEK_MOVES = True
 
 # Destaques / leituras manuais do Overview — preencher quando pedido.
 # Ex.: {"title": "…", "blurb": "…", "href": "https://…"}  (http → abre em nova aba)
