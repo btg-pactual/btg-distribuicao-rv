@@ -137,7 +137,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
     <h2>Research BTG</h2>
     <a class="research-link" href="https://content.btgpactual.com/research/ativo/PETR4" target="_blank" rel="noopener">Abrir PETR4 no Research <span class="arrow" aria-hidden="true">→</span></a>
   </div>
-  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 41,30</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 65,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+57,38%</div></div></div><p class="research-note">Spot do fechamento anterior (23/11/2026) · preço-alvo atualizado em 23/11/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
+  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 41,12</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 65,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+58,07%</div></div></div><p class="research-note">Spot do fechamento anterior (24/11/2026) · preço-alvo atualizado em 24/11/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
 </section>
 
 
@@ -152,8 +152,8 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
           <table class="struct-table">
             <thead><tr><th></th><th>R$</th><th>vs spot</th></tr></thead>
             <tbody>
-              <tr><td>Máximo</td><td><strong>59,79</strong></td><td>+44,8%</td></tr>
-              <tr><td>Mínimo</td><td><strong>0,00</strong></td><td>-100,0%</td></tr>
+              <tr><td>Máximo</td><td><strong>59,79</strong></td><td>+45,4%</td></tr>
+              <tr><td>Mínimo</td><td><strong>29,53</strong></td><td>-28,2%</td></tr>
             </tbody>
           </table>
           <p class="legend-note">
@@ -217,8 +217,8 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
 
 <section class="speech-box insights-box">
   <h2>Insights Research BTG</h2>
-  <ul class="research-bullets"><li>No 3T26, a Petrobras reportou EBITDA ajustado de US$17,5 bi, ~5% abaixo do consenso e 6% menor t/t, pressionado por Brent mais fraco e perdas de estoque de US$0,7 bi no refino, apesar de produção e vendas de derivados em alta de ~5% t/t.</li><li>O fluxo de caixa livre pela fórmula da companhia somou US$6,6 bi, com capex caixa de US$5,4 bi e consumo de ~US$2,5 bi de capital de giro ligado à subvenção de combustíveis, enquanto a dívida bruta ficou em US$70 bi, o caixa em ~US$12…</li><li>Para 2027–28, as projeções recorrentes apontam 2,85 MMbpd e 2,95 MMbpd. Em contrapartida, o capex de 2026 subiu para US$21–22 bi, de ~US$17 bi, e os arrendamentos para US$11–11,5 bi, de US$10 bi, reduzindo a visibilidade sobre…</li></ul>
-  <p class="research-note">Insights BTG · 23/11/2026 · fonte Research BTG.</p>
+  <ul class="research-bullets"><li>No 3T26, a Petrobras reportou EBITDA ajustado de US$17,5 bi, cerca de 5% abaixo do consenso, com pressão da queda do Brent e de perdas de estoque de US$0,7 bi no refino, apesar de produção e vendas de derivados em alta de ~5% t/t.</li><li>O fluxo de caixa livre pela fórmula da companhia foi de US$6,6 bi, com caixa de ~US$12 bi, dívida bruta de US$70 bi e alavancagem de 1,0x. Na prévia do trimestre, a produção de óleo foi estimada em ~2,83–2,84 MMbpd, com EBITDA…</li><li>Os dividendos ordinários estimados somam US$55–60 bi no período, mas mais concentrados em 2030-31. O breakeven de Brent para 2027 ficou em ~US$80/bbl, acima do cenário-base de US$74/bbl, enquanto cada US$1 bi adicional de capex ou…</li></ul>
+  <p class="research-note">Insights BTG · 24/11/2026 · fonte Research BTG.</p>
 </section>
 
 <p class="footer-alert">
@@ -231,7 +231,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
   var X_MIN=-50,X_MAX=80,Y_MIN=-50,Y_MAX=80;
   var PAD={l:48,t:24,r:48,b:24},VW=600,VH=400;
   var PLOT_W=VW-PAD.l-PAD.r,PLOT_H=VH-PAD.t-PAD.b;
-  var RESEARCH_X=57.3850;
+  var RESEARCH_X=58.0739;
   var PUT=100.0, CALL=110.0, KI=150.15;
   function structureReturn(x){ var st=100+x; var r=st+Math.max(PUT-st,0)-(st>=KI?Math.max(st-CALL,0):0)-100; return r; }
   function regimeFor(x){ var st=100+x; if(st>=KI) return 'KI: teto +10%.'; if(x<=(PUT-100)) return 'Piso da put.'; return 'Participa 1:1.'; }

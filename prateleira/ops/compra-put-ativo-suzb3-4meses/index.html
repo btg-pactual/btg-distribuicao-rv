@@ -137,7 +137,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
     <h2>Research BTG</h2>
     <a class="research-link" href="https://content.btgpactual.com/research/ativo/SUZB3" target="_blank" rel="noopener">Abrir SUZB3 no Research <span class="arrow" aria-hidden="true">→</span></a>
   </div>
-  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 55,19</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 70,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+26,83%</div></div></div><p class="research-note">Spot do fechamento anterior (23/11/2026) · preço-alvo atualizado em 23/11/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
+  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 55,33</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 70,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+26,51%</div></div></div><p class="research-note">Spot do fechamento anterior (24/11/2026) · preço-alvo atualizado em 24/11/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
 </section>
 
 
@@ -152,8 +152,8 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
           <table class="struct-table">
             <thead><tr><th></th><th>R$</th><th>vs spot</th></tr></thead>
             <tbody>
-              <tr><td>Máximo</td><td><strong>59,65</strong></td><td>+8,1%</td></tr>
-              <tr><td>Mínimo</td><td><strong>0,00</strong></td><td>-100,0%</td></tr>
+              <tr><td>Máximo</td><td><strong>59,65</strong></td><td>+7,8%</td></tr>
+              <tr><td>Mínimo</td><td><strong>39,17</strong></td><td>-29,2%</td></tr>
             </tbody>
           </table>
           <p class="legend-note">
@@ -217,8 +217,8 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
 
 <section class="speech-box insights-box">
   <h2>Insights Research BTG</h2>
-  <ul class="research-bullets"><li>A Suzano reportou no 3T26 EBITDA de R$5,67 bi, com melhora sequencial, mas 6% abaixo da estimativa do BTG e 2% abaixo do consenso, pressionado por preços realizados de celulose ligeiramente mais fracos e por papel.</li><li>As vendas de celulose somaram 3,19 Mt, +10% t/t e 3% acima do esperado, com preço de exportação em US$591/t e custo caixa, incluindo paradas, de R$855/t, queda de 12% t/t. No 2T26, o EBITDA havia sido de R$4,7 bi, com vendas de ~2,9 Mt…</li><li>No 2T26, o FCFE havia sido R$2,4 bi, ou 19% anualizado, ainda que com apoio de capital de giro e derivativos. A dívida líquida subiu para R$76,3 bi, de R$66,1 bi no 2T26, e a alavancagem avançou para 3,7x com a consolidação da Arbex.</li></ul>
-  <p class="research-note">Insights BTG · 06/11/2026 · fonte Research BTG.</p>
+  <ul class="research-bullets"><li>No 3T26, a Suzano reportou EBITDA consolidado de R$5,67 bi, 6% abaixo da estimativa do BTG e 2% abaixo do consenso, com melhora sequencial apoiada por celulose, mas pressionado por papel.</li><li>As vendas de celulose somaram 3,19 Mt, +10% t/t e 3% acima da projeção, com preço realizado de US$591/t e custo caixa de R$855/t, enquanto papel ficou mais fraco, com 374 mil t e preços domésticos abaixo do esperado. Na prévia…</li><li>A dívida líquida ficou em R$76,3 bi e a alavancagem em 3,7x, mas a companhia passou a indicar dívida líquida abaixo de US$14 bi no fim de 2026, ante US$14,7 bi em setembro, e mantém meta de ~2,5x em 2027–28. O guidance de custo caixa…</li></ul>
+  <p class="research-note">Insights BTG · 24/11/2026 · fonte Research BTG.</p>
 </section>
 
 <p class="footer-alert">
@@ -231,7 +231,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
   var X_MIN=-40,X_MAX=40,Y_MIN=-20,Y_MAX=40;
   var PAD={l:48,t:24,r:48,b:24},VW=600,VH=400;
   var PLOT_W=VW-PAD.l-PAD.r,PLOT_H=VH-PAD.t-PAD.b;
-  var RESEARCH_X=26.8346;
+  var RESEARCH_X=26.5136;
   var K=0.0, COST=6.0, FLOOR=-6.0;
   function structureReturn(x){ if (x <= K) return FLOOR; return x - COST; }
   function regimeFor(x){ if (x <= K) return 'Put: resultado em '+FLOOR.toFixed(2).replace('.',',')+'%.'; return 'Acompanha o ativo, menos o prêmio.'; }

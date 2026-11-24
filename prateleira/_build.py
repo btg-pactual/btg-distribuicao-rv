@@ -62,8 +62,8 @@ OVERVIEW_OPS: list[dict] = [
     {
         "title": "Smart Up · DOLB11",
         "blurb": (
-            "Piso em 110%. Até a barreira de 137%, a alta do ETF de dólar é acelerada (2×), "
-            "com ganho máximo de +63,98%. Na barreira, volta ao piso."
+            "Piso de +10% na put de 110%. De 110% até 137%, a alta acima da put é dobrada (2×). "
+            "Ganho máximo de +63,98%. Se a barreira for atingida, volta ao piso."
         ),
         "href": "./ops/smart-up-dolb11-ki137-25meses/index.html",
     },
@@ -1521,6 +1521,7 @@ def make_smart_up(t, fixing, put, call_ki, ki, call_ko, ko, _bid):
 <section class="panel asset-note">
   <h2>O ETF</h2>
   <p>DOLB11 é a cota do BTG Pactual Reference S&amp;P/B3 Cambial Fundo de Índice. O fundo busca refletir, antes de taxas e despesas, o S&amp;P/B3 BRL-USD Mini Futures Index: o desempenho dos futuros de dólar contra o real, com rolagem mensal.</p>
+  <p>110% e 137% são percentuais sobre o fechamento do dia da reserva. A cotação de hoje não é o strike.</p>
   <p><a class="research-link" href="https://www.btgpactual.com/asset-management/etf-dolar" target="_blank" rel="noopener noreferrer">Site da asset <span class="arrow" aria-hidden="true">→</span></a></p>
 </section>
 """ + _dolb_parity_html()
@@ -1531,8 +1532,9 @@ def make_smart_up(t, fixing, put, call_ki, ki, call_ko, ko, _bid):
         "dot": "SU",
         "brand": "#0B6E4F",
         "subtitle": (
-            f"Smart Up sobre {t}: piso em {put_lbl}. Até a barreira de {ko_lbl}, a alta é acelerada (2×), "
-            f"com ganho máximo de {peak_lbl}. Na barreira, volta ao piso."
+            f"Smart Up sobre {t}: piso de {floor_lbl}, na put {put_lbl}. "
+            f"De {put_lbl} até {ko_lbl}, a alta acima da put é dobrada (2×). "
+            f"Ganho máximo de {peak_lbl}. Se a barreira for atingida, volta ao piso."
         ),
         "pills": [
             ("Ativo", t),
@@ -1545,7 +1547,7 @@ def make_smart_up(t, fixing, put, call_ki, ki, call_ko, ko, _bid):
             ("Prazo", prazo, ""),
             ("Piso", floor_lbl, f"Put {put_lbl}"),
             ("Até a barreira", peak_lbl, "Ganho máximo"),
-            ("Na barreira", cap_lbl, f"Volta ao piso em {ko_lbl}"),
+            ("Na barreira", cap_lbl, f"Se atingir {ko_lbl}"),
         ],
         "struct": [
             ('<span class="tag b">B</span> Put', put_lbl),
@@ -1555,7 +1557,7 @@ def make_smart_up(t, fixing, put, call_ki, ki, call_ko, ko, _bid):
         "zones": [
             (f"≤ {floor:+.0f}%", f"Piso {floor_lbl}."),
             (f"{floor:+.0f}% → {fmt_pct(bar - 100)}", f"Alta acelerada (2×), até o ganho máximo de {peak_lbl}."),
-            (f"≥ {fmt_pct(bar - 100)}", f"Barreira: volta ao piso {cap_lbl}."),
+            (f"≥ {fmt_pct(bar - 100)}", f"Barreira atingida: volta ao piso {cap_lbl}."),
         ],
         "regime0": f"Até a barreira de {ko_lbl}, ganho máximo {peak_lbl}. Na barreira, permanece o piso.",
         "speech": [
