@@ -56,6 +56,18 @@ PDF_NAME = ""  # remover PDF antigo; novo em breve
 WEEK_MOVES: dict | None = None
 SHOW_WEEK_MOVES = True
 
+# Token público do snippet (Cloudflare Web Analytics). Não é chave de API.
+CF_BEACON_TOKEN = "096e62b3e5ea470db235962b042382dd"
+
+
+def _cf_beacon() -> str:
+    return (
+        "<!-- Cloudflare Web Analytics -->"
+        "<script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' "
+        f"data-cf-beacon='{{\"token\": \"{CF_BEACON_TOKEN}\"}}'></script>"
+        "<!-- End Cloudflare Web Analytics -->"
+    )
+
 # Operações em destaque no Overview — preencher quando pedido.
 # href relativo à pasta prateleira (./ops/...).
 OVERVIEW_OPS: list[dict] = [
@@ -3456,6 +3468,7 @@ def overview_html(sections: list[tuple[str, list[tuple[str, dict]]]]) -> str:
     {_hub_footer()}
   </main>
 </div>
+{_cf_beacon()}
 </body>
 </html>
 """
