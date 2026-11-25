@@ -30,8 +30,8 @@
   "AXIA3": {
     "ticker": "AXIA3",
     "url": "https://content.btgpactual.com/research/ativo/AXIA3",
-    "price": 45.52,
-    "last_trade": "2026-11-23T21:05:53",
+    "price": 45.71,
+    "last_trade": "2026-11-24T21:05:56",
     "sector": "Serviços Básicos",
     "company": "Axia Energia",
     "rec": "COMPRA",
@@ -45,7 +45,7 @@
       "No balanço energético, a exposição a preços em 2027 caiu para 19%–41%, de 27%–43%, com envelope mantido em ~R$200–230/MWh, enquanto em 2028 a exposição ficou em 23%–56% e o envelope subiu para ~R$200–240/MWh, de ~R$190–230/MWh."
     ],
     "summary_date": "2026-11-05 12:39:17.605811+00:00",
-    "upside": 82.33743409490333
+    "upside": 81.57952308028878
   },
   "WEGE3": {
     "ticker": "WEGE3",
@@ -158,8 +158,8 @@
   "ITUB4": {
     "ticker": "ITUB4",
     "url": "https://content.btgpactual.com/research/ativo/ITUB4",
-    "price": 39.73,
-    "last_trade": "2026-11-23T21:05:56",
+    "price": 39.74,
+    "last_trade": "2026-11-24T21:05:36",
     "sector": "Financeiro",
     "company": "Itaú Unibanco",
     "rec": "COMPRA",
@@ -173,7 +173,7 @@
       "Na qualidade de ativos, a inadimplência curta caiu para 1,7%, a acima de 90 dias subiu para 2,0%, a carteira renegociada ficou em 2,6% do total e o custo de crédito líquido foi de R$9,2 bi."
     ],
     "summary_date": "2026-11-04 11:26:42.061062+00:00",
-    "upside": 33.400453058142475
+    "upside": 33.36688475088072
   },
   "PETR4": {
     "ticker": "PETR4",
@@ -274,8 +274,8 @@
   "ROXO34": {
     "ticker": "ROXO34",
     "url": "https://content.btgpactual.com/research/ativo/ROXO34",
-    "price": 11.69,
-    "last_trade": "2026-11-23T21:08:00",
+    "price": 11.73,
+    "last_trade": "2026-11-24T21:08:00",
     "sector": "Financeiro",
     "company": "Nubank",
     "rec": "COMPRA",
@@ -289,7 +289,7 @@
       "A administração também destacou ROE acima de 60% no Brasil ajustado pelo excesso de capital e eficiência na faixa de 15%. Nas frentes de crescimento, o México atingiu mais de 16 mi de clientes, a Colômbia 6,1 mi, a base de PMEs já…"
     ],
     "summary_date": "2026-11-16 11:45:42.201279+00:00",
-    "upside": 79.64071856287427
+    "upside": 79.02813299232736
   },
   "GOGL34": {
     "ticker": "GOGL34",
@@ -378,8 +378,8 @@
   "BOVA11": {
     "ticker": "BOVA11",
     "url": "https://content.btgpactual.com/research/ativo/BOVA11",
-    "price": 162.35,
-    "last_trade": "2026-11-23T21:17:00",
+    "price": 161.49,
+    "last_trade": "2026-11-24T21:18:38",
     "sector": "Fundos de Índice",
     "company": "Ishares Ibovespa Fundo de Índice"
   },
@@ -442,22 +442,22 @@
   "EQTL3": {
     "ticker": "EQTL3",
     "url": "https://content.btgpactual.com/research/ativo/EQTL3",
-    "price": 32.74,
-    "last_trade": "2026-11-23T21:05:34",
+    "price": 33.55,
+    "last_trade": "2026-11-24T21:05:56",
     "sector": "Serviços Básicos",
     "company": "Equatorial",
     "rec": "COMPRA",
     "rec_lbl": "Compra",
     "rec_cls": "buy",
-    "date": "2026-11-12T12:12:19.389Z",
+    "date": "2026-11-24T12:21:23.287Z",
     "target": 69.0,
     "bullets": [
-      "A Equatorial reportou no 3T26 EBITDA ajustado de R$2,96 bi, alta de 7% a/a, ligeiramente abaixo da estimativa de R$3,04 bi, com distribuição sustentando o trimestre ao entregar R$2,79 bi, +9% a/a, com destaque para Celg e CEA, enquanto…",
-      "No consolidado, o lucro líquido foi de R$934 mi e o lucro ajustado ficou em R$535 mi, apoiado por despesas financeiras líquidas de R$1,6 bi e equivalência patrimonial de R$247 mi, enquanto a alavancagem permaneceu em ~3,1x dívida…",
-      "As perdas consolidadas ficaram em 18,1%, ainda abaixo do limite regulatório de 18,9%. Em renováveis, a Echoenergia gerou 1.508 GWh, +14,3% a/a, mas seguiu pressionada por curtailment de 12,3% na eólica e 43,0% na solar."
+      "A Equatorial reportou no 3T26 EBITDA ajustado de R$2,96 bi, alta de 7% a/a, ligeiramente abaixo da estimativa de R$3,04 bi.",
+      "Distribuição foi o principal destaque, com R$2,79 bi, +9% a/a, apoiada por Celg e CEA, enquanto Echoenergia e CSA ficaram abaixo do esperado. O lucro líquido consolidado somou R$934 mi e o lucro ajustado, excluindo itens não recorrentes…",
+      "As perdas consolidadas ficaram em 18,1%, ainda 80 bps abaixo do limite regulatório, e a Echoenergia gerou 1.508 GWh, +14,3% a/a, embora com curtailment ainda elevado de 12,3% em eólica e 43,0% em solar. Entre os vetores regulatórios, a…"
     ],
-    "summary_date": "2026-11-12 12:13:03.752102+00:00",
-    "upside": 110.75137446548564
+    "summary_date": "2026-11-24 12:22:20.538529+00:00",
+    "upside": 105.66318926974665
   },
   "VBBR3": {
     "ticker": "VBBR3",
