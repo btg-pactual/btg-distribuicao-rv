@@ -36,14 +36,14 @@ jobs:
     timeout-minutes: 180
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           ref: pages
 
       # Chave nova a cada run: actions/cache nao regrava quando a chave ja existe,
       # e o COTAHIST do dia seguinte nunca entrava no cache.
       - name: Restaurar cache rb3
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v5
         with:
           path: mr-derivs/.rb3_cache
           key: mr-derivs-rb3-v2-${{ github.run_id }}
@@ -85,7 +85,7 @@ jobs:
 
       - name: Salvar cache rb3
         if: success()
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@v5
         with:
           path: mr-derivs/.rb3_cache
           key: mr-derivs-rb3-v2-${{ github.run_id }}
