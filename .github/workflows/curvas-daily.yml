@@ -17,9 +17,6 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     env:
       GITHUB_REPOSITORY: ${{ github.repository }}
       MESES_HISTORICO_DI: "24"
@@ -61,5 +58,12 @@ jobs:
         with:
           path: .
 
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
       - uses: actions/deploy-pages@v5
         id: deployment
