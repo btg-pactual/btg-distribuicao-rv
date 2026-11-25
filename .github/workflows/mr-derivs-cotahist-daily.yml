@@ -98,7 +98,11 @@ jobs:
         run: |
           set -euo pipefail
           Rscript mr-derivs/jobs/export_iv_web.R "${{ github.workspace }}/mr-derivs/.rb3_cache" 365
-          Rscript mr-derivs/jobs/export_quant_web.R "${{ github.workspace }}/mr-derivs/.rb3_cache" 365
+          if [ -f mr-derivs/jobs/export_quant_web.R ]; then
+            Rscript mr-derivs/jobs/export_quant_web.R "${{ github.workspace }}/mr-derivs/.rb3_cache" 365
+          else
+            echo "export_quant_web.R ausente neste commit; publica so a serie de IV"
+          fi
 
       - name: Commit status JSON
         run: |

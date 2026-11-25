@@ -25,7 +25,7 @@ if (!requireNamespace("oplib", quietly = TRUE)) {
   # Sem token: o GITHUB_TOKEN do Actions toma 401 ao baixar outro repositorio.
   tarball <- tempfile(fileext = ".tar.gz")
   utils::download.file(
-    "https://codeload.github.com/wilsonfreitas/oplib/tar.gz/HEAD",
+    "https://codeload.github.com/wilsonfreitas/oplib/tar.gz/refs/heads/main",
     tarball,
     mode = "wb",
     quiet = TRUE
