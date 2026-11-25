@@ -15,13 +15,13 @@ on:
           - "false"
           - "true"
       export_web:
-        description: "Gerar JSON para viz.html (vol/skew no Pages)"
+        description: "Gerar JSON para o painel (vol/skew no Pages)"
         required: false
-        default: "false"
+        default: "true"
         type: choice
         options:
-          - "false"
           - "true"
+          - "false"
 
 permissions:
   contents: write
@@ -40,12 +40,15 @@ jobs:
         with:
           ref: pages
 
-      - name: Cache rb3 COTAHIST
-        uses: actions/cache@v4
+      # Chave nova a cada run: actions/cache nao regrava quando a chave ja existe,
+      # e o COTAHIST do dia seguinte nunca entrava no cache.
+      - name: Restaurar cache rb3
+        uses: actions/cache/restore@v4
         with:
           path: mr-derivs/.rb3_cache
-          key: mr-derivs-rb3-v1
+          key: mr-derivs-rb3-v2-${{ github.run_id }}
           restore-keys: |
+            mr-derivs-rb3-v2-
             mr-derivs-rb3-v1
 
       - name: Setup R
@@ -53,6 +56,16 @@ jobs:
         with:
           r-version: "release"
           use-public-rspm: true
+
+      - name: Bibliotecas do sistema
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            libpng-dev libjpeg-dev libtiff-dev \
+            libcurl4-openssl-dev libssl-dev libxml2-dev \
+            libfontconfig1-dev libfreetype6-dev \
+            libharfbuzz-dev libfribidi-dev \
+            cmake pkg-config
 
       - name: Install R packages
         run: Rscript mr-derivs/jobs/install_deps.R
@@ -62,16 +75,30 @@ jobs:
           MR_DERIVS_RB3_CACHE: ${{ github.workspace }}/mr-derivs/.rb3_cache
           MR_DERIVS_EXPORT_STATUS: "1"
         run: |
+          set -euo pipefail
           if [ "${{ github.event.inputs.seed_24m }}" = "true" ]; then
             Rscript mr-derivs/jobs/seed_cache_24m.R "${{ github.workspace }}/mr-derivs/.rb3_cache" 24
           else
-            Rscript mr-derivs/jobs/atualizar_cache_diario.R "${{ github.workspace }}/mr-derivs/.rb3_cache" || true
+            Rscript mr-derivs/jobs/atualizar_cache_diario.R "${{ github.workspace }}/mr-derivs/.rb3_cache"
           fi
           Rscript mr-derivs/jobs/export_cache_status.R
-          if [ "${{ github.event.inputs.export_web }}" = "true" ]; then
-            export MR_DERIVS_WEB_DIAS=180
-            Rscript mr-derivs/jobs/export_iv_web.R "${{ github.workspace }}/mr-derivs/.rb3_cache" 180
-          fi
+
+      - name: Salvar cache rb3
+        if: success()
+        uses: actions/cache/save@v4
+        with:
+          path: mr-derivs/.rb3_cache
+          key: mr-derivs-rb3-v2-${{ github.run_id }}
+
+      - name: Publicar JSON do painel
+        if: github.event_name == 'schedule' || github.event.inputs.export_web == 'true'
+        env:
+          MR_DERIVS_RB3_CACHE: ${{ github.workspace }}/mr-derivs/.rb3_cache
+          MR_DERIVS_WEB_DIAS: "365"
+        run: |
+          set -euo pipefail
+          Rscript mr-derivs/jobs/export_iv_web.R "${{ github.workspace }}/mr-derivs/.rb3_cache" 365
+          Rscript mr-derivs/jobs/export_quant_web.R "${{ github.workspace }}/mr-derivs/.rb3_cache" 365
 
       - name: Commit status JSON
         run: |

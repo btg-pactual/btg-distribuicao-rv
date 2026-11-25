@@ -44,7 +44,11 @@ BUSCA_PERIODO_FIM <- BUSCA_PERIODO$fim
 TICKERS_PADRAO <- unique(c(TICKERS_SEED_24M, TICKERS_WATCHLIST))
 CACHE_INICIO_UI <- cache_data_inicio_padrao(MR_CACHE_MESES)
 
-prefixo_de_ticker <- function(ticker) substr(toupper(trimws(ticker)), 1, 4)
+txt_chr <- function(x) {
+  if (is.null(x) || length(x) == 0) return("")
+  trimws(as.character(x[[1L]]))
+}
+prefixo_de_ticker <- function(ticker) substr(toupper(txt_chr(ticker)), 1, 4)
 
 limpar_erro_shiny <- function(msg) {
   msg <- gsub("\x1b\\[[0-9;]*[a-zA-Z]", "", msg, perl = TRUE)
@@ -124,29 +128,45 @@ calcular_vol_isolado <- function(
     retorno_leve = TRUE
   )
 
+  out <- NULL
   if (requireNamespace("callr", quietly = TRUE)) {
     tmp <- tempfile(tmpdir = cache_dir, fileext = ".rds")
-    on.exit(unlink(tmp, force = TRUE), add = TRUE)
-    callr::r(
-      function(path, app_dir, dots) {
-        options(vol_implicita.limpar_sessao = FALSE)
-        options(vol_implicita.autorun = FALSE)
-        source(file.path(app_dir, "vol_implicita_11.R"), local = FALSE)
-        res <- do.call(rodar_vol_implicita, dots)
-        saveRDS(res, path)
-      },
-      args = list(path = tmp, app_dir = APP_DIR, dots = args_rodar),
-      wd = APP_DIR,
-      show = FALSE,
-      spinner = FALSE
-    )
-    out <- readRDS(tmp)
-    out$cache_update <- cache_info
-    invisible(gc())
-    return(out)
+    errfile <- tempfile(fileext = ".log")
+    on.exit(unlink(c(tmp, errfile), force = TRUE), add = TRUE)
+    ok <- tryCatch({
+      callr::r(
+        function(path, app_dir, dots) {
+          options(vol_implicita.limpar_sessao = FALSE)
+          options(vol_implicita.autorun = FALSE)
+          source(file.path(app_dir, "vol_implicita_11.R"), local = FALSE)
+          res <- do.call(rodar_vol_implicita, dots)
+          saveRDS(res, path)
+        },
+        args = list(path = tmp, app_dir = APP_DIR, dots = args_rodar),
+        wd = APP_DIR,
+        show = FALSE,
+        spinner = FALSE,
+        stdout = errfile,
+        stderr = errfile
+      )
+      file.exists(tmp)
+    }, error = function(e) {
+      detalhe <- if (file.exists(errfile)) {
+        paste(readLines(errfile, warn = FALSE, n = 30), collapse = "\n")
+      } else {
+        ""
+      }
+      message(
+        "callr nao subiu (", conditionMessage(e), "). ",
+        detalhe,
+        " Calculando no processo do app."
+      )
+      FALSE
+    })
+    if (isTRUE(ok)) out <- readRDS(tmp)
   }
 
-  out <- do.call(rodar_vol_implicita, args_rodar)
+  if (is.null(out)) out <- do.call(rodar_vol_implicita, args_rodar)
   out$cache_update <- cache_info
   invisible(gc())
   out
@@ -497,6 +517,344 @@ plotly_vol_atm <- function(res) {
   )
 }
 
+rank_pct_periodo <- function(x) {
+  out <- rep(NA_real_, length(x))
+  ok <- is.finite(x)
+  if (!any(ok)) return(out)
+  out[ok] <- stats::ecdf(x[ok])(x[ok]) * 100
+  out
+}
+
+fvol_com_percentis <- function(df) {
+  if (is.null(df) || !nrow(df) || !all(c("sigma_atm", "skew", "smile") %in% names(df))) {
+    return(df)
+  }
+  if (!all(c("pct_vol", "pct_skew", "pct_smile") %in% names(df))) {
+    df$pct_vol <- rank_pct_periodo(df$sigma_atm)
+    df$pct_skew <- rank_pct_periodo(df$skew)
+    df$pct_smile <- rank_pct_periodo(df$smile)
+  }
+  df
+}
+
+grafico_percentis <- function(res) {
+  df <- fvol_com_percentis(res$fvol)
+  tem <- !is.null(df) && nrow(df) > 0 &&
+    all(c("pct_vol", "pct_skew", "pct_smile") %in% names(df))
+  if (!isTRUE(tem)) {
+    plot.new()
+    plot.window(xlim = c(0, 1), ylim = c(0, 1))
+    text(0.5, 0.5, "Percentis indisponiveis nesta rodada.", col = "white", cex = 0.9)
+    return(invisible(NULL))
+  }
+  long <- rbind(
+    data.frame(refdate = df$refdate, variavel = "Vol ATM", percentil = df$pct_vol),
+    data.frame(refdate = df$refdate, variavel = "Skew", percentil = df$pct_skew),
+    data.frame(refdate = df$refdate, variavel = "Smile", percentil = df$pct_smile)
+  )
+  ggplot(long, aes(refdate, percentil, color = variavel)) +
+    geom_hline(yintercept = c(25, 50, 75), linetype = "dashed", linewidth = 0.4, color = "#8fa8c8") +
+    geom_line(linewidth = 0.8) +
+    scale_color_manual(values = c(
+      "Vol ATM" = "#f5c842",
+      "Skew" = "#e05252",
+      "Smile" = "#8a6fff"
+    )) +
+    scale_y_continuous(limits = c(0, 100), labels = function(x) paste0(x, "°")) +
+    labs(
+      title = sprintf("Percentis FVOL — %s", res$ativo %||% ""),
+      subtitle = "Percentil empirico no periodo escolhido",
+      x = NULL, y = "Percentil", color = NULL
+    ) +
+    theme_minimal(base_size = 13) +
+    theme(
+      plot.background = element_rect(fill = "#0a1628", color = NA),
+      panel.background = element_rect(fill = "#0a1628", color = NA),
+      panel.grid.major = element_line(color = "#1e2f4a"),
+      panel.grid.minor = element_blank(),
+      text = element_text(color = "#ffffff"),
+      axis.text = element_text(color = "#e8eeff"),
+      plot.subtitle = element_text(color = "#e8eeff"),
+      legend.position = "bottom"
+    )
+}
+
+tabela_percentis <- function(df) {
+  if (is.null(df) || !nrow(df) || !all(c("sigma_atm", "skew", "smile") %in% names(df))) {
+    return(NULL)
+  }
+  df <- df[order(as.Date(df$refdate)), , drop = FALSE]
+  ult <- df[nrow(df), , drop = FALSE]
+  fmt_pct <- function(x) if (!is.finite(x)) "--" else sprintf("%.2f%%", x * 100)
+  fmt_num <- function(x) if (!is.finite(x)) "--" else sprintf("%.0f", x)
+  fmt_r2 <- function(x) if (!is.finite(x)) "--" else sprintf("%.2f", x)
+  fmt_rank <- function(x) if (!is.finite(x)) "--" else sprintf("%.0f°", x)
+  fmt_pp <- function(x) if (!is.finite(x)) "--" else sprintf("%+.2f pp", x * 100)
+  linha <- function(nome, serie, atual, fmt, diff_pp = FALSE) {
+    ok <- is.finite(serie)
+    serie <- serie[ok]
+    media <- if (length(serie)) mean(serie) else NA_real_
+    rank <- if (length(serie) && is.finite(atual)) stats::ecdf(serie)(atual) * 100 else NA_real_
+    dif <- if (is.finite(atual) && is.finite(media)) atual - media else NA_real_
+    data.frame(
+      Variavel = nome,
+      Atual = fmt(atual),
+      Min = fmt(if (length(serie)) min(serie) else NA_real_),
+      Media = fmt(media),
+      Max = fmt(if (length(serie)) max(serie) else NA_real_),
+      Percentil = fmt_rank(rank),
+      `vs media` = if (diff_pp) fmt_pp(dif) else fmt(dif),
+      check.names = FALSE,
+      stringsAsFactors = FALSE
+    )
+  }
+  col <- function(nome) if (nome %in% names(df)) df[[nome]] else rep(NA_real_, nrow(df))
+  ult_num <- function(nome) {
+    if (!nome %in% names(ult)) return(NA_real_)
+    x <- ult[[nome]][1]
+    if (is.finite(x)) x else NA_real_
+  }
+  rbind(
+    linha("Vol ATM", col("sigma_atm"), ult_num("sigma_atm"), fmt_pct, TRUE),
+    linha("Skew", col("skew"), ult_num("skew"), fmt_pct, TRUE),
+    linha("Smile", col("smile"), ult_num("smile"), fmt_pct, TRUE),
+    linha("R2", col("r2"), ult_num("r2"), fmt_r2, FALSE),
+    linha("Pontos smile", col("n_points"), ult_num("n_points"), fmt_num, FALSE)
+  )
+}
+
+interpretar_curva <- function(df) {
+  if (is.null(df) || !nrow(df) || !all(c("sigma_atm", "skew", "smile") %in% names(df))) {
+    return(NULL)
+  }
+  df <- df[order(as.Date(df$refdate)), , drop = FALSE]
+  ult <- df[nrow(df), , drop = FALSE]
+  rank_of <- function(nome) {
+    if (!nome %in% names(df) || !nome %in% names(ult)) return(NA_real_)
+    atual <- ult[[nome]][1]
+    serie <- df[[nome]]
+    serie <- serie[is.finite(serie)]
+    if (!length(serie) || !is.finite(atual)) return(NA_real_)
+    stats::ecdf(serie)(atual) * 100
+  }
+  grau <- function(x) if (!is.finite(x)) "n/d" else sprintf("%.0f°", x)
+  pct_vol <- rank_of("sigma_atm")
+  pct_skew <- rank_of("skew")
+  pct_smile <- rank_of("smile")
+  skew <- ult$skew[1]
+  smile <- ult$smile[1]
+  r2 <- if ("r2" %in% names(ult)) ult$r2[1] else NA_real_
+  npts <- if ("n_points" %in% names(ult)) ult$n_points[1] else NA_real_
+
+  vol_txt <- if (!is.finite(pct_vol)) {
+    "Vol ATM sem percentil nesta amostra."
+  } else if (pct_vol >= 70) {
+    sprintf(
+      "Vol ATM no percentil %s: cara contra o periodo. Vender volatilidade combina melhor (call coberta, strangle vendido ou iron condor), porque o premio de hoje esta acima da maior parte da amostra.",
+      grau(pct_vol)
+    )
+  } else if (pct_vol <= 30) {
+    sprintf(
+      "Vol ATM no percentil %s: barata contra o periodo. Comprar volatilidade combina melhor (straddle ou strangle comprado, ou call/put no vies), porque o premio de hoje esta abaixo da maior parte da amostra.",
+      grau(pct_vol)
+    )
+  } else {
+    sprintf(
+      "Vol ATM no percentil %s: no miolo da amostra. Trava combina melhor do que compra ou venda seca de vol, porque o premio nao esta extremo.",
+      grau(pct_vol)
+    )
+  }
+
+  skew_txt <- if (!is.finite(skew) || !is.finite(pct_skew)) {
+    "Skew sem leitura nesta amostra."
+  } else if (skew < 0 && pct_skew <= 35) {
+    sprintf(
+      "Skew negativo e no percentil %s: a put esta mais cara que o normal do periodo. Put vendida, put spread ou risk reversal (compra call e vende put) cobram essa asa de baixa.",
+      grau(pct_skew)
+    )
+  } else if (skew < 0 && pct_skew >= 65) {
+    sprintf(
+      "Skew ainda negativo, mas no percentil %s: a put barateou contra o historico da amostra. Hedge comprado em put sai mais barato que o usual; a call relativa esta mais cara.",
+      grau(pct_skew)
+    )
+  } else if (skew < 0) {
+    sprintf(
+      "Skew negativo no percentil %s: put mais cara que a call, sem extremo contra o periodo. Put spread vendido ainda coleta essa diferenca.",
+      grau(pct_skew)
+    )
+  } else if (pct_skew >= 65) {
+    sprintf(
+      "Skew positivo e no percentil %s: a call esta cara versus a put e versus o periodo. Call vendida ou call spread cobram a asa de alta; a put de hedge esta relativamente barata.",
+      grau(pct_skew)
+    )
+  } else {
+    sprintf(
+      "Skew positivo no percentil %s: a asa de alta paga mais que a de baixa. Call spread vendido combina melhor do que put vendida.",
+      grau(pct_skew)
+    )
+  }
+
+  smile_txt <- if (!is.finite(smile) || !is.finite(pct_smile)) {
+    "Smile sem leitura nesta amostra."
+  } else if (smile > 0 && pct_smile >= 70) {
+    sprintf(
+      "Smile no percentil %s: as duas asas estao caras alem do skew. Vender as pontas (iron condor, strangle vendido ou borboleta) coleta o premio de OTM.",
+      grau(pct_smile)
+    )
+  } else if (pct_smile <= 30) {
+    sprintf(
+      "Smile no percentil %s: as asas estao baratas na amostra. Strangle comprado ou compra de OTM faz mais sentido se a tese for cauda.",
+      grau(pct_smile)
+    )
+  } else {
+    sprintf(
+      "Smile no percentil %s: asas sem extremo. Nao vale montar a estrutura so pelo premio de OTM.",
+      grau(pct_smile)
+    )
+  }
+
+  cautela <- if ((is.finite(r2) && r2 < 0.5) || (is.finite(npts) && npts < 8)) {
+    sprintf(
+      "O ajuste da curva esta fraco (R2=%s, pts=%s). Trate skew e smile com cautela e use sobretudo o nivel da vol ATM.",
+      if (is.finite(r2)) sprintf("%.2f", r2) else "n/d",
+      if (is.finite(npts)) sprintf("%.0f", npts) else "?"
+    )
+  } else {
+    NULL
+  }
+
+  c(vol_txt, skew_txt, smile_txt, cautela)
+}
+
+tema_iv_app <- function() {
+  theme_minimal(base_size = 13) +
+    theme(
+      plot.background = element_rect(fill = "#0a1628", color = NA),
+      panel.background = element_rect(fill = "#0a1628", color = NA),
+      panel.grid.major = element_line(color = "#1e2f4a"),
+      panel.grid.minor = element_blank(),
+      text = element_text(color = "#ffffff"),
+      axis.text = element_text(color = "#e8eeff"),
+      plot.subtitle = element_text(color = "#e8eeff", size = 11),
+      legend.position = "bottom",
+      legend.text = element_text(color = "#ffffff")
+    )
+}
+
+plot_aviso_iv <- function(msg) {
+  plot.new()
+  plot.window(xlim = c(0, 1), ylim = c(0, 1))
+  text(0.5, 0.5, msg, col = "white", cex = 0.9)
+  invisible(NULL)
+}
+
+grafico_iv_hv <- function(res) {
+  df <- res$fvol
+  if (is.null(df) || !nrow(df) || !"vol_realizada" %in% names(df)) {
+    plot_aviso_iv("IV x realizada indisponivel. Calcule de novo.")
+    return(invisible(NULL))
+  }
+  mm <- res$janela_mm %||% 21L
+  mm_lab <- sprintf("MM%d IV", mm)
+  longo <- rbind(
+    data.frame(refdate = df$refdate, serie = "IV ATM FVOL", vol = df$sigma_atm * 100),
+    data.frame(refdate = df$refdate, serie = "Vol realizada", vol = df$vol_realizada * 100),
+    data.frame(refdate = df$refdate, serie = mm_lab, vol = df$vol_mm * 100)
+  )
+  ggplot(longo, aes(refdate, vol, color = serie)) +
+    geom_line(linewidth = 0.8, na.rm = TRUE) +
+    scale_color_manual(values = stats::setNames(c("#f5c842", "#00c37a", "#ffffff"), c("IV ATM FVOL", "Vol realizada", mm_lab))) +
+    scale_y_continuous(labels = function(x) paste0(x, "%")) +
+    labs(
+      title = sprintf("IV vs Vol Realizada — %s", res$ativo %||% ""),
+      subtitle = sprintf("Backward: desvio dos ultimos %d pregoes * sqrt(252)", mm),
+      x = NULL, y = "Vol (%)", color = NULL
+    ) +
+    tema_iv_app()
+}
+
+grafico_premio_iv <- function(res) {
+  df <- res$fvol
+  if (is.null(df) || !nrow(df) || !"premio_iv" %in% names(df)) {
+    plot_aviso_iv("Premio IV indisponivel. Calcule de novo.")
+    return(invisible(NULL))
+  }
+  ggplot(df, aes(refdate, premio_iv * 100)) +
+    geom_hline(yintercept = 0, linetype = "dashed", color = "#8fa8c8") +
+    geom_line(color = "#f5c842", linewidth = 0.8, na.rm = TRUE) +
+    scale_y_continuous(labels = function(x) paste0(x, " pp")) +
+    labs(
+      title = sprintf("Premio IV - Vol Realizada — %s", res$ativo %||% ""),
+      subtitle = "Positivo = mercado precificou mais vol do que o spot realizou",
+      x = NULL, y = "Premio (pp)"
+    ) +
+    tema_iv_app()
+}
+
+grafico_iv_fwd <- function(res) {
+  df <- res$fvol
+  if (is.null(df) || !nrow(df) || !"vol_realizada_fwd" %in% names(df)) {
+    plot_aviso_iv("Vol forward indisponivel. Calcule de novo.")
+    return(invisible(NULL))
+  }
+  longo <- rbind(
+    data.frame(refdate = df$refdate, serie = "IV ATM FVOL", vol = df$sigma_atm * 100),
+    data.frame(refdate = df$refdate, serie = "Vol realizada forward", vol = df$vol_realizada_fwd * 100)
+  )
+  ggplot(longo, aes(refdate, vol, color = serie)) +
+    geom_line(linewidth = 0.8, na.rm = TRUE) +
+    scale_color_manual(values = c("IV ATM FVOL" = "#f5c842", "Vol realizada forward" = "#8a6fff")) +
+    scale_y_continuous(labels = function(x) paste0(x, "%")) +
+    labs(
+      title = sprintf("IV vs Vol Realizada Forward — %s", res$ativo %||% ""),
+      subtitle = "Ex post: desvio ate o vencimento da IV (mesmo DU) * sqrt(252)",
+      x = NULL, y = "Vol (%)", color = NULL
+    ) +
+    tema_iv_app()
+}
+
+grafico_premio_fwd <- function(res) {
+  df <- res$fvol
+  if (is.null(df) || !nrow(df) || !"premio_iv_fwd" %in% names(df)) {
+    plot_aviso_iv("Premio forward indisponivel. Calcule de novo.")
+    return(invisible(NULL))
+  }
+  ggplot(df, aes(refdate, premio_iv_fwd * 100)) +
+    geom_hline(yintercept = 0, linetype = "dashed", color = "#8fa8c8") +
+    geom_line(color = "#8a6fff", linewidth = 0.8, na.rm = TRUE) +
+    scale_y_continuous(labels = function(x) paste0(x, " pp")) +
+    labs(
+      title = sprintf("Premio IV - Vol Forward — %s", res$ativo %||% ""),
+      subtitle = "Positivo = IV ficou acima do que o spot realizou depois",
+      x = NULL, y = "Premio (pp)"
+    ) +
+    tema_iv_app()
+}
+
+grafico_scatter_fwd <- function(res) {
+  df <- res$fvol
+  if (is.null(df) || !nrow(df) || !"vol_realizada_fwd" %in% names(df)) {
+    plot_aviso_iv("Scatter forward indisponivel. Calcule de novo.")
+    return(invisible(NULL))
+  }
+  pts <- df[!is.na(df$sigma_atm) & !is.na(df$vol_realizada_fwd), , drop = FALSE]
+  if (!nrow(pts)) {
+    plot_aviso_iv("Ainda nao ha janela forward completa nesta amostra.")
+    return(invisible(NULL))
+  }
+  ggplot(pts, aes(sigma_atm * 100, vol_realizada_fwd * 100)) +
+    geom_abline(slope = 1, intercept = 0, linetype = "dashed", color = "#8fa8c8") +
+    geom_point(color = "#00c37a", alpha = 0.75, size = 2.2) +
+    scale_x_continuous(labels = function(x) paste0(x, "%")) +
+    scale_y_continuous(labels = function(x) paste0(x, "%")) +
+    labs(
+      title = "IV vs realizado forward",
+      subtitle = "Diagonal = acerto. Acima = spot realizou mais vol que a IV",
+      x = "IV ATM (%)", y = "Vol realizada forward (%)"
+    ) +
+    tema_iv_app()
+}
+
 #' Skew e Smile historicos — plotly nativo.
 plotly_skew_smile <- function(res) {
   df <- res$fvol
@@ -505,17 +863,12 @@ plotly_skew_smile <- function(res) {
   }
   df <- df |>
     dplyr::arrange(refdate) |>
+    dplyr::group_by(refdate) |>
+    dplyr::slice_tail(n = 1) |>
+    dplyr::ungroup() |>
     dplyr::mutate(
       skew_pct = skew * 100,
-      smile_pct = smile * 100,
-      hover_skew = paste0(
-        "<b>", format(refdate, "%d/%m/%Y"), "</b><br>",
-        "Skew: ", sprintf("%.2f%%", skew_pct)
-      ),
-      hover_smile = paste0(
-        "<b>", format(refdate, "%d/%m/%Y"), "</b><br>",
-        "Smile: ", sprintf("%.2f%%", smile_pct)
-      )
+      smile_pct = smile * 100
     )
   ult <- dplyr::slice_tail(df, n = 1)
   p <- plotly::plot_ly() |>
@@ -523,23 +876,23 @@ plotly_skew_smile <- function(res) {
       data = df, x = ~refdate, y = ~skew_pct,
       name = "Skew",
       line = list(color = PLOTLY_RED, width = 2.2),
-      hoverinfo = "text", text = ~hover_skew
+      hovertemplate = "Skew: %{y:.2f}%<extra></extra>"
     ) |>
     plotly::add_lines(
       data = df, x = ~refdate, y = ~smile_pct,
       name = "Smile",
       line = list(color = PLOTLY_PURPLE, width = 2.2),
-      hoverinfo = "text", text = ~hover_smile
+      hovertemplate = "Smile: %{y:.2f}%<extra></extra>"
     ) |>
     plotly::add_markers(
       data = ult, x = ~refdate, y = ~skew_pct,
       marker = list(color = PLOTLY_RED, size = 9, line = list(color = PLOTLY_WHITE, width = 1)),
-      hoverinfo = "text", text = ~hover_skew, showlegend = FALSE, name = "ult_skew"
+      hoverinfo = "skip", showlegend = FALSE, name = "ult_skew"
     ) |>
     plotly::add_markers(
       data = ult, x = ~refdate, y = ~smile_pct,
       marker = list(color = PLOTLY_PURPLE, size = 9, line = list(color = PLOTLY_WHITE, width = 1)),
-      hoverinfo = "text", text = ~hover_smile, showlegend = FALSE, name = "ult_smile"
+      hoverinfo = "skip", showlegend = FALSE, name = "ult_smile"
     )
   layout_plotly_dark(
     p,
@@ -674,6 +1027,11 @@ ui <- fluidPage(
                    font-size: 14px; color: #ffffff; }
     .status-ok { color: #00c37a; font-weight: bold; }
     .status-warn { color: #f5c842; font-weight: bold; }
+    .interp-box { background: #111f38; border: 1px solid #1e2f4a; padding: 14px 16px;
+                  border-radius: 6px; margin: 12px 0 16px; font-size: 15px;
+                  color: #e8eeff; line-height: 1.45; }
+    .interp-box p { margin: 0 0 8px; }
+    .interp-box p:last-child { margin: 0; }
     .dataTables_wrapper { color: #ffffff !important; font-size: 14px !important; }
     table.dataTable { background-color: #111f38 !important; color: #ffffff !important; }
     table.dataTable thead th {
@@ -860,7 +1218,20 @@ ui <- fluidPage(
                 value = CACHE_INICIO_UI, format = "dd/mm/yyyy"),
       hr(),
       h4("Parametros"),
-      numericInput("du_alvo", "DU alvo (~vencimento)", 22, min = 5, max = 120),
+      selectInput(
+        "prazo_meses",
+        "Prazo da curva",
+        choices = c(
+          "1 mes (21 DU)" = 21,
+          "2 meses (42 DU)" = 42,
+          "3 meses (63 DU)" = 63
+        ),
+        selected = 21
+      ),
+      tags$p(
+        style = "color:#a8b8d8; font-size:12px; margin-top:-6px;",
+        "A vol forward de cada pregão usa o DU do vencimento dessa curva."
+      ),
       numericInput("du_tol", "Tolerancia DU", 10, min = 1, max = 30),
       numericInput("janela_mm", "Janela vol realizada / MM", 21, min = 5, max = 126),
       selectInput("carrego", "Carrego BSM", c("pcp", "btc", "hibrido"), selected = "pcp"),
@@ -891,6 +1262,10 @@ ui <- fluidPage(
           br(),
           plotlyOutput("plot_vol_atm", height = "420px"),
           plotOutput("plot_percentis", height = "380px"),
+          h4("Atual vs periodo selecionado"),
+          DTOutput("tbl_percentis"),
+          uiOutput("interp_curva"),
+          br(),
           downloadButton("dl_fvol", "Baixar FVOL (CSV)"),
           br(), br(),
           DTOutput("tbl_resumo")
@@ -909,7 +1284,7 @@ ui <- fluidPage(
           br(),
           tags$p(
             style = "color:#e8f0ff; font-size:14px; font-family:monospace; margin-bottom:8px;",
-            "Backward = vol historica na janela MM | Forward = o que o spot realizou nos proximos DU alvo (ex post)"
+            "Backward = vol historica na janela MM | Forward = o que o spot realizou ate o vencimento da curva (mesmo DU da IV)"
           ),
           plotOutput("plot_iv_hv", height = "380px"),
           plotOutput("plot_premio", height = "320px"),
@@ -959,12 +1334,12 @@ ui <- fluidPage(
                 "DU alvo (prazo)",
                 choices = c(
                   "~1 semana (5 DU)" = 5,
-                  "~1 mes (22 DU)" = 22,
-                  "~2 meses (45 DU)" = 45,
-                  "~3 meses (63 DU)" = 63,
+                  "1 mes (21 DU)" = 21,
+                  "2 meses (42 DU)" = 42,
+                  "3 meses (63 DU)" = 63,
                   "~6 meses (126 DU)" = 126
                 ),
-                selected = 22
+                selected = 21
               ),
               numericInput("busca_du_tol", "Tolerancia DU", 10, min = 1, max = 30),
               selectInput(
@@ -1011,6 +1386,27 @@ ui <- fluidPage(
               br(), br(),
               DTOutput("tbl_busca"),
               br(),
+              h4("Precificador"),
+              fluidRow(
+                column(
+                  4,
+                  selectInput(
+                    "px_figura",
+                    "Figura",
+                    choices = c(
+                      "Call spread a debito (trava de alta)" = "bull_call",
+                      "Call spread a credito (trava de baixa)" = "bear_call",
+                      "Put spread a debito (trava de baixa)" = "bear_put",
+                      "Put spread a credito (trava de alta)" = "bull_put"
+                    )
+                  )
+                ),
+                column(3, selectInput("px_a", "Opcao A", choices = character(0))),
+                column(3, selectInput("px_b", "Opcao B", choices = character(0))),
+                column(2, numericInput("px_qtd", "Qtd", value = 1, min = 1, step = 1))
+              ),
+              uiOutput("px_resultado"),
+              br(),
               selectInput("busca_symbol_plot", "Opcao para grafico de preco", choices = character(0)),
               plotOutput("plot_busca", height = "380px")
             )
@@ -1020,6 +1416,93 @@ ui <- fluidPage(
     )
   )
 )
+
+ultima_linha_opcao <- function(tab, sym) {
+  d <- tab[tab$symbol == sym, , drop = FALSE]
+  if (!nrow(d)) return(NULL)
+  d[order(as.Date(d$refdate)), , drop = FALSE][nrow(d), , drop = FALSE]
+}
+
+montar_spread <- function(tab, figura, sym_a, sym_b, qtd = 1) {
+  if (is.null(tab) || !nrow(tab)) return(list(erro = "Busque as opcoes primeiro."))
+  if (!nzchar(sym_a %||% "") || !nzchar(sym_b %||% "")) return(list(erro = "Escolha as duas opcoes."))
+  if (identical(sym_a, sym_b)) return(list(erro = "Escolha duas opcoes diferentes."))
+  a <- ultima_linha_opcao(tab, sym_a)
+  b <- ultima_linha_opcao(tab, sym_b)
+  if (is.null(a) || is.null(b)) return(list(erro = "Opcao sem preco na tabela."))
+  tipo_fig <- if (figura %in% c("bull_call", "bear_call")) "call" else "put"
+  if (!identical(a$type[1], tipo_fig) || !identical(b$type[1], tipo_fig)) {
+    return(list(erro = sprintf(
+      "Essa figura usa %s. A busca listou %s. Troque o tipo e busque de novo.",
+      tipo_fig, a$type[1]
+    )))
+  }
+  qtd <- suppressWarnings(as.numeric(qtd))
+  if (!is.finite(qtd) || qtd <= 0) qtd <- 1
+  long_baixo <- figura %in% c("bull_call", "bull_put")
+  if (long_baixo) {
+    if (a$strike[1] <= b$strike[1]) {
+      longa <- a
+      curta <- b
+    } else {
+      longa <- b
+      curta <- a
+    }
+  } else if (a$strike[1] >= b$strike[1]) {
+    longa <- a
+    curta <- b
+  } else {
+    longa <- b
+    curta <- a
+  }
+  Kl <- longa$strike[1]
+  Ks <- curta$strike[1]
+  D <- longa$preco[1] - curta$preco[1]
+  if (!is.finite(Kl) || !is.finite(Ks) || abs(Kl - Ks) < 1e-8) {
+    return(list(erro = "Os strikes precisam ser diferentes."))
+  }
+  if (tipo_fig == "call" && Kl < Ks) {
+    ganho <- (Ks - Kl) - D
+    perda <- -D
+    be <- Kl + D
+    nome <- "Call spread a debito — trava de alta"
+  } else if (tipo_fig == "call") {
+    ganho <- -D
+    perda <- (Ks - Kl) - D
+    be <- Ks - D
+    nome <- "Call spread a credito — trava de baixa"
+  } else if (Kl > Ks) {
+    ganho <- (Kl - Ks) - D
+    perda <- -D
+    be <- Kl - D
+    nome <- "Put spread a debito — trava de baixa"
+  } else {
+    ganho <- -D
+    perda <- (Kl - Ks) - D
+    be <- Ks + D
+    nome <- "Put spread a credito — trava de alta"
+  }
+  aviso <- character(0)
+  if (!identical(as.character(longa$vencimento[1]), as.character(curta$vencimento[1]))) {
+    aviso <- c(aviso, "Vencimentos diferentes.")
+  }
+  if (!identical(as.character(longa$refdate[1]), as.character(curta$refdate[1]))) {
+    aviso <- c(aviso, "Cada perna usa o ultimo pregao em que apareceu na tabela.")
+  }
+  list(
+    erro = NULL,
+    nome = nome,
+    qtd = qtd,
+    debito = D * qtd,
+    ganho = ganho * qtd,
+    perda = perda * qtd,
+    be = be,
+    largura = abs(Kl - Ks),
+    longa = longa,
+    curta = curta,
+    aviso = aviso
+  )
+}
 
 server <- function(input, output, session) {
   resultado <- reactiveVal(NULL)
@@ -1074,13 +1557,24 @@ server <- function(input, output, session) {
       ))
     }
     n_iv <- res$n_iv_dias %||% 0L
-    n_fvol <- if (!is.null(res$fvol) && nrow(res$fvol)) nrow(res$fvol) else 0L
-    ult <- if (n_fvol > 0) max(res$fvol$refdate) else as.Date(NA)
-    atraso_dias <- if (!is.na(ult)) as.integer(Sys.Date() - as.Date(ult)) else NA_integer_
-    duck_txt <- if (!is.null(res$cache_update) && !is.null(res$cache_update$ultima_depois) &&
-                    !is.na(res$cache_update$ultima_depois)) {
+    n_fvol <- if (isTRUE(!is.null(res$fvol) && nrow(res$fvol) > 0)) nrow(res$fvol) else 0L
+    ult <- if (isTRUE(n_fvol > 0)) max(res$fvol$refdate, na.rm = TRUE) else as.Date(NA)
+    atraso_dias <- if (isTRUE(length(ult) == 1L && !is.na(ult))) {
+      as.integer(Sys.Date() - as.Date(ult))
+    } else {
+      NA_integer_
+    }
+    n_sem_fvol <- if (is.null(res$meta_datas)) NA_real_ else res$meta_datas$n_datas_iv_sem_fvol
+    duck_ok <- isTRUE(
+      !is.null(res$cache_update) &&
+        !is.null(res$cache_update$ultima_depois) &&
+        length(res$cache_update$ultima_depois) == 1L &&
+        !is.na(res$cache_update$ultima_depois)
+    )
+    duck_txt <- if (duck_ok) {
       format(res$cache_update$ultima_depois, "%Y-%m-%d")
-    } else if (!is.null(diag_cache) && !is.na(diag_cache$ultima_duckdb)) {
+    } else if (isTRUE(!is.null(diag_cache) && length(diag_cache$ultima_duckdb) == 1L &&
+                      !is.na(diag_cache$ultima_duckdb))) {
       format(diag_cache$ultima_duckdb, "%Y-%m-%d")
     } else {
       "n/d"
@@ -1095,11 +1589,12 @@ server <- function(input, output, session) {
       tags$br(),
       sprintf(
         "Ultimo FVOL: %s | %s",
-        if (!is.na(ult)) format(ult, "%Y-%m-%d") else "n/d",
+        if (isTRUE(length(ult) == 1L && !is.na(ult))) format(ult, "%Y-%m-%d") else "n/d",
         res$carrego_label %||% ""
       ),
-      if (!is.null(res$meta_datas) && !is.null(res$meta_datas$ultimo_vencimento) &&
-          !is.na(res$meta_datas$ultimo_vencimento)) {
+      if (isTRUE(!is.null(res$meta_datas) && !is.null(res$meta_datas$ultimo_vencimento) &&
+          length(res$meta_datas$ultimo_vencimento) == 1L &&
+          !is.na(res$meta_datas$ultimo_vencimento))) {
         tagList(
           tags$br(),
           sprintf(
@@ -1112,9 +1607,7 @@ server <- function(input, output, session) {
           )
         )
       },
-      if (!is.null(res$meta_datas) &&
-          is.finite(res$meta_datas$n_datas_iv_sem_fvol) &&
-          res$meta_datas$n_datas_iv_sem_fvol > 0) {
+      if (isTRUE(length(n_sem_fvol) == 1L && is.finite(n_sem_fvol) && n_sem_fvol > 0)) {
         tagList(
           tags$br(),
           tags$span(
@@ -1137,7 +1630,7 @@ server <- function(input, output, session) {
             format(res$meta_datas$ultima_iv, "%Y-%m-%d"),
             res$meta_datas$n_datas_puladas,
             res$meta_datas$n_datas_spot,
-            if (fb > 0) sprintf(" | fallback semanal: %s", fb) else ""
+            if (isTRUE(fb > 0)) sprintf(" | fallback semanal: %s", fb) else ""
           )
         )
       },
@@ -1145,7 +1638,7 @@ server <- function(input, output, session) {
         tagList(tags$br(), tags$span(style = "color:#a8b8d8;", res$cache_update$mensagem))
       },
       tagList(tags$br(), sprintf("COTAHIST DuckDB: %s", duck_txt)),
-      if (is.finite(atraso_dias) && atraso_dias > 5) {
+      if (isTRUE(is.finite(atraso_dias) && atraso_dias > 5)) {
         tagList(
           tags$br(),
           tags$span(
@@ -1170,7 +1663,7 @@ server <- function(input, output, session) {
     calculando(TRUE)
     on.exit(calculando(FALSE), add = TRUE)
 
-    ticker <- toupper(trimws(input$ticker))
+    ticker <- toupper(txt_chr(input$ticker))
     if (!nzchar(ticker)) {
       erro("Informe um ticker spot valido.")
       return()
@@ -1184,9 +1677,10 @@ server <- function(input, output, session) {
       erro("Periodo IV: inicio maior que fim.")
       return()
     }
-    if (!is.finite(input$du_alvo) || input$du_alvo < 1 ||
+    du_alvo <- suppressWarnings(as.integer(input$prazo_meses))
+    if (length(du_alvo) != 1L || is.na(du_alvo) || !du_alvo %in% c(21L, 42L, 63L) ||
         !is.finite(input$du_tol) || input$du_tol < 0) {
-      erro("DU alvo / tolerancia invalidos.")
+      erro("Prazo ou tolerancia invalidos.")
       return()
     }
     prefixo <- trimws(input$prefixo_opcoes)
@@ -1214,7 +1708,7 @@ server <- function(input, output, session) {
           periodo_fim = input$periodo[2],
           data_inicio = input$data_inicio_cache,
           janela_mm = input$janela_mm,
-          du_alvo = input$du_alvo,
+          du_alvo = du_alvo,
           du_tol = input$du_tol,
           usar_apenas_vencimento_mensal = input$venc_mensal,
           carrego = input$carrego,
@@ -1251,7 +1745,13 @@ server <- function(input, output, session) {
     render_grafico({
       req(res_ativo())
       plot_seq()
-      res_ativo()$graficos[[name]]
+      g <- res_ativo()$graficos[[name]]
+      if (is.null(g)) {
+        plot.new()
+        text(0.5, 0.5, "Grafico estatico desligado (use abas plotly).", col = "white", cex = 0.9)
+      } else {
+        g
+      }
     })
   }
 
@@ -1260,7 +1760,36 @@ server <- function(input, output, session) {
     plot_seq()
     plotly_vol_atm(res_ativo())
   })
-  output$plot_percentis <- pick_plot("percentis")
+  output$plot_percentis <- render_grafico({
+    req(res_ativo())
+    plot_seq()
+    grafico_percentis(res_ativo())
+  })
+  output$tbl_percentis <- renderDT({
+    req(res_ativo())
+    plot_seq()
+    tbl <- tabela_percentis(res_ativo()$fvol)
+    if (is.null(tbl)) return(NULL)
+    estilizar_dt(
+      DT::datatable(
+        tbl,
+        rownames = FALSE,
+        options = list(dom = "t", paging = FALSE, scrollX = TRUE),
+        class = "cell-border stripe hover"
+      )
+    )
+  })
+  output$interp_curva <- renderUI({
+    req(res_ativo())
+    plot_seq()
+    linhas <- interpretar_curva(res_ativo()$fvol)
+    if (is.null(linhas) || !length(linhas)) return(NULL)
+    tags$div(
+      class = "interp-box",
+      tags$div(style = "font-weight:700; margin-bottom:8px; color:#ffffff;", "Leitura da curva"),
+      lapply(linhas, tags$p)
+    )
+  })
   output$plot_skew_smile <- plotly::renderPlotly({
     req(res_ativo())
     plot_seq()
@@ -1272,11 +1801,31 @@ server <- function(input, output, session) {
     plotly_smile_dia(res_ativo())
   })
   output$plot_preco <- pick_plot("preco")
-  output$plot_iv_hv <- pick_plot("iv_vs_hv")
-  output$plot_premio <- pick_plot("premio_iv")
-  output$plot_iv_fwd <- pick_plot("iv_vs_fwd")
-  output$plot_premio_fwd <- pick_plot("premio_iv_fwd")
-  output$plot_scatter_fwd <- pick_plot("scatter_iv_fwd")
+  output$plot_iv_hv <- render_grafico({
+    req(res_ativo())
+    plot_seq()
+    grafico_iv_hv(res_ativo())
+  })
+  output$plot_premio <- render_grafico({
+    req(res_ativo())
+    plot_seq()
+    grafico_premio_iv(res_ativo())
+  })
+  output$plot_iv_fwd <- render_grafico({
+    req(res_ativo())
+    plot_seq()
+    grafico_iv_fwd(res_ativo())
+  })
+  output$plot_premio_fwd <- render_grafico({
+    req(res_ativo())
+    plot_seq()
+    grafico_premio_fwd(res_ativo())
+  })
+  output$plot_scatter_fwd <- render_grafico({
+    req(res_ativo())
+    plot_seq()
+    grafico_scatter_fwd(res_ativo())
+  })
 
   output$stats_fwd_txt <- renderUI({
     req(res_ativo())
@@ -1296,14 +1845,19 @@ server <- function(input, output, session) {
   output$tbl_resumo <- renderDT({
     req(res_ativo())
     plot_seq()
-    estilizar_dt(
-      DT::datatable(
-        res_ativo()$tabela,
-        rownames = FALSE,
-        options = list(dom = "t", pageLength = 10),
-        class = "cell-border stripe hover"
+    tbl <- res_ativo()$tabela
+    if (is.null(tbl) || !is.data.frame(tbl) || !nrow(tbl)) {
+      NULL
+    } else {
+      estilizar_dt(
+        DT::datatable(
+          tbl,
+          rownames = FALSE,
+          options = list(dom = "t", pageLength = 10),
+          class = "cell-border stripe hover"
+        )
       )
-    )
+    }
   })
 
   output$tbl_fvol <- renderDT({
@@ -1744,11 +2298,24 @@ server <- function(input, output, session) {
       } else {
         character(0)
       }
+      sym_choices <- stats::setNames(out$simbolos$symbol, sym_labs)
       updateSelectInput(
         session,
         "busca_symbol_plot",
-        choices = stats::setNames(out$simbolos$symbol, sym_labs),
+        choices = sym_choices,
         selected = if (length(sym_labs)) out$simbolos$symbol[1] else NULL
+      )
+      updateSelectInput(
+        session,
+        "px_a",
+        choices = sym_choices,
+        selected = if (length(sym_labs)) out$simbolos$symbol[1] else NULL
+      )
+      updateSelectInput(
+        session,
+        "px_b",
+        choices = sym_choices,
+        selected = if (length(sym_labs) >= 2) out$simbolos$symbol[2] else if (length(sym_labs)) out$simbolos$symbol[1] else NULL
       )
 
       showNotification(
@@ -1779,6 +2346,48 @@ server <- function(input, output, session) {
         ),
         class = "cell-border stripe hover"
       )
+    )
+  })
+
+  output$px_resultado <- renderUI({
+    res <- busca_res()
+    if (is.null(res) || is.null(res$tabela) || !nrow(res$tabela)) {
+      return(tags$div(class = "status-box", "Busque as opcoes para precificar o spread."))
+    }
+    cot <- montar_spread(res$tabela, input$px_figura, input$px_a, input$px_b, input$px_qtd)
+    if (!is.null(cot$erro)) {
+      return(tags$div(class = "status-box", cot$erro))
+    }
+    brl <- function(x) if (!is.finite(x)) "--" else sprintf("R$ %.2f", x)
+    caixa <- if (cot$debito >= 0) {
+      sprintf("Debito %s", brl(cot$debito))
+    } else {
+      sprintf("Credito %s", brl(-cot$debito))
+    }
+    perna <- function(rotulo, row) {
+      sprintf(
+        "%s %s  K %s  %s  em %s",
+        rotulo,
+        row$symbol[1],
+        format(row$strike[1], nsmall = 2),
+        brl(row$preco[1]),
+        format(as.Date(row$refdate[1]), "%d/%m/%Y")
+      )
+    }
+    tags$div(
+      class = "interp-box",
+      tags$div(style = "font-weight:700; margin-bottom:8px; color:#ffffff;", cot$nome),
+      tags$p(perna("Compra", cot$longa)),
+      tags$p(perna("Vende", cot$curta)),
+      tags$p(sprintf(
+        "%s  |  ganho max. %s  |  perda max. %s  |  equilibrio no spot %s",
+        caixa, brl(cot$ganho), brl(cot$perda), brl(cot$be)
+      )),
+      tags$p(sprintf(
+        "Largura %s  |  spot de referencia %s  |  quantidade %.0f. Premio por acao, sem corretagem.",
+        brl(cot$largura), brl(cot$longa$spot[1]), cot$qtd
+      )),
+      if (length(cot$aviso)) tags$p(class = "status-warn", paste(cot$aviso, collapse = " "))
     )
   })
 

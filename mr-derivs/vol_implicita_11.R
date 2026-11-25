@@ -54,40 +54,156 @@ if (!exists("atualizar_cache_cotahist", mode = "function")) {
   source(file.path(VI_SCRIPT_DIR, "busca_opcoes.R"), local = FALSE)
 }
 
-#' Vol realizada forward: stdev dos retornos nos proximos N dias uteis apos refdate.
-calc_vol_realizada_forward <- function(price_df, janela_biz, cal) {
+#' Vol realizada forward numa janela fixa. So entra pregão com a janela inteira fechada.
+calc_vol_realizada_forward <- function(price_df, janela_biz, cal = NULL) {
   price_df <- price_df |>
     dplyr::arrange(refdate) |>
+    dplyr::distinct(refdate, .keep_all = TRUE) |>
     dplyr::mutate(log_ret = log(close / dplyr::lag(close)))
 
-  dates <- price_df$refdate
+  dates <- as.Date(price_df$refdate)
   log_ret <- price_df$log_ret
   n <- length(dates)
+  janela_biz <- as.integer(janela_biz)
+  if (!is.finite(janela_biz) || janela_biz < 2L) janela_biz <- 2L
   vol_fwd <- rep(NA_real_, n)
 
-  for (i in seq_len(n)) {
-    d_fim <- bizdays::add.bizdays(dates[i], janela_biz, cal)
-    idx <- which(dates > dates[i] & dates <= d_fim)
-    if (length(idx) < 2) next
-    rets <- log_ret[idx]
-    rets <- rets[!is.na(rets)]
-    if (length(rets) < 2) next
-    vol_fwd[i] <- stats::sd(rets) * sqrt(252)
+  if (n > janela_biz + 1L) {
+    for (i in seq_len(n - janela_biz)) {
+      fim <- i + janela_biz
+      rets <- log_ret[(i + 1L):fim]
+      rets <- rets[is.finite(rets)]
+      if (length(rets) < janela_biz) next
+      vol_fwd[i] <- stats::sd(rets) * sqrt(252)
+    }
   }
 
   tibble::tibble(refdate = dates, vol_realizada_fwd = vol_fwd)
+}
+
+#' Vol realizada forward ate o vencimento de cada curva.
+#' O horizonte de cada pregão é o biz_days da IV daquele dia.
+calc_vol_realizada_forward_venc <- function(price_df, fvol_ts, cal) {
+  vazio <- tibble::tibble(
+    refdate = as.Date(character()),
+    vol_realizada_fwd = numeric(),
+    janela_fwd_du = integer()
+  )
+  if (is.null(fvol_ts) || !nrow(fvol_ts) || !"biz_days" %in% names(fvol_ts)) return(vazio)
+  if (is.null(price_df) || !nrow(price_df)) return(vazio)
+
+  price_df <- price_df |>
+    dplyr::arrange(refdate) |>
+    dplyr::distinct(refdate, .keep_all = TRUE)
+  dates <- as.Date(price_df$refdate)
+  close <- as.numeric(price_df$close)
+  n <- length(dates)
+  alvos <- tibble::tibble(
+    refdate = as.Date(fvol_ts$refdate),
+    biz_days = as.integer(fvol_ts$biz_days)
+  )
+  vol <- rep(NA_real_, nrow(alvos))
+  if (n < 3L) {
+    return(tibble::tibble(
+      refdate = alvos$refdate,
+      vol_realizada_fwd = vol,
+      janela_fwd_du = alvos$biz_days
+    ))
+  }
+
+  du <- alvos$biz_days
+  du[!is.finite(du) | du < 2L] <- NA_integer_
+  ok <- !is.na(du) & !is.na(alvos$refdate)
+  end_dates <- as.Date(rep(NA, nrow(alvos)))
+  if (any(ok)) {
+    end_dates[ok] <- as.Date(bizdays::add.bizdays(alvos$refdate[ok], du[ok], cal), origin = "1970-01-01")
+  }
+  ok <- ok & !is.na(end_dates) & end_dates <= max(dates)
+
+  if (any(ok)) {
+    cal_dates <- as.Date(bizdays::bizseq(min(dates), max(end_dates[ok]), cal))
+    pos_px <- match(dates, cal_dates)
+    pos_end <- match(end_dates, cal_dates)
+    idx_start <- match(alvos$refdate, dates)
+    idx_end <- findInterval(as.numeric(end_dates), as.numeric(dates))
+    for (k in which(ok)) {
+      i0 <- idx_start[k]
+      i1 <- idx_end[k]
+      if (is.na(i0) || is.na(i1) || i1 <= i0) next
+      if (is.na(pos_end[k]) || is.na(pos_px[i1])) next
+      if ((pos_end[k] - pos_px[i1]) > 2L) next
+      rets <- diff(log(close[i0:i1]))
+      rets <- rets[is.finite(rets)]
+      if (length(rets) < max(2L, ceiling(0.8 * du[k]))) next
+      vol[k] <- stats::sd(rets) * sqrt(252)
+    }
+  }
+
+  tibble::tibble(
+    refdate = alvos$refdate,
+    vol_realizada_fwd = vol,
+    janela_fwd_du = alvos$biz_days
+  )
+}
+
+anexar_vol_realizada <- function(fvol_ts, price_data, janela_mm, janela_fwd, cal) {
+  tryCatch({
+    hv_serie <- price_data |>
+      dplyr::arrange(refdate) |>
+      dplyr::distinct(refdate, .keep_all = TRUE) |>
+      dplyr::mutate(
+        log_ret = log(close / dplyr::lag(close)),
+        vol_realizada = zoo::rollapply(
+          log_ret,
+          width = janela_mm,
+          FUN = function(x) stats::sd(x, na.rm = TRUE) * sqrt(252),
+          fill = NA,
+          align = "right"
+        )
+      ) |>
+      dplyr::select(refdate, vol_realizada)
+    fwd_serie <- if (is.null(janela_fwd)) {
+      calc_vol_realizada_forward_venc(price_data, fvol_ts, cal)
+    } else {
+      calc_vol_realizada_forward(price_data, janela_fwd, cal)
+    }
+    fvol_ts |>
+      dplyr::left_join(hv_serie, by = "refdate") |>
+      dplyr::left_join(fwd_serie, by = "refdate") |>
+      dplyr::mutate(
+        premio_iv = sigma_atm - vol_realizada,
+        premio_iv_fwd = sigma_atm - vol_realizada_fwd
+      )
+  }, error = function(e) {
+    message("Vol realizada nao calculada: ", conditionMessage(e))
+    fvol_ts
+  })
+}
+
+stats_iv_forward <- function(fvol_ts) {
+  if (is.null(fvol_ts) || !nrow(fvol_ts) || !"vol_realizada_fwd" %in% names(fvol_ts)) {
+    return(list(cor = NA_real_, mae = NA_real_, pct_iv_acima = NA_real_, n = 0L))
+  }
+  ok <- fvol_ts[!is.na(fvol_ts$sigma_atm) & !is.na(fvol_ts$vol_realizada_fwd), , drop = FALSE]
+  n <- nrow(ok)
+  list(
+    cor = if (n >= 3) stats::cor(ok$sigma_atm, ok$vol_realizada_fwd) else NA_real_,
+    mae = if (n >= 1) mean(abs(ok$premio_iv_fwd), na.rm = TRUE) else NA_real_,
+    pct_iv_acima = if (n >= 1) mean(ok$sigma_atm > ok$vol_realizada_fwd, na.rm = TRUE) * 100 else NA_real_,
+    n = n
+  )
 }
 
 rodar_vol_implicita <- function(
   ativo = "VALE",
   prefixo_opcoes = NULL,
   ticker_spot = NULL,
-  periodo_inicio = as.Date("2026-01-01"),
-  periodo_fim = as.Date("2026-05-01"),
+  periodo_inicio = NULL,
+  periodo_fim = NULL,
   data_inicio = as.Date("2020-01-01"),
   janela_mm = 21,
   janela_fwd = NULL,
-  du_alvo = 22,
+  du_alvo = 21,
   du_tol = 10,
   min_pontos_fvol = 5,
   usar_apenas_vencimento_mensal = TRUE,
@@ -119,7 +235,13 @@ prefixo_limite_superior <- function(x) {
 ATIVO_PREFIXO_LIMITE <- prefixo_limite_superior(ATIVO_PREFIXO)
 TICKER_SPOT    <- if (is.null(ticker_spot)) NULL else toupper(ticker_spot)
 JANELA_MM      <- janela_mm
-JANELA_FWD     <- if (is.null(janela_fwd)) du_alvo else janela_fwd
+# NULL = cada pregão usa o DU do vencimento da propria curva
+JANELA_FWD     <- janela_fwd
+FWD_LABEL      <- if (is.null(janela_fwd)) {
+  "ate o vencimento da curva (mesmo DU da IV)"
+} else {
+  sprintf("nos proximos %s du", janela_fwd)
+}
 DATA_INICIO    <- as.Date(data_inicio)
 PERIODO_INICIO <- if (is.null(periodo_inicio)) NULL else as.Date(periodo_inicio)
 PERIODO_FIM    <- if (is.null(periodo_fim)) NULL else as.Date(periodo_fim)
@@ -156,12 +278,21 @@ message(sprintf(">>> Carrego BSM: %s", MODO_CARREGO))
 # =============================================================================
 bizdays::load_builtin_calendars()
 if (!CAL %in% ls(bizdays::calendars())) stop("Calendario nao carregado: ", CAL)
-bizdays::bizdays.options$set(default.calendar = CAL)
+bizdays_set_default_calendar(CAL)
 DATA_FIM <- bizdays::preceding(Sys.Date(), CAL)
 message(sprintf(">>> Calendario: %s", CAL))
 message(sprintf(">>> Data fim: %s", DATA_FIM))
 DATA_CALC_INICIO <- if (!is.null(PERIODO_INICIO)) PERIODO_INICIO else DATA_INICIO
 DATA_CALC_FIM    <- if (!is.null(PERIODO_FIM))    min(PERIODO_FIM, DATA_FIM) else DATA_FIM
+if (DATA_CALC_INICIO > DATA_CALC_FIM) {
+  stop(
+    sprintf(
+      "Janela invalida: inicio (%s) > fim (%s). ",
+      DATA_CALC_INICIO, DATA_CALC_FIM
+    ),
+    "Ajuste periodo_inicio / periodo_fim (ex.: fim = Sys.Date() ou NULL)."
+  )
+}
 message(sprintf(">>> Janela calculada: %s a %s", DATA_CALC_INICIO, DATA_CALC_FIM))
 
 # =============================================================================
@@ -797,6 +928,7 @@ if (nrow(fvol_ts) >= 3) {
       (is.finite(carry_abs) & carry_abs > 0.35 &
          (fvol_ts$n_points < 10 | (!is.na(fvol_ts$r2) & fvol_ts$r2 < 0.30)))
   )
+  outlier[is.na(outlier)] <- FALSE
   if (any(outlier)) {
     message(sprintf(
       "  Removendo %d pregão(ões) com qualidade ruim (nao por salto de vol): %s",
@@ -807,6 +939,67 @@ if (nrow(fvol_ts) >= 3) {
   }
 }
 if (nrow(fvol_ts) == 0) stop("Nenhuma curva FVOL restante apos filtro de qualidade para ", ATIVO)
+
+if (isTRUE(retorno_leve)) {
+  rank_pct <- function(x) {
+    out <- rep(NA_real_, length(x))
+    ok <- is.finite(x)
+    if (!any(ok)) return(out)
+    out[ok] <- stats::ecdf(x[ok])(x[ok]) * 100
+    out
+  }
+  fvol_ts <- fvol_ts |>
+    dplyr::mutate(
+      vol_mm = zoo::rollmean(sigma_atm, k = JANELA_MM, fill = NA, align = "right"),
+      pct_vol = rank_pct(sigma_atm),
+      pct_skew = rank_pct(skew),
+      pct_smile = rank_pct(smile)
+    )
+  fvol_ts <- anexar_vol_realizada(fvol_ts, price_data, JANELA_MM, JANELA_FWD, CAL)
+  if ("fit_data" %in% names(fvol_ts) && nrow(fvol_ts) > 1L) {
+    fvol_ts$fit_data[-nrow(fvol_ts)] <- rep(list(NULL), nrow(fvol_ts) - 1L)
+  }
+  fvol_ult <- dplyr::slice_tail(fvol_ts, n = 1)
+  n_iv_dias <- dplyr::n_distinct(op_all$refdate_calc)
+  payload_leve <- list(
+    ativo = ATIVO,
+    ticker_spot = TICKER_SPOT,
+    periodo = c(inicio = DATA_CALC_INICIO, fim = DATA_CALC_FIM),
+    meta_datas = list(
+      ultima_spot = if (nrow(price_data)) max(price_data$refdate) else as.Date(NA),
+      ultima_iv = if (nrow(op_all)) max(op_all$refdate_calc) else as.Date(NA),
+      ultima_fvol = if (nrow(fvol_ts)) max(fvol_ts$refdate) else as.Date(NA),
+      n_datas_spot = length(datas_calc),
+      n_datas_iv = n_iv_dias,
+      n_datas_puladas = dias_pulados,
+      n_datas_fallback_semanal = as.integer(dias_fallback_semanal),
+      n_datas_iv_sem_fvol = 0L,
+      ultimo_vencimento = if (nrow(fvol_ts)) fvol_ult$maturity_date[1] else as.Date(NA),
+      ultimo_biz_days = if (nrow(fvol_ts)) as.integer(fvol_ult$biz_days[1]) else NA_integer_,
+      ultimo_mensal = if (nrow(fvol_ts) && "is_venc_mensal" %in% names(fvol_ult)) {
+        isTRUE(fvol_ult$is_venc_mensal[1])
+      } else {
+        NA
+      },
+      ultimo_carry_aa = if ("carry_aa" %in% names(fvol_ult)) fvol_ult$carry_aa[1] else NA_real_,
+      ultimo_n_points = if (nrow(fvol_ts)) as.integer(fvol_ult$n_points[1]) else NA_integer_,
+      ultimo_r2 = if (nrow(fvol_ts)) fvol_ult$r2[1] else NA_real_
+    ),
+    graficos = list(),
+    tabela = NULL,
+    fvol = fvol_ts,
+    n_iv_dias = n_iv_dias,
+    carrego_modo = MODO_CARREGO,
+    carrego_label = MODO_CARREGO,
+    janela_mm = JANELA_MM,
+    janela_fwd = JANELA_FWD,
+    du_alvo = DU_ALVO,
+    stats_iv_fwd = stats_iv_forward(fvol_ts),
+    build_id = "mr-derivs-shiny-leve-2026-11-04"
+  )
+  message(">>> retorno_leve: OK (build mr-derivs-shiny-leve-2026-11-04)")
+  return(invisible(payload_leve))
+}
 
 if (isTRUE(somente_dados)) {
   n_iv_dias <- dplyr::n_distinct(op_all$refdate_calc)
@@ -871,12 +1064,14 @@ hv_serie <- price_data |>
   ) |>
   dplyr::select(refdate, vol_realizada)
 
+fwd_serie <- if (is.null(JANELA_FWD)) {
+  calc_vol_realizada_forward_venc(price_data, fvol_ts, CAL)
+} else {
+  calc_vol_realizada_forward(price_data, JANELA_FWD, CAL)
+}
 fvol_ts <- fvol_ts |>
   dplyr::left_join(hv_serie, by = "refdate") |>
-  dplyr::left_join(
-    calc_vol_realizada_forward(price_data, JANELA_FWD, CAL),
-    by = "refdate"
-  ) |>
+  dplyr::left_join(fwd_serie, by = "refdate") |>
   dplyr::mutate(
     premio_iv = sigma_atm - vol_realizada,
     premio_iv_fwd = sigma_atm - vol_realizada_fwd
@@ -1056,7 +1251,7 @@ escala_x_mensal <- function() {
   scale_x_date(
     date_labels = "%b/%y",
     date_breaks = "2 months",
-    expand = expansion(mult = c(0.02, 0.05))
+    expand = c(0.02, 0.05)
   )
 }
 
@@ -1074,10 +1269,12 @@ p0 <- ggplot(price_plot_data, aes(x = refdate, y = close)) +
   geom_point(data = price_ult, aes(x = refdate, y = close),
              color = COR_WHITE, fill = COR_ACCENT, shape = 21, size = 4, stroke = 1.2) +
   escala_x_mensal() +
-  scale_y_continuous(labels = scales::label_number(accuracy = 0.01, prefix = "R$ ")) +
+  scale_y_continuous(labels = function(x) paste0("R$ ", format(round(x, 2), nsmall = 2))) +
   labs(
     title = glue("Preço — {ifelse(is.null(TICKER_SPOT), ATIVO_PREFIXO, TICKER_SPOT)}"),
-    subtitle = glue("Retorno no período: {scales::percent(dplyr::last(price_plot_data$ret_periodo), accuracy = 0.1)}"),
+    subtitle = glue(
+      "Retorno no período: {sprintf('%.1f%%', 100 * dplyr::last(price_plot_data$ret_periodo))}"
+    ),
     x = NULL, y = "Preço"
   ) +
   tema_dark()
@@ -1291,7 +1488,7 @@ p_iv_fwd <- ggplot(fvol_ts, aes(x = refdate)) +
   labs(
     title    = glue("IV vs Vol Realizada Forward — {ATIVO}"),
     subtitle = glue(
-      "Forward = stdev dos proximos {JANELA_FWD}du * sqrt(252) | corr={fmt_cor(cor_iv_fwd)} | MAE={fmt_pp(mae_iv_fwd)} | IV>real {sprintf('%.0f', pct_iv_acima_fwd)}%"
+      "Forward = stdev {FWD_LABEL} * sqrt(252) | corr={fmt_cor(cor_iv_fwd)} | MAE={fmt_pp(mae_iv_fwd)} | IV>real {sprintf('%.0f', pct_iv_acima_fwd)}%"
     ),
     x = NULL, y = "Vol (%)"
   ) +
@@ -1311,7 +1508,7 @@ p_premio_fwd <- ggplot(fvol_ts, aes(x = refdate, y = premio_iv_fwd * 100)) +
   labs(
     title    = glue("Premio IV - Vol Forward — {ATIVO}"),
     subtitle = glue(
-      "Ex post: IV em t vs realizacao nos proximos {JANELA_FWD}du | ultimo premio: {fmt_pp(premio_iv_fwd_ult)}"
+      "Ex post: IV em t vs realizacao {FWD_LABEL} | ultimo premio: {fmt_pp(premio_iv_fwd_ult)}"
     ),
     x = NULL, y = "Premio (pp)"
   ) +
@@ -1524,7 +1721,7 @@ TICKER_SPOT_RODAR    <- "BOVA11"
 PREFIXO_OPCOES_RODAR <- NULL
 PERIODO_INICIO_RODAR <- Sys.Date() - 365
 PERIODO_FIM_RODAR    <- Sys.Date()
-DU_ALVO_RODAR        <- 22
+DU_ALVO_RODAR        <- 21   # 1 mes = 21, 2 meses = 42, 3 meses = 63
 DU_TOL_RODAR         <- 10
 MIN_PONTOS_FVOL_RODAR <- 5
 USAR_APENAS_VENCIMENTO_MENSAL_RODAR <- TRUE

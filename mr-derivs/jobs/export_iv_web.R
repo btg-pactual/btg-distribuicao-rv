@@ -16,6 +16,10 @@ source(file.path(job_root, "vol_implicita_11.R"), local = FALSE)
 if (!requireNamespace("jsonlite", quietly = TRUE)) {
   stop("jsonlite necessario")
 }
+if (!requireNamespace("zoo", quietly = TRUE)) {
+  stop("zoo necessario (vol_mm no export web)")
+}
+suppressPackageStartupMessages(library(zoo))
 
 args <- commandArgs(trailingOnly = TRUE)
 cache_dir <- if (length(args) >= 1 && nzchar(args[[1]])) args[[1]] else DEFAULT_RB3_CACHE
@@ -28,7 +32,7 @@ tickers_env <- Sys.getenv("MR_DERIVS_WEB_TICKERS", unset = "")
 tickers <- if (nzchar(tickers_env)) {
   unique(trimws(strsplit(tickers_env, ",", fixed = TRUE)[[1]]))
 } else {
-  TICKERS_SEED_24M
+  TICKERS_WEB_20
 }
 
 out_dir <- file.path(job_root, "data", "web")
@@ -107,6 +111,7 @@ for (tk in tickers) {
       periodo_inicio = periodo_inicio,
       periodo_fim = Sys.Date(),
       data_inicio = data_inicio,
+      du_alvo = 21,
       atualizar_cache = FALSE,
       retorno_leve = TRUE,
       salvar_png = FALSE,
