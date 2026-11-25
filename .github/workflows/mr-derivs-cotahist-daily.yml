@@ -64,7 +64,7 @@ jobs:
             libpng-dev libjpeg-dev libtiff-dev \
             libcurl4-openssl-dev libssl-dev libxml2-dev \
             libfontconfig1-dev libfreetype6-dev \
-            libharfbuzz-dev libfribidi-dev \
+            libharfbuzz-dev libfribidi-dev libnlopt-dev \
             cmake pkg-config
 
       - name: Install R packages

@@ -2,10 +2,11 @@
 # Falha o job se algum pacote nao instalar. Nao troca o repositorio
 # que o setup-r ja apontou para o binario (RSPM): cloud.r-project.org
 # compila do fonte e quebra sem libpng.
+# oplib saiu do CRAN; a mesma versao usada no R local vem do GitHub.
 pkgs <- c(
-  "shiny", "DT", "ggplot2", "plotly", "dplyr", "tidyr", "rb3", "bizdays", "oplib",
+  "shiny", "DT", "ggplot2", "plotly", "dplyr", "tidyr", "rb3", "bizdays",
   "lubridate", "callr", "httr", "jsonlite", "zoo", "stringr", "tibble",
-  "patchwork", "glue", "scales"
+  "patchwork", "glue", "scales", "remotes", "nloptr"
 )
 repos <- getOption("repos")
 cran <- if (is.null(repos)) NA_character_ else unname(repos["CRAN"])
@@ -20,11 +21,20 @@ for (p in pkgs) {
   }
 }
 
-faltam <- pkgs[!vapply(pkgs, requireNamespace, logical(1), quietly = TRUE)]
+if (!requireNamespace("oplib", quietly = TRUE)) {
+  remotes::install_github(
+    "wilsonfreitas/oplib",
+    dependencies = TRUE,
+    upgrade = "never"
+  )
+}
+
+faltam <- c(setdiff(pkgs, "remotes"), "oplib")
+faltam <- faltam[!vapply(faltam, requireNamespace, logical(1), quietly = TRUE)]
 if (length(faltam)) {
   stop(
     "Pacotes nao instalados: ", paste(faltam, collapse = ", "),
     call. = FALSE
   )
 }
-message("Pacotes ok: ", paste(pkgs, collapse = ", "))
+message("Pacotes ok: ", paste(c(setdiff(pkgs, "remotes"), "oplib"), collapse = ", "))
