@@ -6,7 +6,7 @@
 pkgs <- c(
   "shiny", "DT", "ggplot2", "plotly", "dplyr", "tidyr", "rb3", "bizdays",
   "lubridate", "callr", "httr", "jsonlite", "zoo", "stringr", "tibble",
-  "patchwork", "glue", "scales", "remotes", "nloptr"
+  "patchwork", "glue", "scales", "nloptr"
 )
 repos <- getOption("repos")
 cran <- if (is.null(repos)) NA_character_ else unname(repos["CRAN"])
@@ -22,14 +22,18 @@ for (p in pkgs) {
 }
 
 if (!requireNamespace("oplib", quietly = TRUE)) {
-  remotes::install_github(
-    "wilsonfreitas/oplib",
-    dependencies = TRUE,
-    upgrade = "never"
+  # Sem token: o GITHUB_TOKEN do Actions toma 401 ao baixar outro repositorio.
+  tarball <- tempfile(fileext = ".tar.gz")
+  utils::download.file(
+    "https://codeload.github.com/wilsonfreitas/oplib/tar.gz/HEAD",
+    tarball,
+    mode = "wb",
+    quiet = TRUE
   )
+  install.packages(tarball, repos = NULL, type = "source")
 }
 
-faltam <- c(setdiff(pkgs, "remotes"), "oplib")
+faltam <- c(pkgs, "oplib")
 faltam <- faltam[!vapply(faltam, requireNamespace, logical(1), quietly = TRUE)]
 if (length(faltam)) {
   stop(
@@ -37,4 +41,4 @@ if (length(faltam)) {
     call. = FALSE
   )
 }
-message("Pacotes ok: ", paste(c(setdiff(pkgs, "remotes"), "oplib"), collapse = ", "))
+message("Pacotes ok: ", paste(c(pkgs, "oplib"), collapse = ", "))
