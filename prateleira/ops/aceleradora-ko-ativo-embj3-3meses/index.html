@@ -137,7 +137,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
     <h2>Research BTG</h2>
     <a class="research-link" href="https://content.btgpactual.com/research/ativo/EMBJ3" target="_blank" rel="noopener">Abrir EMBJ3 no Research <span class="arrow" aria-hidden="true">→</span></a>
   </div>
-  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 100,09</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 126,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+25,89%</div></div></div><p class="research-note">Spot do fechamento anterior (25/11/2026) · preço-alvo atualizado em 24/08/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
+  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 103,20</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 126,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+22,09%</div></div></div><p class="research-note">Spot do fechamento anterior (25/11/2026) · preço-alvo atualizado em 24/08/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
 </section>
 
 
@@ -152,8 +152,8 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
           <table class="struct-table">
             <thead><tr><th></th><th>R$</th><th>vs spot</th></tr></thead>
             <tbody>
-              <tr><td>Máximo</td><td><strong>116,78</strong></td><td>+16,7%</td></tr>
-              <tr><td>Mínimo</td><td><strong>68,08</strong></td><td>-32,0%</td></tr>
+              <tr><td>Máximo</td><td><strong>116,78</strong></td><td>+13,2%</td></tr>
+              <tr><td>Mínimo</td><td><strong>0,00</strong></td><td>-100,0%</td></tr>
             </tbody>
           </table>
           <p class="legend-note">
@@ -217,8 +217,8 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
 
 <section class="speech-box insights-box">
   <h2>Insights Research BTG</h2>
-  <ul class="research-bullets"><li>A Embraer reportou 3T26 acima das estimativas, com receita líquida de US$ 2,4 bi (+17% a/a), EBITDA ajustado de US$ 317 mi (+34% a/a) e margem de 13,5%, além de EBIT ajustado de US$ 255 mi, com margem de 10,9%.</li><li>O lucro líquido ajustado ficou em US$ 71–74 mi, pressionado pelo resultado financeiro ligado à marcação a mercado de ações de planos de incentivo. A melhora operacional foi disseminada, com avanço de margens em Aviação Comercial, Defesa…</li><li>Nos nove meses, foram 167 entregas, ou 67% do ponto médio do guidance anual. A carteira de pedidos atingiu recorde de US$ 36 bi, +14% a/a e +3% t/t, com US$ 15,8 bi em Aviação Comercial, US$ 8,2 bi em Executiva, US$ 6,1 bi em Defesa e…</li></ul>
-  <p class="research-note">Insights BTG · 10/11/2026 · fonte Research BTG.</p>
+  <ul class="research-bullets"><li>A Embraer reportou 3T26 acima das estimativas, com receita de US$ 2,4 bi, EBITDA ajustado de US$ 317 mi, alta de 34% a/a e 16% acima do esperado, margem de 13,5% versus 11,8% no 3T25, e EBIT ajustado de US$ 255 mi, com margem de 10,9%.</li><li>A melhora foi disseminada, com avanço de margens em Aviação Comercial, Executiva, Defesa &amp; Segurança e Serviços &amp; Suporte, enquanto o lucro líquido ajustado de US$ 71–74 mi ficou abaixo do esperado por efeito financeiro ligado à…</li><li>O mix mais carregado em E1 na aviação comercial e a normalização gradual da cadeia de suprimentos ajudaram a leitura de margens. Entre os principais KPIs, a geração de caixa ajustada somou US$ 628 mi e a posição passou para caixa…</li></ul>
+  <p class="research-note">Insights BTG · 25/11/2026 · fonte Research BTG.</p>
 </section>
 
 <p class="footer-alert">
@@ -231,7 +231,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
   var X_MIN=-40,X_MAX=80,Y_MIN=-40,Y_MAX=45;
   var PAD={l:48,t:24,r:48,b:24},VW=600,VH=400;
   var PLOT_W=VW-PAD.l-PAD.r,PLOT_H=VH-PAD.t-PAD.b;
-  var RESEARCH_X=25.8867;
+  var RESEARCH_X=22.0930;
   var H=16.0, B=0.0, PEAK=32.0, CAP=16.0;
   function structureReturn(x){ if (x < B) return x; if (x < H) return 2*x - B; return CAP; }
   function regimeFor(x){ if (x < B) return 'Abaixo da Call KO: acompanha o ativo 1:1.'; if (x < H) return 'KO não atingido: alta acelerada (2×) — até '+PEAK.toFixed(2).replace('.',',')+'%.'; return 'KO atingido: ganho limitado a '+CAP.toFixed(2).replace('.',',')+'%.'; }
