@@ -31,8 +31,10 @@ if (!is.finite(dias) || dias < 30L) dias <- 365L
 tickers_env <- Sys.getenv("MR_DERIVS_WEB_TICKERS", unset = "")
 tickers <- if (nzchar(tickers_env)) {
   unique(trimws(strsplit(tickers_env, ",", fixed = TRUE)[[1]]))
-} else {
+} else if (exists("TICKERS_WEB_20", inherits = TRUE)) {
   TICKERS_WEB_20
+} else {
+  TICKERS_SEED_24M
 }
 
 out_dir <- file.path(job_root, "data", "web")

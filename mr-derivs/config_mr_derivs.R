@@ -77,6 +77,17 @@ with_cli_quiet <- function(expr) {
   force(expr)
 }
 
+bizdays_set_default_calendar <- function(cal) {
+  ns <- asNamespace("bizdays")
+  if (exists("bizdays.options", envir = ns, inherits = FALSE)) {
+    get("bizdays.options", envir = ns)$set(default.calendar = cal)
+  } else {
+    # bizdays antigo: calendario so via argumento cal= nas funcoes
+    assign(".default_calendar", cal, envir = ns)
+  }
+  invisible(cal)
+}
+
 garantir_calendario <- function(cal = MR_CALENDAR) {
   if (!requireNamespace("bizdays", quietly = TRUE)) {
     stop("Pacote bizdays necessario.")
@@ -85,7 +96,7 @@ garantir_calendario <- function(cal = MR_CALENDAR) {
   if (!cal %in% ls(bizdays::calendars())) {
     stop("Calendario nao carregado: ", cal)
   }
-  bizdays::bizdays.options$set(default.calendar = cal)
+  bizdays_set_default_calendar(cal)
   invisible(cal)
 }
 
@@ -104,6 +115,19 @@ TICKERS_SEED_24M <- c(
   "BOVA11", "SMAL11", "PETR4", "EQTL3", "VALE3", "ITUB4", "BPAC11",
   "WEGE3", "BBDC4", "ITSA4", "ABEV3", "B3SA3"
 )
+
+#' Universo web (20 liquidos — IV export + painel quant).
+TICKERS_WEB_20 <- c(
+  "BOVA11", "SMAL11",
+  "PETR4", "VALE3", "ITUB4", "BBDC4", "BBAS3", "BPAC11",
+  "WEGE3", "ABEV3", "ITSA4", "EQTL3", "B3SA3",
+  "RENT3", "SUZB3", "RADL3", "GGBR4", "PRIO3", "VIVT3", "ELET3"
+)
+
+QUANT_BENCH_DEFAULT <- "BOVA11"
+QUANT_JANELA_BETA <- 21L
+QUANT_JANELA_VOL_RV <- 21L
+QUANT_JANELA_VOL_MM <- 21L
 
 MR_CACHE_MESES <- as.integer(Sys.getenv("MR_DERIVS_CACHE_MESES", unset = "24"))
 if (!is.finite(MR_CACHE_MESES) || MR_CACHE_MESES < 1) MR_CACHE_MESES <- 24L
