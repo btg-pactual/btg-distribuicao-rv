@@ -565,17 +565,43 @@
       renderCaudas(series);
     }
 
+    function precosNaJanela() {
+      const porData = new Map();
+      const guardar = (lista) => {
+        (lista || []).forEach(r => {
+          const px = Number(r.underlying_price);
+          if (px > 0 && r.refdate && !porData.has(r.refdate)) porData.set(r.refdate, px);
+        });
+      };
+      if (payload) {
+        const pz = payload.prazos || {};
+        guardar(pz["21"] && pz["21"].series);
+        guardar(pz["42"] && pz["42"].series);
+        guardar(pz["63"] && pz["63"].series);
+        guardar(payload.series);
+      }
+      let rows = [...porData.entries()]
+        .sort((a, b) => a[0] < b[0] ? -1 : 1)
+        .map(([refdate, underlying_price]) => ({ refdate, underlying_price }));
+      const d0 = document.getElementById("dIni").value;
+      const d1 = document.getElementById("dFim").value;
+      if (d0 && d1) rows = rows.filter(r => r.refdate >= d0 && r.refdate <= d1);
+      return rows;
+    }
+
     function renderCaudas(series) {
       const box = document.getElementById("caudas");
       const texto = document.getElementById("caudaTexto");
       const dias = document.getElementById("caudaDias");
       const chart = document.getElementById("chartRet");
       const rets = [];
-      for (let i = 1; i < series.length; i++) {
-        const a = Number(series[i - 1].underlying_price);
-        const b = Number(series[i].underlying_price);
+      const precos = precosNaJanela();
+      const base = precos.length >= 8 ? precos : series;
+      for (let i = 1; i < base.length; i++) {
+        const a = Number(base[i - 1].underlying_price);
+        const b = Number(base[i].underlying_price);
         if (!(a > 0) || !(b > 0)) continue;
-        rets.push({ refdate: series[i].refdate, pct: Math.log(b / a) * 100 });
+        rets.push({ refdate: base[i].refdate, pct: Math.log(b / a) * 100 });
       }
       box.hidden = false;
       if (rets.length < 8) {
@@ -597,12 +623,15 @@
       const pctLimpo = pctRank(volsLimpos, Number(last.sigma_atm));
       const fracos = series.filter(r => (r.r2 != null && Number(r.r2) < 0.5) || (r.n_points != null && Number(r.n_points) < 8));
       const gordos = rets.filter(r => Math.abs(r.pct) > 2.5 * diario).length;
+      const limiteCauda = 2.5 * sd;
       const grauTxt = (p) => p == null ? "n/d" : Math.round(p) + "º";
       const delta = pctCheio != null && pctLimpo != null ? Math.round(pctLimpo) - Math.round(pctCheio) : null;
       const efeito = delta == null ? ""
         : Math.abs(delta) < 3 ? " Esses 5 pregões quase não movem o percentil."
         : ` Sem eles, o percentil da vol de hoje iria de ${grauTxt(pctCheio)} para ${grauTxt(pctLimpo)}.`;
-      texto.textContent = `Janela ${series[0].refdate} a ${last.refdate}, ${series.length} pregões. O teste de barreira não reaproveita esses dias: ele só anda para a frente. O desvio diário realizado foi ${sd.toFixed(2)}%, e a IV de hoje (${pctVol(iv)}) implicaria ${diario.toFixed(2)}% por dia. ${gordos} pregões passaram de 2,5 vezes esse desvio.`;
+      const ini = base[0].refdate;
+      const fim = base[base.length - 1].refdate;
+      texto.textContent = `Janela ${ini} a ${fim}, ${rets.length} retornos do papel. O histograma é o fechamento e não muda com o prazo de 1, 2 ou 3 meses. A curva verde é a normal da IV desta curva (${pctVol(iv)}), por isso só ela acompanha o prazo. Desvio diário realizado ${sd.toFixed(2)}%; a IV implicaria ${diario.toFixed(2)}% por dia. ${gordos} pregões passaram de 2,5 vezes esse desvio da IV.`;
       dias.textContent = `Maiores movimentos: ${top.map(r => `${r.refdate} ${r.pct >= 0 ? "+" : ""}${r.pct.toFixed(1)}%`).join(" · ")}.${efeito} Ajuste fraco, com R² abaixo de 0,50 ou menos de 8 pontos: ${fracos.length} de ${series.length} pregões.`;
 
       const ordenado = rets.map(r => r.pct).sort((a, b) => a - b);
@@ -621,7 +650,7 @@
         let k = Math.floor((r.pct - lo) / size);
         if (k < 0) k = 0;
         if (k >= nbins) k = nbins - 1;
-        (Math.abs(r.pct) > 2.5 * diario ? cauda : comum)[k] += 1;
+        (Math.abs(r.pct) > limiteCauda ? cauda : comum)[k] += 1;
       });
       const centros = comum.map((_, i) => lo + (i + 0.5) * size);
       const emPct = (arr) => arr.map(c => c / rets.length * 100);
