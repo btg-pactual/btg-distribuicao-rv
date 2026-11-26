@@ -49,7 +49,7 @@ serialize_series <- function(fvol_ts) {
   }
   keep <- intersect(
     c(
-      "refdate", "sigma_atm", "vol_mm", "skew", "smile", "vol_realizada",
+      "refdate", "underlying_price", "sigma_atm", "vol_mm", "skew", "smile", "vol_realizada",
       "vol_realizada_fwd", "premio_iv", "pct_vol", "pct_skew", "pct_smile",
       "carry_aa", "biz_days", "maturity_date", "n_points", "r2"
     ),

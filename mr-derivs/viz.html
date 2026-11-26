@@ -327,7 +327,7 @@
           <input id="barNome" type="text" placeholder="ticker" maxlength="12" />
         </div>
         <div>
-          <label for="spot">Spot</label>
+          <label for="spot">Último preço</label>
           <input id="spot" type="number" min="0" step="0.01" placeholder="preço" />
         </div>
         <div>
@@ -339,7 +339,7 @@
           <input id="horizonte" type="number" min="1" max="252" step="1" value="21" />
         </div>
         <div>
-          <label for="volFonte">Vol</label>
+          <label for="volFonte">Origem da vol</label>
           <select id="volFonte">
             <option value="sigma_atm">IV ATM</option>
             <option value="vol_realizada">Realizada</option>
@@ -348,8 +348,8 @@
           </select>
         </div>
         <div>
-          <label for="volManual">Vol manual (%)</label>
-          <input id="volManual" type="number" min="1" max="200" step="0.1" value="20" />
+          <label for="volManual">Vol usada (%)</label>
+          <input id="volManual" type="number" min="1" max="200" step="0.01" value="20" />
         </div>
         <div>
           <label for="drift">Drift anual (%)</label>
@@ -360,6 +360,7 @@
         </div>
       </div>
       <p class="nums" id="barContexto"></p>
+      <p class="nums">Drift anual é a tendência do preço, em % ao ano, separada da vol. Zero testa só o sobe-e-desce: o papel não tem direção. Um drift de 10 quer dizer que, em média, o modelo anda +10% ao ano e a vol oscila em volta disso.</p>
       <div class="res-bar" id="resBarreira" hidden></div>
       <p class="nums" id="barNota"></p>
       <div id="chartBarreira" class="chart" hidden></div>
@@ -759,6 +760,25 @@
       return series.length ? series[series.length - 1] : null;
     }
 
+    function precoDoCadastro(meta, last) {
+      const candidatos = [
+        meta && meta.ultimo_close,
+        last && last.underlying_price,
+        last && last.close
+      ];
+      for (const x of candidatos) {
+        const n = Number(x);
+        if (n > 0) return n;
+      }
+      return null;
+    }
+
+    function volDoCadastro(last, fonte) {
+      if (!last || fonte === "manual") return null;
+      const n = Number(last[fonte]);
+      return n > 0 ? n : null;
+    }
+
     function aplicarDadosBarreira() {
       const escolhido = document.getElementById("barAtivo").value;
       const ctx = document.getElementById("barContexto");
@@ -768,25 +788,29 @@
       fonte.disabled = manual;
       if (manual) {
         fonte.value = "manual";
-        ctx.textContent = "Fora do cadastro: digite o nome, o spot e a vol.";
+        ctx.textContent = "Fora do cadastro: digite o nome, o último preço e a vol.";
         return;
       }
       const pack = packDaBarreira(barPayload || payload);
       const meta = (pack && pack.meta_datas) || ((barPayload || payload) && (barPayload || payload).meta_datas) || {};
-      const close = meta.ultimo_close;
-      const spot = document.getElementById("spot");
-      if (close != null && !Number.isNaN(Number(close)) && document.activeElement !== spot) {
-        spot.value = Number(close).toFixed(2);
-      }
-      const h = document.getElementById("horizonte");
-      const du = document.getElementById("prazo").value;
-      if (document.activeElement !== h) h.value = du;
       const last = ultimoDaBarreira();
-      const iv = last && last.sigma_atm != null ? ` · IV ${pctVol(last.sigma_atm)}` : "";
-      const px = close != null && !Number.isNaN(Number(close))
-        ? ` · spot ${Number(close).toFixed(2)}`
-        : " · sem fechamento no cadastro, digite o spot";
-      ctx.textContent = `${escolhido} está no cadastro${px}${iv}.`;
+      const close = precoDoCadastro(meta, last);
+      const spot = document.getElementById("spot");
+      if (close != null && document.activeElement !== spot) spot.value = close.toFixed(2);
+      const h = document.getElementById("horizonte");
+      const du = (last && last.biz_days) || document.getElementById("prazo").value;
+      if (document.activeElement !== h) h.value = String(Math.round(Number(du)));
+      const volBox = document.getElementById("volManual");
+      if (fonte.value !== "manual") {
+        const vol = volDoCadastro(last, fonte.value);
+        if (vol != null && document.activeElement !== volBox) volBox.value = (vol * 100).toFixed(2);
+      }
+      const dataPx = (last && last.refdate) || meta.ultima_spot || "";
+      const iv = last && last.sigma_atm != null ? `IV ${pctVol(last.sigma_atm)}` : "IV indisponível";
+      const px = close != null
+        ? `último preço ${close.toFixed(2)}${dataPx ? " em " + dataPx : ""}`
+        : "último preço ainda não está no JSON publicado; digite o spot";
+      ctx.textContent = `${escolhido} · ${px} · ${iv}. A simulação usa o número do campo Vol usada.`;
     }
 
     async function aoMudarBarAtivo() {
@@ -796,6 +820,9 @@
         barPayload = null;
         aplicarDadosBarreira();
         return;
+      }
+      if (document.getElementById("volFonte").value === "manual") {
+        document.getElementById("volFonte").value = "sigma_atm";
       }
       if (v === document.getElementById("ticker").value && payload) {
         barPayload = payload;
@@ -877,10 +904,7 @@
       const s0 = Number(document.getElementById("spot").value);
       const barreira = Number(document.getElementById("barreira").value);
       const nDays = Math.round(Number(document.getElementById("horizonte").value));
-      const fonte = document.getElementById("volFonte").value;
-      let sigma = fonte === "manual"
-        ? Number(document.getElementById("volManual").value) / 100
-        : (last ? Number(last[fonte]) : NaN);
+      const sigma = Number(document.getElementById("volManual").value) / 100;
       const mu = Number(document.getElementById("drift").value) / 100;
       const nota = document.getElementById("barNota");
       if (!(s0 > 0) || !(barreira > 0) || !(nDays >= 1) || !(sigma > 0) || Number.isNaN(mu)) {
@@ -1102,6 +1126,7 @@
         sel.addEventListener("change", () => loadTicker(sel.value));
         document.getElementById("prazo").addEventListener("change", () => aplicarPrazo(false));
         document.getElementById("barAtivo").addEventListener("change", () => { aoMudarBarAtivo(); });
+        document.getElementById("volFonte").addEventListener("change", () => aplicarDadosBarreira());
         document.getElementById("btnBarreira").addEventListener("click", simularBarreira);
         await loadTicker(sel.value);
       } catch (e) {
