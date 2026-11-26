@@ -1,85 +1,143 @@
 {
-  "atualizado_em": "2026-10-30T17:49:35-0300",
+  "atualizado_em": "2026-11-26T09:12:10-0300",
   "periodo_dias": 365,
-  "periodo_inicio": "2025-10-30",
+  "periodo_inicio": "2025-11-26",
   "tickers": [
     {
       "ticker": "BOVA11",
-      "n_pontos": 243,
-      "ultima": "2026-10-29",
-      "inicio": "2025-10-30",
-      "fim": "2026-10-29"
+      "n_pontos": 245,
+      "ultima": "2026-11-25",
+      "inicio": "2025-11-26",
+      "fim": "2026-11-25"
     },
     {
       "ticker": "SMAL11",
-      "n_pontos": 238,
-      "ultima": "2026-10-29",
-      "inicio": "2025-10-30",
-      "fim": "2026-10-29"
+      "n_pontos": 242,
+      "ultima": "2026-11-25",
+      "inicio": "2025-11-26",
+      "fim": "2026-11-25"
     },
     {
       "ticker": "PETR4",
-      "n_pontos": 240,
-      "ultima": "2026-10-29",
-      "inicio": "2025-10-30",
-      "fim": "2026-10-29"
-    },
-    {
-      "ticker": "EQTL3",
-      "n_pontos": 235,
-      "ultima": "2026-10-29",
-      "inicio": "2025-10-30",
-      "fim": "2026-10-29"
+      "n_pontos": 243,
+      "ultima": "2026-11-25",
+      "inicio": "2025-11-26",
+      "fim": "2026-11-25"
     },
     {
       "ticker": "VALE3",
-      "n_pontos": 239,
-      "ultima": "2026-10-29",
-      "inicio": "2025-10-30",
-      "fim": "2026-10-29"
+      "n_pontos": 243,
+      "ultima": "2026-11-25",
+      "inicio": "2025-11-26",
+      "fim": "2026-11-25"
     },
     {
       "ticker": "ITUB4",
-      "n_pontos": 238,
-      "ultima": "2026-10-29",
-      "inicio": "2025-10-30",
-      "fim": "2026-10-29"
-    },
-    {
-      "ticker": "BPAC11",
-      "n_pontos": 235,
-      "ultima": "2026-10-29",
-      "inicio": "2025-10-30",
-      "fim": "2026-10-29"
-    },
-    {
-      "ticker": "WEGE3",
-      "n_pontos": 237,
-      "ultima": "2026-10-29",
-      "inicio": "2025-10-30",
-      "fim": "2026-10-29"
+      "n_pontos": 241,
+      "ultima": "2026-11-25",
+      "inicio": "2025-11-26",
+      "fim": "2026-11-25"
     },
     {
       "ticker": "BBDC4",
-      "n_pontos": 242,
-      "ultima": "2026-10-29",
-      "inicio": "2025-10-30",
-      "fim": "2026-10-29"
+      "n_pontos": 245,
+      "ultima": "2026-11-25",
+      "inicio": "2025-11-26",
+      "fim": "2026-11-25"
     },
     {
-      "ticker": "ITSA4",
-      "n_pontos": 237,
-      "ultima": "2026-10-29",
-      "inicio": "2025-10-30",
-      "fim": "2026-10-29"
+      "ticker": "BBAS3",
+      "n_pontos": 246,
+      "ultima": "2026-11-25",
+      "inicio": "2025-11-26",
+      "fim": "2026-11-25"
+    },
+    {
+      "ticker": "BPAC11",
+      "n_pontos": 236,
+      "ultima": "2026-11-25",
+      "inicio": "2025-11-26",
+      "fim": "2026-11-25"
+    },
+    {
+      "ticker": "WEGE3",
+      "n_pontos": 241,
+      "ultima": "2026-11-25",
+      "inicio": "2025-11-26",
+      "fim": "2026-11-25"
     },
     {
       "ticker": "ABEV3",
+      "n_pontos": 238,
+      "ultima": "2026-11-25",
+      "inicio": "2025-11-26",
+      "fim": "2026-11-25"
+    },
+    {
+      "ticker": "ITSA4",
+      "n_pontos": 240,
+      "ultima": "2026-11-25",
+      "inicio": "2025-11-26",
+      "fim": "2026-11-25"
+    },
+    {
+      "ticker": "EQTL3",
       "n_pontos": 236,
-      "ultima": "2026-10-29",
-      "inicio": "2025-10-30",
-      "fim": "2026-10-29"
+      "ultima": "2026-11-25",
+      "inicio": "2025-11-26",
+      "fim": "2026-11-25"
+    },
+    {
+      "ticker": "RENT3",
+      "n_pontos": 234,
+      "ultima": "2026-11-25",
+      "inicio": "2025-11-26",
+      "fim": "2026-11-25"
+    },
+    {
+      "ticker": "SUZB3",
+      "n_pontos": 237,
+      "ultima": "2026-11-25",
+      "inicio": "2025-11-26",
+      "fim": "2026-11-25"
+    },
+    {
+      "ticker": "RADL3",
+      "n_pontos": 235,
+      "ultima": "2026-11-25",
+      "inicio": "2025-11-26",
+      "fim": "2026-11-25"
+    },
+    {
+      "ticker": "GGBR4",
+      "n_pontos": 240,
+      "ultima": "2026-11-25",
+      "inicio": "2025-11-26",
+      "fim": "2026-11-25"
+    },
+    {
+      "ticker": "PRIO3",
+      "n_pontos": 239,
+      "ultima": "2026-11-25",
+      "inicio": "2025-11-26",
+      "fim": "2026-11-25"
+    },
+    {
+      "ticker": "VIVT3",
+      "n_pontos": 229,
+      "ultima": "2026-11-25",
+      "inicio": "2025-11-26",
+      "fim": "2026-11-25"
     }
   ],
-  "erros": []
+  "erros": [
+    {
+      "ticker": "B3SA3",
+      "mensagem": "Nenhum IV calculado para B3SA"
+    },
+    {
+      "ticker": "ELET3",
+      "mensagem": "Nenhuma cotação spot encontrada para 'ELET'. Verifique:\n  1. O cache rb3 tem dados? Rode: rb3::fetch_marketdata('b3-cotahist-yearly', year = 2020:2026)\n  2. O nome do ATIVO está correto? Para ver os nomes disponíveis no cache, rode:\n     rb3::cotahist_get(type = 'yearly') |> rb3::cotahist_filter_equity() |> dplyr::distinct(corporation_name) |> dplyr::collect() |> print(n = 200)"
+    }
+  ]
 }
