@@ -72,7 +72,8 @@
       font-size: 12px;
       cursor: pointer;
     }
-    button.preset:hover { border-color: var(--accent); color: var(--text); }
+    button.preset:hover, button.preset.on { border-color: var(--accent); color: var(--text); }
+    #retPresets { margin-bottom: 12px; }
     .meta { font-size: 12px; color: var(--muted); max-width: 360px; line-height: 1.45; }
     main { padding: 16px 20px 32px; max-width: 1200px; margin: 0 auto; }
     .chart {
@@ -326,8 +327,16 @@
     <div id="chartVol" class="chart"></div>
     <div id="chartSkew" class="chart"></div>
     <section class="sugestao" id="caudas" hidden>
-      <h2>Retornos da janela</h2>
-      <p id="caudaTexto"></p>
+      <h2>Retornos do papel</h2>
+      <div class="btn-row" id="retPresets">
+        <button type="button" class="preset" data-days="30">1M</button>
+        <button type="button" class="preset" data-days="90">3M</button>
+        <button type="button" class="preset" data-days="180">6M</button>
+        <button type="button" class="preset" data-days="365">1A</button>
+        <button type="button" class="preset on" data-days="0">Tudo</button>
+      </div>
+      <div class="kpi" id="retKpi"></div>
+      <p id="caudaForma"></p>
       <p class="nums" id="caudaDias"></p>
       <div id="chartRet" class="chart" hidden></div>
     </section>
@@ -403,6 +412,7 @@
     let bounds = { inicio: null, fim: null };
     let manifestGlobal = null;
     let payload = null;
+    let janelaRetDias = 0;
     let barPayload = null;
     let spotsGlobal = null;
     let barOverride = false;
@@ -518,10 +528,9 @@
         document.getElementById("glossario").hidden = true;
         document.getElementById("exVols").hidden = true;
         document.getElementById("exFormula").hidden = true;
-        document.getElementById("caudas").hidden = true;
+        renderCaudas();
         Plotly.purge("chartVol");
         Plotly.purge("chartSkew");
-        Plotly.purge("chartRet");
         return;
       }
       document.getElementById("banner").hidden = true;
@@ -562,7 +571,7 @@
         yaxis: { title: "Skew", gridcolor: "#2a3f5f" },
         yaxis2: { title: "Smile", overlaying: "y", side: "right", gridcolor: "transparent" }
       }, { responsive: true });
-      renderCaudas(series);
+      renderCaudas();
     }
 
     function precosDoPapel() {
@@ -585,83 +594,108 @@
         .map(([refdate, underlying_price]) => ({ refdate, underlying_price }));
     }
 
-    function precosNaJanela() {
+    function precosDoRetorno() {
       const rows = precosDoPapel();
-      const d0 = document.getElementById("dIni").value;
-      const d1 = document.getElementById("dFim").value;
-      if (!d0 || !d1) return rows;
-      return rows.filter(r => r.refdate >= d0 && r.refdate <= d1);
+      if (!rows.length || !janelaRetDias) return rows;
+      const fim = new Date(rows[rows.length - 1].refdate + "T12:00:00");
+      fim.setDate(fim.getDate() - janelaRetDias);
+      const d0 = fim.toISOString().slice(0, 10);
+      return rows.filter(r => r.refdate >= d0);
     }
 
-    function renderCaudas(series) {
+    function formaDosRetornos(rets, media, sd) {
+      const n = rets.length;
+      const z = rets.map(r => (r.pct - media) / sd);
+      const m3 = z.reduce((s, x) => s + x * x * x, 0);
+      const m4 = z.reduce((s, x) => s + x * x * x * x, 0);
+      const skew = (n / ((n - 1) * (n - 2))) * m3;
+      const exk = m4 / n - 3;
+      const alem = z.filter(x => Math.abs(x) > 2.5).length;
+      const pctAlem = alem / n * 100;
+      let nome;
+      let lado = "";
+      if (skew <= -0.5) lado = " à esquerda";
+      else if (skew >= 0.5) lado = " à direita";
+      if (Math.abs(skew) < 0.5 && exk < 1) nome = "perto da normal";
+      else if (exk >= 1 && lado) nome = "t assimétrica, cauda" + lado;
+      else if (exk >= 1) {
+        const nu = Math.max(5, Math.min(30, Math.round(4 + 6 / exk)));
+        nome = `t de Student, cerca de ${nu} graus`;
+      } else nome = "assimétrica" + lado;
+      return { nome, skew, exk, alem, pctAlem };
+    }
+
+    function renderCaudas() {
       const box = document.getElementById("caudas");
-      const texto = document.getElementById("caudaTexto");
+      const forma = document.getElementById("caudaForma");
       const dias = document.getElementById("caudaDias");
+      const kpi = document.getElementById("retKpi");
       const chart = document.getElementById("chartRet");
+      const base = precosDoRetorno();
       const rets = [];
-      const precos = precosNaJanela();
-      const base = precos.length >= 8 ? precos : series;
       for (let i = 1; i < base.length; i++) {
         const a = Number(base[i - 1].underlying_price);
         const b = Number(base[i].underlying_price);
         if (!(a > 0) || !(b > 0)) continue;
-        rets.push({ refdate: base[i].refdate, pct: Math.log(b / a) * 100 });
+        rets.push({ refdate: base[i].refdate, pct: Math.log(b / a) * 100, px: b });
       }
       box.hidden = false;
       if (rets.length < 8) {
-        texto.textContent = "Esta janela ainda não tem o preço do papel em dias seguidos, então o histograma de retornos fica vazio. Os percentis de vol continuam valendo.";
+        kpi.innerHTML = "";
+        forma.textContent = "Este prazo ainda não tem fechamentos seguidos suficientes para o histograma.";
         dias.textContent = "";
         chart.hidden = true;
+        Plotly.purge("chartRet");
         return;
       }
-      const last = series[series.length - 1];
-      const iv = Number(last.sigma_atm);
-      const diario = (iv > 0 ? iv : 0.25) / Math.sqrt(252) * 100;
       const media = rets.reduce((s, r) => s + r.pct, 0) / rets.length;
       const sd = Math.sqrt(rets.reduce((s, r) => s + (r.pct - media) ** 2, 0) / (rets.length - 1));
-      const top = [...rets].sort((a, b) => Math.abs(b.pct) - Math.abs(a.pct)).slice(0, 5);
-      const drop = new Set(top.map(r => r.refdate));
-      const vols = series.map(r => Number(r.sigma_atm)).filter(v => Number.isFinite(v));
-      const volsLimpos = series.filter(r => !drop.has(r.refdate)).map(r => Number(r.sigma_atm)).filter(v => Number.isFinite(v));
-      const pctCheio = pctRank(vols, Number(last.sigma_atm));
-      const pctLimpo = pctRank(volsLimpos, Number(last.sigma_atm));
-      const fracos = series.filter(r => (r.r2 != null && Number(r.r2) < 0.5) || (r.n_points != null && Number(r.n_points) < 8));
-      const gordos = rets.filter(r => Math.abs(r.pct) > 2.5 * diario).length;
-      const limiteCauda = 2.5 * sd;
-      const grauTxt = (p) => p == null ? "n/d" : Math.round(p) + "º";
-      const delta = pctCheio != null && pctLimpo != null ? Math.round(pctLimpo) - Math.round(pctCheio) : null;
-      const efeito = delta == null ? ""
-        : Math.abs(delta) < 3 ? " Esses 5 pregões quase não movem o percentil."
-        : ` Sem eles, o percentil da vol de hoje iria de ${grauTxt(pctCheio)} para ${grauTxt(pctLimpo)}.`;
-      const ini = base[0].refdate;
-      const fim = base[base.length - 1].refdate;
-      texto.textContent = `Janela ${ini} a ${fim}, ${rets.length} retornos do papel. Este gráfico é o fechamento: trocar 1, 2 ou 3 meses não mexe nas barras nem na curva verde. Desvio diário realizado ${sd.toFixed(2)}%. A IV desta curva (${pctVol(iv)}) implicaria ${diario.toFixed(2)}% por dia, e ${gordos} pregões passaram de 2,5 vezes esse desvio.`;
-      dias.textContent = `Maiores movimentos: ${top.map(r => `${r.refdate} ${r.pct >= 0 ? "+" : ""}${r.pct.toFixed(1)}%`).join(" · ")}.${efeito} Ajuste fraco, com R² abaixo de 0,50 ou menos de 8 pontos: ${fracos.length} de ${series.length} pregões.`;
+      let alta = base[0];
+      let baixa = base[0];
+      base.forEach(p => {
+        if (p.underlying_price > alta.underlying_price) alta = p;
+        if (p.underlying_price < baixa.underlying_price) baixa = p;
+      });
+      const maiorAlta = rets.reduce((m, r) => r.pct > m.pct ? r : m, rets[0]);
+      const maiorQueda = rets.reduce((m, r) => r.pct < m.pct ? r : m, rets[0]);
+      const variacao = (base[base.length - 1].underlying_price / base[0].underlying_price - 1) * 100;
+      const dist = sd > 0 ? formaDosRetornos(rets, media, sd) : null;
+      const card = (rotulo, valor, sub) => `<div><span>${rotulo}</span><strong>${valor}</strong><span>${sub}</span></div>`;
+      kpi.innerHTML = [
+        card("Máxima", alta.underlying_price.toFixed(2), alta.refdate),
+        card("Mínima", baixa.underlying_price.toFixed(2), baixa.refdate),
+        card("Variação", (variacao >= 0 ? "+" : "") + variacao.toFixed(1) + "%", `${base[0].refdate} a ${base[base.length - 1].refdate}`),
+        card("Desvio diário", sd.toFixed(2) + "%", rets.length + " retornos"),
+        card("Assimetria", dist ? dist.skew.toFixed(2) : "n/d", dist && dist.skew < -0.5 ? "cauda à esquerda" : dist && dist.skew > 0.5 ? "cauda à direita" : "quase simétrico"),
+        card("Curtose excedente", dist ? dist.exk.toFixed(1) : "n/d", dist && dist.exk >= 1 ? "cauda mais pesada que a normal" : "cauda perto da normal")
+      ].join("");
+      forma.textContent = !dist
+        ? "Os fechamentos não variaram, então não há formato para comparar."
+        : (rets.length < 60 ? `Amostra curta, ${rets.length} retornos: o formato ainda é instável. Os momentos apontam para ${dist.nome}. ` : `Formato mais próximo: ${dist.nome}. `)
+          + `${dist.alem} pregões, ${dist.pctAlem.toFixed(1)}%, passaram de 2,5 desvios do próprio período. Numa normal seriam cerca de 1,2%.`;
+      dias.textContent = `Maior alta ${maiorAlta.refdate} +${maiorAlta.pct.toFixed(1)}%. Maior queda ${maiorQueda.refdate} ${maiorQueda.pct.toFixed(1)}%.`;
 
       const ordenado = rets.map(r => r.pct).sort((a, b) => a - b);
       const q = (p) => ordenado[Math.min(ordenado.length - 1, Math.max(0, Math.round(p * (ordenado.length - 1))))];
-      let lo = Math.min(q(0.005), -3 * sd);
-      let hi = Math.max(q(0.995), 3 * sd);
+      let lo = Math.min(q(0.005), -3 * (sd || 1));
+      let hi = Math.max(q(0.995), 3 * (sd || 1));
       if (!(hi > lo)) { lo = -3; hi = 3; }
       const folga = (hi - lo) * 0.04;
       lo -= folga;
       hi += folga;
       const nbins = 31;
       const size = (hi - lo) / nbins;
+      const limiteCauda = 2.5 * sd;
       const comum = new Array(nbins).fill(0);
       const cauda = new Array(nbins).fill(0);
       rets.forEach(r => {
         let k = Math.floor((r.pct - lo) / size);
         if (k < 0) k = 0;
         if (k >= nbins) k = nbins - 1;
-        (Math.abs(r.pct) > limiteCauda ? cauda : comum)[k] += 1;
+        (Math.abs(r.pct - media) > limiteCauda ? cauda : comum)[k] += 1;
       });
       const centros = comum.map((_, i) => lo + (i + 0.5) * size);
       const emPct = (arr) => arr.map(c => c / rets.length * 100);
-      const normal = centros.map(x => {
-        const z = (x - media) / sd;
-        return Math.exp(-0.5 * z * z) / (sd * Math.sqrt(2 * Math.PI)) * size * 100;
-      });
       chart.hidden = false;
       const barra = {
         type: "bar",
@@ -671,20 +705,15 @@
       };
       Plotly.newPlot("chartRet", [
         { ...barra, y: emPct(comum), name: "Dentro de 2,5 desvios", marker: { color: "#6eb5ff" } },
-        { ...barra, y: emPct(cauda), name: "Cauda", marker: { color: "#fbbf24" } },
-        {
-          type: "scatter", mode: "lines", x: centros, y: normal, name: "Normal do período",
-          line: { color: "#00c37a", width: 2 },
-          hovertemplate: "normal %{y:.1f}%<br>em %{x:.2f}%<extra></extra>"
-        }
+        { ...barra, y: emPct(cauda), name: "Cauda", marker: { color: "#fbbf24" } }
       ], {
         ...plotLayout,
         height: 380,
         barmode: "stack",
         bargap: 0,
         hovermode: "x unified",
-        title: { text: "Retorno diário do papel", x: 0, xanchor: "left" },
-        margin: { l: 58, r: 18, t: 64, b: 64 },
+        title: { text: "Retorno diário do fechamento", x: 0, xanchor: "left" },
+        margin: { l: 58, r: 18, t: 48, b: 64 },
         legend: { orientation: "h", x: 0, y: 1.12 },
         xaxis: {
           type: "linear",
@@ -1346,11 +1375,10 @@
         document.getElementById("glossario").hidden = true;
         document.getElementById("exVols").hidden = true;
         document.getElementById("exFormula").hidden = true;
-        document.getElementById("caudas").hidden = true;
         document.getElementById("kpi").innerHTML = "";
         Plotly.purge("chartVol");
         Plotly.purge("chartSkew");
-        Plotly.purge("chartRet");
+        renderCaudas();
         return;
       }
       document.getElementById("banner").hidden = true;
@@ -1382,6 +1410,8 @@
         showBanner(`Sem dados para ${ticker}. O job diário publica data/web/${ticker}.json.`);
         payload = null;
         rawSeries = [];
+        document.getElementById("caudas").hidden = true;
+        Plotly.purge("chartRet");
         return;
       }
       payload = await r.json();
@@ -1401,8 +1431,15 @@
         if (!sel.value && sel.options.length) sel.selectedIndex = 0;
         document.getElementById("dIni").addEventListener("change", applyPeriod);
         document.getElementById("dFim").addEventListener("change", applyPeriod);
-        document.querySelectorAll("button.preset").forEach(btn => {
+        document.querySelectorAll("header button.preset").forEach(btn => {
           btn.addEventListener("click", () => setPreset(parseInt(btn.dataset.days, 10)));
+        });
+        document.querySelectorAll("#retPresets button").forEach(btn => {
+          btn.addEventListener("click", () => {
+            janelaRetDias = parseInt(btn.dataset.days, 10);
+            document.querySelectorAll("#retPresets button").forEach(b => b.classList.toggle("on", b === btn));
+            renderCaudas();
+          });
         });
         sel.addEventListener("change", () => loadTicker(sel.value));
         document.getElementById("prazo").addEventListener("change", () => aplicarPrazo(false));
