@@ -565,7 +565,7 @@
       renderCaudas(series);
     }
 
-    function precosNaJanela() {
+    function precosDoPapel() {
       const porData = new Map();
       const guardar = (lista) => {
         (lista || []).forEach(r => {
@@ -580,13 +580,17 @@
         guardar(pz["63"] && pz["63"].series);
         guardar(payload.series);
       }
-      let rows = [...porData.entries()]
+      return [...porData.entries()]
         .sort((a, b) => a[0] < b[0] ? -1 : 1)
         .map(([refdate, underlying_price]) => ({ refdate, underlying_price }));
+    }
+
+    function precosNaJanela() {
+      const rows = precosDoPapel();
       const d0 = document.getElementById("dIni").value;
       const d1 = document.getElementById("dFim").value;
-      if (d0 && d1) rows = rows.filter(r => r.refdate >= d0 && r.refdate <= d1);
-      return rows;
+      if (!d0 || !d1) return rows;
+      return rows.filter(r => r.refdate >= d0 && r.refdate <= d1);
     }
 
     function renderCaudas(series) {
@@ -631,13 +635,13 @@
         : ` Sem eles, o percentil da vol de hoje iria de ${grauTxt(pctCheio)} para ${grauTxt(pctLimpo)}.`;
       const ini = base[0].refdate;
       const fim = base[base.length - 1].refdate;
-      texto.textContent = `Janela ${ini} a ${fim}, ${rets.length} retornos do papel. O histograma é o fechamento e não muda com o prazo de 1, 2 ou 3 meses. A curva verde é a normal da IV desta curva (${pctVol(iv)}), por isso só ela acompanha o prazo. Desvio diário realizado ${sd.toFixed(2)}%; a IV implicaria ${diario.toFixed(2)}% por dia. ${gordos} pregões passaram de 2,5 vezes esse desvio da IV.`;
+      texto.textContent = `Janela ${ini} a ${fim}, ${rets.length} retornos do papel. Este gráfico é o fechamento: trocar 1, 2 ou 3 meses não mexe nas barras nem na curva verde. Desvio diário realizado ${sd.toFixed(2)}%. A IV desta curva (${pctVol(iv)}) implicaria ${diario.toFixed(2)}% por dia, e ${gordos} pregões passaram de 2,5 vezes esse desvio.`;
       dias.textContent = `Maiores movimentos: ${top.map(r => `${r.refdate} ${r.pct >= 0 ? "+" : ""}${r.pct.toFixed(1)}%`).join(" · ")}.${efeito} Ajuste fraco, com R² abaixo de 0,50 ou menos de 8 pontos: ${fracos.length} de ${series.length} pregões.`;
 
       const ordenado = rets.map(r => r.pct).sort((a, b) => a - b);
       const q = (p) => ordenado[Math.min(ordenado.length - 1, Math.max(0, Math.round(p * (ordenado.length - 1))))];
-      let lo = Math.min(q(0.005), -3 * diario);
-      let hi = Math.max(q(0.995), 3 * diario);
+      let lo = Math.min(q(0.005), -3 * sd);
+      let hi = Math.max(q(0.995), 3 * sd);
       if (!(hi > lo)) { lo = -3; hi = 3; }
       const folga = (hi - lo) * 0.04;
       lo -= folga;
@@ -655,8 +659,8 @@
       const centros = comum.map((_, i) => lo + (i + 0.5) * size);
       const emPct = (arr) => arr.map(c => c / rets.length * 100);
       const normal = centros.map(x => {
-        const z = x / diario;
-        return Math.exp(-0.5 * z * z) / (diario * Math.sqrt(2 * Math.PI)) * size * 100;
+        const z = (x - media) / sd;
+        return Math.exp(-0.5 * z * z) / (sd * Math.sqrt(2 * Math.PI)) * size * 100;
       });
       chart.hidden = false;
       const barra = {
@@ -669,7 +673,7 @@
         { ...barra, y: emPct(comum), name: "Dentro de 2,5 desvios", marker: { color: "#6eb5ff" } },
         { ...barra, y: emPct(cauda), name: "Cauda", marker: { color: "#fbbf24" } },
         {
-          type: "scatter", mode: "lines", x: centros, y: normal, name: "Normal da IV de hoje",
+          type: "scatter", mode: "lines", x: centros, y: normal, name: "Normal do período",
           line: { color: "#00c37a", width: 2 },
           hovertemplate: "normal %{y:.1f}%<br>em %{x:.2f}%<extra></extra>"
         }
@@ -1361,17 +1365,12 @@
         if (mRow?.inicio) b.inicio = mRow.inicio;
         if (mRow?.fim) b.fim = mRow.fim;
       }
-      if (resetDatas) setDateBounds(b);
-      else {
-        bounds = b;
-        const dIni = document.getElementById("dIni");
-        const dFim = document.getElementById("dFim");
-        if (b.inicio) dIni.min = b.inicio;
-        if (b.fim) dFim.max = b.fim;
-        if (dFim.value && b.fim && dFim.value > b.fim) dFim.value = b.fim;
-        if (dIni.value && b.inicio && dIni.value < b.inicio) dIni.value = b.inicio;
-        applyPeriod();
-      }
+      const papel = precosDoPapel();
+      const janelaPapel = papel.length
+        ? { inicio: papel[0].refdate, fim: papel[papel.length - 1].refdate }
+        : b;
+      if (resetDatas) setDateBounds(janelaPapel);
+      else applyPeriod();
       preencherSpot(pack);
       if (resetDatas) applyPeriod();
     }
