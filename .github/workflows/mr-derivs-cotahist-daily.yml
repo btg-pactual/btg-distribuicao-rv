@@ -106,12 +106,36 @@ jobs:
 
       - name: Commit status JSON
         run: |
+          set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add mr-derivs/data/cotahist_status.json mr-derivs/data/web/
           if git diff --staged --quiet; then
             echo "sem mudança em cotahist_status.json / data/web"
-          else
-            git commit -m "Mr Derivs: atualiza status COTAHIST e dados web (Actions)."
-            git push
+            exit 0
           fi
+          git commit -m "Mr Derivs: atualiza status COTAHIST e dados web (Actions)."
+          # O painel pode receber outro commit enquanto a IV calcula.
+          # O job 25 morreu aqui: push rejeitado (fetch first) e o JSON se perdeu.
+          for attempt in 1 2 3; do
+            git fetch origin "+refs/heads/pages:refs/remotes/origin/pages"
+            if git rebase origin/pages; then
+              if git push origin HEAD:pages; then
+                echo "JSON publicado em pages"
+                exit 0
+              fi
+              echo "push rejeitado, tentativa ${attempt}"
+            else
+              echo "rebase conflitou; mantem o JSON deste job e o resto do remoto"
+              git rebase --abort
+              git merge -X ours origin/pages -m "Integra pages remoto sem descartar o JSON calculado."
+              if git push origin HEAD:pages; then
+                echo "JSON publicado em pages (merge)"
+                exit 0
+              fi
+              echo "push apos merge rejeitado, tentativa ${attempt}"
+            fi
+            sleep 3
+          done
+          echo "nao conseguiu publicar o JSON em pages"
+          exit 1
