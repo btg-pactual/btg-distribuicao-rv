@@ -378,15 +378,15 @@
           <input id="volManual" type="number" min="1" max="200" step="0.01" value="20" />
         </div>
         <div>
-          <label for="drift">Carrego (% a.a.)</label>
-          <input id="drift" type="number" step="0.01" value="0" />
+          <label for="drift">Drift anual (%)</label>
+          <input id="drift" type="number" step="0.1" value="0" />
         </div>
         <div>
           <button type="button" class="go" id="btnBarreira">Simular</button>
         </div>
       </div>
       <p class="nums" id="barContexto"></p>
-      <p class="nums">O número é ao ano: dividendo implícito do par call-put nesse vencimento, contra a Selic. Positivo: o forward ficou abaixo da Selic, tem dividendo. Negativo: o forward ficou acima da Selic, comum no prazo curto. A simulação espalha essa taxa pelo horizonte. Em 22 DU, a média do preço anda a taxa vezes 22/252. Zero tira a direção.</p>
+      <p class="nums">Drift é a tendência do preço, em % ao ano. Zero deixa o preço sem direção. O dividendo implícito aparece na linha de cima e fica de fora da simulação.</p>
       <div class="res-bar" id="resBarreira" hidden></div>
       <p class="nums" id="barNota"></p>
       <div id="chartBarreira" class="chart" hidden></div>
@@ -1054,8 +1054,6 @@
         if (vol != null && document.activeElement !== volBox) volBox.value = (vol * 100).toFixed(2);
       }
       const carry = carregoDaBarreira(meta, last);
-      const driftBox = document.getElementById("drift");
-      if (carry != null && document.activeElement !== driftBox) driftBox.value = (carry * 100).toFixed(2);
       const dataPx = (last && last.refdate) || meta.ultima_spot || "";
       const iv = last && last.sigma_atm != null ? `IV ${pctVol(last.sigma_atm)}` : "IV indisponível";
       let px;
@@ -1068,8 +1066,8 @@
       } else {
         px = "último preço ainda não está no JSON publicado; digite o spot";
       }
-      const carryTxt = carry != null ? ` · carrego ${(carry * 100).toFixed(2)}% ao ano` : "";
-      ctx.textContent = `${escolhido} · ${px} · ${iv}${carryTxt}. A simulação usa a vol e o carrego dos campos.`;
+      const carryTxt = carry != null ? ` · dividendo implícito ${(carry * 100).toFixed(2)}% ao ano` : "";
+      ctx.textContent = `${escolhido} · ${px} · ${iv}${carryTxt}. A simulação usa a vol do campo. O drift só entra se você digitar.`;
     }
 
     async function aoMudarBarAtivo() {
