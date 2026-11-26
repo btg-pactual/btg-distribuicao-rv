@@ -188,6 +188,41 @@
     }
     .res-bar span { display: block; font-size: 11px; color: var(--muted); text-transform: uppercase; }
     .res-bar strong { font-size: 20px; display: block; margin-top: 4px; }
+    .glossario {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .glossario article {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 12px 14px;
+    }
+    .glossario h3 {
+      font-size: 12px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--link);
+      margin-bottom: 6px;
+    }
+    .glossario p { font-size: 14px; line-height: 1.45; }
+    .ex-vols {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+      margin-top: 10px;
+    }
+    .ex-vols div {
+      background: #0a1628;
+      border-radius: 4px;
+      padding: 8px 6px;
+      text-align: center;
+    }
+    .ex-vols span { display: block; font-size: 10px; color: var(--muted); text-transform: uppercase; }
+    .ex-vols strong { font-size: 15px; }
+    .formula { color: var(--muted); font-size: 12px; margin: -8px 0 16px; }
   </style>
 </head>
 <body>
@@ -254,6 +289,22 @@
         <tbody></tbody>
       </table>
     </div>
+    <div class="glossario" id="glossario" hidden>
+      <article>
+        <h3>Vol ATM</h3>
+        <p id="exVol"></p>
+      </article>
+      <article>
+        <h3>Skew</h3>
+        <p id="exSkew"></p>
+      </article>
+      <article>
+        <h3>Smile</h3>
+        <p id="exSmile"></p>
+      </article>
+    </div>
+    <div class="ex-vols" id="exVols" hidden></div>
+    <p class="formula" id="exFormula" hidden></p>
     <section class="sugestao" id="sugestao" hidden>
       <h2>Leitura da curva</h2>
       <div class="estrutura" id="sugEstrutura"></div>
@@ -267,6 +318,14 @@
       <h2>Teste de barreira</h2>
       <p>Monte Carlo de um movimento geométrico com a vol escolhida. Cada passo é um dia útil. O número é a chance de o caminho tocar a barreira dentro do horizonte, e a chance de terminar além dela.</p>
       <div class="bar-grid">
+        <div>
+          <label for="barAtivo">Ativo</label>
+          <select id="barAtivo" aria-label="Ativo da barreira"></select>
+        </div>
+        <div id="barManualWrap" hidden>
+          <label for="barNome">Nome</label>
+          <input id="barNome" type="text" placeholder="ticker" maxlength="12" />
+        </div>
         <div>
           <label for="spot">Spot</label>
           <input id="spot" type="number" min="0" step="0.01" placeholder="preço" />
@@ -300,6 +359,7 @@
           <button type="button" class="go" id="btnBarreira">Simular</button>
         </div>
       </div>
+      <p class="nums" id="barContexto"></p>
       <div class="res-bar" id="resBarreira" hidden></div>
       <p class="nums" id="barNota"></p>
       <div id="chartBarreira" class="chart" hidden></div>
@@ -325,6 +385,8 @@
     let bounds = { inicio: null, fim: null };
     let manifestGlobal = null;
     let payload = null;
+    let barPayload = null;
+    let barOverride = false;
 
     const PRAZO_LABEL = { "21": "1 mês", "42": "2 meses", "63": "3 meses" };
 
@@ -410,6 +472,9 @@
       if (!series.length) {
         showBanner("Nenhum pregão no período selecionado.");
         document.getElementById("sugestao").hidden = true;
+        document.getElementById("glossario").hidden = true;
+        document.getElementById("exVols").hidden = true;
+        document.getElementById("exFormula").hidden = true;
         Plotly.purge("chartVol");
         Plotly.purge("chartSkew");
         return;
@@ -424,6 +489,7 @@
         <div><span>Percentil vol</span><strong>${pctV != null ? Math.round(pctV) + "º" : "n/d"}</strong></div>
       `;
       renderTable(series);
+      renderExemplos(series);
       renderSugestao(series);
       const dates = series.map(r => r.refdate);
       const volTraces = [
@@ -451,6 +517,79 @@
         yaxis: { title: "Skew", gridcolor: "#2a3f5f" },
         yaxis2: { title: "Smile", overlaying: "y", side: "right", gridcolor: "transparent" }
       }, { responsive: true });
+    }
+
+    function ivNoStrike(atm, skew, smile, du, moneyness) {
+      if (!(atm > 0) || !(du > 0) || !(moneyness > 0)) return null;
+      const sn = Math.log(moneyness) / (atm * Math.sqrt(du / 252));
+      const sk = skew == null || Number.isNaN(skew) ? 0 : skew;
+      const sm = smile == null || Number.isNaN(smile) ? 0 : smile;
+      return {
+        iv: atm + sk * sn + (sm / 2) * sn * sn,
+        smilePp: (sm / 2) * sn * sn
+      };
+    }
+
+    function renderExemplos(series) {
+      const box = document.getElementById("glossario");
+      const vols = document.getElementById("exVols");
+      const formula = document.getElementById("exFormula");
+      if (!series.length) {
+        box.hidden = true;
+        vols.hidden = true;
+        formula.hidden = true;
+        return;
+      }
+      const last = series[series.length - 1];
+      const atm = last.sigma_atm;
+      const skew = last.skew;
+      const smile = last.smile;
+      const du = last.biz_days || Number(document.getElementById("prazo").value) || 21;
+      const prazo = PRAZO_LABEL[document.getElementById("prazo").value] || "1 mês";
+      const pv = pctRank(series.map(r => r.sigma_atm), atm);
+      const put = ivNoStrike(atm, skew, smile, du, 0.9);
+      const call = ivNoStrike(atm, skew, smile, du, 1.1);
+      const tk = document.getElementById("ticker").value || "o ativo";
+
+      document.getElementById("exVol").textContent = atm == null
+        ? "A vol ATM é a vol no strike do forward, o miolo da curva. Este pregão não tem o número."
+        : `É a vol no strike do forward, o miolo da curva de ${prazo} de ${tk}: ${pctVol(atm)} ao ano${pv != null ? `, percentil ${grau(pv)} nesta janela` : ""}. Put e call no forward saem com essa mesma vol.`;
+
+      let skewTxt = "O skew é a inclinação: quanto a put fica mais cara, ou mais barata, do que a call.";
+      if (put && call && skew != null) {
+        const lado = put.iv > call.iv
+          ? `A put 10% abaixo do forward sai a ${pctVol(put.iv)} e a call 10% acima sai a ${pctVol(call.iv)}. A asa de baixa está mais cara.`
+          : call.iv > put.iv
+            ? `A call 10% acima do forward sai a ${pctVol(call.iv)} e a put 10% abaixo sai a ${pctVol(put.iv)}. A asa de alta está mais cara.`
+            : `Put e call 10% fora do forward saem na mesma vol, ${pctVol(put.iv)}.`;
+        skewTxt = `Skew de ${pctRate(skew)} inclina a curva de ${tk}. ${lado}`;
+      }
+      document.getElementById("exSkew").textContent = skewTxt;
+
+      let smileTxt = "O smile é a curvatura: as duas pontas ficam mais caras juntas, além da inclinação.";
+      if (put && call && smile != null) {
+        const acrescento = Math.max(put.smilePp, call.smilePp);
+        smileTxt = smile > 0.002
+          ? `Smile de ${pctRate(smile)} levanta as duas asas de ${tk}. Na ponta 10% fora do forward ele soma cerca de ${(acrescento * 100).toFixed(1)} pp de vol, por cima do que o skew sozinho faria.`
+          : smile < -0.002
+            ? `Smile de ${pctRate(smile)} abaixa as duas asas de ${tk}. As pontas 10% fora do forward ficam mais baratas do que uma reta de skew.`
+            : `Smile de ${pctRate(smile)} está perto de zero. As pontas de ${tk} quase não pagam curvatura além do skew.`;
+      }
+      document.getElementById("exSmile").textContent = smileTxt;
+
+      if (put && call && atm != null) {
+        vols.hidden = false;
+        vols.innerHTML = `
+          <div><span>Put −10%</span><strong>${pctVol(put.iv)}</strong></div>
+          <div><span>ATM</span><strong>${pctVol(atm)}</strong></div>
+          <div><span>Call +10%</span><strong>${pctVol(call.iv)}</strong></div>
+        `;
+      } else {
+        vols.hidden = true;
+      }
+      formula.hidden = false;
+      formula.textContent = "IV(K) = vol ATM + skew × SN + (smile / 2) × SN². SN = ln(K/F) / (vol ATM × √(DU/252)). O exemplo usa strikes 10% abaixo e 10% acima do forward.";
+      box.hidden = false;
     }
 
     function grau(x) {
@@ -578,8 +717,62 @@
       });
     }
 
-    function preencherSpot(pack) {
-      const meta = (pack && pack.meta_datas) || (payload && payload.meta_datas) || {};
+    function tickersCadastrados() {
+      const fromManifest = (manifestGlobal?.tickers || []).map(t => t.ticker).filter(Boolean);
+      return fromManifest.length ? fromManifest : TICKERS_FALLBACK;
+    }
+
+    function preencherSelectBarreira() {
+      const sel = document.getElementById("barAtivo");
+      const atual = sel.value;
+      sel.innerHTML = "";
+      tickersCadastrados().forEach(t => {
+        const o = document.createElement("option");
+        o.value = t;
+        o.textContent = t;
+        sel.appendChild(o);
+      });
+      const man = document.createElement("option");
+      man.value = "manual";
+      man.textContent = "Manual (fora do cadastro)";
+      sel.appendChild(man);
+      if (atual && [...sel.options].some(o => o.value === atual)) sel.value = atual;
+    }
+
+    function packDaBarreira(p) {
+      if (!p) return null;
+      const du = document.getElementById("prazo").value;
+      const bloco = p.prazos && p.prazos[du];
+      if (bloco && bloco.series && bloco.series.length) return bloco;
+      if (String(du) === "21" && p.series && p.series.length) {
+        return { series: p.series, meta_datas: p.meta_datas, du: 21 };
+      }
+      if (p.series && p.series.length) return { series: p.series, meta_datas: p.meta_datas };
+      return null;
+    }
+
+    function ultimoDaBarreira() {
+      const escolhido = document.getElementById("barAtivo").value;
+      if (escolhido === "manual") return null;
+      const mesmoGrafico = escolhido === document.getElementById("ticker").value;
+      const series = mesmoGrafico ? filterSeries() : ((packDaBarreira(barPayload || payload) || {}).series || []);
+      return series.length ? series[series.length - 1] : null;
+    }
+
+    function aplicarDadosBarreira() {
+      const escolhido = document.getElementById("barAtivo").value;
+      const ctx = document.getElementById("barContexto");
+      const fonte = document.getElementById("volFonte");
+      const manual = escolhido === "manual";
+      document.getElementById("barManualWrap").hidden = !manual;
+      fonte.disabled = manual;
+      if (manual) {
+        fonte.value = "manual";
+        ctx.textContent = "Fora do cadastro: digite o nome, o spot e a vol.";
+        return;
+      }
+      const pack = packDaBarreira(barPayload || payload);
+      const meta = (pack && pack.meta_datas) || ((barPayload || payload) && (barPayload || payload).meta_datas) || {};
       const close = meta.ultimo_close;
       const spot = document.getElementById("spot");
       if (close != null && !Number.isNaN(Number(close)) && document.activeElement !== spot) {
@@ -588,6 +781,56 @@
       const h = document.getElementById("horizonte");
       const du = document.getElementById("prazo").value;
       if (document.activeElement !== h) h.value = du;
+      const last = ultimoDaBarreira();
+      const iv = last && last.sigma_atm != null ? ` · IV ${pctVol(last.sigma_atm)}` : "";
+      const px = close != null && !Number.isNaN(Number(close))
+        ? ` · spot ${Number(close).toFixed(2)}`
+        : " · sem fechamento no cadastro, digite o spot";
+      ctx.textContent = `${escolhido} está no cadastro${px}${iv}.`;
+    }
+
+    async function aoMudarBarAtivo() {
+      barOverride = true;
+      const v = document.getElementById("barAtivo").value;
+      if (v === "manual") {
+        barPayload = null;
+        aplicarDadosBarreira();
+        return;
+      }
+      if (v === document.getElementById("ticker").value && payload) {
+        barPayload = payload;
+        aplicarDadosBarreira();
+        return;
+      }
+      document.getElementById("barContexto").textContent = `Carregando ${v}…`;
+      try {
+        const r = await fetch(`data/web/${v}.json`);
+        if (!r.ok) throw new Error("sem json");
+        barPayload = await r.json();
+      } catch (e) {
+        document.getElementById("barAtivo").value = "manual";
+        barPayload = null;
+        document.getElementById("barNome").value = v;
+        aplicarDadosBarreira();
+        document.getElementById("barContexto").textContent = `${v} está na lista e ainda não tem série. O teste ficou em manual.`;
+        return;
+      }
+      aplicarDadosBarreira();
+    }
+
+    function sincronizarBarreiraComGrafico() {
+      if (barOverride) return;
+      const sel = document.getElementById("barAtivo");
+      const tk = document.getElementById("ticker").value;
+      if ([...sel.options].some(o => o.value === tk)) sel.value = tk;
+      barPayload = payload;
+      aplicarDadosBarreira();
+    }
+
+    function preencherSpot(pack) {
+      if (!barOverride) barPayload = payload || pack;
+      sincronizarBarreiraComGrafico();
+      if (barOverride && document.getElementById("barAtivo").value !== "manual") aplicarDadosBarreira();
     }
 
     function mulberry32(seed) {
@@ -630,8 +873,7 @@
     }
 
     function simularBarreira() {
-      const series = filterSeries();
-      const last = series.length ? series[series.length - 1] : null;
+      const last = ultimoDaBarreira();
       const s0 = Number(document.getElementById("spot").value);
       const barreira = Number(document.getElementById("barreira").value);
       const nDays = Math.round(Number(document.getElementById("horizonte").value));
@@ -685,7 +927,10 @@
         <div><span>Fórmula fechada</span><strong>${pForm == null ? "n/d" : (pForm * 100).toFixed(1) + "%"}</strong></div>
         <div><span>Distância</span><strong>${dist >= 0 ? "+" : ""}${dist.toFixed(1)}%</strong></div>
       `;
-      nota.textContent = `${nPaths.toLocaleString("pt-BR")} caminhos · vol ${(sigma * 100).toFixed(1)}% · drift ${(mu * 100).toFixed(1)}% a.a. · ${nDays} DU · barreira ${lado} do spot. A simulação olha o fechamento de cada dia útil. A fórmula fechada olha o caminho contínuo e por isso fica um pouco acima.`;
+      const nome = document.getElementById("barAtivo").value === "manual"
+        ? (document.getElementById("barNome").value.trim() || "ativo manual")
+        : document.getElementById("barAtivo").value;
+      nota.textContent = `${nome} · ${nPaths.toLocaleString("pt-BR")} caminhos · vol ${(sigma * 100).toFixed(1)}% · drift ${(mu * 100).toFixed(1)}% a.a. · ${nDays} DU · barreira ${lado} do spot. A simulação olha o fechamento de cada dia útil. A fórmula fechada olha o caminho contínuo e por isso fica um pouco acima.`;
       const chart = document.getElementById("chartBarreira");
       chart.hidden = false;
       Plotly.newPlot("chartBarreira", [{
@@ -780,6 +1025,7 @@
       document.getElementById("meta").textContent = manifest.atualizado_em
         ? `Série até ${manifest.periodo_inicio || "?"} · export ${manifest.atualizado_em}`
         : "Dados: export web (seed 24m)";
+      preencherSelectBarreira();
     }
 
     function aplicarPrazo(resetDatas) {
@@ -789,6 +1035,9 @@
         showBanner(`A curva de ${PRAZO_LABEL[du] || du} ainda não está neste JSON. O job diário passa a gravar 1, 2 e 3 meses.`);
         rawSeries = [];
         document.getElementById("sugestao").hidden = true;
+        document.getElementById("glossario").hidden = true;
+        document.getElementById("exVols").hidden = true;
+        document.getElementById("exFormula").hidden = true;
         document.getElementById("kpi").innerHTML = "";
         Plotly.purge("chartVol");
         Plotly.purge("chartSkew");
@@ -852,6 +1101,7 @@
         });
         sel.addEventListener("change", () => loadTicker(sel.value));
         document.getElementById("prazo").addEventListener("change", () => aplicarPrazo(false));
+        document.getElementById("barAtivo").addEventListener("change", () => { aoMudarBarAtivo(); });
         document.getElementById("btnBarreira").addEventListener("click", simularBarreira);
         await loadTicker(sel.value);
       } catch (e) {
