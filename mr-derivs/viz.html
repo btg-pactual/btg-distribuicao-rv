@@ -316,7 +316,7 @@
     <div id="chartSkew" class="chart"></div>
     <section class="barreira">
       <h2>Teste de barreira</h2>
-      <p>Monte Carlo de um movimento geométrico com a vol escolhida. Cada passo é um dia útil. O número é a chance de o caminho tocar a barreira dentro do horizonte, e a chance de terminar além dela.</p>
+      <p>Monte Carlo de um movimento geométrico com a vol escolhida. Cada passo é um dia útil. O número é a chance de o caminho tocar a barreira dentro do horizonte, e a chance de terminar além dela. A barreira é o percentual do último preço: +10 fica 10% acima e −10 fica 10% abaixo.</p>
       <div class="bar-grid">
         <div>
           <label for="barAtivo">Ativo</label>
@@ -331,8 +331,8 @@
           <input id="spot" type="number" min="0" step="0.01" placeholder="preço" />
         </div>
         <div>
-          <label for="barreira">Barreira</label>
-          <input id="barreira" type="number" min="0" step="0.01" placeholder="preço" />
+          <label for="barreira">Barreira (%)</label>
+          <input id="barreira" type="number" step="0.1" placeholder="-10" />
         </div>
         <div>
           <label for="horizonte">Horizonte (DU)</label>
@@ -950,20 +950,20 @@
     }
 
     function simularBarreira() {
-      const last = ultimoDaBarreira();
       const s0 = Number(document.getElementById("spot").value);
-      const barreira = Number(document.getElementById("barreira").value);
+      const pctBar = Number(document.getElementById("barreira").value);
       const nDays = Math.round(Number(document.getElementById("horizonte").value));
       const sigma = Number(document.getElementById("volManual").value) / 100;
       const mu = Number(document.getElementById("drift").value) / 100;
       const nota = document.getElementById("barNota");
-      if (!(s0 > 0) || !(barreira > 0) || !(nDays >= 1) || !(sigma > 0) || Number.isNaN(mu)) {
-        nota.textContent = "Preencha spot, barreira, horizonte e uma vol positiva.";
+      if (!(s0 > 0) || !Number.isFinite(pctBar) || pctBar <= -100 || !(nDays >= 1) || !(sigma > 0) || Number.isNaN(mu)) {
+        nota.textContent = "Preencha o último preço, a barreira em % (maior que −100), o horizonte e uma vol positiva.";
         document.getElementById("resBarreira").hidden = true;
         return;
       }
+      const barreira = s0 * (1 + pctBar / 100);
       const nPaths = 8000;
-      const seed = Math.round(s0 * 100 + barreira * 10 + nDays * 17 + sigma * 10000 + mu * 1000) >>> 0;
+      const seed = Math.round(s0 * 100 + pctBar * 10 + nDays * 17 + sigma * 10000 + mu * 1000) >>> 0;
       const rng = mulberry32(seed || 1);
       const dt = 1 / 252;
       const drift = (mu - 0.5 * sigma * sigma) * dt;
@@ -992,19 +992,19 @@
       const pHit = hits / nPaths;
       const pFim = fins / nPaths;
       const pForm = hitAnalitico(s0, barreira, mu, sigma, nDays / 252);
-      const dist = (barreira / s0 - 1) * 100;
       const lado = cima ? "acima" : "abaixo";
+      const sinal = pctBar > 0 ? "+" : "";
       document.getElementById("resBarreira").hidden = false;
       document.getElementById("resBarreira").innerHTML = `
         <div><span>Toque na barreira</span><strong>${(pHit * 100).toFixed(1)}%</strong></div>
         <div><span>Termina ${lado}</span><strong>${(pFim * 100).toFixed(1)}%</strong></div>
         <div><span>Fórmula fechada</span><strong>${pForm == null ? "n/d" : (pForm * 100).toFixed(1) + "%"}</strong></div>
-        <div><span>Distância</span><strong>${dist >= 0 ? "+" : ""}${dist.toFixed(1)}%</strong></div>
+        <div><span>Nível</span><strong>${barreira.toFixed(2)} (${sinal}${pctBar.toFixed(1)}%)</strong></div>
       `;
       const nome = document.getElementById("barAtivo").value === "manual"
         ? (document.getElementById("barNome").value.trim() || "ativo manual")
         : document.getElementById("barAtivo").value;
-      nota.textContent = `${nome} · ${nPaths.toLocaleString("pt-BR")} caminhos · vol ${(sigma * 100).toFixed(1)}% · drift ${(mu * 100).toFixed(1)}% a.a. · ${nDays} DU · barreira ${lado} do spot. A simulação olha o fechamento de cada dia útil. A fórmula fechada olha o caminho contínuo e por isso fica um pouco acima.`;
+      nota.textContent = `${nome} · ${nPaths.toLocaleString("pt-BR")} caminhos · vol ${(sigma * 100).toFixed(1)}% · drift ${(mu * 100).toFixed(1)}% a.a. · ${nDays} DU · barreira ${sinal}${pctBar.toFixed(1)}% (${barreira.toFixed(2)}), ${lado} do último preço. A simulação olha o fechamento de cada dia útil. A fórmula fechada olha o caminho contínuo e por isso fica um pouco acima.`;
       const chart = document.getElementById("chartBarreira");
       chart.hidden = false;
       Plotly.newPlot("chartBarreira", [{
@@ -1021,7 +1021,7 @@
           line: { color: "#fbbf24", width: 2, dash: "dash" }
         }],
         annotations: [{
-          x: barreira, y: 1, yref: "paper", text: "barreira", showarrow: false,
+          x: barreira, y: 1, yref: "paper", text: `barreira ${sinal}${pctBar.toFixed(1)}%`, showarrow: false,
           font: { color: "#fbbf24" }, yanchor: "bottom"
         }]
       }, { responsive: true });
