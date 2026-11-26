@@ -378,15 +378,15 @@
           <input id="volManual" type="number" min="1" max="200" step="0.01" value="20" />
         </div>
         <div>
-          <label for="drift">Drift anual (%)</label>
-          <input id="drift" type="number" step="0.1" value="0" />
+          <label for="drift">Carrego (% a.a.)</label>
+          <input id="drift" type="number" step="0.01" value="0" />
         </div>
         <div>
           <button type="button" class="go" id="btnBarreira">Simular</button>
         </div>
       </div>
       <p class="nums" id="barContexto"></p>
-      <p class="nums">Drift anual é a tendência do preço, em % ao ano, separada da vol. Zero testa só o sobe-e-desce: o papel não tem direção. Um drift de 10 quer dizer que, em média, o modelo anda +10% ao ano e a vol oscila em volta disso.</p>
+      <p class="nums">O campo começa com o carrego da curva, juro menos dividendo, no prazo da vol. A simulação e a fórmula fechada usam esse número como tendência do preço. Dá para trocar. Zero tira a direção e deixa só o sobe-e-desce da vol.</p>
       <div class="res-bar" id="resBarreira" hidden></div>
       <p class="nums" id="barNota"></p>
       <div id="chartBarreira" class="chart" hidden></div>
@@ -1012,6 +1012,13 @@
       }
     }
 
+    function carregoDaBarreira(meta, last) {
+      const doPonto = last && last.carry_aa != null ? Number(last.carry_aa) : NaN;
+      if (Number.isFinite(doPonto)) return doPonto;
+      const doMeta = meta && meta.ultimo_carry_aa != null ? Number(meta.ultimo_carry_aa) : NaN;
+      return Number.isFinite(doMeta) ? doMeta : null;
+    }
+
     function volDoCadastro(last, fonte) {
       if (!last || fonte === "manual") return null;
       const n = Number(last[fonte]);
@@ -1046,6 +1053,9 @@
         const vol = volDoCadastro(last, fonte.value);
         if (vol != null && document.activeElement !== volBox) volBox.value = (vol * 100).toFixed(2);
       }
+      const carry = carregoDaBarreira(meta, last);
+      const driftBox = document.getElementById("drift");
+      if (carry != null && document.activeElement !== driftBox) driftBox.value = (carry * 100).toFixed(2);
       const dataPx = (last && last.refdate) || meta.ultima_spot || "";
       const iv = last && last.sigma_atm != null ? `IV ${pctVol(last.sigma_atm)}` : "IV indisponível";
       let px;
@@ -1058,7 +1068,8 @@
       } else {
         px = "último preço ainda não está no JSON publicado; digite o spot";
       }
-      ctx.textContent = `${escolhido} · ${px} · ${iv}. A simulação usa o número do campo Vol usada.`;
+      const carryTxt = carry != null ? ` · carrego ${(carry * 100).toFixed(2)}% ao ano` : "";
+      ctx.textContent = `${escolhido} · ${px} · ${iv}${carryTxt}. A simulação usa a vol e o carrego dos campos.`;
     }
 
     async function aoMudarBarAtivo() {
