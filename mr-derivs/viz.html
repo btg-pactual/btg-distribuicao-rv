@@ -959,6 +959,7 @@
       if (!(s0 > 0) || !Number.isFinite(pctBar) || pctBar <= -100 || !(nDays >= 1) || !(sigma > 0) || Number.isNaN(mu)) {
         nota.textContent = "Preencha o último preço, a barreira em % (maior que −100), o horizonte e uma vol positiva.";
         document.getElementById("resBarreira").hidden = true;
+        document.getElementById("chartBarreira").hidden = true;
         return;
       }
       const barreira = s0 * (1 + pctBar / 100);
@@ -1007,23 +1008,99 @@
       nota.textContent = `${nome} · ${nPaths.toLocaleString("pt-BR")} caminhos · vol ${(sigma * 100).toFixed(1)}% · drift ${(mu * 100).toFixed(1)}% a.a. · ${nDays} DU · barreira ${sinal}${pctBar.toFixed(1)}% (${barreira.toFixed(2)}), ${lado} do último preço. A simulação olha o fechamento de cada dia útil. A fórmula fechada olha o caminho contínuo e por isso fica um pouco acima.`;
       const chart = document.getElementById("chartBarreira");
       chart.hidden = false;
-      Plotly.newPlot("chartBarreira", [{
-        x: Array.from(ext),
-        type: "histogram",
-        marker: { color: "#6eb5ff" },
-        name: cima ? "Máximo do caminho" : "Mínimo do caminho",
-        nbinsx: 40
-      }], {
+      const ordenado = Array.from(ext).sort((a, b) => a - b);
+      const quantil = (p) => ordenado[Math.min(ordenado.length - 1, Math.max(0, Math.round(p * (ordenado.length - 1))))];
+      let lo = Math.min(quantil(0.005), s0, barreira);
+      let hi = Math.max(quantil(0.995), s0, barreira);
+      if (!(hi > lo)) {
+        lo = Math.min(s0, barreira) * 0.98;
+        hi = Math.max(s0, barreira) * 1.02;
+      }
+      const folga = (hi - lo) * 0.05;
+      lo -= folga;
+      hi += folga;
+      const nbins = 36;
+      const size = (hi - lo) / nbins;
+      const ficou = new Array(nbins).fill(0);
+      const passou = new Array(nbins).fill(0);
+      for (let i = 0; i < nPaths; i++) {
+        let k = Math.floor((ext[i] - lo) / size);
+        if (k < 0) k = 0;
+        if (k >= nbins) k = nbins - 1;
+        const alem = cima ? ext[i] >= barreira : ext[i] <= barreira;
+        (alem ? passou : ficou)[k] += 1;
+      }
+      const centros = Array.from(ficou, (_, i) => lo + (i + 0.5) * size);
+      const emPct = (arr) => arr.map(c => c / nPaths * 100);
+      const pLo = (lo / s0 - 1) * 100;
+      const pHi = (hi / s0 - 1) * 100;
+      const span = pHi - pLo;
+      const passo = span > 50 ? 10 : span > 25 ? 5 : span > 12 ? 2 : 1;
+      const tickvals = [];
+      const ticktext = [];
+      for (let p = Math.ceil(pLo / passo) * passo; p < pHi - passo * 0.2; p += passo) {
+        const px = s0 * (1 + p / 100);
+        tickvals.push(px);
+        const sp = p > 0.05 ? "+" : "";
+        ticktext.push(`${px.toFixed(2)}<br>${sp}${Math.round(p)}%`);
+      }
+      const titulo = cima ? "Máximo de cada caminho" : "Mínimo de cada caminho";
+      const barraBase = {
+        type: "bar",
+        x: centros,
+        width: size * 0.96,
+        hovertemplate: "%{y:.1f}% dos caminhos<br>em %{x:.2f}<extra></extra>"
+      };
+      Plotly.newPlot("chartBarreira", [
+        { ...barraBase, y: emPct(ficou), name: "Não tocou", marker: { color: "#6eb5ff" } },
+        { ...barraBase, y: emPct(passou), name: "Tocou a barreira", marker: { color: "#fbbf24" } }
+      ], {
         ...plotLayout,
-        title: cima ? "Máximo de cada caminho" : "Mínimo de cada caminho",
-        shapes: [{
-          type: "line", x0: barreira, x1: barreira, y0: 0, y1: 1, yref: "paper",
-          line: { color: "#fbbf24", width: 2, dash: "dash" }
-        }],
-        annotations: [{
-          x: barreira, y: 1, yref: "paper", text: `barreira ${sinal}${pctBar.toFixed(1)}%`, showarrow: false,
-          font: { color: "#fbbf24" }, yanchor: "bottom"
-        }]
+        height: 420,
+        barmode: "stack",
+        bargap: 0,
+        hovermode: "x unified",
+        title: { text: titulo, x: 0, xanchor: "left" },
+        margin: { l: 58, r: 18, t: 72, b: 72 },
+        legend: { orientation: "h", x: 1, xanchor: "right", y: 1.12 },
+        xaxis: {
+          type: "linear",
+          range: [lo, hi],
+          tickmode: "array",
+          tickvals,
+          ticktext,
+          title: { text: cima ? "Máximo no horizonte" : "Mínimo no horizonte" },
+          gridcolor: "#2a3f5f",
+          zeroline: false
+        },
+        yaxis: {
+          title: { text: "% dos caminhos" },
+          gridcolor: "#2a3f5f",
+          zeroline: false,
+          rangemode: "tozero"
+        },
+        shapes: [
+          {
+            type: "line", x0: s0, x1: s0, y0: 0, y1: 1, yref: "paper",
+            line: { color: "#e8eef5", width: 1.5 }
+          },
+          {
+            type: "line", x0: barreira, x1: barreira, y0: 0, y1: 1, yref: "paper",
+            line: { color: "#fbbf24", width: 2, dash: "dash" }
+          }
+        ],
+        annotations: [
+          {
+            x: s0, y: 1, yref: "paper", text: "último preço", showarrow: false,
+            font: { color: "#e8eef5", size: 11 }, yanchor: "bottom",
+            xanchor: cima ? "right" : "left"
+          },
+          {
+            x: barreira, y: 1, yref: "paper", text: `barreira ${sinal}${pctBar.toFixed(1)}%`, showarrow: false,
+            font: { color: "#fbbf24", size: 11 }, yanchor: "bottom",
+            xanchor: cima ? "left" : "right"
+          }
+        ]
       }, { responsive: true });
     }
 
