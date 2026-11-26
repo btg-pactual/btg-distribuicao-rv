@@ -1,5 +1,5 @@
 {
-  "atualizado_em": "2026-11-26T09:12:10-0300",
+  "atualizado_em": "2026-11-26T11:08:42-0300",
   "periodo_dias": 365,
   "periodo_inicio": "2025-11-26",
   "tickers": [
@@ -133,11 +133,11 @@
   "erros": [
     {
       "ticker": "B3SA3",
-      "mensagem": "Nenhum IV calculado para B3SA"
+      "mensagem": "21 DU: Nenhum IV calculado para B3SA | 42 DU: Nenhum IV calculado para B3SA | 63 DU: Nenhum IV calculado para B3SA"
     },
     {
       "ticker": "ELET3",
-      "mensagem": "Nenhuma cotação spot encontrada para 'ELET'. Verifique:\n  1. O cache rb3 tem dados? Rode: rb3::fetch_marketdata('b3-cotahist-yearly', year = 2020:2026)\n  2. O nome do ATIVO está correto? Para ver os nomes disponíveis no cache, rode:\n     rb3::cotahist_get(type = 'yearly') |> rb3::cotahist_filter_equity() |> dplyr::distinct(corporation_name) |> dplyr::collect() |> print(n = 200)"
+      "mensagem": "21 DU: Nenhuma cotação spot encontrada para 'ELET'. Verifique:\n  1. O cache rb3 tem dados? Rode: rb3::fetch_marketdata('b3-cotahist-yearly', year = 2020:2026)\n  2. O nome do ATIVO está correto? Para ver os nomes disponíveis no cache, rode:\n     rb3::cotahist_get(type = 'yearly') |> rb3::cotahist_filter_equity() |> dplyr::distinct(corporation_name) |> dplyr::collect() |> print(n = 200) | 42 DU: Nenhuma cotação spot encontrada para 'ELET'. Verifique:\n  1. O cache rb3 tem dados? Rode: rb3::fetch_marketdata('b3-cotahist-yearly', year = 2020:2026)\n  2. O nome do ATIVO está correto? Para ver os nomes disponíveis no cache, rode:\n     rb3::cotahist_get(type = 'yearly') |> rb3::cotahist_filter_equity() |> dplyr::distinct(corporation_name) |> dplyr::collect() |> print(n = 200) | 63 DU: Nenhuma cotação spot encontrada para 'ELET'. Verifique:\n  1. O cache rb3 tem dados? Rode: rb3::fetch_marketdata('b3-cotahist-yearly', year = 2020:2026)\n  2. O nome do ATIVO está correto? Para ver os nomes disponíveis no cache, rode:\n     rb3::cotahist_get(type = 'yearly') |> rb3::cotahist_filter_equity() |> dplyr::distinct(corporation_name) |> dplyr::collect() |> print(n = 200)"
     }
   ]
 }
