@@ -100,54 +100,84 @@ manifest <- list(
 job_log("=== EXPORT IV WEB ===")
 job_log("Cache: ", cache_dir, " | dias UI: ", dias, " | tickers: ", length(tickers))
 
+PRAZOS_DU <- c(`1` = 21L, `2` = 42L, `3` = 63L)
+
+exportar_prazo <- function(tk, pref, du) {
+  res <- rodar_vol_implicita(
+    ativo = pref,
+    ticker_spot = tk,
+    prefixo_opcoes = pref,
+    periodo_inicio = periodo_inicio,
+    periodo_fim = Sys.Date(),
+    data_inicio = data_inicio,
+    du_alvo = du,
+    atualizar_cache = FALSE,
+    retorno_leve = TRUE,
+    salvar_png = FALSE,
+    incluir_tabela_grafico = FALSE,
+    somente_dados = TRUE,
+    out_dir = file.path(job_root, "outputs_iv")
+  )
+  fvol <- enrich_fvol_for_web(res$fvol)
+  ser <- serialize_series(fvol)
+  bounds <- if (length(ser)) {
+    list(inicio = ser[[1]]$refdate, fim = ser[[length(ser)]]$refdate)
+  } else {
+    list(inicio = NA_character_, fim = NA_character_)
+  }
+  list(
+    du = as.integer(du),
+    meses = as.integer(names(PRAZOS_DU)[match(du, PRAZOS_DU)]),
+    bounds = bounds,
+    meta_datas = sanitize_meta(res$meta_datas),
+    series = ser
+  )
+}
+
 for (tk in tickers) {
   tk <- toupper(trimws(tk))
   if (!nzchar(tk)) next
   pref <- substr(tk, 1, 4)
   job_log("Ticker ", tk, "...")
-  payload <- tryCatch({
-    res <- rodar_vol_implicita(
-      ativo = pref,
-      ticker_spot = tk,
-      prefixo_opcoes = pref,
-      periodo_inicio = periodo_inicio,
-      periodo_fim = Sys.Date(),
-      data_inicio = data_inicio,
-      du_alvo = 21,
-      atualizar_cache = FALSE,
-      retorno_leve = TRUE,
-      salvar_png = FALSE,
-      incluir_tabela_grafico = FALSE,
-      somente_dados = TRUE,
-      out_dir = file.path(job_root, "outputs_iv")
-    )
-    fvol <- enrich_fvol_for_web(res$fvol)
-    ser <- serialize_series(fvol)
-    bounds <- if (length(ser)) {
-      list(
-        inicio = ser[[1]]$refdate,
-        fim = ser[[length(ser)]]$refdate
+  prazos <- list()
+  erros_prazo <- list()
+  for (du in PRAZOS_DU) {
+    job_log("  prazo ", du, " DU")
+    one <- tryCatch(exportar_prazo(tk, pref, du), error = function(e) e)
+    if (inherits(one, "error")) {
+      job_log("  ERRO ", tk, " ", du, " DU: ", conditionMessage(one))
+      erros_prazo[[length(erros_prazo) + 1L]] <- list(
+        du = as.integer(du),
+        mensagem = conditionMessage(one)
+      )
+    } else if (!length(one$series)) {
+      erros_prazo[[length(erros_prazo) + 1L]] <- list(
+        du = as.integer(du),
+        mensagem = "Serie vazia"
       )
     } else {
-      list(inicio = NA_character_, fim = NA_character_)
+      prazos[[as.character(du)]] <- one
     }
-    list(
-      ticker = tk,
-      ativo = pref,
-      meta_datas = sanitize_meta(res$meta_datas),
-      bounds = bounds,
-      series = ser
-    )
-  }, error = function(e) {
-    job_log("  ERRO ", tk, ": ", conditionMessage(e))
+  }
+  if (!length(prazos)) {
     manifest$erros <<- c(
       manifest$erros,
-      list(list(ticker = tk, mensagem = conditionMessage(e)))
+      list(list(ticker = tk, mensagem = paste(vapply(erros_prazo, function(e) {
+        paste0(e$du, " DU: ", e$mensagem)
+      }, character(1)), collapse = " | ")))
     )
-    NULL
-  })
-
-  if (is.null(payload)) next
+    next
+  }
+  base <- if (!is.null(prazos[["21"]])) prazos[["21"]] else prazos[[1]]
+  payload <- list(
+    ticker = tk,
+    ativo = pref,
+    meta_datas = base$meta_datas,
+    bounds = base$bounds,
+    series = base$series,
+    prazos = prazos,
+    erros_prazo = erros_prazo
+  )
   out_file <- file.path(out_dir, paste0(tk, ".json"))
   jsonlite::write_json(payload, out_file, auto_unbox = TRUE, pretty = FALSE, na = "null")
   n_pts <- length(payload$series)

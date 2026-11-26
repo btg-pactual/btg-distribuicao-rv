@@ -961,6 +961,16 @@ if (isTRUE(retorno_leve)) {
   }
   fvol_ult <- dplyr::slice_tail(fvol_ts, n = 1)
   n_iv_dias <- dplyr::n_distinct(op_all$refdate_calc)
+  ultimo_close <- NA_real_
+  if (nrow(price_data) && "close" %in% names(price_data)) {
+    alvo <- if (nrow(fvol_ts)) max(fvol_ts$refdate) else max(price_data$refdate)
+    hit <- price_data[as.Date(price_data$refdate) == as.Date(alvo), , drop = FALSE]
+    ultimo_close <- if (nrow(hit)) {
+      as.numeric(hit$close[nrow(hit)])
+    } else {
+      as.numeric(price_data$close[which.max(as.Date(price_data$refdate))])
+    }
+  }
   payload_leve <- list(
     ativo = ATIVO,
     ticker_spot = TICKER_SPOT,
@@ -983,7 +993,8 @@ if (isTRUE(retorno_leve)) {
       },
       ultimo_carry_aa = if ("carry_aa" %in% names(fvol_ult)) fvol_ult$carry_aa[1] else NA_real_,
       ultimo_n_points = if (nrow(fvol_ts)) as.integer(fvol_ult$n_points[1]) else NA_integer_,
-      ultimo_r2 = if (nrow(fvol_ts)) fvol_ult$r2[1] else NA_real_
+      ultimo_r2 = if (nrow(fvol_ts)) fvol_ult$r2[1] else NA_real_,
+      ultimo_close = ultimo_close
     ),
     graficos = list(),
     tabela = NULL,

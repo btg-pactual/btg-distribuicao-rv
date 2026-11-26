@@ -41,7 +41,7 @@
       align-items: flex-end;
     }
     label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; display: block; margin-bottom: 4px; }
-    select, input[type="date"] {
+    select, input[type="date"], input[type="number"] {
       background: var(--panel);
       color: var(--text);
       border: 1px solid var(--line);
@@ -50,6 +50,7 @@
       font-size: 14px;
       min-width: 130px;
     }
+    input[type="number"] { min-width: 110px; }
     .btn-row { display: flex; gap: 6px; flex-wrap: wrap; }
     button.preset {
       background: var(--panel);
@@ -123,18 +124,94 @@
     table.pct th:first-child, table.pct td:first-child { text-align: left; }
     table.pct th { color: var(--muted); font-weight: 600; font-size: 11px; text-transform: uppercase; }
     table.pct tr:last-child td { border-bottom: none; }
+    .tabs { display: flex; gap: 8px; margin-top: 10px; }
+    .tabs a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 6px 12px;
+      border-radius: 4px;
+      border: 1px solid transparent;
+    }
+    .tabs a.active { color: var(--accent); border-color: var(--line); background: var(--panel); }
+    .tabs a:hover { color: var(--text); }
+    .sugestao, .barreira {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 14px 16px 16px;
+      margin-bottom: 16px;
+    }
+    .sugestao h2, .barreira h2 {
+      font-size: 12px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--link);
+      margin-bottom: 10px;
+    }
+    .estrutura {
+      font-size: 18px;
+      font-weight: 650;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+    .sugestao p, .barreira p { font-size: 14px; line-height: 1.5; margin-bottom: 8px; }
+    .cuidado { color: #fde68a; }
+    .nums { color: var(--muted); font-size: 12px; }
+    .bar-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 10px;
+      align-items: end;
+      margin-bottom: 12px;
+    }
+    button.go {
+      background: var(--accent);
+      color: #0a1628;
+      border: none;
+      border-radius: 4px;
+      padding: 9px 14px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .res-bar {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 10px;
+      margin: 8px 0 12px;
+    }
+    .res-bar div {
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 10px 12px;
+    }
+    .res-bar span { display: block; font-size: 11px; color: var(--muted); text-transform: uppercase; }
+    .res-bar strong { font-size: 20px; display: block; margin-top: 4px; }
   </style>
 </head>
 <body>
   <header>
     <div>
       <a class="back" href="index.html">← Hub Mr Derivs</a>
+      <nav class="tabs" aria-label="Abas">
+        <a href="viz.html" class="active">Skew &amp; Smile</a>
+        <a href="quant.html">Vol &amp; Quant</a>
+      </nav>
       <h1>Vol ATM · Skew · Smile</h1>
     </div>
     <div class="controls">
       <div>
         <label for="ticker">Ativo</label>
         <select id="ticker" aria-label="Ativo"></select>
+      </div>
+      <div>
+        <label for="prazo">Prazo da curva</label>
+        <select id="prazo" aria-label="Prazo da curva">
+          <option value="21">1 mês (21 DU)</option>
+          <option value="42">2 meses (42 DU)</option>
+          <option value="63">3 meses (63 DU)</option>
+        </select>
       </div>
       <div>
         <label for="dIni">De</label>
@@ -145,7 +222,7 @@
         <input type="date" id="dFim" />
       </div>
       <div>
-        <label>Atalhos</label>
+        <label>Janela do gráfico</label>
         <div class="btn-row">
           <button type="button" class="preset" data-days="30">1M</button>
           <button type="button" class="preset" data-days="90">3M</button>
@@ -177,13 +254,62 @@
         <tbody></tbody>
       </table>
     </div>
+    <section class="sugestao" id="sugestao" hidden>
+      <h2>Leitura da curva</h2>
+      <div class="estrutura" id="sugEstrutura"></div>
+      <p id="sugPorque"></p>
+      <p class="cuidado" id="sugCuidado"></p>
+      <p class="nums" id="sugNums"></p>
+    </section>
     <div id="chartVol" class="chart"></div>
     <div id="chartSkew" class="chart"></div>
+    <section class="barreira">
+      <h2>Teste de barreira</h2>
+      <p>Monte Carlo de um movimento geométrico com a vol escolhida. Cada passo é um dia útil. O número é a chance de o caminho tocar a barreira dentro do horizonte, e a chance de terminar além dela.</p>
+      <div class="bar-grid">
+        <div>
+          <label for="spot">Spot</label>
+          <input id="spot" type="number" min="0" step="0.01" placeholder="preço" />
+        </div>
+        <div>
+          <label for="barreira">Barreira</label>
+          <input id="barreira" type="number" min="0" step="0.01" placeholder="preço" />
+        </div>
+        <div>
+          <label for="horizonte">Horizonte (DU)</label>
+          <input id="horizonte" type="number" min="1" max="252" step="1" value="21" />
+        </div>
+        <div>
+          <label for="volFonte">Vol</label>
+          <select id="volFonte">
+            <option value="sigma_atm">IV ATM</option>
+            <option value="vol_realizada">Realizada</option>
+            <option value="vol_realizada_fwd">Forward</option>
+            <option value="manual">Digitar</option>
+          </select>
+        </div>
+        <div>
+          <label for="volManual">Vol manual (%)</label>
+          <input id="volManual" type="number" min="1" max="200" step="0.1" value="20" />
+        </div>
+        <div>
+          <label for="drift">Drift anual (%)</label>
+          <input id="drift" type="number" step="0.1" value="0" />
+        </div>
+        <div>
+          <button type="button" class="go" id="btnBarreira">Simular</button>
+        </div>
+      </div>
+      <div class="res-bar" id="resBarreira" hidden></div>
+      <p class="nums" id="barNota"></p>
+      <div id="chartBarreira" class="chart" hidden></div>
+    </section>
   </main>
   <script>
     const TICKERS_FALLBACK = [
-      "BOVA11", "SMAL11", "PETR4", "EQTL3", "VALE3", "ITUB4", "BPAC11",
-      "WEGE3", "BBDC4", "ITSA4", "ABEV3", "B3SA3"
+      "BOVA11", "SMAL11", "PETR4", "VALE3", "ITUB4", "BBDC4", "BBAS3", "BPAC11",
+      "WEGE3", "ABEV3", "ITSA4", "EQTL3", "B3SA3", "RENT3", "SUZB3", "RADL3",
+      "GGBR4", "PRIO3", "VIVT3", "ELET3"
     ];
     const plotLayout = {
       paper_bgcolor: "#122238",
@@ -198,6 +324,9 @@
     let rawSeries = [];
     let bounds = { inicio: null, fim: null };
     let manifestGlobal = null;
+    let payload = null;
+
+    const PRAZO_LABEL = { "21": "1 mês", "42": "2 meses", "63": "3 meses" };
 
     function pctVol(x) {
       if (x == null || Number.isNaN(x)) return "n/d";
@@ -280,6 +409,7 @@
     function renderCharts(series) {
       if (!series.length) {
         showBanner("Nenhum pregão no período selecionado.");
+        document.getElementById("sugestao").hidden = true;
         Plotly.purge("chartVol");
         Plotly.purge("chartSkew");
         return;
@@ -294,6 +424,7 @@
         <div><span>Percentil vol</span><strong>${pctV != null ? Math.round(pctV) + "º" : "n/d"}</strong></div>
       `;
       renderTable(series);
+      renderSugestao(series);
       const dates = series.map(r => r.refdate);
       const volTraces = [
         { x: dates, y: series.map(r => r.sigma_atm), name: "Vol ATM FVOL", type: "scatter", mode: "lines", line: { color: "#00c37a" } }
@@ -322,12 +453,268 @@
       }, { responsive: true });
     }
 
+    function grau(x) {
+      return x == null || Number.isNaN(x) ? "n/d" : Math.round(x) + "º";
+    }
+
+    function renderSugestao(series) {
+      const box = document.getElementById("sugestao");
+      if (!series.length) {
+        box.hidden = true;
+        return;
+      }
+      const last = series[series.length - 1];
+      const pv = pctRank(series.map(r => r.sigma_atm), last.sigma_atm);
+      const psk = pctRank(series.map(r => r.skew), last.skew);
+      const psm = pctRank(series.map(r => r.smile), last.smile);
+      const skew = last.skew;
+      const smile = last.smile;
+      const fraco = (last.r2 != null && last.r2 < 0.5) || (last.n_points != null && last.n_points < 8);
+      const volCara = pv != null && pv >= 70;
+      const volBarata = pv != null && pv <= 30;
+      const smileCaro = smile != null && smile > 0 && psm != null && psm >= 70;
+      const smileBarato = psm != null && psm <= 30;
+      const putCara = skew != null && skew < 0 && psk != null && psk <= 35;
+      const putBarata = skew != null && skew < 0 && psk != null && psk >= 65;
+      const callCara = skew != null && skew > 0 && psk != null && psk >= 65;
+      const prazo = PRAZO_LABEL[document.getElementById("prazo").value] || "1 mês";
+      let estrutura, porque, cuidado;
+
+      if (fraco) {
+        estrutura = volCara ? "Venda de vol no ATM" : volBarata ? "Compra de vol no ATM" : "Trava perto do ATM";
+        porque = `O ajuste da curva de ${prazo} está fraco (R² ${last.r2 != null ? Number(last.r2).toFixed(2) : "n/d"}, ${last.n_points != null ? Math.round(last.n_points) : "?"} pontos). A leitura usa o nível da vol ATM.`;
+        cuidado = "Skew e smile deste pregão ficam de fora da estrutura.";
+      } else if (volCara && smileCaro) {
+        estrutura = "Iron condor ou strangle vendido";
+        porque = `Na curva de ${prazo}, a vol ATM está no percentil ${grau(pv)} e as duas asas também (${grau(psm)}). Vender o miolo e as pontas coleta nível e smile.`;
+        cuidado = "Compra de strangle paga caro nas duas pontas neste nível.";
+      } else if (volCara && smileBarato) {
+        estrutura = "Venda de ATM com asa comprada";
+        porque = `A vol ATM de ${prazo} está cara (${grau(pv)}) e as asas estão baratas na amostra (${grau(psm)}). Vender o ATM e comprar OTM limita a cauda.`;
+        cuidado = "Strangle vendido seco deixa a ponta descoberta com pouco prêmio.";
+      } else if (volCara && putCara) {
+        estrutura = "Risk reversal: compra call e vende put";
+        porque = `A vol de ${prazo} está cara (${grau(pv)}) e a put está mais cara que o usual do período (skew no ${grau(psk)}). Vender a put cobra o skew.`;
+        cuidado = "Put comprada como hedge principal sai do lado caro da amostra.";
+      } else if (volCara && callCara) {
+        estrutura = "Call spread vendido";
+        porque = `A vol de ${prazo} está cara (${grau(pv)}) e a call está cara versus a put (skew no ${grau(psk)}). O spread cobra a asa de alta com perda limitada.`;
+        cuidado = "Call comprada seca fica do lado caro da curva.";
+      } else if (volCara) {
+        estrutura = "Call coberta ou strangle vendido curto";
+        porque = `A vol ATM de ${prazo} está no percentil ${grau(pv)}, acima da maior parte da amostra, e o smile não está em extremo. Vender vol no nível combina com a curva.`;
+        cuidado = "Compra seca de vol paga um prêmio alto contra o histórico.";
+      } else if (volBarata && smileBarato) {
+        estrutura = "Strangle ou straddle comprado";
+        porque = `Vol ATM (${grau(pv)}) e asas (${grau(psm)}) da curva de ${prazo} estão baratas na amostra. Comprar vol, inclusive OTM, sai barato para uma tese de cauda.`;
+        cuidado = "Venda de asas recebe pouco prêmio neste smile.";
+      } else if (volBarata && putBarata) {
+        estrutura = "Put comprada ou put spread";
+        porque = `A vol de ${prazo} está barata (${grau(pv)}) e a put barateou contra o período (skew no ${grau(psk)}). O hedge de baixa sai mais barato que o usual.`;
+        cuidado = "Put vendida cobra pouco pela asa de baixa.";
+      } else if (volBarata) {
+        estrutura = "Straddle comprado ou call/put no viés";
+        porque = `A vol ATM de ${prazo} está no percentil ${grau(pv)}, abaixo da maior parte da amostra. Comprar o prêmio combina melhor com este nível.`;
+        cuidado = "Venda seca de vol neste percentil fica curta de prêmio.";
+      } else if (putCara) {
+        estrutura = "Put spread vendido";
+        porque = `A vol de ${prazo} está no miolo (${grau(pv)}) e a put está cara versus a call (skew no ${grau(psk)}). O spread vendido cobra essa diferença com perda limitada.`;
+        cuidado = "A vol em si não justifica uma venda seca. O skew é que está fora do lugar.";
+      } else if (callCara) {
+        estrutura = "Call spread vendido";
+        porque = `A vol de ${prazo} está no miolo (${grau(pv)}) e a call está cara versus a put (skew no ${grau(psk)}). O spread cobra a asa de alta.`;
+        cuidado = "A vol em si não justifica uma compra seca. A assimetria está na call.";
+      } else if (smileCaro) {
+        estrutura = "Borboleta ou iron condor curto";
+        porque = `O nível da vol de ${prazo} está no miolo (${grau(pv)}), mas as asas estão caras (${grau(psm)}). Vender as pontas coleta o smile sem apostar num extremo de vol.`;
+        cuidado = "Straddle vendido aposta no nível, que não está caro.";
+      } else if (smileBarato) {
+        estrutura = "Compra de OTM no viés";
+        porque = `O nível da vol de ${prazo} está no miolo (${grau(pv)}) e as asas estão baratas (${grau(psm)}). Comprar a ponta do viés sai barata se a tese for de cauda.`;
+        cuidado = "Venda de smile recebe pouco neste percentil.";
+      } else {
+        estrutura = "Trava: call spread ou put spread";
+        porque = `Vol (${grau(pv)}), skew (${grau(psk)}) e smile (${grau(psm)}) da curva de ${prazo} estão no miolo da amostra. A trava expressa o viés sem comprar nem vender vol em extremo.`;
+        cuidado = "Straddle comprado ou vendido só pelo nível parte de um prêmio comum.";
+      }
+
+      if (last.premio_iv != null && !Number.isNaN(last.premio_iv)) {
+        const pp = last.premio_iv * 100;
+        if (pp >= 2) porque += ` A IV está ${pp.toFixed(1)} pp acima da realizada, o que reforça venda de vol.`;
+        else if (pp <= -2) porque += ` A IV está ${Math.abs(pp).toFixed(1)} pp abaixo da realizada, o que reforça compra de vol.`;
+        else porque += ` A IV está a ${pp.toFixed(1)} pp da realizada. O percentil pesa mais que esse prêmio.`;
+      }
+
+      box.hidden = false;
+      document.getElementById("sugEstrutura").textContent = estrutura;
+      document.getElementById("sugPorque").textContent = porque;
+      document.getElementById("sugCuidado").textContent = cuidado;
+      const duCurva = last.biz_days != null ? `${Math.round(last.biz_days)} DU no vencimento` : prazo;
+      document.getElementById("sugNums").textContent =
+        `Amostra do gráfico: vol ${grau(pv)} · skew ${grau(psk)} · smile ${grau(psm)} · ${duCurva}`;
+    }
+
+    function packDoPrazo(du) {
+      const key = String(du);
+      const bloco = payload && payload.prazos && payload.prazos[key];
+      if (bloco && bloco.series && bloco.series.length) return bloco;
+      if (key === "21" && payload && payload.series && payload.series.length) {
+        return { series: payload.series, bounds: payload.bounds, meta_datas: payload.meta_datas, du: 21 };
+      }
+      return null;
+    }
+
+    function atualizarOpcoesPrazo() {
+      const sel = document.getElementById("prazo");
+      ["21", "42", "63"].forEach(du => {
+        const opt = sel.querySelector(`option[value="${du}"]`);
+        const ok = !!packDoPrazo(du);
+        opt.disabled = !ok && du !== "21";
+        const base = PRAZO_LABEL[du];
+        const ndu = du === "21" ? "21" : du === "42" ? "42" : "63";
+        opt.textContent = ok || du === "21"
+          ? `${base} (${ndu} DU)`
+          : `${base} (${ndu} DU) — no próximo job`;
+      });
+    }
+
+    function preencherSpot(pack) {
+      const meta = (pack && pack.meta_datas) || (payload && payload.meta_datas) || {};
+      const close = meta.ultimo_close;
+      const spot = document.getElementById("spot");
+      if (close != null && !Number.isNaN(Number(close)) && document.activeElement !== spot) {
+        spot.value = Number(close).toFixed(2);
+      }
+      const h = document.getElementById("horizonte");
+      const du = document.getElementById("prazo").value;
+      if (document.activeElement !== h) h.value = du;
+    }
+
+    function mulberry32(seed) {
+      let a = seed >>> 0;
+      return function () {
+        a |= 0; a = a + 0x6D2B79F5 | 0;
+        let t = Math.imul(a ^ a >>> 15, 1 | a);
+        t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+        return ((t ^ t >>> 14) >>> 0) / 4294967296;
+      };
+    }
+
+    function gauss(rng) {
+      let u = 0, v = 0;
+      while (u === 0) u = rng();
+      while (v === 0) v = rng();
+      return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
+    }
+
+    function normCdf(x) {
+      const ax = Math.abs(x);
+      const t = 1 / (1 + 0.2316419 * ax);
+      const d = 0.3989422804014327 * Math.exp(-0.5 * x * x);
+      const p = d * t * (0.319381530 + t * (-0.356563782 + t * (1.781477937 + t * (-1.821255978 + t * 1.330274429))));
+      return x >= 0 ? 1 - p : p;
+    }
+
+    function hitAnalitico(s0, barreira, mu, sigma, T) {
+      if (!(s0 > 0) || !(barreira > 0) || !(sigma > 0) || !(T > 0) || s0 === barreira) return s0 === barreira ? 1 : null;
+      const nu = mu - 0.5 * sigma * sigma;
+      const den = sigma * Math.sqrt(T);
+      if (barreira < s0) {
+        const x = Math.log(s0 / barreira);
+        const expo = Math.exp(-2 * nu * x / (sigma * sigma));
+        return normCdf((-x - nu * T) / den) + expo * normCdf((-x + nu * T) / den);
+      }
+      const y = Math.log(barreira / s0);
+      const expo = Math.exp(2 * nu * y / (sigma * sigma));
+      return normCdf((-y + nu * T) / den) + expo * normCdf((-y - nu * T) / den);
+    }
+
+    function simularBarreira() {
+      const series = filterSeries();
+      const last = series.length ? series[series.length - 1] : null;
+      const s0 = Number(document.getElementById("spot").value);
+      const barreira = Number(document.getElementById("barreira").value);
+      const nDays = Math.round(Number(document.getElementById("horizonte").value));
+      const fonte = document.getElementById("volFonte").value;
+      let sigma = fonte === "manual"
+        ? Number(document.getElementById("volManual").value) / 100
+        : (last ? Number(last[fonte]) : NaN);
+      const mu = Number(document.getElementById("drift").value) / 100;
+      const nota = document.getElementById("barNota");
+      if (!(s0 > 0) || !(barreira > 0) || !(nDays >= 1) || !(sigma > 0) || Number.isNaN(mu)) {
+        nota.textContent = "Preencha spot, barreira, horizonte e uma vol positiva.";
+        document.getElementById("resBarreira").hidden = true;
+        return;
+      }
+      const nPaths = 8000;
+      const seed = Math.round(s0 * 100 + barreira * 10 + nDays * 17 + sigma * 10000 + mu * 1000) >>> 0;
+      const rng = mulberry32(seed || 1);
+      const dt = 1 / 252;
+      const drift = (mu - 0.5 * sigma * sigma) * dt;
+      const volStep = sigma * Math.sqrt(dt);
+      const cima = barreira >= s0;
+      let hits = 0, fins = 0;
+      const ext = new Float64Array(nPaths);
+      for (let i = 0; i < nPaths; i++) {
+        let s = s0;
+        let extremo = s;
+        let tocou = false;
+        for (let d = 0; d < nDays; d++) {
+          s *= Math.exp(drift + volStep * gauss(rng));
+          if (cima) {
+            if (s > extremo) extremo = s;
+            if (s >= barreira) tocou = true;
+          } else {
+            if (s < extremo) extremo = s;
+            if (s <= barreira) tocou = true;
+          }
+        }
+        if (tocou) hits++;
+        if (cima ? s >= barreira : s <= barreira) fins++;
+        ext[i] = extremo;
+      }
+      const pHit = hits / nPaths;
+      const pFim = fins / nPaths;
+      const pForm = hitAnalitico(s0, barreira, mu, sigma, nDays / 252);
+      const dist = (barreira / s0 - 1) * 100;
+      const lado = cima ? "acima" : "abaixo";
+      document.getElementById("resBarreira").hidden = false;
+      document.getElementById("resBarreira").innerHTML = `
+        <div><span>Toque na barreira</span><strong>${(pHit * 100).toFixed(1)}%</strong></div>
+        <div><span>Termina ${lado}</span><strong>${(pFim * 100).toFixed(1)}%</strong></div>
+        <div><span>Fórmula fechada</span><strong>${pForm == null ? "n/d" : (pForm * 100).toFixed(1) + "%"}</strong></div>
+        <div><span>Distância</span><strong>${dist >= 0 ? "+" : ""}${dist.toFixed(1)}%</strong></div>
+      `;
+      nota.textContent = `${nPaths.toLocaleString("pt-BR")} caminhos · vol ${(sigma * 100).toFixed(1)}% · drift ${(mu * 100).toFixed(1)}% a.a. · ${nDays} DU · barreira ${lado} do spot. A simulação olha o fechamento de cada dia útil. A fórmula fechada olha o caminho contínuo e por isso fica um pouco acima.`;
+      const chart = document.getElementById("chartBarreira");
+      chart.hidden = false;
+      Plotly.newPlot("chartBarreira", [{
+        x: Array.from(ext),
+        type: "histogram",
+        marker: { color: "#6eb5ff" },
+        name: cima ? "Máximo do caminho" : "Mínimo do caminho",
+        nbinsx: 40
+      }], {
+        ...plotLayout,
+        title: cima ? "Máximo de cada caminho" : "Mínimo de cada caminho",
+        shapes: [{
+          type: "line", x0: barreira, x1: barreira, y0: 0, y1: 1, yref: "paper",
+          line: { color: "#fbbf24", width: 2, dash: "dash" }
+        }],
+        annotations: [{
+          x: barreira, y: 1, yref: "paper", text: "barreira", showarrow: false,
+          font: { color: "#fbbf24" }, yanchor: "bottom"
+        }]
+      }, { responsive: true });
+    }
+
     function applyPeriod() {
       const series = filterSeries();
       renderCharts(series);
       const tk = document.getElementById("ticker").value;
       const q = new URLSearchParams(location.search);
       q.set("ticker", tk);
+      q.set("prazo", document.getElementById("prazo").value);
       q.set("from", document.getElementById("dIni").value);
       q.set("to", document.getElementById("dFim").value);
       history.replaceState(null, "", "?" + q.toString());
@@ -395,26 +782,61 @@
         : "Dados: export web (seed 24m)";
     }
 
-    async function loadTicker(ticker) {
-      document.getElementById("banner").hidden = true;
-      const r = await fetch(`data/web/${ticker}.json`);
-      if (!r.ok) {
-        showBanner(`Sem dados para ${ticker}. Rode scripts/run_export_web.bat e publique data/web/ no GitHub.`);
+    function aplicarPrazo(resetDatas) {
+      const du = document.getElementById("prazo").value;
+      const pack = packDoPrazo(du);
+      if (!pack) {
+        showBanner(`A curva de ${PRAZO_LABEL[du] || du} ainda não está neste JSON. O job diário passa a gravar 1, 2 e 3 meses.`);
         rawSeries = [];
+        document.getElementById("sugestao").hidden = true;
+        document.getElementById("kpi").innerHTML = "";
+        Plotly.purge("chartVol");
+        Plotly.purge("chartSkew");
         return;
       }
-      const d = await r.json();
-      rawSeries = d.series || [];
-      const b = d.bounds || {};
+      document.getElementById("banner").hidden = true;
+      rawSeries = pack.series || [];
+      const b = Object.assign({}, pack.bounds || {});
       if (!b.inicio && rawSeries.length) {
         b.inicio = rawSeries[0].refdate;
         b.fim = rawSeries[rawSeries.length - 1].refdate;
       }
-      const mRow = (manifestGlobal?.tickers || []).find(t => t.ticker === ticker);
-      if (mRow?.inicio) b.inicio = mRow.inicio;
-      if (mRow?.fim) b.fim = mRow.fim;
-      setDateBounds(b);
-      applyPeriod();
+      if (du === "21") {
+        const mRow = (manifestGlobal?.tickers || []).find(t => t.ticker === document.getElementById("ticker").value);
+        if (mRow?.inicio) b.inicio = mRow.inicio;
+        if (mRow?.fim) b.fim = mRow.fim;
+      }
+      if (resetDatas) setDateBounds(b);
+      else {
+        bounds = b;
+        const dIni = document.getElementById("dIni");
+        const dFim = document.getElementById("dFim");
+        if (b.inicio) dIni.min = b.inicio;
+        if (b.fim) dFim.max = b.fim;
+        if (dFim.value && b.fim && dFim.value > b.fim) dFim.value = b.fim;
+        if (dIni.value && b.inicio && dIni.value < b.inicio) dIni.value = b.inicio;
+        applyPeriod();
+      }
+      preencherSpot(pack);
+      if (resetDatas) applyPeriod();
+    }
+
+    async function loadTicker(ticker) {
+      document.getElementById("banner").hidden = true;
+      const r = await fetch(`data/web/${ticker}.json`);
+      if (!r.ok) {
+        showBanner(`Sem dados para ${ticker}. O job diário publica data/web/${ticker}.json.`);
+        payload = null;
+        rawSeries = [];
+        return;
+      }
+      payload = await r.json();
+      atualizarOpcoesPrazo();
+      const params = new URLSearchParams(location.search);
+      const qPrazo = params.get("prazo");
+      if (qPrazo && packDoPrazo(qPrazo)) document.getElementById("prazo").value = qPrazo;
+      else if (!packDoPrazo(document.getElementById("prazo").value)) document.getElementById("prazo").value = "21";
+      aplicarPrazo(true);
     }
 
     (async () => {
@@ -429,6 +851,8 @@
           btn.addEventListener("click", () => setPreset(parseInt(btn.dataset.days, 10)));
         });
         sel.addEventListener("change", () => loadTicker(sel.value));
+        document.getElementById("prazo").addEventListener("change", () => aplicarPrazo(false));
+        document.getElementById("btnBarreira").addEventListener("click", simularBarreira);
         await loadTicker(sel.value);
       } catch (e) {
         console.error(e);

@@ -58,9 +58,12 @@
         Vol implícita, skew/smile FVOL e IV vs realizada — consulta pelo navegador (GitHub Pages)
         ou app Shiny completo no R local.
       </p>
-      <p style="margin-top:14px;">
+      <p style="margin-top:14px;display:flex;flex-wrap:wrap;gap:10px;">
         <a href="viz.html" style="display:inline-block;background:#00c37a;color:#0a1628;font-weight:700;padding:10px 18px;border-radius:4px;text-decoration:none;font-size:14px;">
-          Abrir gráficos por ativo →
+          Skew &amp; Smile →
+        </a>
+        <a href="quant.html" style="display:inline-block;background:rgba(255,255,255,.12);color:#fff;font-weight:700;padding:10px 18px;border-radius:4px;text-decoration:none;font-size:14px;border:1px solid rgba(255,255,255,.35);">
+          Vol &amp; Quant (20 ativos) →
         </a>
       </p>
     </div>
@@ -73,9 +76,9 @@
     <section class="card">
       <h2>Site (sem instalar R)</h2>
       <ul>
-        <li><a href="viz.html">viz.html</a> — escolha o ticker e veja vol ATM, skew e smile</li>
-        <li>Se abrir o HTML direto no Explorer não carregar gráficos, use <code>scripts/run_viz_local.bat</code> ou o link do GitHub Pages acima</li>
-        <li>Atualização: <code>scripts/run_export_web.bat</code> + push, ou workflow Actions com export web</li>
+        <li><a href="viz.html">Skew &amp; Smile</a> — curva de 1, 2 ou 3 meses, leitura de estrutura e teste de barreira</li>
+        <li><a href="quant.html">Vol &amp; Quant</a> — beta 21d, vol IV/MM e realizada (vários ativos)</li>
+        <li>Atualização: <code>scripts/run_export_all_web.bat</code> + push (IV lento + quant rápido)</li>
       </ul>
     </section>
     <section class="card">
