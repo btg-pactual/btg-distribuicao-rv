@@ -405,6 +405,19 @@
       const s = x >= 0 ? "+" : "";
       return s + (x * 100).toFixed(2) + " pp";
     }
+    function fmtNum(x, digits) {
+      if (x == null || !Number.isFinite(Number(x))) return "n/d";
+      return Number(x).toFixed(digits);
+    }
+    function fmtInt(x) {
+      if (x == null || !Number.isFinite(Number(x))) return "n/d";
+      return String(Math.round(Number(x)));
+    }
+    function signedNum(x, digits) {
+      if (x == null || !Number.isFinite(Number(x))) return "n/d";
+      const n = Number(x);
+      return (n > 0 ? "+" : "") + n.toFixed(digits);
+    }
     function pctRank(vals, cur) {
       if (cur == null || Number.isNaN(cur) || !vals.length) return null;
       const v = vals.filter(x => x != null && !Number.isNaN(x)).sort((a, b) => a - b);
@@ -427,37 +440,48 @@
       return rawSeries.filter(r => r.refdate >= d0 && r.refdate <= d1);
     }
 
-    function rowStats(series, key, asVol) {
-      const vals = series.map(r => r[key]).filter(v => v != null && !Number.isNaN(v));
-      const cur = series.length ? series[series.length - 1][key] : null;
+    function rowStats(series, key, kind) {
+      const vals = series.map(r => Number(r[key])).filter(v => Number.isFinite(v));
+      const lastRaw = series.length ? series[series.length - 1][key] : null;
+      const cur = lastRaw == null || !Number.isFinite(Number(lastRaw)) ? null : Number(lastRaw);
+      const pct = pctRank(vals, cur);
+      const pctTxt = pct != null ? Math.round(pct) + "º" : "n/d";
       if (!vals.length) {
-        return { cur, min: null, max: null, mean: null, pct: null, diff: null };
+        return { cur: "n/d", min: "n/d", max: "n/d", mean: "n/d", pct: "n/d", diff: "n/d" };
       }
       const min = Math.min(...vals);
       const max = Math.max(...vals);
       const mean = vals.reduce((a, b) => a + b, 0) / vals.length;
-      const pct = pctRank(vals, cur);
       const diff = cur != null ? cur - mean : null;
-      const fmt = asVol ? pctVol : pctRate;
+      if (kind === "r2") {
+        return {
+          cur: fmtNum(cur, 2), min: fmtNum(min, 2), max: fmtNum(max, 2), mean: fmtNum(mean, 2),
+          pct: pctTxt, diff: signedNum(diff, 2)
+        };
+      }
+      if (kind === "pontos") {
+        return {
+          cur: fmtInt(cur), min: fmtInt(min), max: fmtInt(max), mean: fmtInt(mean),
+          pct: pctTxt, diff: signedNum(diff, 0)
+        };
+      }
       return {
-        cur: fmt(cur),
-        min: fmt(min),
-        max: fmt(max),
-        mean: fmt(mean),
-        pct: pct != null ? Math.round(pct) + "º" : "n/d",
-        diff: asVol ? ppDiff(diff) : ppDiff(diff)
+        cur: pctVol(cur), min: pctVol(min), max: pctVol(max), mean: pctVol(mean),
+        pct: pctTxt, diff: ppDiff(diff)
       };
     }
 
     function renderTable(series) {
       const rows = [
-        { label: "Vol ATM", key: "sigma_atm", vol: true },
-        { label: "Skew", key: "skew", vol: true },
-        { label: "Smile", key: "smile", vol: true }
+        { label: "Vol ATM", key: "sigma_atm", kind: "vol" },
+        { label: "Skew", key: "skew", kind: "vol" },
+        { label: "Smile", key: "smile", kind: "vol" },
+        { label: "R²", key: "r2", kind: "r2" },
+        { label: "Pontos", key: "n_points", kind: "pontos" }
       ];
       const tbody = document.querySelector("#tblPct tbody");
       tbody.innerHTML = rows.map(r => {
-        const s = rowStats(series, r.key, r.vol);
+        const s = rowStats(series, r.key, r.kind);
         return `<tr>
           <td>${r.label}</td>
           <td>${s.cur}</td>
