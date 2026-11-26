@@ -314,9 +314,15 @@
     </section>
     <div id="chartVol" class="chart"></div>
     <div id="chartSkew" class="chart"></div>
+    <section class="sugestao" id="caudas" hidden>
+      <h2>Retornos da janela</h2>
+      <p id="caudaTexto"></p>
+      <p class="nums" id="caudaDias"></p>
+      <div id="chartRet" class="chart" hidden></div>
+    </section>
     <section class="barreira">
       <h2>Teste de barreira</h2>
-      <p>Monte Carlo de um movimento geométrico com a vol escolhida. Cada passo é um dia útil. O número é a chance de o caminho tocar a barreira dentro do horizonte, e a chance de terminar além dela. A barreira é o percentual do último preço: +10 fica 10% acima e −10 fica 10% abaixo.</p>
+      <p>O teste anda para a frente, a partir de hoje. Cada passo é um dia útil e a quantidade de passos é o campo Horizonte: ele começa com os dias úteis do vencimento da curva que está na tela e pode ser trocado. Não usa a janela 1M/3M/1A. A vol é a do campo Vol usada. A barreira é o percentual do último preço: +10 fica 10% acima e −10 fica 10% abaixo.</p>
       <div class="bar-grid">
         <div>
           <label for="barAtivo">Ativo</label>
@@ -501,8 +507,10 @@
         document.getElementById("glossario").hidden = true;
         document.getElementById("exVols").hidden = true;
         document.getElementById("exFormula").hidden = true;
+        document.getElementById("caudas").hidden = true;
         Plotly.purge("chartVol");
         Plotly.purge("chartSkew");
+        Plotly.purge("chartRet");
         return;
       }
       document.getElementById("banner").hidden = true;
@@ -542,6 +550,111 @@
         title: "Skew & smile (FVOL)",
         yaxis: { title: "Skew", gridcolor: "#2a3f5f" },
         yaxis2: { title: "Smile", overlaying: "y", side: "right", gridcolor: "transparent" }
+      }, { responsive: true });
+      renderCaudas(series);
+    }
+
+    function renderCaudas(series) {
+      const box = document.getElementById("caudas");
+      const texto = document.getElementById("caudaTexto");
+      const dias = document.getElementById("caudaDias");
+      const chart = document.getElementById("chartRet");
+      const rets = [];
+      for (let i = 1; i < series.length; i++) {
+        const a = Number(series[i - 1].underlying_price);
+        const b = Number(series[i].underlying_price);
+        if (!(a > 0) || !(b > 0)) continue;
+        rets.push({ refdate: series[i].refdate, pct: Math.log(b / a) * 100 });
+      }
+      box.hidden = false;
+      if (rets.length < 8) {
+        texto.textContent = "Esta janela ainda não tem o preço do papel em dias seguidos, então o histograma de retornos fica vazio. Os percentis de vol continuam valendo.";
+        dias.textContent = "";
+        chart.hidden = true;
+        return;
+      }
+      const last = series[series.length - 1];
+      const iv = Number(last.sigma_atm);
+      const diario = (iv > 0 ? iv : 0.25) / Math.sqrt(252) * 100;
+      const media = rets.reduce((s, r) => s + r.pct, 0) / rets.length;
+      const sd = Math.sqrt(rets.reduce((s, r) => s + (r.pct - media) ** 2, 0) / (rets.length - 1));
+      const top = [...rets].sort((a, b) => Math.abs(b.pct) - Math.abs(a.pct)).slice(0, 5);
+      const drop = new Set(top.map(r => r.refdate));
+      const vols = series.map(r => Number(r.sigma_atm)).filter(v => Number.isFinite(v));
+      const volsLimpos = series.filter(r => !drop.has(r.refdate)).map(r => Number(r.sigma_atm)).filter(v => Number.isFinite(v));
+      const pctCheio = pctRank(vols, Number(last.sigma_atm));
+      const pctLimpo = pctRank(volsLimpos, Number(last.sigma_atm));
+      const fracos = series.filter(r => (r.r2 != null && Number(r.r2) < 0.5) || (r.n_points != null && Number(r.n_points) < 8));
+      const gordos = rets.filter(r => Math.abs(r.pct) > 2.5 * diario).length;
+      const grauTxt = (p) => p == null ? "n/d" : Math.round(p) + "º";
+      const delta = pctCheio != null && pctLimpo != null ? Math.round(pctLimpo) - Math.round(pctCheio) : null;
+      const efeito = delta == null ? ""
+        : Math.abs(delta) < 3 ? " Esses 5 pregões quase não movem o percentil."
+        : ` Sem eles, o percentil da vol de hoje iria de ${grauTxt(pctCheio)} para ${grauTxt(pctLimpo)}.`;
+      texto.textContent = `Janela ${series[0].refdate} a ${last.refdate}, ${series.length} pregões. O teste de barreira não reaproveita esses dias: ele só anda para a frente. O desvio diário realizado foi ${sd.toFixed(2)}%, e a IV de hoje (${pctVol(iv)}) implicaria ${diario.toFixed(2)}% por dia. ${gordos} pregões passaram de 2,5 vezes esse desvio.`;
+      dias.textContent = `Maiores movimentos: ${top.map(r => `${r.refdate} ${r.pct >= 0 ? "+" : ""}${r.pct.toFixed(1)}%`).join(" · ")}.${efeito} Ajuste fraco, com R² abaixo de 0,50 ou menos de 8 pontos: ${fracos.length} de ${series.length} pregões.`;
+
+      const ordenado = rets.map(r => r.pct).sort((a, b) => a - b);
+      const q = (p) => ordenado[Math.min(ordenado.length - 1, Math.max(0, Math.round(p * (ordenado.length - 1))))];
+      let lo = Math.min(q(0.005), -3 * diario);
+      let hi = Math.max(q(0.995), 3 * diario);
+      if (!(hi > lo)) { lo = -3; hi = 3; }
+      const folga = (hi - lo) * 0.04;
+      lo -= folga;
+      hi += folga;
+      const nbins = 31;
+      const size = (hi - lo) / nbins;
+      const comum = new Array(nbins).fill(0);
+      const cauda = new Array(nbins).fill(0);
+      rets.forEach(r => {
+        let k = Math.floor((r.pct - lo) / size);
+        if (k < 0) k = 0;
+        if (k >= nbins) k = nbins - 1;
+        (Math.abs(r.pct) > 2.5 * diario ? cauda : comum)[k] += 1;
+      });
+      const centros = comum.map((_, i) => lo + (i + 0.5) * size);
+      const emPct = (arr) => arr.map(c => c / rets.length * 100);
+      const normal = centros.map(x => {
+        const z = x / diario;
+        return Math.exp(-0.5 * z * z) / (diario * Math.sqrt(2 * Math.PI)) * size * 100;
+      });
+      chart.hidden = false;
+      const barra = {
+        type: "bar",
+        x: centros,
+        width: size * 0.96,
+        hovertemplate: "%{y:.1f}% dos pregões<br>retorno %{x:.2f}%<extra></extra>"
+      };
+      Plotly.newPlot("chartRet", [
+        { ...barra, y: emPct(comum), name: "Dentro de 2,5 desvios", marker: { color: "#6eb5ff" } },
+        { ...barra, y: emPct(cauda), name: "Cauda", marker: { color: "#fbbf24" } },
+        {
+          type: "scatter", mode: "lines", x: centros, y: normal, name: "Normal da IV de hoje",
+          line: { color: "#00c37a", width: 2 },
+          hovertemplate: "normal %{y:.1f}%<br>em %{x:.2f}%<extra></extra>"
+        }
+      ], {
+        ...plotLayout,
+        height: 380,
+        barmode: "stack",
+        bargap: 0,
+        hovermode: "x unified",
+        title: { text: "Retorno diário do papel", x: 0, xanchor: "left" },
+        margin: { l: 58, r: 18, t: 64, b: 64 },
+        legend: { orientation: "h", x: 0, y: 1.12 },
+        xaxis: {
+          type: "linear",
+          range: [lo, hi],
+          title: { text: "Retorno no dia (%)" },
+          gridcolor: "#2a3f5f",
+          zerolinecolor: "#e8eef5"
+        },
+        yaxis: {
+          title: { text: "% dos pregões" },
+          gridcolor: "#2a3f5f",
+          zeroline: false,
+          rangemode: "tozero"
+        }
       }, { responsive: true });
     }
 
@@ -1189,9 +1302,11 @@
         document.getElementById("glossario").hidden = true;
         document.getElementById("exVols").hidden = true;
         document.getElementById("exFormula").hidden = true;
+        document.getElementById("caudas").hidden = true;
         document.getElementById("kpi").innerHTML = "";
         Plotly.purge("chartVol");
         Plotly.purge("chartSkew");
+        Plotly.purge("chartRet");
         return;
       }
       document.getElementById("banner").hidden = true;
