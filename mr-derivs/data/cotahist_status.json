@@ -1,10 +1,59 @@
 {
-  "atualizado_em": "pendente",
-  "cache_dir": "mr-derivs/.rb3_cache",
-  "ultima_cotahist": null,
-  "lag_dias": null,
-  "ok": false,
-  "mensagem": "Aguardando primeiro workflow ou seed local.",
-  "tickers": [],
+  "atualizado_em": "2026-11-26T09:11:58-0300",
+  "cache_dir": "/home/runner/work/btg-distribuicao-rv/btg-distribuicao-rv/mr-derivs/.rb3_cache",
+  "ultima_cotahist": "2026-11-25",
+  "lag_dias": 1,
+  "ok": true,
+  "mensagem": "COTAHIST ok ate 2026-11-25.",
+  "tickers": [
+    {
+      "ticker": "BOVA11",
+      "ultima_spot": "2026-11-25"
+    },
+    {
+      "ticker": "SMAL11",
+      "ultima_spot": "2026-11-25"
+    },
+    {
+      "ticker": "PETR4",
+      "ultima_spot": "2026-11-25"
+    },
+    {
+      "ticker": "EQTL3",
+      "ultima_spot": "2026-11-25"
+    },
+    {
+      "ticker": "VALE3",
+      "ultima_spot": "2026-11-25"
+    },
+    {
+      "ticker": "ITUB4",
+      "ultima_spot": "2026-11-25"
+    },
+    {
+      "ticker": "BPAC11",
+      "ultima_spot": "2026-11-25"
+    },
+    {
+      "ticker": "WEGE3",
+      "ultima_spot": "2026-11-25"
+    },
+    {
+      "ticker": "BBDC4",
+      "ultima_spot": "2026-11-25"
+    },
+    {
+      "ticker": "ITSA4",
+      "ultima_spot": "2026-11-25"
+    },
+    {
+      "ticker": "ABEV3",
+      "ultima_spot": "2026-11-25"
+    },
+    {
+      "ticker": "B3SA3",
+      "ultima_spot": "2026-11-25"
+    }
+  ],
   "meses_janela": 24
 }
