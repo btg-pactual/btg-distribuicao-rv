@@ -1,0 +1,107 @@
+{
+  "atualizado_em": "2026-11-26T10:52:26-0300",
+  "fonte": "ultimo negocio",
+  "tickers": {
+    "BOVA11": {
+      "last": 169.94,
+      "previous_close": 164.01,
+      "as_of": "2026-11-26 10:35"
+    },
+    "SMAL11": {
+      "last": 105.04,
+      "previous_close": 100.55,
+      "as_of": "2026-11-26 10:35"
+    },
+    "PETR4": {
+      "last": 42.82,
+      "previous_close": 41.36,
+      "as_of": "2026-11-26 10:35"
+    },
+    "VALE3": {
+      "last": 58.08,
+      "previous_close": 56.9,
+      "as_of": "2026-11-26 10:35"
+    },
+    "ITUB4": {
+      "last": 41.27,
+      "previous_close": 40.01,
+      "as_of": "2026-11-26 10:35"
+    },
+    "BBDC4": {
+      "last": 14.97,
+      "previous_close": 14.19,
+      "as_of": "2026-11-26 10:35"
+    },
+    "BBAS3": {
+      "last": 15.39,
+      "previous_close": 14.69,
+      "as_of": "2026-11-26 10:35"
+    },
+    "BPAC11": {
+      "last": 56.07,
+      "previous_close": 52.95,
+      "as_of": "2026-11-26 10:35"
+    },
+    "WEGE3": {
+      "last": 50.52,
+      "previous_close": 49.65,
+      "as_of": "2026-11-26 10:35"
+    },
+    "ABEV3": {
+      "last": 16.01,
+      "previous_close": 15.81,
+      "as_of": "2026-11-26 10:35"
+    },
+    "ITSA4": {
+      "last": 13.51,
+      "previous_close": 13.09,
+      "as_of": "2026-11-26 10:35"
+    },
+    "EQTL3": {
+      "last": 37.08,
+      "previous_close": 34.87,
+      "as_of": "2026-11-26 10:35"
+    },
+    "B3SA3": {
+      "last": 15.55,
+      "previous_close": 14.58,
+      "as_of": "2026-11-26 10:35"
+    },
+    "RENT3": {
+      "last": 31.41,
+      "previous_close": 29.32,
+      "as_of": "2026-11-26 10:35"
+    },
+    "SUZB3": {
+      "last": 54.54,
+      "previous_close": 55.4,
+      "as_of": "2026-11-26 10:35"
+    },
+    "RADL3": {
+      "last": 16.06,
+      "previous_close": 15.43,
+      "as_of": "2026-11-26 10:35"
+    },
+    "GGBR4": {
+      "last": 26.38,
+      "previous_close": 25.86,
+      "as_of": "2026-11-26 10:35"
+    },
+    "PRIO3": {
+      "last": 62.1,
+      "previous_close": 60.5,
+      "as_of": "2026-11-26 10:35"
+    },
+    "VIVT3": {
+      "last": 35.44,
+      "previous_close": 34.8,
+      "as_of": "2026-11-26 10:35"
+    },
+    "ELET3": {
+      "last": 47.69,
+      "previous_close": 46.16,
+      "as_of": "2026-11-26 10:36",
+      "simbolo": "AXIA3"
+    }
+  }
+}

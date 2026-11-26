@@ -387,6 +387,7 @@
     let manifestGlobal = null;
     let payload = null;
     let barPayload = null;
+    let spotsGlobal = null;
     let barOverride = false;
 
     const PRAZO_LABEL = { "21": "1 mês", "42": "2 meses", "63": "3 meses" };
@@ -773,6 +774,22 @@
       return null;
     }
 
+    function precoAoVivo(ticker) {
+      const row = spotsGlobal && spotsGlobal.tickers && spotsGlobal.tickers[ticker];
+      const n = Number(row && row.last);
+      return n > 0 ? row : null;
+    }
+
+    async function loadSpots() {
+      try {
+        const r = await fetch("data/web/spots.json");
+        if (!r.ok) return null;
+        return await r.json();
+      } catch (e) {
+        return null;
+      }
+    }
+
     function volDoCadastro(last, fonte) {
       if (!last || fonte === "manual") return null;
       const n = Number(last[fonte]);
@@ -794,7 +811,9 @@
       const pack = packDaBarreira(barPayload || payload);
       const meta = (pack && pack.meta_datas) || ((barPayload || payload) && (barPayload || payload).meta_datas) || {};
       const last = ultimoDaBarreira();
-      const close = precoDoCadastro(meta, last);
+      const vivo = precoAoVivo(escolhido);
+      const closeCadastro = precoDoCadastro(meta, last);
+      const close = vivo ? Number(vivo.last) : closeCadastro;
       const spot = document.getElementById("spot");
       if (close != null && document.activeElement !== spot) spot.value = close.toFixed(2);
       const h = document.getElementById("horizonte");
@@ -807,9 +826,16 @@
       }
       const dataPx = (last && last.refdate) || meta.ultima_spot || "";
       const iv = last && last.sigma_atm != null ? `IV ${pctVol(last.sigma_atm)}` : "IV indisponível";
-      const px = close != null
-        ? `último preço ${close.toFixed(2)}${dataPx ? " em " + dataPx : ""}`
-        : "último preço ainda não está no JSON publicado; digite o spot";
+      let px;
+      if (vivo) {
+        const quando = vivo.as_of ? ` em ${vivo.as_of}` : "";
+        const apelido = vivo.simbolo && vivo.simbolo !== escolhido ? ` (${vivo.simbolo})` : "";
+        px = `último negócio ${Number(vivo.last).toFixed(2)}${quando}${apelido}`;
+      } else if (closeCadastro != null) {
+        px = `fechamento ${closeCadastro.toFixed(2)}${dataPx ? " em " + dataPx : ""}`;
+      } else {
+        px = "último preço ainda não está no JSON publicado; digite o spot";
+      }
       ctx.textContent = `${escolhido} · ${px} · ${iv}. A simulação usa o número do campo Vol usada.`;
     }
 
@@ -1128,6 +1154,7 @@
         document.getElementById("barAtivo").addEventListener("change", () => { aoMudarBarAtivo(); });
         document.getElementById("volFonte").addEventListener("change", () => aplicarDadosBarreira());
         document.getElementById("btnBarreira").addEventListener("click", simularBarreira);
+        spotsGlobal = await loadSpots();
         await loadTicker(sel.value);
       } catch (e) {
         console.error(e);
