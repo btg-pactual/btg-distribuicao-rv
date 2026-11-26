@@ -1,9 +1,17 @@
 # Exporta status do cache para GitHub Pages / monitoramento.
-JOB_DIR <- local({
-  f <- grep("^--file=", commandArgs(trailingOnly = FALSE), value = TRUE)
-  if (length(f)) dirname(normalizePath(sub("^--file=", "", f[[1]]))) else file.path(getwd(), "jobs")
-})
-source(file.path(JOB_DIR, "_job_common.R"), local = FALSE)
+# O diario ja deu source em _job_common (e fez setwd). Recalcular o --file=
+# relativo depois disso aponta para um caminho que nao existe.
+if (!exists("job_root", inherits = TRUE)) {
+# O diario ja deu source em _job_common (e fez setwd). Recalcular o --file=
+# relativo depois disso aponta para um caminho que nao existe.
+if (!exists("job_root", inherits = TRUE)) {
+  JOB_DIR <- local({
+    f <- grep("^--file=", commandArgs(trailingOnly = FALSE), value = TRUE)
+    if (length(f)) dirname(normalizePath(sub("^--file=", "", f[[1]]))) else file.path(getwd(), "jobs")
+  })
+  source(file.path(JOB_DIR, "_job_common.R"), local = FALSE)
+}
+}
 
 if (!requireNamespace("jsonlite", quietly = TRUE)) {
   stop("jsonlite necessario")
