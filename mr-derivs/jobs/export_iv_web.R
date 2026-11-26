@@ -160,12 +160,14 @@ for (tk in tickers) {
     }
   }
   if (!length(prazos)) {
-    manifest$erros <<- c(
+    # No topo do script, $<<- procura o objeto no ambiente pai e nao acha.
+    manifest$erros <- c(
       manifest$erros,
       list(list(ticker = tk, mensagem = paste(vapply(erros_prazo, function(e) {
         paste0(e$du, " DU: ", e$mensagem)
       }, character(1)), collapse = " | ")))
     )
+    job_log("  sem curva para ", tk, "; segue o proximo ativo")
     next
   }
   base <- if (!is.null(prazos[["21"]])) prazos[["21"]] else prazos[[1]]
