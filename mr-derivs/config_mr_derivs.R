@@ -116,12 +116,17 @@ TICKERS_SEED_24M <- c(
   "WEGE3", "BBDC4", "ITSA4", "ABEV3", "B3SA3"
 )
 
-#' Universo web (IV export + painel quant). IBOV11 e o indice, opcoes IBOV.
+#' Universo web (IV export + painel quant). Cerca de 40 nomes com livro de opcoes.
+#' IBOV11 e o indice (opcoes IBOV). AXIA3 substitui ELET3.
 TICKERS_WEB_20 <- c(
   "BOVA11", "IBOV11", "SMAL11",
-  "PETR4", "VALE3", "ITUB4", "BBDC4", "BBAS3", "BPAC11",
-  "WEGE3", "ABEV3", "ITSA4", "EQTL3", "B3SA3",
-  "RENT3", "SUZB3", "RADL3", "GGBR4", "PRIO3", "VIVT3", "ELET3"
+  "PETR4", "VALE3", "ITUB4", "BBDC4", "BBAS3", "BPAC11", "BBSE3", "ITSA4",
+  "ABEV3", "WEGE3", "RENT3", "EQTL3", "RADL3", "LREN3", "MGLU3",
+  "VIVT3", "VIVA3",
+  "CSAN3", "PRIO3", "SUZB3", "GGBR4", "CSNA3", "USIM5", "GOAU4",
+  "EMBJ3", "AXIA3", "CPLE3",
+  "UGPA3", "VBBR3", "ASAI3",
+  "BEEF3", "MRVE3", "CYRE3", "COGN3", "SMFT3", "BRAV3", "MOVI3"
 )
 
 QUANT_BENCH_DEFAULT <- "BOVA11"
