@@ -1,58 +1,58 @@
 {
-  "atualizado_em": "2026-11-26T11:08:30-0300",
+  "atualizado_em": "2026-11-27T01:00:09-0300",
   "cache_dir": "/home/runner/work/btg-distribuicao-rv/btg-distribuicao-rv/mr-derivs/.rb3_cache",
-  "ultima_cotahist": "2026-11-25",
+  "ultima_cotahist": "2026-11-26",
   "lag_dias": 1,
   "ok": true,
-  "mensagem": "COTAHIST ok ate 2026-11-25.",
+  "mensagem": "COTAHIST ok ate 2026-11-26.",
   "tickers": [
     {
       "ticker": "BOVA11",
-      "ultima_spot": "2026-11-25"
+      "ultima_spot": "2026-11-26"
     },
     {
       "ticker": "SMAL11",
-      "ultima_spot": "2026-11-25"
+      "ultima_spot": "2026-11-26"
     },
     {
       "ticker": "PETR4",
-      "ultima_spot": "2026-11-25"
+      "ultima_spot": "2026-11-26"
     },
     {
       "ticker": "EQTL3",
-      "ultima_spot": "2026-11-25"
+      "ultima_spot": "2026-11-26"
     },
     {
       "ticker": "VALE3",
-      "ultima_spot": "2026-11-25"
+      "ultima_spot": "2026-11-26"
     },
     {
       "ticker": "ITUB4",
-      "ultima_spot": "2026-11-25"
+      "ultima_spot": "2026-11-26"
     },
     {
       "ticker": "BPAC11",
-      "ultima_spot": "2026-11-25"
+      "ultima_spot": "2026-11-26"
     },
     {
       "ticker": "WEGE3",
-      "ultima_spot": "2026-11-25"
+      "ultima_spot": "2026-11-26"
     },
     {
       "ticker": "BBDC4",
-      "ultima_spot": "2026-11-25"
+      "ultima_spot": "2026-11-26"
     },
     {
       "ticker": "ITSA4",
-      "ultima_spot": "2026-11-25"
+      "ultima_spot": "2026-11-26"
     },
     {
       "ticker": "ABEV3",
-      "ultima_spot": "2026-11-25"
+      "ultima_spot": "2026-11-26"
     },
     {
       "ticker": "B3SA3",
-      "ultima_spot": "2026-11-25"
+      "ultima_spot": "2026-11-26"
     }
   ],
   "meses_janela": 24
