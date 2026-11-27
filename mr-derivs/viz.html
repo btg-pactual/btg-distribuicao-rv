@@ -1004,7 +1004,7 @@
 
     async function loadSpots() {
       try {
-        const r = await fetch("data/web/spots.json");
+        const r = await fetch("data/web/spots.json", { cache: "no-store" });
         if (!r.ok) return null;
         return await r.json();
       } catch (e) {
@@ -1088,7 +1088,7 @@
       }
       document.getElementById("barContexto").textContent = `Carregando ${v}…`;
       try {
-        const r = await fetch(`data/web/${v}.json`);
+        const r = await fetch(`data/web/${v}.json`, { cache: "no-store" });
         if (!r.ok) throw new Error("sem json");
         barPayload = await r.json();
       } catch (e) {
@@ -1344,9 +1344,24 @@
       if (b.inicio) dIni.min = b.inicio;
       if (b.fim) dFim.max = b.fim;
       const params = new URLSearchParams(location.search);
-      dFim.value = params.get("to") || b.fim || "";
-      dIni.value = params.get("from") || b.inicio || "";
-      if (!params.get("from") && b.fim) {
+      let to = params.get("to") || "";
+      let from = params.get("from") || "";
+      if (b.fim && to && to < b.fim) {
+        const dias = Math.round((new Date(b.fim + "T12:00:00") - new Date(to + "T12:00:00")) / 86400000);
+        if (dias > 0 && dias <= 7) {
+          if (from) {
+            const ini = new Date(from + "T12:00:00");
+            ini.setDate(ini.getDate() + dias);
+            const shifted = ini.toISOString().slice(0, 10);
+            if (!b.inicio || shifted >= b.inicio) from = shifted;
+          }
+          to = b.fim;
+        }
+      }
+      if (to && b.fim && to > b.fim) to = b.fim;
+      dFim.value = to || b.fim || "";
+      dIni.value = from || b.inicio || "";
+      if (!from && b.fim) {
         const end = new Date((b.fim) + "T12:00:00");
         end.setDate(end.getDate() - 90);
         const def = end.toISOString().slice(0, 10);
@@ -1356,7 +1371,7 @@
 
     async function loadManifest() {
       try {
-        const r = await fetch("data/web/manifest.json");
+        const r = await fetch("data/web/manifest.json", { cache: "no-store" });
         if (!r.ok) throw new Error("manifest HTTP " + r.status);
         return await r.json();
       } catch (e) {
@@ -1426,7 +1441,7 @@
 
     async function loadTicker(ticker) {
       document.getElementById("banner").hidden = true;
-      const r = await fetch(`data/web/${ticker}.json`);
+      const r = await fetch(`data/web/${ticker}.json`, { cache: "no-store" });
       if (!r.ok) {
         showBanner(`Sem dados para ${ticker}. O job diário publica data/web/${ticker}.json.`);
         payload = null;
