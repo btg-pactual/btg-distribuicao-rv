@@ -283,6 +283,7 @@
   </header>
   <main>
     <div id="banner" class="alert" hidden></div>
+    <div id="alertaPrazo" class="alert" hidden></div>
     <div class="kpi" id="kpi"></div>
     <div class="tbl-wrap">
       <h2>Percentis no período selecionado</h2>
@@ -459,6 +460,41 @@
       const el = document.getElementById("banner");
       el.hidden = false;
       el.textContent = msg;
+    }
+
+    function fmtDataBR(iso) {
+      if (!iso || String(iso).length < 10) return "";
+      const [y, m, d] = String(iso).slice(0, 10).split("-");
+      return `${d}/${m}/${y}`;
+    }
+
+    function fimDoPapel() {
+      const papel = precosDoPapel();
+      return papel.length ? papel[papel.length - 1].refdate : "";
+    }
+
+    function atualizarAlertaPrazo() {
+      const el = document.getElementById("alertaPrazo");
+      if (!el) return;
+      const du = document.getElementById("prazo").value;
+      const nome = PRAZO_LABEL[du] || du;
+      const pack = packDoPrazo(du);
+      const fimPapel = fimDoPapel();
+      const janela = `${Math.max(1, Number(du) - 10)} a ${Number(du) + 10} dias úteis`;
+      if (!pack || !(pack.series || []).length) {
+        el.hidden = false;
+        el.textContent = `A curva de ${nome} não tem dados. Nenhum vencimento na janela de ${janela} teve ajuste válido neste papel.`;
+        return;
+      }
+      const last = pack.series[pack.series.length - 1];
+      if (fimPapel && last.refdate && last.refdate < fimPapel) {
+        const venc = last.maturity_date ? `, vencimento ${fmtDataBR(last.maturity_date)}` : "";
+        const duTxt = last.biz_days != null ? `, com ${Math.round(last.biz_days)} dias úteis nesse vencimento` : "";
+        el.hidden = false;
+        el.textContent = `A curva de ${nome} parou em ${fmtDataBR(last.refdate)}${venc}${duTxt}. O papel tem cotação até ${fmtDataBR(fimPapel)}. Os pregões seguintes não entraram: não houve vencimento na janela de ${janela} com ajuste válido.`;
+        return;
+      }
+      el.hidden = true;
     }
 
     function filterSeries() {
@@ -932,13 +968,19 @@
       const sel = document.getElementById("prazo");
       ["21", "42", "63"].forEach(du => {
         const opt = sel.querySelector(`option[value="${du}"]`);
-        const ok = !!packDoPrazo(du);
+        const pack = packDoPrazo(du);
+        const ok = !!pack;
         opt.disabled = !ok && du !== "21";
         const base = PRAZO_LABEL[du];
         const ndu = du === "21" ? "21" : du === "42" ? "42" : "63";
-        opt.textContent = ok || du === "21"
-          ? `${base} (${ndu} DU)`
-          : `${base} (${ndu} DU) — no próximo job`;
+        const last = ok ? pack.series[pack.series.length - 1] : null;
+        const fimPapel = fimDoPapel();
+        const parada = last && fimPapel && last.refdate && last.refdate < fimPapel;
+        opt.textContent = !ok
+          ? `${base} (${ndu} DU) — sem dados`
+          : parada
+            ? `${base} (${ndu} DU) — parou em ${fmtDataBR(last.refdate)}`
+            : `${base} (${ndu} DU)`;
       });
     }
 
@@ -1406,7 +1448,8 @@
       const du = document.getElementById("prazo").value;
       const pack = packDoPrazo(du);
       if (!pack) {
-        showBanner(`A curva de ${PRAZO_LABEL[du] || du} ainda não está neste JSON. O job diário passa a gravar 1, 2 e 3 meses.`);
+        document.getElementById("banner").hidden = true;
+        atualizarAlertaPrazo();
         rawSeries = [];
         document.getElementById("sugestao").hidden = true;
         document.getElementById("glossario").hidden = true;
@@ -1419,6 +1462,7 @@
         return;
       }
       document.getElementById("banner").hidden = true;
+      atualizarAlertaPrazo();
       rawSeries = pack.series || [];
       const b = Object.assign({}, pack.bounds || {});
       if (!b.inicio && rawSeries.length) {
@@ -1445,6 +1489,8 @@
       const r = await fetch(`data/web/${ticker}.json`, { cache: "no-store" });
       if (!r.ok) {
         showBanner(`Sem dados para ${ticker}. O job diário publica data/web/${ticker}.json.`);
+        const aviso = document.getElementById("alertaPrazo");
+        if (aviso) aviso.hidden = true;
         payload = null;
         rawSeries = [];
         document.getElementById("caudas").hidden = true;
