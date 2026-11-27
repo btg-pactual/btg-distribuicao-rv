@@ -116,9 +116,9 @@ TICKERS_SEED_24M <- c(
   "WEGE3", "BBDC4", "ITSA4", "ABEV3", "B3SA3"
 )
 
-#' Universo web (20 liquidos — IV export + painel quant).
+#' Universo web (IV export + painel quant). IBOV11 e o indice, opcoes IBOV.
 TICKERS_WEB_20 <- c(
-  "BOVA11", "SMAL11",
+  "BOVA11", "IBOV11", "SMAL11",
   "PETR4", "VALE3", "ITUB4", "BBDC4", "BBAS3", "BPAC11",
   "WEGE3", "ABEV3", "ITSA4", "EQTL3", "B3SA3",
   "RENT3", "SUZB3", "RADL3", "GGBR4", "PRIO3", "VIVT3", "ELET3"

@@ -394,7 +394,7 @@
   </main>
   <script>
     const TICKERS_FALLBACK = [
-      "BOVA11", "SMAL11", "PETR4", "VALE3", "ITUB4", "BBDC4", "BBAS3", "BPAC11",
+      "BOVA11", "IBOV11", "SMAL11", "PETR4", "VALE3", "ITUB4", "BBDC4", "BBAS3", "BPAC11",
       "WEGE3", "ABEV3", "ITSA4", "EQTL3", "B3SA3", "RENT3", "SUZB3", "RADL3",
       "GGBR4", "PRIO3", "VIVT3", "ELET3"
     ];
@@ -953,7 +953,7 @@
       tickersCadastrados().forEach(t => {
         const o = document.createElement("option");
         o.value = t;
-        o.textContent = t;
+        o.textContent = t === "IBOV11" ? "IBOVESPA" : t;
         sel.appendChild(o);
       });
       const man = document.createElement("option");
@@ -1389,7 +1389,7 @@
       tickers.forEach(t => {
         const o = document.createElement("option");
         o.value = t;
-        o.textContent = t;
+        o.textContent = t === "IBOV11" ? "IBOVESPA" : t;
         sel.appendChild(o);
       });
       const params = new URLSearchParams(location.search);
