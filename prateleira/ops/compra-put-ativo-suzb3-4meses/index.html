@@ -137,7 +137,7 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
     <h2>Research BTG</h2>
     <a class="research-link" href="https://content.btgpactual.com/research/ativo/SUZB3" target="_blank" rel="noopener">Abrir SUZB3 no Research <span class="arrow" aria-hidden="true">→</span></a>
   </div>
-  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 54,87</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 70,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+27,57%</div></div></div><p class="research-note">Spot do fechamento anterior (26/11/2026) · preço-alvo atualizado em 24/11/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
+  <div class="research-grid"><div><div class="lbl">Preço atual</div><div class="val ">R$ 51,98</div></div><div><div class="lbl">Recomendação</div><div class="val buy">Compra</div></div><div><div class="lbl">Preço-alvo</div><div class="val ">R$ 70,00</div></div><div><div class="lbl">Potencial</div><div class="val buy">+34,67%</div></div></div><p class="research-note">Spot do fechamento anterior (27/11/2026) · preço-alvo atualizado em 24/11/2026 · atualizado às 18h30 · fonte Research BTG.</p><div class="research-actions"><button type="button" class="research-btn" id="btnResearchTarget">Ver preço-alvo no gráfico</button></div>
 </section>
 
 
@@ -152,8 +152,8 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
           <table class="struct-table">
             <thead><tr><th></th><th>R$</th><th>vs spot</th></tr></thead>
             <tbody>
-              <tr><td>Máximo</td><td><strong>59,65</strong></td><td>+8,7%</td></tr>
-              <tr><td>Mínimo</td><td><strong>0,00</strong></td><td>-100,0%</td></tr>
+              <tr><td>Máximo</td><td><strong>59,65</strong></td><td>+14,8%</td></tr>
+              <tr><td>Mínimo</td><td><strong>39,17</strong></td><td>-24,6%</td></tr>
             </tbody>
           </table>
           <p class="legend-note">
@@ -193,14 +193,14 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
   <p class="chart-touch-hint">Arraste no gráfico para simular</p>
       <div class="mobile-sim">
     <div class="sim-label"><span>Spot final</span><output id="spotOutMobile">0%</output></div>
-    <input type="range" id="spotSliderMobile" min="-40" max="40" step="0.5" value="0"/>
+    <input type="range" id="spotSliderMobile" min="-40" max="50" step="0.5" value="0"/>
   </div>
   <div class="zones"><div class="zone"><strong>≤ 100%</strong><p>Put exerce. Resultado fica em -6%.</p></div><div class="zone"><strong>> 100%</strong><p>Acompanha o ativo, descontado o prêmio de 6,00%.</p></div></div>
 </section>
 <aside class="panel panel-sim">
   <h2>Simulador</h2>
   <div class="sim-label"><span>Variação do ativo</span><output id="spotOut">0%</output></div>
-  <input type="range" id="spotSlider" min="-40" max="40" step="0.5" value="0"/>
+  <input type="range" id="spotSlider" min="-40" max="50" step="0.5" value="0"/>
   <div class="sim-cards">
     <div class="sim-card"><div class="lbl">Ativo</div><div class="val" id="assetVal">0,0%</div></div>
     <div class="sim-card"><div class="lbl">Estrutura</div><div class="val" id="structVal">0,0%</div></div>
@@ -228,10 +228,10 @@ input[type=range]{width:100%;accent-color:var(--brand);margin-bottom:14px}
 </div>
 <script>
 (function(){
-  var X_MIN=-40,X_MAX=40,Y_MIN=-20,Y_MAX=40;
+  var X_MIN=-40,X_MAX=50,Y_MIN=-20,Y_MAX=40;
   var PAD={l:48,t:24,r:48,b:24},VW=600,VH=400;
   var PLOT_W=VW-PAD.l-PAD.r,PLOT_H=VH-PAD.t-PAD.b;
-  var RESEARCH_X=27.5743;
+  var RESEARCH_X=34.6672;
   var K=0.0, COST=6.0, FLOOR=-6.0;
   function structureReturn(x){ if (x <= K) return FLOOR; return x - COST; }
   function regimeFor(x){ if (x <= K) return 'Put: resultado em '+FLOOR.toFixed(2).replace('.',',')+'%.'; return 'Acompanha o ativo, menos o prêmio.'; }
